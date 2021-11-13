@@ -36,7 +36,7 @@
 > 
 > 协议：[CC BY-NC-SA 4.0](http://creativecommons.org/licenses/by-nc-sa/4.0/)
 > 
-> 欢迎任何人参与和完善：一个人可以走的很快，但是一群人却可以走的更远。
+> 有没有那么一朵玫瑰永远不凋谢，永远骄傲和完美永远不妥协。为何人生最后会像一张纸屑，还不如一片花瓣曾经鲜艳。——五月天《如烟》
 
 * [在线阅读](https://{domain}.apachecn.org)
 * [在线阅读（Gitee）](https://apachecn.gitee.io/doc-template/)
