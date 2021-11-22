@@ -20,6 +20,15 @@
 +   [精通 JavaScript 高性能](docs/master-js-hiperf/SUMMARY.md)
 +   [精通 JavaScript 承诺](docs/master-js-promise/SUMMARY.md)
 +   [HTML5 和 JavaScript 社交数据可视化](docs/social-data-vis-h5-js/SUMMARY.md)
++   [使用 HTML5 和 JavaScript 开发 Windows 商店应用](docs/dev-win-store-app-h5-js/SUMMARY.md)
++   [Grunt 入门指南](docs/get-start-grunt/SUMMARY.md)
++   [面向 .NET 开发者的 JavaScript 教程](docs/js-dnet-dev/SUMMARY.md)
++   [JavaScript 承诺基础知识](docs/js-promise-essense/SUMMARY.md)
++   [解锁 JavaScript](docs/js-unlock/SUMMARY.md)
++   [Aurelia 学习手册](docs/learn-aurelia/SUMMARY.md)
++   [精通 JavaScript](docs/master-js/SUMMARY.md)
++   [Sencha Touch2 JavaScript 移动框架](docs/sencha-touch2-mobi-js-frame/SUMMARY.md)
++   [JavaScript 思维](docs/think-js/SUMMARY.md)
 
 ## 贡献指南
 
