@@ -1,35 +1,3 @@
-<!--
-    需要填充的占位符：
-    
-    README.md
-    
-        ApacheCN Javascript 译文集（二）：文档中文名
-        {nameEn}：文档英文名
-        {urlEn}：文档原始链接
-        js2：域名前缀
-        飞龙：负责人名称
-        wizardforcel：负责人 Github 用户名
-        562826179：负责人 QQ
-        apachecn-js-zh-pt2：ApacheCN 的 Github 仓库名称
-        apachecn-js-zh-pt2：DockerHub 仓库名称
-        apachecn-js-zh-pt2：PYPI 包名称
-        apachecn-js-zh-pt2：NPM 包名称
-    
-    CNAME
-    
-        js2：域名前缀
-
-    index.html
-    
-        ApacheCN Javascript 译文集（二）：文档中文名
-        {color}：显示颜色
-        apachecn-js-zh-pt2：ApacheCN 的 Github 仓库名称
-
-    asset/docsify-apachecn-footer.js
-    
-        apachecn-js-zh-pt2：ApacheCN 的 Github 仓库名称
--->
-
 # ApacheCN Javascript 译文集（二）
 
 > 协议：[CC BY-NC-SA 4.0](http://creativecommons.org/licenses/by-nc-sa/4.0/)
