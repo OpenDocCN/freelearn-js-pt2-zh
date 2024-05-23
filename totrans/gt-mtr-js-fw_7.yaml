@@ -1,34 +1,42 @@
 - en: Chapter 7. Packaging and Deploying
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: Our application is looking great. We've made it secure, easy to use, and with
     the addition of multiple logins, now anybody can use the Lending Library to keep
     track of their stuff.
+  id: totrans-1
   prefs: []
   type: TYPE_NORMAL
 - en: 'In this final chapter, we''ll go over Meteor''s amazing package system, which
     will speed up future code projects, and we''ll talk about options for deploying
     your applications. You will learn how to:'
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
 - en: Add and configure third-party packages, such as jQuery, Backbone, and Bootstrap
+  id: totrans-3
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Bundle your entire application, so that it can be deployed
+  id: totrans-4
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Deploy your app using Meteor's public servers
+  id: totrans-5
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Deploy your app to a custom server
+  id: totrans-6
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Third-party packages
+  id: totrans-7
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
@@ -36,25 +44,32 @@
     libraries. These packages are intelligent, in that they not only contain the base
     JavaScript or preprocessing libraries, but they are also configured to interact
     directly with the Meteor code base.'
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
 - en: What this means for you is that adding your favorite library involves almost
     no effort, and you can be confident that it will work with your Meteor application.
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
 - en: Listing available packages
+  id: totrans-10
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: 'To see a list of the available packages, with a brief description, simply enter
     the following command into the terminal, and press *Enter*:'
+  id: totrans-11
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE0]'
+  id: totrans-12
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: This will give you a listing of all the packages available with the version
     of Meteor that you have installed.
+  id: totrans-13
   prefs: []
   type: TYPE_NORMAL
 - en: As you can see, there are quite a few of the most popular frameworks available,
@@ -62,6 +77,7 @@
     amount of time manually downloading Bootstrap, creating the client folder, and
     extracting the Bootstrap files. That was a good exercise in how to manually install
     a framework, but now we're going to learn how to install it as a package.
+  id: totrans-14
   prefs: []
   type: TYPE_NORMAL
 - en: First, let's remove the existing Bootstrap installation. Navigate to `~/Documents/Meteor/LendLib/client/`
@@ -69,9 +85,11 @@
     running or not (remember, Meteor updates dynamically!). Either start it up and
     then navigate to `http://localhost:3000` or just navigate there if it is already
     running. You will see that all of our pretty formatting is gone!
+  id: totrans-15
   prefs: []
   type: TYPE_NORMAL
 - en: '![Listing available packages](img/0823OS_07_01.jpg)'
+  id: totrans-16
   prefs: []
   type: TYPE_IMG
 - en: 'We''ll now add the official Meteor Bootstrap package. Again, because Meteor
@@ -79,53 +97,69 @@
     Either open a new terminal window or temporarily stop your Meteor application,
     and make sure you are in the `~/Documents/Meteor/LendLib` folder. Once there,
     enter the following command:'
+  id: totrans-17
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE1]'
+  id: totrans-18
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: 'You will receive a very short message:'
+  id: totrans-19
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE2]'
+  id: totrans-20
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: 'If you used a second terminal window, just head to your browser (you don''t
     even have to refresh the page). If you stopped your Meteor application, start
     it up again, and navigate to `http://localhost:3000`. You will be able to see
     that the Bootstrap formatting is now back, and everything is back to normal:'
+  id: totrans-21
   prefs: []
   type: TYPE_NORMAL
 - en: '![Listing available packages](img/0823OS_07_02.jpg)'
+  id: totrans-22
   prefs: []
   type: TYPE_IMG
 - en: That's literally all there is to it. Using a single command in your terminal,
     you can add a library or framework to your project, without having to worry about
     linking, downloading, and making sure that the files are in the right location.
     Just run `meteor add...`, and off you go!
+  id: totrans-23
   prefs: []
   type: TYPE_NORMAL
 - en: Tip
+  id: totrans-24
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: 'You can get a list of the packages that you''re already using by entering the
     following command in the terminal: `meteor list --using`.'
+  id: totrans-25
   prefs: []
   type: TYPE_NORMAL
 - en: 'Because Meteor is adding packages so rapidly, it''s a good idea to stay current
     with your Meteor installation. From time to time, run the following command in
     the terminal:'
+  id: totrans-26
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE3]'
+  id: totrans-27
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: If you're on the latest version, it will tell you so, and what version you're
     running. If there's a new version, it will download and install it for you.
+  id: totrans-28
   prefs: []
   type: TYPE_NORMAL
 - en: Bundling your application
+  id: totrans-29
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
@@ -133,19 +167,24 @@
     incredibly simple. Stop your Meteor application if it''s running, make sure you
     are in your application folder (for the Lending Library it is `~/Documents/Meteor/LendLib`)
     and enter the following command in the terminal:'
+  id: totrans-30
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE4]'
+  id: totrans-31
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: This will take a little bit to run, but when it's complete you'll have a `lendlib.tgz`
     tarball in your `LendLib` folder, and you're ready to deploy it wherever you would
     like. This is a complete package/bundle. The machine you deploy this bundle to
     only needs to have Node.js and MongoDB installed. Everything else you need is
     included in the bundle.
+  id: totrans-32
   prefs: []
   type: TYPE_NORMAL
 - en: Deploying to Meteor's servers
+  id: totrans-33
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
@@ -154,56 +193,72 @@
     you to deploy your application directly on their deployment servers. Pick a name
     for your app (we''ll use `packt.lendlib`, but you''ll need to come up with your
     own) and enter the following command in the terminal:'
+  id: totrans-34
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE5]'
+  id: totrans-35
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: 'So, in our case, we entered `meteor deploy` `packt.lendlib.meteor.com`. The
     console will give you status updates as it bundles, uploads, and deploys your
     application. Once it''s finished, it will give you a message similar the following
     one:'
+  id: totrans-36
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE6]'
+  id: totrans-37
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: If you navigate to that URL in your browser (for example, [http://packt.lendlib.meteor.com](http://packt.lendlib.meteor.com)),
     you will see your application deployed and running!
+  id: totrans-38
   prefs: []
   type: TYPE_NORMAL
 - en: '![Deploying to Meteor''s servers](img/0823OS_07_03.jpg)'
+  id: totrans-39
   prefs: []
   type: TYPE_IMG
 - en: Tip
+  id: totrans-40
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: You will probably want to create the `admin` login before you start using the
     application, or telling others about it. You don't want sneaky `STEVE` to have
     control of your app!
+  id: totrans-41
   prefs: []
   type: TYPE_NORMAL
 - en: Updating Meteor's servers
+  id: totrans-42
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: 'What if you make changes, or you had a bug, and you want to update the code
     for your app on the Meteor servers? As you probably guessed, this is super simple.
     Just re-run your `deploy` command:'
+  id: totrans-43
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE7]'
+  id: totrans-44
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: This not only updates your app, but it also preserves your data, so you don't
     have to start from scratch if you've entered a lot of information already. Pretty
     slick, right? The people at Meteor really know what makes developing enjoyable,
     and they've gone out of their way to provide an environment where you can just
     code, play, and receive instant feedback on your application.
+  id: totrans-45
   prefs: []
   type: TYPE_NORMAL
 - en: Using your own hostname
+  id: totrans-46
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -212,25 +267,32 @@
     using your host provider, and you can then deploy to that hostname. For example,
     if we had the subdomain `meteor.too11.com` pointing as a CNAME to `origin.meteor.com`,
     we would run the following command in the terminal:'
+  id: totrans-47
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE8]'
+  id: totrans-48
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: If your CNAME is set up properly, this will deploy just as it would if you were
     to deploy directly to `[your app name].meteor.com`, and will be available with
     your customized hostname!
+  id: totrans-49
   prefs: []
   type: TYPE_NORMAL
 - en: Tip
+  id: totrans-50
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: Check with your host provider on setting up a CNAME route. It varies from provider
     to provider, but it's pretty easy to do.
+  id: totrans-51
   prefs: []
   type: TYPE_NORMAL
 - en: Deploying to a custom server
+  id: totrans-52
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
@@ -238,53 +300,65 @@
     service or to your own personal machine is a pretty hefty task. There are versioning
     issues with deployment, and most hosting services are still in the early stages
     of supporting Meteor bundles.
+  id: totrans-53
   prefs: []
   type: TYPE_NORMAL
 - en: With that said, we'll walk through deploying a Meteor application to a custom
     server, and leave exploring hosting services (such as Heroku or AppFog) up to
     you.
+  id: totrans-54
   prefs: []
   type: TYPE_NORMAL
 - en: Server setup
+  id: totrans-55
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: 'The server you''ll be hosting your application from needs two things:'
+  id: totrans-56
   prefs: []
   type: TYPE_NORMAL
 - en: Node.js, version 0.8 or later
+  id: totrans-57
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: MongoDB (latest version)
+  id: totrans-58
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: To install Node.js, go to [http://nodejs.org/](http://nodejs.org/) and follow
     the instructions for either Linux or Mac OS X installation.
+  id: totrans-59
   prefs: []
   type: TYPE_NORMAL
 - en: To install MongoDB, visit [http://docs.mongodb.org/manual/installation/](http://docs.mongodb.org/manual/installation/)
     and follow the instructions for your corresponding OS. Once it is installed, make
     sure to set up a database and name it `lendlib`.
+  id: totrans-60
   prefs: []
   type: TYPE_NORMAL
 - en: Once these two products are installed and configured, you will have a default
     location for your MongoDB. This will be something like `mongodb://localhost:27017/lendlib`.
     You'll need that URI in a future step, so make sure to write it down or have it
     available for reference.
+  id: totrans-61
   prefs: []
   type: TYPE_NORMAL
 - en: 'Alternatively, you can set up a MongoDB on a remote server, or use a hosting
     service like MongoHQ ([https://www.mongohq.com](https://www.mongohq.com)). If
     you do use a remote service, set up a new database, and note the URI you''ll need.
     An example from MongoHQ is shown as follows:'
+  id: totrans-62
   prefs: []
   type: TYPE_NORMAL
 - en: '![Server setup](img/0823OS_07_04.jpg)'
+  id: totrans-63
   prefs: []
   type: TYPE_IMG
 - en: Deploying your bundle
+  id: totrans-64
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -293,110 +367,143 @@
     turn on our app. Copy `lendlib.tgz` to your server, in the directory you''ll use
     for deployment (for example `~/Sites/LendLib`). Once `lendlib.tgz` is in the right
     place, extract the tarball with the following command:'
+  id: totrans-65
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE9]'
+  id: totrans-66
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: This will extract the tarball, and you'll have a new folder named `bundle`.
+  id: totrans-67
   prefs: []
   type: TYPE_NORMAL
 - en: Optional – different platform
+  id: totrans-68
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: 'If the machine you developed the application on is different than the machine
     you are deploying to, you will need to rebuild the native packages. To do this,
     enter the `node_modules` directory:'
+  id: totrans-69
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE10]'
+  id: totrans-70
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE10]'
 - en: 'Once there, remove the `fibers` directory:'
+  id: totrans-71
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE11]'
+  id: totrans-72
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE11]'
 - en: 'Now rebuild `fibers`, using `npm`:'
+  id: totrans-73
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE12]'
+  id: totrans-74
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE12]'
 - en: This will install the latest `fibers` version, specific for the platform you're
     deploying to. You do not need to do this if the `dev` machine and `deploy` machine
     are running the same platform.
+  id: totrans-75
   prefs: []
   type: TYPE_NORMAL
 - en: Running your application
+  id: totrans-76
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: 'Now that your bundle is properly extracted, you''re ready to turn on your application.
     You will need the following information to start up your app:'
+  id: totrans-77
   prefs: []
   type: TYPE_NORMAL
 - en: The root URL (for example, `http://lendlib.mydomain.com` or `http://localhost`)
+  id: totrans-78
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: The port you want to run the app from (for example, `80`)
+  id: totrans-79
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Your MongoDB URI (for example, `mongodb://<user>:<password>@alex.mongohq.com:10022/lendlib`)
+  id: totrans-80
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: 'Once you''ve made your decisions and gathered this information, start Node.js
     for your application. Navigate to your `root` folder (ours is `~/Sites/LendLib`)
     and enter the following:'
+  id: totrans-81
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE13]'
+  id: totrans-82
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE13]'
 - en: 'Let''s break this down:'
+  id: totrans-83
   prefs: []
   type: TYPE_NORMAL
 - en: '`PORT` sets the port variable, so that NodeJS knows what port you''d like to
     serve the application form'
+  id: totrans-84
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '`ROOT_URL` sets the `rootUrl` variable, so NodeJS knows what hostname requests
     are meant for your application'
+  id: totrans-85
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '`MONGO_URL` tells NodeJS where it can find our MongoDB'
+  id: totrans-86
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '`node` is the invoking command'
+  id: totrans-87
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '`bundle/main.js` is the starting JavaScript file invoked by NodeJS'
+  id: totrans-88
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: 'If all your information is correct, the app will run, and you''ll be able to
     test it using a browser:'
+  id: totrans-89
   prefs: []
   type: TYPE_NORMAL
 - en: '![Running your application](img/0823OS_07_05.jpg)'
+  id: totrans-90
   prefs: []
   type: TYPE_IMG
 - en: You can go even further into deployment, such as setting up environment variables,
     running your app as a daemon/service, and even using remote servers to publicly
     host your application. What we've done this far should be sufficient to get you
     started, and well on your way to using Meteor in a production environment.
+  id: totrans-91
   prefs: []
   type: TYPE_NORMAL
 - en: Summary
+  id: totrans-92
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
@@ -406,6 +513,7 @@
     to do anything you want. You can also deploy Meteor to multiple environments.
     You are well on your way to writing productive, efficient, and rock-solid web
     applications.
+  id: totrans-93
   prefs: []
   type: TYPE_NORMAL
 - en: Because Meteor is so new, there are very few people that possess as much working
@@ -413,11 +521,15 @@
     Now it is up to you to apply that expertise. Suggest using Meteor in your upcoming
     development projects, contribute to the Meteor community through code contribution,
     answering questions on the forums, and making tutorials of your own.
+  id: totrans-94
   prefs: []
   type: TYPE_NORMAL
+  zh: 因为Meteor非常新，所以拥有与你现在一样多的关于Meteor的实际操作知识的人非常少。按照定义，这使你成为了专家。现在，如何运用你的专业知识取决于你自己。建议在你的下一个开发项目中使用Meteor，通过代码贡献、在论坛上回答问题以及制作你自己的教程来为Meteor社区做贡献。
 - en: Meteor is a breakthrough technology, gaining more and more momentum, and you
     now have the knowledge and experience to use this breakthrough technology in your
     personal and professional development projects, keeping you well ahead of the
     curve, and making your life as a developer that much more rewarding.
+  id: totrans-95
   prefs: []
   type: TYPE_NORMAL
+  zh: Meteor是一项突破性技术，越来越受到关注，而你现在拥有使用这项突破性技术来推进你的个人和职业开发项目的知识与经验，这使你能够保持领先，让你的开发者生活更加充实。
