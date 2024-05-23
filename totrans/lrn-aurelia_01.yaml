@@ -1,10 +1,12 @@
 - en: Chapter 1. Getting Started
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: Developer experience is a key strength of Aurelia. Its authors paid careful
     attention to every aspect of the development process, so using the framework is
     seamless and fluid, and so the learning curve is as smooth as possible.
+  id: totrans-1
   prefs: []
   type: TYPE_NORMAL
 - en: This book humbly attempts to follow the same philosophy. It will teach you how
@@ -16,6 +18,7 @@
     application design, communication between components, and integration of third
     parties. We will cover every topic most modern, real-world single-page applications
     require.
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
 - en: In this first chapter, we will start by defining some terms that will be used
@@ -24,15 +27,18 @@
     each other to form a complete, full-featured framework. We will see also what
     tools are needed to develop an Aurelia application and how to install them. Finally,
     we will start creating our application and explore its global structure.
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
 - en: Terminology
+  id: totrans-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: As this book is about a JavaScript framework, JavaScript plays a central role
     in it. If you are not completely up-to-date with the terminology, which has changed
     a lot in the last few years, let me clear a few things up.
+  id: totrans-5
   prefs: []
   type: TYPE_NORMAL
 - en: JavaScript (or JS) is a dialect, or implementation, of the **ECMAScript** (**ES**)
@@ -40,6 +46,7 @@
     In this book, I will use the JS acronym to talk about actual JavaScript code or
     code files and the ES acronym when talking about an actual version of the ECMAScript
     standard.
+  id: totrans-6
   prefs: []
   type: TYPE_NORMAL
 - en: Like everything in computer programing, the ECMAScript standard evolves over
@@ -47,6 +54,7 @@
     in June 2016\. It was originally called **ES7,** but **TC39**, the committee drafting
     the specification, decided to change their approval and naming model, hence the
     new name.
+  id: totrans-7
   prefs: []
   type: TYPE_NORMAL
 - en: The previous version, named **ES2015** (**ES6**) before the naming model changed,
@@ -55,6 +63,7 @@
     most recent version for six years, so it is now widely supported by all modern
     browsers. If you have been writing JavaScript in the last five years, you should
     be familiar with ES5.
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
 - en: When they decided to change the ES naming model, the TC39 committee also chose
@@ -63,17 +72,20 @@
     are being drafted and discussed by the community, and must pass through an approval
     process. Each year, a new version of the specification will be released, comprising
     the features that were approved during the year.
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
 - en: Those upcoming features are often referred as **ESNext**. This term encompasses
     language features that are approved or at least pretty close to approval but not
     yet published. It can be reasonable to expect that most or at least some of those
     features will be published in the next language version.
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
 - en: As ES2015 and ES2016 are still recent versions, they are not fully supported
     by most browsers. Moreover, ESNext features have typically no browser support
     at all.
+  id: totrans-11
   prefs: []
   type: TYPE_NORMAL
 - en: Those multiple names can be pretty confusing. To make things simpler, I will
@@ -81,56 +93,70 @@
     version and ESNext for the next version. But that's only my preference; in the
     following chapters, we may encounter some tools or libraries still using the original
     nomenclature.
+  id: totrans-12
   prefs: []
   type: TYPE_NORMAL
 - en: Before going any further, you should make yourself familiar with the features
     introduced by ES2016 and with ESNext decorators, if you are not already. We will
     use these features throughout the book.
+  id: totrans-13
   prefs: []
   type: TYPE_NORMAL
 - en: Note
+  id: totrans-14
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: 'If you don''t know where to start with ES2015 and ES2016, you can find a great
     overview of the new features on Babel''s website:'
+  id: totrans-15
   prefs: []
   type: TYPE_NORMAL
 - en: '[https://babeljs.io/docs/learn-es2015/](https://babeljs.io/docs/learn-es2015/)'
+  id: totrans-16
   prefs: []
   type: TYPE_NORMAL
 - en: 'As for ESNext decorators, Addy Osmani, a Google engineer, explained them pretty
     well:'
+  id: totrans-17
   prefs: []
   type: TYPE_NORMAL
 - en: '[https://medium.com/google-developers/exploring-es7-decorators-76ecb65fb841](https://medium.com/google-developers/exploring-es7-decorators-76ecb65fb841)'
+  id: totrans-18
   prefs: []
   type: TYPE_NORMAL
 - en: 'For further reading, you can take a look at the feature proposals (decorators,
     class property declarations, async functions, and so on) for future ES versions:'
+  id: totrans-19
   prefs: []
   type: TYPE_NORMAL
 - en: '[https://github.com/tc39/proposals](https://github.com/tc39/proposals)'
+  id: totrans-20
   prefs: []
   type: TYPE_NORMAL
 - en: Core concepts
+  id: totrans-21
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: Before we start getting our hands dirty, there are a couple of core concepts
     that need to be explained.
+  id: totrans-22
   prefs: []
   type: TYPE_NORMAL
 - en: Conventions
+  id: totrans-23
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: First, Aurelia relies a lot on conventions. Most of those conventions are configurable,
     and can be changed if they don't suit your needs. Each time we'll encounter a
     convention throughout the book, we will see how to change it whenever possible.
+  id: totrans-24
   prefs: []
   type: TYPE_NORMAL
 - en: Components
+  id: totrans-25
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -141,24 +167,32 @@
     in an `.html` file and the view-model in a `.js` file. By convention, those two
     files are bound through a naming rule, they must be in the same directory and
     have the same name (except for their extension, of course).
+  id: totrans-26
   prefs: []
   type: TYPE_NORMAL
 - en: 'Here''s an example of an empty component with no data, no behavior, and a static
     template:'
+  id: totrans-27
   prefs: []
   type: TYPE_NORMAL
 - en: '`component.js`'
+  id: totrans-28
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE0]'
+  id: totrans-29
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: '`component.html`'
+  id: totrans-30
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE1]'
+  id: totrans-31
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: A component must comply with two constraints, a view's root HTML element must
     be the `template` element, and the view-model class must be exported from the
     `.js` file. As a rule of thumb, the only function that should be exported by a
@@ -168,6 +202,7 @@
     order of an object's keys is not deterministic as per the ES specification, nothing
     guarantees that the exports will be iterated in the same order they were declared,
     so Aurelia may pick the wrong class as the component's view-model.
+  id: totrans-32
   prefs: []
   type: TYPE_NORMAL
 - en: The only exception to that rule is some view resources which we'll see in [Chapter
@@ -176,6 +211,7 @@
     to its view-model class, a component's JS file can export things like value converters,
     binding behaviors, and custom attributes basically any view resource that can't
     have a view, which excludes custom elements.
+  id: totrans-33
   prefs: []
   type: TYPE_NORMAL
 - en: Components are the main building blocks of an Aurelia application. Components
@@ -183,9 +219,11 @@
     components. Thanks to the slot mechanism, you can design a component's template
     so parts of it can be replaced or customized. We will see all of this in the next
     chapters.
+  id: totrans-34
   prefs: []
   type: TYPE_NORMAL
 - en: Architecture
+  id: totrans-35
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
@@ -198,48 +236,59 @@
     and faster to load. We will look deeper into this plugin mechanism in [Chapter
     2](ch02.html "Chapter 2. Layout, Menu, and Getting Familiar"), *Layout, Menu,
     and Getting Familiar*.
+  id: totrans-36
   prefs: []
   type: TYPE_NORMAL
 - en: The core Aurelia libraries can be divided into multiple categories. Let's have
     a quick glance.
+  id: totrans-37
   prefs: []
   type: TYPE_NORMAL
 - en: Core features
+  id: totrans-38
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: 'The following libraries are mostly independent and can be used by themselves
     if needed. They each provide a focused set of features and are at the core of
     Aurelia:'
+  id: totrans-39
   prefs: []
   type: TYPE_NORMAL
 - en: '`aurelia-dependency-injection`: A lightweight yet powerful dependency injection
     container. It supports multiple lifetime management strategies and child containers.'
+  id: totrans-40
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '`aurelia-logging`: A simple logger, supporting log levels and pluggable consumers.'
+  id: totrans-41
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '`aurelia-event-aggregator`: A lightweight message bus, used for decoupled communication.'
+  id: totrans-42
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '`aurelia-router`: A client-side router, supporting static, parameterized or
     wildcard routes, and child routers.'
+  id: totrans-43
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '`aurelia-binding`: An adaptive and pluggable data-binding library.'
+  id: totrans-44
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '`aurelia-templating`: An extensible HTML templating engine.'
+  id: totrans-45
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Abstraction layers
+  id: totrans-46
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -248,15 +297,18 @@
     not mean that some of the libraries in the previous section do not expose their
     own abstractions besides their features. Some of them do. But the libraries described
     in the current section have almost no other purpose than defining abstractions:'
+  id: totrans-47
   prefs: []
   type: TYPE_NORMAL
 - en: '`aurelia-loader`: An abstraction defining an interface for loading JS modules,
     views, and other resources.'
+  id: totrans-48
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '`aurelia-history`: An abstraction defining an interface for history management
     used by routing.'
+  id: totrans-49
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
@@ -264,67 +316,81 @@
     to abstract away the platform on which the code is running, such as a browser
     or Node.js. Indeed, this means that some Aurelia libraries can be used on the
     server side.'
+  id: totrans-50
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Default implementations
+  id: totrans-51
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: 'The following libraries are the default implementations of abstractions exposed
     by libraries from the two previous sections:'
+  id: totrans-52
   prefs: []
   type: TYPE_NORMAL
 - en: '`aurelia-loader-default`: An implementation of the `aurelia-loader` abstraction
     for SystemJS and `require`-based loaders.'
+  id: totrans-53
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '`aurelia-history-browser`: An implementation of the `aurelia-history` abstraction
     based on standard browser hash change and push state mechanisms.'
+  id: totrans-54
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '`aurelia-pal-browser`: An implementation of the `aurelia-pal` abstraction for
     the browser.'
+  id: totrans-55
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '`aurelia-logging-console`: An implementation of the `aurelia-logging` abstraction
     for the browser console.'
+  id: totrans-56
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Integration layers
+  id: totrans-57
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: 'The following libraries'' purpose is to integrate some of the core libraries
     together. They provide interface implementations and adapters, along with default
     configuration or behaviors:'
+  id: totrans-58
   prefs: []
   type: TYPE_NORMAL
 - en: '`aurelia-templating-router`: An integration layer between the `aurelia-router`
     and the `aurelia-templating` libraries.'
+  id: totrans-59
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '`aurelia-templating-binding`: An integration layer between the `aurelia-templating`
     and the `aurelia-binding` libraries.'
+  id: totrans-60
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '`aurelia-framework`: An integration layer that brings together all of the core
     Aurelia libraries into a full-featured framework.'
+  id: totrans-61
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '`aurelia-bootstrapper`: An integration layer that brings default configuration
     for `aurelia-framework` and handles application starting.'
+  id: totrans-62
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Additional tools and plugins
+  id: totrans-63
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -337,17 +403,21 @@
     but I strongly suggest that you explore the Aurelia ecosystem by yourself after
     reading this book, as it is rapidly growing, and the Aurelia community is doing
     some very exciting things.
+  id: totrans-64
   prefs: []
   type: TYPE_NORMAL
 - en: Tooling
+  id: totrans-65
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: In the following section, we will go over the tools needed to develop our Aurelia
     application.
+  id: totrans-66
   prefs: []
   type: TYPE_NORMAL
 - en: Node.js and NPM
+  id: totrans-67
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -355,9 +425,11 @@
     tools are also in JavaScript. This means that the first thing you need to do when
     getting started with Aurelia is to install Node.js and NPM on your development
     environment.
+  id: totrans-68
   prefs: []
   type: TYPE_NORMAL
 - en: Note
+  id: totrans-69
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
@@ -365,46 +437,58 @@
     engine. It can be used to build complete websites or web APIs, but it is also
     used by a lot of front-end projects for  development and to build tasks, such
     as transpiling, linting, and minimizing.
+  id: totrans-70
   prefs: []
   type: TYPE_NORMAL
 - en: NPM is the de facto package manager for Node.js. It uses [http://www.npmjs.com](http://www.npmjs.com) 
     as its main repository, where all available packages are stored. It is bundled
     with Node.js, so if you install Node.js on your computer, NPM will also be installed.
+  id: totrans-71
   prefs: []
   type: TYPE_NORMAL
 - en: To install Node.js and NPM on your development environment, you simply need
     to go to  [https://nodejs.org/](https://nodejs.org/) and download the proper installer
     for your environment.
+  id: totrans-72
   prefs: []
   type: TYPE_NORMAL
 - en: 'If Node.js and NPM are already installed, I strongly recommend that you make
     sure to use at least version 3 of NPM, as older versions may have issues collaborating
     with some of the other tools we''ll use. If you are not sure which version you
     have, you can check it by running the following command in a console:'
+  id: totrans-73
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE2]'
+  id: totrans-74
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: 'If Node.js and NPM are already installed but you need to upgrade NPM, you can
     do so by running the following command:'
+  id: totrans-75
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE3]'
+  id: totrans-76
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: The Aurelia CLI
+  id: totrans-77
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: Even though an Aurelia application can be built using any package manager, build
     system, or bundler you want, the preferred tool to manage an Aurelia project is
     the command line interface, a.k.a. the CLI.
+  id: totrans-78
   prefs: []
   type: TYPE_NORMAL
 - en: At the time of writing, the CLI only supports NPM as its package manager and
     `requirejs` as its module loader and bundler, probably because they are both the
     most mature and stable. It also uses Gulp 4 behind the scenes as its build system.
+  id: totrans-79
   prefs: []
   type: TYPE_NORMAL
 - en: CLI-based applications are always bundled when running, even in development
@@ -413,63 +497,83 @@
     bundling is a recurring concern, as new external libraries must be added to some
     bundles in order to be available at runtime. We'll see this in detail in [Chapter
     10](ch10.html "Chapter 10. Bundling for Production"), *Bundling for Production*.
+  id: totrans-80
   prefs: []
   type: TYPE_NORMAL
 - en: In this book, we'll stick with the preferred solution and use the CLI. There
     are, however, two appendices at the end of the book covering alternatives, a first
     for Webpack, and a second for SystemJS with JSPM.
+  id: totrans-81
   prefs: []
   type: TYPE_NORMAL
 - en: Installing the CLI
+  id: totrans-82
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: 'The CLI being a command line tool, it should be installed globally, by opening
     a console and executing the following command:'
+  id: totrans-83
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE4]'
+  id: totrans-84
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: You may have to run this command with administrator privileges, depending on
     your environment.
+  id: totrans-85
   prefs: []
   type: TYPE_NORMAL
 - en: 'If you already have it installed, make sure you have the latest version, by
     running the following command:'
+  id: totrans-86
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE5]'
+  id: totrans-87
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: You can then compare the version this command outputs with the latest version
     number tagged on GitHub, at [https://github.com/aurelia/cli/releases/latest](https://github.com/aurelia/cli/releases/latest).
+  id: totrans-88
   prefs: []
   type: TYPE_NORMAL
 - en: 'If you don''t have the latest version, you can simply update it by running
     the following command:'
+  id: totrans-89
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE6]'
+  id: totrans-90
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: 'If for some reason the command to update the CLI fails, simply uninstall then
     reinstall it:'
+  id: totrans-91
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE7]'
+  id: totrans-92
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: This should reinstall the latest version.
+  id: totrans-93
   prefs: []
   type: TYPE_NORMAL
 - en: The project skeletons
+  id: totrans-94
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: As an alternative to the CLI, project skeletons are available at [https://github.com/aurelia/skeleton-navigation](https://github.com/aurelia/skeleton-navigation).
     This repository contains multiple sample projects, sitting on different technologies
     such as SystemJS with JSPM, Webpack, ASP .Net Core, or TypeScript.
+  id: totrans-95
   prefs: []
   type: TYPE_NORMAL
 - en: Prepping up a skeleton is easy. You simply need to download and unzip the archive
@@ -477,50 +581,63 @@
     skeleton. Depending on which one you chose, you'll need to install different tools
     and run setup commands. Generally, the instructions in the skeleton's `README.md`
     file are pretty clear.
+  id: totrans-96
   prefs: []
   type: TYPE_NORMAL
 - en: Those skeletons are other good starting points to begin a new application using
     different technologies. The two appendices at the end of this book show how to
     use some of them to build an application using either SystemJS with JSPM or Webpack.
+  id: totrans-97
   prefs: []
   type: TYPE_NORMAL
 - en: Apart from those appendices, the rest of the book will keep using the CLI.
+  id: totrans-98
   prefs: []
   type: TYPE_NORMAL
 - en: Our application
+  id: totrans-99
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: 'Creating an Aurelia application using the CLI is extremely simple. You just
     need to open a console in the directory where you want to create your project
     and run the following command:'
+  id: totrans-100
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE8]'
+  id: totrans-101
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: 'The CLI''s project creation process will start, and you should see something
     like this:'
+  id: totrans-102
   prefs: []
   type: TYPE_NORMAL
 - en: '![Our application](img/image_01_001.jpg)'
+  id: totrans-103
   prefs: []
   type: TYPE_IMG
 - en: 'The first thing the CLI will ask for is the name you want to give to your project.
     This name will be used both to create the directory in which the project will
     live and to set some values, such as the `name` property in the `package.json`
     file it will create. Let''s name our application `learning-aurelia`:'
+  id: totrans-104
   prefs: []
   type: TYPE_NORMAL
 - en: '![Our application](img/image_01_002.jpg)'
+  id: totrans-105
   prefs: []
   type: TYPE_IMG
 - en: Next, the CLI asks what technologies we want to use to develop our application.
     Here, you can select a custom transpiler such as TypeScript and a CSS preprocessor
     such as LESS or SASS.
+  id: totrans-106
   prefs: []
   type: TYPE_NORMAL
 - en: Note
+  id: totrans-107
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
@@ -528,13 +645,16 @@
     into another. In our case, it will be used to transform ESNext code, which may
     not be supported by all browsers, into ES5, which is understood by all modern
     browsers.
+  id: totrans-108
   prefs: []
   type: TYPE_NORMAL
 - en: 'The default choice is to use ESNext and plain CSS, and this is what we will
     choose:'
+  id: totrans-109
   prefs: []
   type: TYPE_NORMAL
 - en: '![Our application](img/image_01_003.jpg)'
+  id: totrans-110
   prefs: []
   type: TYPE_IMG
 - en: 'The following steps simply recap the choices we made and ask for confirmation
@@ -542,23 +662,28 @@
     which it does by default. At this point, the CLI will create the project and run
     an `npm install` behind the scene. Once it completes, our application is ready
     to roll:'
+  id: totrans-111
   prefs: []
   type: TYPE_NORMAL
 - en: '![Our application](img/image_01_004.jpg)'
+  id: totrans-112
   prefs: []
   type: TYPE_IMG
 - en: At this point, the directory you ran `au new` in will contain a new directory
     named `learning-aurelia`. This sub-directory will contain the Aurelia project.
     We'll explore it a bit in the following section.
+  id: totrans-113
   prefs: []
   type: TYPE_NORMAL
 - en: Note
+  id: totrans-114
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: The CLI is likely to change and offer more options in the future, as there are
     plans to support additional tools and technologies. Don't be surprised if you
     see different or new options when you run it.
+  id: totrans-115
   prefs: []
   type: TYPE_NORMAL
 - en: 'The path we followed to create our project uses Visual Studio Code as the default
@@ -571,65 +696,79 @@
     a different code editor, your own experience may differ from the examples and
     screenshots you''ll find in this book, as Visual Studio Code is the editor that
     was used during writing.'
+  id: totrans-116
   prefs: []
   type: TYPE_NORMAL
 - en: If you are a TypeScript developer, you may want to create a TypeScript project.
     I however recommend that you stick with plain ESNext, as every example and code
     sample in this book has been written in JS. Trying to follow with TypeScript may
     prove cumbersome, although you can try if you like the challenge.
+  id: totrans-117
   prefs: []
   type: TYPE_NORMAL
 - en: The structure of a CLI-based project
+  id: totrans-118
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: 'If you open the newly created project in a code editor, you should see the
     following file structure:'
+  id: totrans-119
   prefs: []
   type: TYPE_NORMAL
 - en: '`node_modules`: The standard NPM directory containing the project''s dependencies'
+  id: totrans-120
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '`src`: The directory containing the application''s source code'
+  id: totrans-121
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '`test`: The directory containing the application''s automated test suites,
     which we will explore in [Chapter 7](ch07.html "Chapter 7. Test All the Things"),
     *Test all the Things*'
+  id: totrans-122
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '`.babelrc`: The configuration file for Babel, which is used by the CLI to transpile
     our application''s ESNext code into ES5 so most browsers can run it'
+  id: totrans-123
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '`index.html`: The HTML page that loads and launches the application'
+  id: totrans-124
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '`karma.conf.js`: The configuration file for **Karma**, which is used by the
     CLI to run unit tests;'
+  id: totrans-125
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '`package.json`: The standard Node.js project file'
+  id: totrans-126
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: The directory contains other files such as `.editorconfig`, `.eslintrc.json`,
     and `.gitignore` that are of little interest for learning Aurelia, so we won't
     cover them.
+  id: totrans-127
   prefs: []
   type: TYPE_NORMAL
 - en: In addition to all of this, you should see a directory named `aurelia_project`.
     This directory contains things related to the building and bundling of the application
     using the CLI. Let's see what it's made of.
+  id: totrans-128
   prefs: []
   type: TYPE_NORMAL
 - en: The aurelia.json file
+  id: totrans-129
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
@@ -637,9 +776,11 @@
     This file contains the configuration used by the CLI to test, build, and bundle
     the application. This file can change drastically depending on the choices you
     make during the project creation process.
+  id: totrans-130
   prefs: []
   type: TYPE_NORMAL
 - en: Note
+  id: totrans-131
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
@@ -647,66 +788,86 @@
     an external library to the application is such a scenario, which we will face
     multiple times in next chapters. Apart from this, this file should mostly never
     be updated manually.
+  id: totrans-132
   prefs: []
   type: TYPE_NORMAL
 - en: 'The first interesting section in this file is the `platform`:'
+  id: totrans-133
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE9]'
+  id: totrans-134
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: This section tells the CLI that the output directory where the bundles are written
     is named `scripts`. It also tells that the HTML index page, which will load and
     launch the application, is the `index.html` file.
+  id: totrans-135
   prefs: []
   type: TYPE_NORMAL
 - en: 'The next interesting part is the `transpiler` section:'
+  id: totrans-136
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE10]'
+  id: totrans-137
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE10]'
 - en: This section tells the CLI to transpile the application's source code using
     Babel. It also defines additional plugins as some are already configured in `.babelrc`
     to be used when transpiling the source code. In this case, it adds a plugin that
     will output transpiled files as AMD-compliant modules, for `requirejs` compatibility.
+  id: totrans-138
   prefs: []
   type: TYPE_NORMAL
 - en: There are many other sections in this file, some of which we will cover in further
     chapters, some others I've left for you to explore on your own.
+  id: totrans-139
   prefs: []
   type: TYPE_NORMAL
 - en: Tasks
+  id: totrans-140
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: The `aurelia_project` directory contains a subdirectory named `tasks`. This
     subdirectory contains various Gulp tasks to build, run, and test the application.
     These tasks can be executed using the CLI.
+  id: totrans-141
   prefs: []
   type: TYPE_NORMAL
 - en: 'The first thing you can try is to run `au` without any argument:'
+  id: totrans-142
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE11]'
+  id: totrans-143
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE11]'
 - en: This will list all available commands, along with their available arguments.
     This list includes built-in commands such as `new`, which we've used already,
     or `generate`, which we'll see in the next section along with the Gulp tasks declared
     in the `tasks` directory.
+  id: totrans-144
   prefs: []
   type: TYPE_NORMAL
 - en: 'To run one of those tasks, simply execute `au` with the name of the task as
     its first argument:'
+  id: totrans-145
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE12]'
+  id: totrans-146
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE12]'
 - en: This command will run the `build` task which is defined in `aurelia_project/tasks/build.js`.
     This task transpiles the application code using Babel, executes the CSS and markup
     preprocessors if any, and bundles the code in the `scripts` directory.
+  id: totrans-147
   prefs: []
   type: TYPE_NORMAL
 - en: 'After running it, you should see two new files in `scripts`: `app-bundle.js`
@@ -716,22 +877,28 @@
     by the application including Aurelia libraries. We''ll learn how to customize
     bundling in [Chapter 10](ch10.html "Chapter 10. Bundling for Production"), *Bundling
     for Production*.'
+  id: totrans-148
   prefs: []
   type: TYPE_NORMAL
 - en: 'You may have noticed a command named `run` in the list of available commands.
     This task is defined in `aurelia_project/tasks/run.js`, and executes the `build`
     task internally before spawning a local HTTP server to serve the application:'
+  id: totrans-149
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE13]'
+  id: totrans-150
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE13]'
 - en: By default, the HTTP server will listen for requests on port 9000, so you can
     open your favorite browser and go to http://localhost:9000/ to see the default
     demo application in action.
+  id: totrans-151
   prefs: []
   type: TYPE_NORMAL
 - en: Note
+  id: totrans-152
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
@@ -739,20 +906,26 @@
     runs, you just need to open `aurelia_project/tasks/run.js`, and locate the call
     to the `browserSync` function. The object passed to this function contains a property
     named `port`. You can change its value accordingly.
+  id: totrans-153
   prefs: []
   type: TYPE_NORMAL
 - en: 'The `run` task can accept a `--watch` switch:'
+  id: totrans-154
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE14]'
+  id: totrans-155
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE14]'
 - en: If this switch is present, the task will keep monitoring the source code and,
     when any code file changes, will rebuild the application and automatically refresh
     the browser. This can be pretty useful during development.
+  id: totrans-156
   prefs: []
   type: TYPE_NORMAL
 - en: Generators
+  id: totrans-157
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
@@ -760,26 +933,33 @@
     directory. At the of writing, there are generators to create custom attributes,
     custom elements, binding behaviors, value converters, and even tasks and generators,
     yes, there is a generator to generate generators.
+  id: totrans-158
   prefs: []
   type: TYPE_NORMAL
 - en: Note
+  id: totrans-159
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: If you are not familiar with Aurelia at all, most of those concepts, value converters,
     binding behaviors, and custom attributes and elements probably mean nothing to
     you. Don't worry, we will cover these topics in the next chapters.
+  id: totrans-160
   prefs: []
   type: TYPE_NORMAL
 - en: 'A generator can be executed using the built-in `generate` command:'
+  id: totrans-161
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE15]'
+  id: totrans-162
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE15]'
 - en: This command will run the custom attribute generator. It will ask for the name
     of the attribute to generate then create it in the `src/resources/attributes`
     directory.
+  id: totrans-163
   prefs: []
   type: TYPE_NORMAL
 - en: If you take a look at this generator which is found in `aurelia_project/generators/attribute.js`,
@@ -791,17 +971,21 @@
     defines an `execute` method, which is called by the CLI when running the generator.
     This method leverages the services provided by `aurelia-cli` to interact with
     the user and generate code files.
+  id: totrans-164
   prefs: []
   type: TYPE_NORMAL
 - en: Note
+  id: totrans-165
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: The exact generator names available by default are `attribute`, `element`, `binding-behavior`,
     `value-converter`, `task`, and `generator`.
+  id: totrans-166
   prefs: []
   type: TYPE_NORMAL
 - en: Environments
+  id: totrans-167
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
@@ -810,43 +994,56 @@
     The configuration object for each of these environments can be found in the different
     files `dev.js`, `stage.js`, and `prod.js` located in the `aurelia_project/environments`
     directory.
+  id: totrans-168
   prefs: []
   type: TYPE_NORMAL
 - en: 'A typical environment file looks like this:'
+  id: totrans-169
   prefs: []
   type: TYPE_NORMAL
 - en: '`aurelia_project/environments/dev.js`'
+  id: totrans-170
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE16]'
+  id: totrans-171
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE16]'
 - en: By default, the environment files are used to enable debugging logging and test-only
     templating features in the Aurelia framework depending on the environment. We'll
     see this in a next section. The environment objects can, however, be enhanced
     with whatever properties you may need. Typically, it could be used to configure
     different URLs for a backend, depending on the environment.
+  id: totrans-172
   prefs: []
   type: TYPE_NORMAL
 - en: Adding a new environment is simply a matter of adding a file for it in the `aurelia_project/environments`
     directory. For example, you can add a `local` environment by creating a `local.js`
     file in the directory.
+  id: totrans-173
   prefs: []
   type: TYPE_NORMAL
 - en: 'Many tasks, basically `build` and all other tasks using it, such as `run` and
     `test` expect an environment to be specified using the `env` argument:'
+  id: totrans-174
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE17]'
+  id: totrans-175
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE17]'
 - en: Here, the application will be built using the `prod.js` environment file.
+  id: totrans-176
   prefs: []
   type: TYPE_NORMAL
 - en: If no `env` argument is provided, `dev` will be used by default.
+  id: totrans-177
   prefs: []
   type: TYPE_NORMAL
 - en: Note
+  id: totrans-178
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
@@ -854,9 +1051,11 @@
     before running the transpiler and bundling the output. This means that `src/environment.js`
     should never be modified by hand, as it will be automatically overwritten by the
     `build` task.
+  id: totrans-179
   prefs: []
   type: TYPE_NORMAL
 - en: The structure of an Aurelia application
+  id: totrans-180
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -864,31 +1063,39 @@
     CLI-based project. However, some parts of the project are pretty much the same
     whatever the build system and package manager are. These are the more global topics
     we will see in this section.
+  id: totrans-181
   prefs: []
   type: TYPE_NORMAL
 - en: The hosting page
+  id: totrans-182
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: The first entry point of an Aurelia application is the HTML page-loading and
     hosting it. By default, this page is named `index.html` and is located at the
     root of the project.
+  id: totrans-183
   prefs: []
   type: TYPE_NORMAL
 - en: 'The default hosting page looks like this:'
+  id: totrans-184
   prefs: []
   type: TYPE_NORMAL
 - en: '`index.html`'
+  id: totrans-185
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE18]'
+  id: totrans-186
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE18]'
 - en: When this page loads, the `script` element inside the `body` element loads the
     `scripts/vendor-bundle.js` file, which contains `requirejs` itself along with
     definitions for all external libraries and references to `app-bundle.js`. When
     loading, `requirejs` checks the `data-main` attribute and uses its value as the
     entry point module. Here, `aurelia-bootstrapper` kicks in.
+  id: totrans-187
   prefs: []
   type: TYPE_NORMAL
 - en: The bootstrapper first looks in the DOM for elements with the `aurelia-app`
@@ -897,9 +1104,11 @@
     The bootstrapper uses the attribute's value as the name of the application's main
     module and locates the module, loads it, and renders the resulting DOM inside
     the element, overwriting any previous content. The application is now running.
+  id: totrans-188
   prefs: []
   type: TYPE_NORMAL
 - en: Note
+  id: totrans-189
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
@@ -907,9 +1116,11 @@
     possible for an HTML file to host multiple Aurelia applications. It just needs
     to contain multiple elements with an `aurelia-app` attribute, each element referring
     to its own main module.
+  id: totrans-190
   prefs: []
   type: TYPE_NORMAL
 - en: The main module
+  id: totrans-191
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
@@ -918,17 +1129,22 @@
     to export a `configure` function, which will be called by the Aurelia bootstrapping
     process and will be passed a configuration object used to configure and boot the
     framework.
+  id: totrans-192
   prefs: []
   type: TYPE_NORMAL
 - en: 'By default, the main `configure` function looks like this:'
+  id: totrans-193
   prefs: []
   type: TYPE_NORMAL
 - en: '`src/main.js`'
+  id: totrans-194
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE19]'
+  id: totrans-195
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE19]'
 - en: The `configure` function starts by telling Aurelia to use its defaults configuration,
     and to load the `resources` feature, we'll see how features work in [Chapter 2](ch02.html
     "Chapter 2. Layout, Menu, and Getting Familiar"), *Layout, Menu, and Getting Familiar*. It
@@ -936,22 +1152,27 @@
     `debug` property, and the testing plugin based on the environment's `testing`
     property. This means that, by default, both plugins will be loaded in development,
     while none will be loaded in production.
+  id: totrans-196
   prefs: []
   type: TYPE_NORMAL
 - en: Lastly, the function starts the framework then attaches the root component to
     the DOM.
+  id: totrans-197
   prefs: []
   type: TYPE_NORMAL
 - en: Note
+  id: totrans-198
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: The `start` method returns a `Promise`, whose resolution triggers the call to
     `setRoot`. If you are not familiar with `Promise`s in JavaScript, I strongly suggest
     that you look it up before going any further, as they are a core concept in Aurelia.
+  id: totrans-199
   prefs: []
   type: TYPE_NORMAL
 - en: The root component
+  id: totrans-200
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
@@ -959,39 +1180,51 @@
     everything within the application. By convention, this root component is named
     `app`. It is composed of two files `app.html`, which contains the template to
     render the component, and `app.js`, which contains its view-model class.
+  id: totrans-201
   prefs: []
   type: TYPE_NORMAL
 - en: 'In the default application, the template is extremely simple:'
+  id: totrans-202
   prefs: []
   type: TYPE_NORMAL
 - en: '`src/app.html`'
+  id: totrans-203
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE20]'
+  id: totrans-204
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE20]'
 - en: This template is made of a single `h1` element, which will contain the value
     of the view-model's `message` property as text, thanks to string interpolation
     which we will explore more in details in [Chapter 3](ch03.html "Chapter 3. Displaying
     Data"), *Displaying Data*.
+  id: totrans-205
   prefs: []
   type: TYPE_NORMAL
 - en: 'The `app` view-model looks like this:'
+  id: totrans-206
   prefs: []
   type: TYPE_NORMAL
 - en: '`src/app.js`'
+  id: totrans-207
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE21]'
+  id: totrans-208
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE21]'
 - en: This file simply exports a class having a `message` property containing the
     string `Hello World!`.
+  id: totrans-209
   prefs: []
   type: TYPE_NORMAL
 - en: This component will be rendered when the application starts. If you run the
     application and navigate to the application in your favorite browser, you'll see
     a `h1` element containing `Hello World!`.
+  id: totrans-210
   prefs: []
   type: TYPE_NORMAL
 - en: You may notice that there is no reference to Aurelia in this component's code.
@@ -1001,22 +1234,28 @@
     libraries, but the key point here is that you don't have to use any Aurelia library
     in your view-models if you don't want to, because Aurelia is designed to be as
     unobtrusive as possible.
+  id: totrans-211
   prefs: []
   type: TYPE_NORMAL
 - en: Conventional bootstrapping
+  id: totrans-212
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: 'It is possible to leave the `aurelia-app` attribute empty in the hosting page:'
+  id: totrans-213
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE22]'
+  id: totrans-214
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE22]'
 - en: In such a case, the bootstrapping process is much simpler. Instead of loading
     a main module containing a `configure` function, the bootstrapper will simply
     use the framework's default configuration and load the `app` component as the
     application root.
+  id: totrans-215
   prefs: []
   type: TYPE_NORMAL
 - en: This can be a simpler way to get started for a very simple application; as it
@@ -1024,35 +1263,45 @@
     it means that you are stuck with the default framework configuration. You cannot
     load features or plugins. For most real-life applications, you'll need to keep
     the main module, which means specifying it as the `aurelia-app` attribute's value.
+  id: totrans-216
   prefs: []
   type: TYPE_NORMAL
 - en: Customizing Aurelia configuration
+  id: totrans-217
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: 'The `configure` function of the main module receives a configuration object,
     which is used to configure the framework:'
+  id: totrans-218
   prefs: []
   type: TYPE_NORMAL
 - en: '`src/main.js`'
+  id: totrans-219
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE23]'
+  id: totrans-220
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE23]'
 - en: 'Here, the `standardConfiguration()` method is a simple helper that encapsulates
     the following:'
+  id: totrans-221
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE24]'
+  id: totrans-222
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE24]'
 - en: This is the default Aurelia configuration. It loads the default binding language,
     the default templating resources, the browser history plugin, the router plugin,
     and the event aggregator. This is the default set of features that a typical Aurelia
     application uses. All those plugins will be covered at one point or another throughout
     this book. All those plugins are optional except the binding language, which is
     needed by the templating engine. If you don't need one, just don't load it.
+  id: totrans-223
   prefs: []
   type: TYPE_NORMAL
 - en: In addition to the standard configuration, some plugins are loaded depending
@@ -1061,33 +1310,47 @@
     traces and errors can be seen in the browser console. When the environment's `testing`
     property is `true`, the `aurelia-testing` plugin is loaded using the `plugin`
     method. This plugin registers some resources that are useful when debugging components.
+  id: totrans-224
   prefs: []
   type: TYPE_NORMAL
+  zh: 除了标准配置之外，根据环境设置还会加载一些插件。当环境的`debug`属性为`true`时，会使用`developmentLogging()`方法加载Aurelia的控制台日志记录器，因此可以在浏览器控制台中看到跟踪和错误信息。当环境的`testing`属性为`true`时，会使用`plugin`方法加载`aurelia-testing`插件。这个插件注册了一些在调试组件时非常有用的资源。
 - en: 'The last line in the `configure` function starts the application and displays
     its root component, which is named `app` by convention. You may, however, bypass
     the convention and pass the name of your root component as the first argument
     to `setRoot`, if you named it otherwise:'
+  id: totrans-225
   prefs: []
   type: TYPE_NORMAL
+  zh: '`configure`函数中的最后一行启动了应用程序并显示其根组件，根据约定，这个组件的名称是`app`。然而，如果你违反了约定并为根组件指定了其他名称，你可以通过将根组件的名称作为`setRoot`函数的第一个参数来绕过这个约定：'
 - en: '[PRE25]'
+  id: totrans-226
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE25]'
 - en: Here, the root component is expected to sit in the `src/root.html` and `src/root.js`
     files.
+  id: totrans-227
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这里，预期根组件位于`src/root.html`和`src/root.js`文件中。
 - en: Summary
+  id: totrans-228
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 总结
 - en: Getting started with Aurelia is very easy, thanks to the CLI. Installing the
     tooling and creating an empty project is simply a matter of running a couple of
     commands, and it takes typically more time waiting for the initial NPM install
     to complete than doing the actual setup.
+  id: totrans-229
   prefs: []
   type: TYPE_NORMAL
+  zh: 得益于Aurelia的命令行界面（CLI），入门非常简单。安装工具并创建一个空项目仅仅是运行几个命令的问题，通常等待初始NPM安装完成的时间比实际设置的时间还要长。
 - en: In the next chapter, we'll go over dependency injection and logging, and we'll
     start building our application by adding components and configuring routes to
     navigate between them.
+  id: totrans-230
   prefs: []
   type: TYPE_NORMAL
+  zh: 在下一章中，我们将介绍依赖注入和日志记录，并开始通过向应用程序中添加组件和配置路由来导航它们来构建我们的应用程序。

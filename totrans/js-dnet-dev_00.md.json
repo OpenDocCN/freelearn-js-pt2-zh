@@ -1,0 +1,1 @@
+["```js\n<html>\n  <head>\n    <script>\n      alert(\"This is a simple text\");\n    </script>\n  </head>\n</html>\n```", "```js\ndotnet ef database update –verbose\n\n```"]
