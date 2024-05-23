@@ -1,0 +1,937 @@
+- en: '*Chapter 8*: Testing – Unit and Integration'
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Code isn't created until the respective tests have been written. Since you're
+    reading this chapter, I'll assume we can agree on that statement. However, you
+    might wondering, why haven't we written any tests? Fair enough.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We chose not to do this because we believe it would make the content harder
+    to absorb. Since we wanted to keep you focused on learning Deno while building
+    an application, we decided not to do this. The second reason is that we truly
+    wanted a full chapter focused on testing; that is, this one.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Testing is a very important part of the software life cycle. It can be used
+    to save time, to clearly state requirements, or just because you want to feel
+    confident in rewriting and refactoring later. Independent of the motivation, one
+    thing is certain: you''ll write tests. I also truly believe that testing plays
+    a big role in software design. Code that is easy to test is likely easy to maintain.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Since we're great advocates of the importance of testing, we couldn't consider
+    this a complete guide to Deno without learning about it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this chapter, we'll write different kinds of tests. We'll start with unit
+    tests, which are very valuable tests for the developer and maintenance life cycle.
+    Then, we'll move on to integration tests, where we'll run the app and perform
+    a few requests on it. We'll finish by using the client we wrote in the previous
+    chapter. We'll do all of this while adding tests to the application we previously
+    built, going step by step, and making sure the code we previously wrote is working
+    properly.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This chapter will also demonstrate how some of the architectural decisions we
+    made at the beginning of this book will pay off. This will be an introduction
+    to how we can write simple mocks and clean, focused tests using Deno and its toolchain.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In this chapter, we will cover the following topics:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Writing your first test in Deno
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Writing an integration test
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Testing the web server
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Creating integration tests for the application
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Testing the API together with the client
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Benchmarking parts of the application
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Let's get started!
+  prefs: []
+  type: TYPE_NORMAL
+- en: Technical requirements
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The code that will be used in this chapter can be found at [https://github.com/PacktPublishing/Deno-Web-Development/tree/master/Chapter08/sections](https://github.com/PacktPublishing/Deno-Web-Development/tree/master/Chapter08/sections).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Writing your first test in Deno
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Before we start writing our test, it's important to remember a few things. The
+    most important of them is, why are we testing?
+  prefs: []
+  type: TYPE_NORMAL
+- en: There might be multiple answers to this question, but most of them will gesture
+    toward guaranteeing that the code is working. You might also say that you use
+    them so that you have flexibility when it comes to refactoring, or that you value
+    having short feedback cycles when it comes to implementation – we can agree to
+    both of these. Since we didn't write a test before implementing these features,
+    the latter doesn't apply too much to us.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We''ll keep these objectives in mind throughout this chapter. In this section,
+    we''ll write our first test. We''ll use the application we wrote in the previous
+    chapters and add tests to it. We''ll write two types of tests: integration and
+    unit tests.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Integration tests will test how different components of the application interact.
+    Unit tests test layers in isolation. If we think of it as a spectrum, unit tests
+    are closer to the code, while integration tests are closer to the user. On the
+    very end of the user side, there are also end-to-end tests. Those are the tests
+    that test the application by emulating the user behavior, which we won't cover
+    in this chapter.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Parts of the patterns we used when developing the actual application, such
+    as dependency injection and inversion of control, are of great use when it comes
+    to testing. Since we developed our code by injecting all its dependencies, now,
+    it''s just a matter of mocking those dependencies on tests. Remember: code that
+    is easy to test is normally easy to maintain.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The first thing we'll do is write tests for the business logic. Currently, since
+    our API is quite simple, it doesn't have much business logic. Most of it is living
+    on `UserController`, since `MuseumController` is very simple. We'll start with
+    the latter.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To write tests in Deno, we''ll need to use the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The Deno test runner (covered in [*Chapter 2*](B16380_02_Final_JM_ePub.xhtml#_idTextAnchor056),
+    *The Toolchain*)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The `test` method from the Deno namespace ([https://doc.deno.land/builtin/stable#Deno.test](https://doc.deno.land/builtin/stable#Deno.test))
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The assertion methods from the Deno standard library ([https://doc.deno.land/https/deno.land/std@0.83.0/testing/asserts.ts](mailto:https://doc.deno.land/https/deno.land/std@0.83.0/testing/asserts.ts))
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: These are all part of Deno, distributed and maintained by the core team. There
+    are many other libraries that can be used in tests that you can find in the community.
+    We'll use what's provided by default in Deno as it works just fine and allows
+    us to write clear and readable tests.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let's go and learn how we can define a test!
+  prefs: []
+  type: TYPE_NORMAL
+- en: Defining a test
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Deno provides an API to define tests. This API, `Deno.test` ([https://doc.deno.land/builtin/stable#Deno.test](https://doc.deno.land/builtin/stable#Deno.test)),
+    provides two different ways to define a test.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'One of them is the one we showed in [*Chapter 2*](B16380_02_Final_JM_ePub.xhtml#_idTextAnchor056),
+    *The Toolchain*, and consists of calling it with two arguments; that is, the test
+    name and a test function. This can be seen in the following example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The other way we can do this is by calling the same API, this time sending
+    an object as an argument. You can send the function and the name of the test,
+    plus a few other options, to this object, as you can see in the following example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'These flags behaviors are very well-explained in the documentation ([https://doc.deno.land/builtin/stable#Deno.test](https://doc.deno.land/builtin/stable#Deno.test)),
+    but here''s a summary for you:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`only`: Runs only the tests that have this set to `true` and makes the test
+    suite fail, so this should only be used as a temporary measure.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`sanitizeOps`: Makes the test fail if all the operations that started on Deno''s
+    core are not successful. This flag is `true` by default.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`sanitizeResources`: Makes the test fail if there are still resources running
+    after the test finishes (this can indicate memory leaks). This flag makes sure
+    tests have to have a teardown phase where resources are stopped, and is `true`
+    by default.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Now that we know about the APIs, let's go write our first test – a unit test
+    for the `MuseumController` function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: A unit test for MuseumController
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In this section, we'll be writing a very simple test that will cover only the
+    functionality we wrote in `MuseumController`, and no more.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'It lists all the museums in the application, though it''s currently not doing
+    much and is only working as a proxy for `MuseumRepository`. We can create the
+    test file and logic for this simple functionality by following these steps:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Create the `src/museums/controller.test.ts` file.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: The test runner will automatically consider files that have `.test` in their
+    name as test files, among other conventions, as explained in [*Chapter 2*](B16380_02_Final_JM_ePub.xhtml#_idTextAnchor056),
+    *The Toolchain*.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Declare the first test with the help of `Deno.test` ([https://doc.deno.land/builtin/stable#Deno.test](https://doc.deno.land/builtin/stable#Deno.test)):'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Now, export the assertion methods from the standard library under a namespace
+    named `t`, so that we can then use them on the test files, by adding the following
+    to `src/deps.ts`:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: If you want to know what assertion methods are available in the standard library,
+    check out [https://doc.deno.land/https/deno.land/std@0.83.0/testing/asserts.ts](mailto:https://doc.deno.land/https/deno.land/std@0.83.0/testing/asserts.ts).
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'You can now use the assertion methods from the standard library to write a
+    test that instantiates `MuseumController` and calls the `getAll` method:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Let''s run the test and verify that it''s working:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: And our first test works!
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note how the test's output lists the name of the test, its status, and the time
+    it took to run, together with a summary of the test run.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The logic inside `MuseumController` is quite simple, thus this was also a very
+    simple test. However, it isolated the controller's behavior, allowing us to write
+    a very focused test. If you're interested in creating unit tests for other parts
+    of the application, they're available in this book's repository ([https://github.com/PacktPublishing/Deno-Web-Development/tree/master/Chapter08/sections/7-final-tested-version/museums-api](https://github.com/PacktPublishing/Deno-Web-Development/tree/master/Chapter08/sections/7-final-tested-version/museums-api)).
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the next few sections, we'll write more interesting tests. These are the
+    tests that will teach us how to check the integration between the different modules
+    of the application.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Writing an integration test
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Our first unit test, which we created in the previous section, relied on a mocked
+    instance of the repository to guarantee that our controller was working. That
+    test adds great value when it comes to detecting bugs in `MuseumController`, but
+    it isn't worth much in terms of understanding if the controller works well with
+    the repository.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'That''s the purpose of integration tests: they test how multiple components
+    integrate with each other.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this section, we'll write the integration test that tests `MuseumController`
+    and `MuseumRepository`. These are the tests that will closely mimic what happens
+    when the application runs and will help us later in terms of detecting any problems
+    between these two classes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s get started:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Create the file for this module's integration tests inside `src/museums`, called
+    `museums.test.ts`, and add the first test case there.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'It should test whether it is possible to get all the museums, this time using
+    an instance of the repository instead of a mocked one:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'We''ll start by instantiating the repository and adding a couple of fixtures
+    there:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Now that we have a repository, we can use it to instantiate the controller:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'We can now write our assertions to make sure everything is working fine:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Let''s run the test and check the result:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: It is passing! This is all we need for our repository and controller integration
+    tests! This test is useful whenever we want to change the code in `MuseumController`
+    or `MuseumRepository` as it makes sure they work fine together.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Again, if you are curious about how integration tests for other parts of the
+    application work, we made them available in this book's repository ([https://github.com/PacktPublishing/Deno-Web-Development/tree/master/Chapter08/sections/7-final-tested-version/museums-api](https://github.com/PacktPublishing/Deno-Web-Development/tree/master/Chapter08/sections/7-final-tested-version/museums-api)).
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the first section, we created a unit test, and here, we created an integration
+    test, but we still haven't written any tests for our application's interface –
+    the web part of it, which is using HTTP. That's what we'll do in the next section.
+    We'll learn how can we test the logic living in the web layer in isolation, without
+    using any other modules.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Testing the web server
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: So far, we have learned how to test different parts of the application. We started
+    with the business logic, which tests how it integrated with the modules that interacted
+    with persistency (the repository), but the web layer still has no tests.
+  prefs: []
+  type: TYPE_NORMAL
+- en: It's true that those tests are very important, but we can agree that if the
+    web layer fails, the user will not have access to any of that logic.
+  prefs: []
+  type: TYPE_NORMAL
+- en: That's what we'll do in this section. We'll spin up our web server, mock its
+    dependencies, and make a few requests to it to ensure the web *unit* is working.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s start by creating the web module''s unit test by following these steps:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Go to `src/web` and create a file named `web.test.ts`.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Now, in order to test the web server, we need to go back to the `createServer`
+    function in `src/web/index.ts` and export the `Application` object it creates
+    in `src/web/index.ts`:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: We also want to be able to stop the application whenever we want. We haven't
+    implemented that yet.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: If we look at oak's documentation, we'll see that it's very well-documented
+    ([https://github.com/oakserver/oak#closing-the-server](https://github.com/oakserver/oak#closing-the-server)).
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: To abort the application that's started by the `listen` method, we also need
+    to return `AbortController`. So, let's do that at the end of the `createServer`
+    function.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'If you aren''t aware of what `AbortController` is, I''ll leave you with a link
+    from Mozilla Developers Network ([https://developer.mozilla.org/en-US/docs/Web/API/AbortController](https://developer.mozilla.org/en-US/docs/Web/API/AbortController)),
+    which explains it very clearly. The short version is that it allows us to cancel
+    an ongoing promise:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Note how we're instantiating `AbortController`, similar to the documentation's
+    example, and returning it at the end, together with the `app` variable.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Back to our tests, let''s create a test that checks whether the server answers
+    to `hello world`:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Let''s get an instance of the server running using the function we previously
+    created; that is, `createServer`. Remember, to call this function, we must send
+    its dependencies in. Here, we''ll have to mock them:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'We can now create a test that checks whether the web server is working by answering
+    the hello world request:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'The last thing we need to do is close the server once the test has run. Deno
+    makes the test fail by default if we don''t do this (because `sanitizeResources`
+    is `true` by default), as it would probably cause a memory leak:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: This wraps up our first test for the web layer! This was another unit test,
+    and it tested the logic to spin up the server and ensured that Hello World is
+    working. Next, we'll create more complete tests for the endpoints, together with
+    the business logic.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the next section, we'll start writing integration tests for the login and
+    register functionality. Those are a little more complex than the tests we wrote
+    for the museum's module as they'll test the application as a whole, including
+    its business logic, persistency, and web logic.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Creating integration tests for the application
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The three tests we've written so far have been unit tests for a single module,
+    and an integration test between two different modules. However, to be confident
+    that our code is working, it would be cool if we could test the application as
+    a whole. That's what we'll do here. We'll wire up our application with a testing
+    configuration and run a few tests against it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We'll start by calling the same function we called to initialize the web server
+    and then create instances of all its dependencies (controllers, repositories,
+    and so on). We'll make sure we use things such as in-memory persistence to do
+    so. This will make sure that our tests are replicable and don't need a complex
+    teardown phase or a connection to a real database, as that would slow down the
+    tests.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We'll start by creating a test file that, for now, will encompass the integration
+    tests for the application. As the application evolves, it might make sense to
+    create a test folder inside each module, but for now, this solution will work
+    just fine.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We''ll instantiate the application with a setup that''s very close to what
+    it runs in production and make a few requests and assertions against it:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Create the `src/index.test.ts` file, alongside the `src/index.ts` file. Inside
+    it, create a test declaration that tests that a user can log in:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Before we start writing this test, we''ll create a helper function that will
+    set up the web server for testing. It will contain all the logic for instantiating
+    controllers and repositories, as well as sending configuration into the application.
+    It will look something like this:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'What we''re doing here is very similar to the wiring logic we do in `src/index.ts`.
+    The only difference is that we''ll explicitly import the in-memory repositories,
+    not the MongoDB ones, as shown in the following code block:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: For us to have access to the in-memory repositories of the `Museums` and `Users`
+    modules, we need to go into these modules and export them.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'This is what the `src/users/index.ts` file should look like:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Create a server instance using the helper function we just created, `createTestServer`,
+    and use `fetch` to make a register request to the API:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE21]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Since we have access to the registered user, we can try to log in with that
+    same user:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE22]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'We are now ready to develop a few assertions to check whether our login response
+    is what we were expecting:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE23]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Finally, we need to call the `abort` function on our server:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE24]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: This was our first application integration test! We got the application to run,
+    performed the register and login requests against it, and asserted that everything
+    was working as expected. Here, we built the test step by step, but if you want
+    to have a look at the complete test, it is available in this book's GitHub repository
+    ([https://github.com/PacktPublishing/Deno-Web-Development/blob/master/Chapter08/sections/7-final-tested-version/museums-api/src/index.test.ts](https://github.com/PacktPublishing/Deno-Web-Development/blob/master/Chapter08/sections/7-final-tested-version/museums-api/src/index.test.ts)).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To wrap this up, we''ll write another test. Remember that, in the previous
+    chapter, we created some authorization logic that would only allow a logged in
+    user to access the list of museums? Let''s check if that is working with another
+    test:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Create another test inside `src/index.test.ts` that will test whether a user
+    with a valid token can access the museums list:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE25]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Since we want to log in and register again, we''ll extract those functions
+    into a utility function that we can use in multiple tests:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE26]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'With these functions, we can now refactor the previous test so that it looks
+    a little cleaner, as the following snippet demonstrates:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE27]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Let''s get back to the test we were writing – the one that checks whether an
+    authenticated user can access the museums – and use the `register` and `login`
+    functions to register and authenticate a user:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE28]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Now, we can use the token that''s returned from the `login` function in the
+    `Authorization` header to make an authenticated request:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE29]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Create a test that checks that a user can''t access the `museums` route without
+    a valid token. It should be very similar to the previous test, with the small
+    difference that we''re sending an invalid token now:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE30]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Now, we can run all the tests and confirm that they''re all green:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE31]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: This is it for the application integration tests we're going to write in this
+    book! If you want to find out more, then don't worry – all the code that's been
+    written in this book regarding tests is available in this book's GitHub repository
+    ([https://github.com/PacktPublishing/Deno-Web-Development/tree/master/Chapter08/sections/7-final-tested-version/museums-api](https://github.com/PacktPublishing/Deno-Web-Development/tree/master/Chapter08/sections/7-final-tested-version/museums-api)).
+  prefs: []
+  type: TYPE_NORMAL
+- en: We're now much more confident that our code is working. We've created the opportunity
+    to refactor, extend, and maintain the code later with fewer worries. The architecture
+    decisions we've made are paying off more and more when it comes to testing the
+    code in isolation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the previous chapter, when we created our JavaScript client, we mentioned
+    that one of the advantages of having it living in the API code base is that we
+    could easily write tests for the client and the API to guarantee that they work
+    well together. In the next section, we'll demonstrate how can we do this. These
+    tests will be very much in line with what we did here, with the small difference
+    that instead of using `fetch` and doing raw requests, we'll use the API client
+    we created.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Testing the application together with the API client
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: When you provide an API client to your users, you have the responsibility of
+    making sure it works flawlessly with your application. One of the ways to guarantee
+    this is by having a complete test suite, one that not only tests the client on
+    its own but also tests its integration with the API. Here we'll take care of the
+    latter.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We''ll use one feature of the API client and create a test that makes sure
+    it''s working. Once again, you''ll notice some similarities between these and
+    the tests we wrote at the end of the previous section. We''ll replicate the logic
+    from the previous tests, but this time we''ll use the client. Let''s get started:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Inside the same `src/index.test.ts` file, create a new test for the login functionality:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE32]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: For this test, we know that we'll need to get access to the API client. We'll
+    need to import it from the `client` module.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Import the `getClient` function from `src/client/index.ts`:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE33]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Let''s get back to the `src/index.test.ts` test and import `client`, thus creating
+    an instance of it. Remember that it should use the same address that the test
+    web server created:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE34]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Now, it''s just a matter of writing the logic that calls the `register` and
+    `login` methods using `client`. This is what the final test will look like:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE35]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Note how we're using the client's methods to log in and register while keeping
+    the assertions from the previous tests.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: By following the same guidelines, we can write tests for all the client's functionality,
+    guaranteeing that it's working fine with the API, making it easy to maintain it
+    with confidence.
+  prefs: []
+  type: TYPE_NORMAL
+- en: For brevity, and because these tests resemble the ones we previously written,
+    we won't provide a step-by-step guide to writing tests for all the client's functionality
+    here. However, if you're interested, you can find them in this book's GitHub repository
+    ([https://github.com/PacktPublishing/Deno-Web-Development/blob/master/Chapter08/sections/7-final-tested-version/museums-api/src/index.test.ts](https://github.com/PacktPublishing/Deno-Web-Development/blob/master/Chapter08/sections/7-final-tested-version/museums-api/src/index.test.ts)).
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the next section, we'll have a sneak peek at one feature that might be further
+    down the path of your applications. On day, you'll start having parts of the application
+    that seem to be getting slow and you want to track their performance, and that's
+    where performance tests are useful. Because of this, we'll be introducing benchmarks.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Benchmarking parts of the application
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: When it comes to writing benchmarks in JavaScript, the language itself provides
+    a few functions, all of which are included in the High Resolution Time API.
+  prefs: []
+  type: TYPE_NORMAL
+- en: As Deno is fully ES6 compatible, these same features are available. If you've
+    had the time to look at Deno's standard library or the official website, you'll
+    have seen that benchmarks are taken into a lot of consideration and are tracked
+    across Deno versions ([https://deno.land/benchmarks](https://deno.land/benchmarks)).
+    Upon checking Deno's source code, you will see that you have a very nice set of
+    examples regarding how to write them.
+  prefs: []
+  type: TYPE_NORMAL
+- en: For our application, we could easily use the APIs available on the browser,
+    but Deno itself provides functionality in the standard library to help with writing
+    and running benchmarks, so that's what we'll use here.
+  prefs: []
+  type: TYPE_NORMAL
+- en: To start, we need to know Deno's standard library benchmark utilities so that
+    we know what we can do ([https://github.com/denoland/deno/blob/ae86cbb551f7b88f83d73a447411f753485e49e2/std/testing/README.md#benching](https://github.com/denoland/deno/blob/ae86cbb551f7b88f83d73a447411f753485e49e2/std/testing/README.md#benching)).
+    In this section, we'll write a very simple benchmark using two of the available
+    functions; that is, `bench` and `runBenchmarks`. The first one will define a benchmark,
+    while the second one will run it and print the result to the console.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Remember the function we wrote in [*Chapter 5*](B16380_05_Final_JM_ePub.xhtml#_idTextAnchor124),
+    *Adding Users and Migrating to Oak*, to generate a hash and a salt, which enabled
+    us to store the user credentials safely on the database? We''ll write a benchmark
+    test for that by following these steps:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: To start, create a file alongside `src/users/util.ts` named `utilBenchmarks.ts`.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Import the two functions from `util` that we want to test; that is, `generateSalt`
+    and `hashWithSalt`:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE36]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'It''s time to add the benchmark utilities to our `src/deps.ts` file and run
+    the `deno cache` command (which we learned about in [*Chapter 2*](B16380_02_Final_JM_ePub.xhtml#_idTextAnchor056),
+    *The Toolchain*) and import it here. We''ll export it as `benchmark`, in `src/deps.ts`,
+    to avoid naming conflicts:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE37]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Import the benchmark utilities into our benchmarks file and write the first
+    benchmark for the `generateSalt` function. We want it to run 1,000 times:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE38]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'The only thing we''re missing is calling `runBenchmarks` once the benchmarks
+    have been defined:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE39]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: It's time to run this file and have a look at the results.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Remember that we''re dealing with high resolution time as we want our benchmarks
+    to be precise. To let this code have access to this system feature, we need to
+    run this script with the `--allow-hrtime` permission (as explained in [*Chapter
+    2*](B16380_02_Final_JM_ePub.xhtml#_idTextAnchor056), *The Toolchain*):'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[PRE40]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Let''s write the benchmark for the second function; that is, `hashWithSalt`:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE41]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Now, let''s run it so that we get the final result:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE42]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: And that's it! You can now use the code we just wrote any time you want to analyze
+    the performance of these functions. You may want to do this because you've changed
+    this code or just because you want to have it closely tracked. You can integrate
+    it in systems such as a continuous integration server, where you can regularly
+    check these values and keep them on track.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This wraps up the benchmarks section of this book. We decided on giving it short
+    introduction, and also demonstrating what APIs are available from on Deno to facilitate
+    benchmarking needs.We believe the concepts and examples presented here will allow
+    you to track how your applications are running.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: With this chapter, we've closed the development cycle of the application we've
+    been building. We started small by writing a few simple classes with our business
+    logic, wrote the web server to it, and finished by integrating it with persistence.
+    We finished this section by learning how to test the features we wrote, and that's
+    what we did in this chapter. We decided on going with a few different types of
+    tests, instead of extensively going module by module writing all the tests, as
+    we believe that's where more value is added.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We started with a very simple unit test for the business logic, then moved on
+    to an integration test with multiple classes, and later wrote a test for the web
+    server. These tests can only be written by leveraging the architecture we've created,
+    following dependency injection principles, and trying to keep the code as decoupled
+    as possible.
+  prefs: []
+  type: TYPE_NORMAL
+- en: As the chapter proceeded, we moved on to integration tests, which closely mimic
+    the que application as it will run in production, enabling us to improve the confidence
+    we have in the code we just wrote. We created tests that instantiated the application
+    with a testing setup that enabled us to spin up the web server with all the application
+    layers (business logic, persistence, and web) and made assertions to it. In these
+    tests, we could very confidently assert that the login and registry behaviors
+    were working fine, as we made real requests to the API.
+  prefs: []
+  type: TYPE_NORMAL
+- en: To wrap up this chapter, we connected it to the previous one, where we wrote
+    a JavaScript client for the API. We leveraged one of the big advantages of having
+    the client living in the same codebase as the API and tested the client together
+    with the application itself. This is a great way of guaranteeing that everything
+    is working as expected, and that we can be confident when releasing changes in
+    both the API and the client.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This chapter tried to demonstrate how tests can be used in Deno to increase
+    our confidence in the code we've written, as well as the value they bring when
+    they're used to focus on simple outcomes. Tests like these will be of great use
+    later when the application changes, as we can use them to add more features or
+    improve the existing ones. Here, we learned how the test suite provided by Deno
+    is more than enough to write clear, readable tests without any third-party packages.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The next chapter will focus on one of the most important phases of application
+    development; that is, deploying. We'll configure a very simple continuous integration
+    environment where we can deploy the application to the cloud. This is a very important
+    chapter as we'll also experience some of the advantages of Deno when it comes
+    to its ease of deployment.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Excited to make your application available to users? So are we – let's go!
+  prefs: []
+  type: TYPE_NORMAL

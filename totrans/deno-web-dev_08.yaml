@@ -1,0 +1,1391 @@
+- en: '*Chapter 6*: Adding Authentication and Connecting to the Database'
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In the previous chapter, we added an HTTP framework to our application, heavily
+    simplifying our code. After that, we added the concept of users to the application
+    and developed the register endpoint. In its current state, our application is
+    already storing a couple of things, with the small gotcha that it's storing it
+    in memory. We'll tackle this specific issue in this chapter.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Another concept that we've used while implementing oak (the HTTP framework of
+    choice) was middleware functions. We'll start this chapter by learning what middleware
+    functions are, and why they are one of the *standards* in pretty much all Node.js
+    and Deno frameworks when it comes to reusing code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We'll then use middleware functions and implement login and authorization. Adding
+    to that, we will learn how to use middleware to add standard features such as
+    request logging and timing to the application.
+  prefs: []
+  type: TYPE_NORMAL
+- en: With our application very close to completeness in terms of requirements, we'll
+    spend the rest of this chapter learning how to connect to a real persistence engine.
+    For this book, we'll be using MongoDB. We'll use the abstractions we had previously
+    built to make sure the transition is smooth. We'll then create a new users repository
+    so that it can connect to a database the same way we can with an in-memory solution.
+  prefs: []
+  type: TYPE_NORMAL
+- en: By the end of this chapter, we'll have a complete application with support for
+    register and user login. After logging in, users can also get a list of museums.
+    This is all done with the business logic from the HTTP and persistence implementation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: After this chapter, we'll only come back to the application to add tests and
+    deploy it, thus completing the full cycle of building an application.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In this chapter, we''ll cover the following topics:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using middleware functions
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Adding authentication
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Adding authorization with JWT
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Connecting with MongoDB
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Let's get started!
+  prefs: []
+  type: TYPE_NORMAL
+- en: Technical requirements
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The code required for this chapter is available at the following GitHub link:
+    [https://github.com/PacktPublishing/Deno-Web-Development/tree/master/Chapter06](https://github.com/PacktPublishing/Deno-Web-Development/tree/master/Chapter06).'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using middleware functions
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: If you have used any HTTP framework, be it JavaScript or otherwise, you are
+    probably familiar with the concept of middleware functions. If you are not, then
+    no worries – that's what we'll explain in this section.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s start with a definition borrowed from the Express.js documentation ([http://expressjs.com/en/guide/writing-middleware.html](http://expressjs.com/en/guide/writing-middleware.html)):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '"Middleware functions are functions that have access to the request object (req),
+    the response object (res), and the next middleware function in the application''s
+    request-response cycle. The next middleware function is commonly denoted by a
+    variable named next."'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Middleware functions intercept requests and have the ability to act on them.
+    They can be used in many different use cases, as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Changing the request and response objects
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Ending the request-response life cycle (answering requests or skipping other
+    handlers)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Calling the next middleware function
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Middleware functions are commonly used in tasks such as checking authentication
+    tokens and automatically responding according to the result, logging requests,
+    adding a specific header to a request, enriching the request object with context,
+    and error handling, among other things.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We'll implement some of these examples in the application.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How does middleware work?
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Middleware is processed as a stack, and each function can control the flow of
+    the response with the ability to run the code before and after the rest of the
+    stack executes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In oak, middleware functions are registered by the `use` function. At this point,
+    you might remember what we previously did with oak's router. What the `Router`
+    object from oak does is create handlers for the registered routes and export two
+    middleware functions with that behavior to be registered on the main application.
+    These are called `routes` and `allowedMethods` ([https://github.com/PacktPublishing/Deno-Web-Development/blob/43b7f7a40157212a3afbca5ba0ae20f862db38c4/ch5/sections/2-2-handling-routes-in-an-oak-application/museums-api/src/web/index.ts#L38](https://github.com/PacktPublishing/Deno-Web-Development/blob/43b7f7a40157212a3afbca5ba0ae20f862db38c4/ch5/sections/2-2-handling-routes-in-an-oak-application/museums-api/src/web/index.ts#L38)).
+  prefs: []
+  type: TYPE_NORMAL
+- en: To better understand middleware functions, we'll implement a couple of them.
+    We'll do this in the next section.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Adding request timing via middleware
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Let's add basic logging to our requests using some middleware. Oak middleware
+    functions ([https://github.com/oakserver/oak#application-middleware-and-context](https://github.com/oakserver/oak#application-middleware-and-context))
+    receive two parameters. The first one is the context object, which is the same
+    one that all the routes get, while the second one is the `next` function. This
+    function can be used to execute other middleware in the stack, allowing us to
+    control the application flow.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The first thing we''ll do is add a middleware that adds the `X-Response-Time`
+    header to the response. Follow these steps:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Go to `src/web/index.ts` and register a middleware that executes the rest of
+    the stack by calling `next`.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'This adds a header to the response with the difference in milliseconds from
+    the time the request started until it was handled:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Execute the following code to get the server running:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Perform a request and check whether the desired header is there:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: With that, we've used middleware functions after completely understanding them
+    for the first time. We used them to control the flow of the application, by using
+    `next`, and to enrich the request with a header.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The next thing we'll do is compose on the middleware we just created and add
+    logic to log what request is being made to the server.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Adding request logging via middleware
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Now that we have the logic to calculate the request timing we've already built,
+    we're in a great place to add request logging to our application.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The final goal is to have every request that is made to the application logged
+    to the console with its path, HTTP method, and the time it took to answer; something
+    like the following example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: We could, of course, do this individually per request, but since this is something
+    that we want to do cross-application, we'll add it as a piece of middleware to
+    the `Application` object.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The middleware we wrote in the previous section requires the handlers (and
+    middleware functions) to run for it to add the response time (it calls the next
+    function before executing part of the logic). We''ll need to register the current
+    logging middleware before the one we previously did, which added the timing to
+    the request. Let''s get started:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Go to `src/web/index.ts` and add the code for logging the request method, the
+    path, and the timing to the console:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Execute the following code to get the server running:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Perform a request to an endpoint:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Check that the server process is logging the request to the console:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: And with that, we have our middleware functions working together!
+  prefs: []
+  type: TYPE_NORMAL
+- en: Here, we've registered middleware functions directly on the main application
+    object. However, it is also possible to do this on specific oak routers by calling
+    the same `use` method.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To give you an example, we''ll register a middleware that will execute only
+    on the `/api` routes. We will do the exact same thing we did previously, but instead
+    of the `Application` object, we''ll call the `use` method on the API `Router`
+    object, as shown in the following example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: Middleware functions that want the application flow to proceed normally *must
+    call the* `next` *function*. If this doesn't happen, the rest of the middleware
+    in the stack and route handlers will not be executed, and thus the request will
+    not be answered.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'There''s yet another way of using middleware functions: by directly adding
+    them before the request handlers.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Imagine that we want to create a middleware that adds the `X-Test` header to
+    some routes. We can either write that middleware on the application object or
+    we can use it directly on the routes itself, as shown in the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'To get the preceding code working, we''ll need to export the `RouterMiddleware`
+    type in `src/deps.ts`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: With this middleware, whenever we want the `X-Test` header to be added, we just
+    need to include `addTestHeaderMiddleware` before the route handler. It will execute
+    before the handler's code. This is not exclusive to one piece of middleware, as
+    multiple middleware functions can be registered.
+  prefs: []
+  type: TYPE_NORMAL
+- en: And that's it for middleware functions!
+  prefs: []
+  type: TYPE_NORMAL
+- en: We've learned the basics that allow us to create and share functionality by
+    using this very common feature of web frameworks. We'll keep using them as we
+    move into the next section, where we'll handle authentication, validate tokens,
+    and authorize users.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let's go and implement our application's authentication!
+  prefs: []
+  type: TYPE_NORMAL
+- en: Adding authentication
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In the previous chapter, we added the capability of creating new users to our
+    application. This, by itself, is a cool feature, but it's not worth much if we
+    can't use it for authentication. That's what we'll do here.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We'll start by creating the logic that checks whether a username and password
+    combination is correct, and then we'll implement an endpoint to do that.
+  prefs: []
+  type: TYPE_NORMAL
+- en: After this, we'll transition into the authorization topic by returning a token
+    from the login endpoint, and later using that token to check if a user is authenticated.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let's go step by step, starting with the business logic and persistency layer.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Creating the login business logic
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: It's already a practice of ours to, when writing new functionality, start with
+    the business logic. We believe this is intuitive, as you think "business" and
+    user first, and only then proceed into the technical details. That's what we'll
+    do here.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We''ll start by adding the login logic, back in `UserController`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Before we start, let''s add the `login` method to the `UserController` interface
+    in `src/users/types.ts`:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Declare the `login` method on the controller; it should receive a username
+    and a password:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Let''s stop and think about what the flow of the login should be:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: The user sends their username and password.
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The application gets the user from their database by username.
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The application encodes the user-sent password with the salt from the database.
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The application compares both salted passwords.
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The application returns a user and a token.
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: We won't worry about the token for now. However, the rest of the flow should
+    set the requirements for the current section, helping us think about the code
+    for the `login` method.
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Just by looking at these requirements, we can understand that we'll need to
+    have a method on `UserRepository` to get a user by username. Let's take a look
+    at this.
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'In `src/users/types.ts`, add a `getByUsername` method to `UserRepository`;
+    it should get a user from the database by username:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Implement the `getByUsername` method in `src/users/repository.ts`:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Use the `getByUsername` method from the repository inside the `login` method
+    of `UserController`:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Create a `comparePassword` method inside `UserController`.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'It should receive a password and a `user` object. Then, it should compare the
+    password that was sent by the user once it''s been salted and hashed with what
+    is stored in the database:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Use the `comparePassword` method on the `login` method of `UserController`:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: And with that, we have the `login` method working!
+  prefs: []
+  type: TYPE_NORMAL
+- en: It receives a username and a password, gets a user by username, compares the
+    hashed passwords, and returns the user if everything goes according to plan.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We should now be ready to implement the login endpoint – one that will use the
+    login method we just created.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Creating the login endpoint
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Now that we''ve created the business logic and data fetching logic, we can
+    start using it in our web layer. Let''s create the `POST /api/login` route, which
+    should let the user log in with their username and password. Follow these steps:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In `src/web/index.ts`, create the login route:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Get the body of the request by using the `request.body` function ([https://doc.deno.land/https/raw.githubusercontent.com/oakserver/oak/main/request.ts#Request](https://doc.deno.land/https/raw.githubusercontent.com/oakserver/oak/main/request.ts#Request))
+    and then send the username and password to the `login` method:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'If the login succeeds, it should return our `user`:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: With that, we should have all it takes to log a user in! Let's try it out.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Run the application by running the following command:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE21]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Perform a request to register the user at `/api/users/register`, and then try
+    to log in with the created user at `/api/login`:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE22]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Now, try to log in with the created user:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE23]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: And it works! We're creating the user on the registry and are able to log in
+    with them afterward.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this section, we learned how to add authentication logic to our application
+    and implemented the `login` method, which allows users to log in with a registered
+    user.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the next section, we'll learn how to use this authentication we've created
+    to get a token that will allow us to handle authorization. We'll make the museums
+    route only available for authenticated users, instead of being publicly available.
+    For this, we will need to develop the authorization feature. Let's jump in!
+  prefs: []
+  type: TYPE_NORMAL
+- en: Adding authorization with JWT
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: We now have an application that allows us to log in and return the logged in
+    user. However, if we want to use the login in any API, we'll have to create an
+    authorization mechanism. This mechanism should enable the users of the API to
+    authenticate, get a token, and use that token to identify themselves and access
+    resources.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We're doing this as we want to close part of the application's routes so that
+    they're only available to authenticated users.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We'll develop what's needed to integrate with token authentication by using
+    **JSON Web Tokens** (**JWT**), which is pretty much a standard in APIs nowadays.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'If you are not familiar with JWT, I''ll leave you with an explanation from
+    [jwt.io](http://jwt.io):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '"JSON Web Tokens are an open, industry standard RFC 7519 method for representing
+    claims securely between two parties."'
+  prefs: []
+  type: TYPE_NORMAL
+- en: It is mainly used when you want your clients to connect to an authentication
+    service, and them provide your servers with the ability to verify if that authentication
+    was issued by a service that you trust.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To avoid the risk of repeating what has already been very well-explained by
+    [jwt.io](http://jwt.io), I''ll leave you with a link that explains what this standard
+    is perfectly: [https://jwt.io/introduction/](https://jwt.io/introduction/). Make
+    sure to give it a read; I''m sure you have all it takes to understand about how
+    we''ll be using it next.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this section, and due to the scope of this book, we will not implement the
+    whole logic to generate and validate JWT tokens. The code for that is available
+    in this book's GitHub repository ([https://github.com/PacktPublishing/Deno-Web-Development/tree/master/Chapter06/jwt-auth](https://github.com/PacktPublishing/Deno-Web-Development/tree/master/Chapter06/jwt-auth)).
+  prefs: []
+  type: TYPE_NORMAL
+- en: What we will do here is integrate our current application with a module that
+    has functions for generating and validating JWT tokens, which is what matters
+    for our application. Then, we'll use that token to decide whether we're letting
+    the user access the museums route.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let's go!
+  prefs: []
+  type: TYPE_NORMAL
+- en: Returning a token from login
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In the previous section, we implemented the login functionality. We developed
+    some logic that validates the combination of username and password, returning
+    the user if it succeeds.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In order to authorize a user and let them access private resources, we need
+    to know who the authenticated user is. A common way to do this is via a token.
+    There are various ways we can do this. They are alternatives such as basic HTTP
+    authentication, sessions tokens, JWT tokens, and so on. We chose JWT as we believe
+    it is a heavily used solution that you might have encountered in the industry.
+    Don't worry if you haven't; it is simple enough to grasp.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The first thing we will need to do is return a token to the user when they log
+    in. Our `UserController` will have to return that token in conjunction with `userDto`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the provided `jwt-auth` module ([https://github.com/PacktPublishing/Deno-Web-Development/tree/master/Chapter06/jwt-auth](https://github.com/PacktPublishing/Deno-Web-Development/tree/master/Chapter06/jwt-auth)),
+    you can check that we're exporting a Repository.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'If we access the documentation, using Deno''s documentation website at [https://doc.deno.land/https/raw.githubusercontent.com/PacktPublishing/Deno-Web-Development/master/Chapter06/jwt-auth/repository.ts](https://doc.deno.land/https/raw.githubusercontent.com/PacktPublishing/Deno-Web-Development/master/Chapter06/jwt-auth/repository.ts),
+    we can see that it exports two methods: `getToken` and `generateToken`.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Reading the method's documentation, we can understand that one gets a token
+    for a user ID, and that the other generates a new token, respectively.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s use this method to generate a new token in our login use case by following
+    these steps:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Start by adding the token to the return type of `UserController` in `src/users/types.ts`:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE24]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Go to `src/deps.ts` and add the export for the `jwt-auth` module, running `deno
+    cache` to update the lock file and download the dependencies:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE25]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Use the `AuthRepository` type to define the `UserController` constructor''s
+    dependencies:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE26]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Go to the login method in `src/users/controller.ts` and use the `generateToken`
+    method from `authRepository` to get a token and return it:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE27]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Go back to `src/index.ts` and instantiate `AuthRepository` from `jwt-auth`:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE28]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: You can also check by the module's documentation, since it requires a `configuration`
+    object to be sent with three properties; that is, `algorithm`, `key`, and `tokenExpirationInSeconds`.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '`key` should be a secret value that is used to create and validate the JWT,
+    `algorithm` is the crypto algorithm that the token will be encoded with (HS256,
+    HS512, and RS256 supported), and `tokenExpirationInSeconds` is the time it takes
+    for the token to expire.'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Regarding the values that are secret and shouldn't live in the code, such as
+    the `key` variable that we just mentioned, we'll learn how to handle them in the
+    next chapter, where we'll talk about application configuration.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: We now have an instance of `AuthRepository`! We should be able to send it to
+    our `UserController` and get it working.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'In `src/index.ts`, send `authController` into the `UserController` constructor:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE29]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Now, you should be able to run the application!
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Now, if you create a few requests to test it, you'll notice that the `POST /login`
+    endpoint is still not returning the token. Let's fix this!
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Go to `src/web/index.ts` and, on the `login` route, make sure we''re getting
+    `token` returned from the `login` method present in the response:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE30]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'We''re almost done! We managed to finish our first objective: having the `login`
+    endpoint return a token.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The next thing we want to implement is the logic that makes sure that a user
+    is sending a token whenever they're trying to access an authenticated route.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let's go and finish the authorization logic.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Making an authenticated route
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Having the capacity to get users a token, we now want a guarantee that only
+    logged in users are able to access the museums route.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Users will have to send the token in the `Authorization` header, as the JWT
+    token standard defines. If the token is invalid or not present, the user should
+    be presented with a `401 Unauthorized` status code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Validating the token that's been sent by users on the request is a nice use
+    case for middleware functions.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In order to do this, and since we're using `oak`, we'll be using a third-party
+    module named `oak-middleware-jwt`. This is nothing more than a middleware that
+    automatically validates the JWT token, based on a key, and provides functionality
+    that will be useful to us.
+  prefs: []
+  type: TYPE_NORMAL
+- en: You can check its documentation at [https://nest.land/package/oak-middleware-jwt](https://nest.land/package/oak-middleware-jwt).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s use this middleware in our web code to make the museums route only available
+    to authenticated users. Follow these steps:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Add `oak-middleware-jwt` to the `deps.ts` file and export the `jwtMiddleware`
+    function:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE31]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Back in `src/web/index.ts`, use `jwtMiddleware` in the museums route, sending
+    the key and the algorithm there.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Do not forget what we mentioned in previous section – that middleware functions
+    can be used in any route by sending it before the route handler:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[PRE32]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Add `authorization` as a parameter inside `configuration` in the `createServer`
+    function:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE33]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Now, still in `src/web/index.ts`, use the `authorization` params to send the
+    values that will be injected to `jwtMiddleware`:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE34]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: The only thing we're missing is the ability to actually send the `authorization`
+    value to the `createServer` function.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'In `src/index.ts`, extract the auth configuration into a variable so that we
+    can reuse it:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE35]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Let''s reuse that same variable to send the required parameters to `createServer`:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE36]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: And we're done! Let's test our application and see if it works as expected.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Note that the desired behavior is that only an authenticated user can access
+    the museums route and see all the museums.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Let''s run the application by running the following command:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE37]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Let''s register a user so that we can log in:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE38]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Now, let''s log in so that we can get our token:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE39]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Finally, let''s try to access the museums route with the token that was returned
+    from the previous request:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE40]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Just to make sure it works as expected, let''s try to do the same request without
+    the `Authorization` header, expecting an `unauthorized` response:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE41]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: That's it! With that, we've managed to make a route only accessible by authenticated
+    users. This is something very common in any application that contains users.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If we were to go deeper into this, we could have explored the JWT `refreshToken`,
+    or even how to read the user information from the JWT token, but that's outside
+    the scope of this book. This is something I'll let you explore on your own.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this section, we achieved our goal and looked at many different parts of
+    an API.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'There''s one thing missing, though: a connection with a real persistence engine.
+    That''s what we''re going to do next – connect our application to a NoSQL database!'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Connecting to MongoDB
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'So far, we''ve implemented an application that lists museums, and contains
+    users, allowing them to authenticate. These features are already in place, but
+    they all have a catch: they''re all running against an in-memory database.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: We've decided to do it this way for the sake of simplicity. However, since most
+    of our implementation doesn't depend on the delivery mechanism, it shouldn't change
+    much if the database changes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: As you might have guessed by this section's title, we'll learn how to move one
+    of the application entities to the database. We'll leverage the abstractions we've
+    created in order to do this. The process will be very similar to all the entities,
+    and thus we've decided on learning how to connect to a database just for the users'
+    module.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Later, if you are curious about how this would work if all the applications
+    were connected to the database, you'll have the opportunity to check this book's
+    GitHub repository.
+  prefs: []
+  type: TYPE_NORMAL
+- en: To make sure we're all running against a similar database, we'll use MongoDB
+    Atlas. Atlas is a product that provides a free MongoDB cluster that we can use
+    to connect our application.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'If you are not familiar with MongoDB, there''s here''s a "one-sentence explanation"
+    from their website ([https://www.mongodb.com/](https://www.mongodb.com/)). Feel
+    free to go there and learn a little more about it:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '"MongoDB is a general purpose, document-based, distributed database built for
+    modern application developers and for the cloud era."'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Ready? Let's go!
+  prefs: []
+  type: TYPE_NORMAL
+- en: Creating a User MongoDB repository
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Our current `UserRepository` is the module that's responsible for connecting
+    the user to the database. This is the one we want to change in order to make our
+    application connect with a MongoDB instance, instead of an in-memory database.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We'll go through the steps of creating the new MongoDB repository, exposing
+    it to the world, and connecting the rest of our application to it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let's start by creating the space for a new users repository to exist, by reorganizing
+    the users module's internal folder structure.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Rearranging our users module
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Our users module was initially thought to have a single repository, and thus
+    it doesn't have a folder for it; it's just a single `repository.ts` file. Now
+    that we're thinking of adding more ways our users can be saved to a database,
+    we need to create it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Remember when we first talked about architecture, and mentioned that it would
+    keep evolving? That's what's happening here.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s rearrange the users module so that it can handle multiple repositories
+    and add a MongoDB repository, following the `UserRepository` interface we previously
+    created:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Create a folder named `repository` inside `src/users` and move the actual `src/users/repository.ts`
+    there, renaming it `inMemory.ts`:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE42]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Remember to fix the module imports inside `src/users/repository/inMemory.ts`:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE43]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'To keep the application running, let''s go to `src/users/index.ts` and export
+    the correct repository:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE44]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Now, let''s create our MongoDB repository. Call it `mongoDb.ts` and put it
+    inside the `src/users/respository` folder:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE45]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Make sure it implements the `UserRepository` interface we defined previously.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: This is where all the fun starts! Now that we have the MongoDB repository, we'll
+    start writing it and connecting our application to it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Installing the MongoDB client library
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We already have a list of methods that our repository needs to have implemented.
+    By following the interface, we can guarantee that our application will work, regardless
+    of the implementation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'There''s one thing that we know for sure, as we don''t want to keep reinventing
+    the wheel: we''re going to use a third-party package to handle the connection
+    with MongoDB.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: We will use the `deno-mongo` package for this ([https://github.com/manyuanrong/deno_mongo](https://github.com/manyuanrong/deno_mongo)).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Important note
+  prefs: []
+  type: TYPE_NORMAL
+- en: Deno's MongoDB driver uses the Deno plugins API, which is still in unstable
+    mode. This means that we will have to run our application with the `--unstable`
+    flag. As it is currently using APIs that are not yet considered stable, this shouldn't
+    be used in production yet.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s have a look at the documentation''s example, where a connection to a
+    MongoDB database is established:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE46]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here, we can see that we will need to create a MongoDB client and connect it
+    to a database, using a connection string that contains the host (which might contain
+    the host's username and password).
+  prefs: []
+  type: TYPE_NORMAL
+- en: After that, we need to get the client to access a specific database (`test`,
+    in this example). Only then can we have the handler that will let us interact
+    with the collection (`users`, in this example).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'First things first, let''s add `deno-mongo` to our dependencies list:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Go to your `src/deps.ts` file and add the exports for `MongoClient` there:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE47]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Now, make sure you run the `cache` command to install the modules. We''ll have
+    to run it with the `--unstable` flag as the plugin we''re installing requires
+    unstable APIs on its installation too:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE48]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: With that, we have updated the `deps.ts` file with the package we just installed!
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let's move on and actually use this package to develop our repository.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Developing the MongoDB repository
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In the example we got from the documentation, we learned how to connect to the
+    database and create the handlers for the user's collection that we want. We know
+    that our repository needs to have access to this handler so that it can interact
+    with the collection.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Again, we could create the MongoDB client directly inside the repository, but
+    that would make it impossible for us to test that repository without trying to
+    connect to MongoDB.
+  prefs: []
+  type: TYPE_NORMAL
+- en: As we want the dependencies to be injected into the modules as much as possible,
+    we'll pass the MongoDB client into our repository via its constructor, which is
+    something very similar to what we did in other parts of the code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s go back to our MongoDB repository and do this by following these steps:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Create the `constructor` method inside the MongoDB repository.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Make sure it receives an object with a property named `storage` of the `Database`
+    type, which is exported by the `deno-mongo` package:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[PRE49]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Now, we have to go into the `src/deps.ts` file and export the `Database` and
+    `Collection` types from `deno-mongo`:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE50]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Now, it's just a matter of developing the methods to satisfy the `UserRepository`
+    interface.
+  prefs: []
+  type: TYPE_NORMAL
+- en: These methods will be very similar to the ones we developed for the in-memory
+    database, with the difference that we're now interacting with a MongoDB collection
+    instead of the JavaScript Map we were using previously.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now, we just need to implement some methods that will create, verify the existence
+    of a user, and get it by username. These methods are available in the plugin documentation
+    and very closely mimic MongoDB's native API.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This is what the final class is going to look like:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE51]'
+  prefs: []
+  type: TYPE_PRE
+- en: We've highlighted the methods that use the `deno-mongo` plugin to access the
+    database. Note how the logic is very similar to what we've previously done. We're
+    adding the created at date to the `create` method, and then calling the `create`
+    method from mongo. In the `exists` method, we're calling the `count` method, and
+    converting it into a `boolean`. For the `getByUsername` method, we're using the
+    `findOne` method from the mongo library, sending the username in.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If you have any questions about how these APIs can be used, please check out
+    deno-mongo's documentation ([https://github.com/manyuanrong/deno_mongo](https://github.com/manyuanrong/deno_mongo)).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Connecting the application to MongoDB
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Now, in order to expose the MongoDB repository that we''ve created, we need
+    to go into `src/users/index.ts` and expose it as `Repository` (delete the highlighted
+    line):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE52]'
+  prefs: []
+  type: TYPE_PRE
+- en: We should now have our editor and typescript compiler complaining that we're
+    not sending the correct dependencies into `UserRepository` at the moment of its
+    instantiation on `src/index.ts`, which is true. So, let's go there and fix it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Before we send the database client into `UserRepository`, it needs to be instantiated.
+    By looking at the documentation for `deno-mongo`, we can read the following example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE53]'
+  prefs: []
+  type: TYPE_PRE
+- en: We aren't connecting with the localhost, so we'll need to change the connection
+    URI later.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s follow the documentation''s example and write the code for connecting
+    to a MongoDB instance. Follow these steps:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'After adding the export of `MongoClient` to the `src/deps.ts` file, import
+    it in `src/index.ts`:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE54]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Then, call `connectWithUri`:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE55]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'After that, get a database handler by calling the `database` method on the
+    client:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE56]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'And that should be all we need in order to connect to MongoDB. The only thing
+    missing is the code for sending the database handler into the `UserRepository`.
+    So, let''s add this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE57]'
+  prefs: []
+  type: TYPE_PRE
+- en: No warnings should be visible and we should be able to run our application now!
+  prefs: []
+  type: TYPE_NORMAL
+- en: However, we still do not have a database to connect to. We'll look at this next.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Connecting to a MongoDB cluster
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Now, we need to connect to a real MongoDB instance. Here, we'll be using a service
+    called Atlas. Atlas is a service from MongoDB that provides a cloud MongoDB database.
+    Their free tier is quite generous and works well for our application. Create an
+    account there. Once you've done that, we can create a MongoDB cluster.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Important Note
+  prefs: []
+  type: TYPE_NORMAL
+- en: If you have any other MongoDB instance, local or remote, feel free to use it
+    by skipping the next paragraph and going directly to inserting the database URI
+    into the code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The following link contains all the instructions needed to create a cluster:
+    [https://docs.atlas.mongodb.com/tutorial/create-new-cluster/](https://docs.atlas.mongodb.com/tutorial/create-new-cluster/).'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Once the cluster has been created, we also need to create a user that has access
+    to it. Go to [https://docs.atlas.mongodb.com/tutorial/connect-to-your-cluster/index.html#connect-to-your-atlas-cluster](https://docs.atlas.mongodb.com/tutorial/connect-to-your-cluster/index.html#connect-to-your-atlas-cluster)
+    to learn how to get the connection string.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'It should look something like the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE58]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Now that we have the connection string, we just need to pass it to the code
+    we created previously in `src/index.ts`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE59]'
+  prefs: []
+  type: TYPE_PRE
+- en: And that should be all we need to get our application running. Let's do this!
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Keep in mind that since we''re using the plugins API to connect to MongoDB,
+    and it''s still unstable, the following permissions are needed together with the
+    `--unstable` flag:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE60]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Now, to test that our `UserRepository` is working and connected to the database,
+    let''s try to register and log in and see if it works:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Perform a `POST` request to `/api/users/register` to register our user:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE61]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Now, to make sure we are connecting to permanent storage, we can stop the application
+    and run it again, before trying to log in:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE62]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Now, let''s log in with that same user we just created:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE63]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: And we have our response! We managed to connect the application that was previously
+    connected to an in-memory database to a real MongoDB database. If you used MongoDB,
+    you can view the users that were created there on the Atlas interface by going
+    to the **Collections** menu.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Did you notice how we didn't need to touch any of our business or web logic
+    just to change the persistency mechanism? This proves that the layers and abstractions
+    we initially created are now paying off, by allowing decoupling between different
+    parts of the application.
+  prefs: []
+  type: TYPE_NORMAL
+- en: With that, we have completed this chapter and migrated our users to a real database.
+    We could do the same for the other modules, but that would be mostly the same
+    thing and will not add much to your learning experience. I'd like to challenge
+    you on writing the other modules' logic so that it can connect to MongoDB.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If you want to skip this but you're curious about what it will look like, then
+    take a look at this book's GitHub repository.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: This chapter pretty much wraps up our application in terms of logic. We'll come
+    back later in [*Chapter 8*](B16380_08_Final_JM_ePub.xhtml#_idTextAnchor178), *Testing
+    – Unit and Integration*, to add tests and the single feature that we're missing
+    – the ability to rate museums. However, most of this has already been done. In
+    its current state, we have an application that has its domains divided into modules
+    that can be used by themselves and don't depend on each other. We believe we achieved
+    something that is both easy to navigate in the code and extendable.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This concludes the process of constantly reworking and refining the architecture,
+    managing dependencies, and tweaking logic to make sure code is as decoupled as
+    possible, and as easy to change in the future as possible. While doing all of
+    this, we managed to create an application with a couple of features, trying to
+    go around industry standards at the same time.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We started this chapter by learning about middleware functions, something we'd
+    previously used, even though we still hadn't learned about them. We understood
+    how they work, and how they can be leveraged to add logic across applications
+    and routes. To get a little more concrete, we went into specific examples and
+    finished by implementing a few of them in the application. Here, we added common
+    capabilities such as basic logging and request timing.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Then, we went on to finish our journey on authentication. After adding users
+    and registration in the previous chapter, we started by implementing the capability
+    to authenticate. We relied on an external package to manage our JWT tokens, which
+    we used later for our authorization mechanism. After providing our users with
+    a token, we had to make sure that the token was valid and only then let the user
+    access the application. We added an authenticated route to the museums route,
+    making sure it can only be accessed by authenticated users. Once again, middleware
+    was used to check the token's validity and answer the request on error cases.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We wrapped this chapter up by adding one more feature to the application: a
+    connection to a real database. Before we did this, all our application modules
+    were relying on an in-memory database. Here, we moved one of the modules, `users`,
+    to a MongoDB instance. To do this, we leveraged the layers we previously created
+    to separate business logic from our persistence and delivery mechanism. Here,
+    we created and implemented what we called the MongoDB repository, ensuring the
+    application is running smoothly but with a real persistence mechanism. We used
+    MongoDB Atlas for this example.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the next chapter, we'll add a couple more things to our web application,
+    namely the capability to manage secrets and configurations outside code, a well-known
+    best practice. We'll also explore the possibilities of Deno when it comes to running
+    code in the browser, among other things. The next chapter will wrap up this part
+    of this book; that is, building the features of the application. Let's go!
+  prefs: []
+  type: TYPE_NORMAL

@@ -1,0 +1,25 @@
+- en: 'Section 1: Getting Familiar with Deno'
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this section, you will get to know what Deno is, why it was created, and
+    how it was created. This section will help you set up the environment and get
+    familiar with the ecosystem and available tooling.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This section contains the following chapters:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[*Chapter 1*](B16380_01_Final_JM_ePub.xhtml#_idTextAnchor014), [*What Is Deno?*](https://epic.packtpub.com/index.php?module=oss_Chapters&action=DetailView&record=9acbdeda-16ff-b77c-78da-5f32428f1e3c)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[*Chapter 2*](B16380_02_Final_JM_ePub.xhtml#_idTextAnchor056), [*The Toolchain*](https://epic.packtpub.com/index.php?module=oss_Chapters&action=DetailView&record=28007db8-c7cd-f7e7-f001-5f32420421d8)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[*Chapter 3*](B16380_03_Final_JM_ePub.xhtml#_idTextAnchor089), *The Runtime*
+    [*and Standard Library*](https://epic.packtpub.com/index.php?module=oss_Chapters&action=DetailView&record=543934d7-4ca4-7b9f-4311-5f32428a2967)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL

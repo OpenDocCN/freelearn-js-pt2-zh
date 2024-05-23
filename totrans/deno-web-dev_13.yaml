@@ -1,0 +1,601 @@
+- en: '*Chapter 10*: What''s Next?'
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: We've come a long way. We started by getting to know the basics of Deno and
+    went on to building and deploying a complete application. By now, you should be
+    comfortable with Deno and have a good awareness of the problems it solves. Hopefully,
+    all the phases we've been through have helped clarify many questions you may have
+    had about Deno.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We deliberately chose to make this book a journey, which started with our first
+    scripts and finished with a deployed application, one that we've coded and iterated
+    as the book has proceeded. In the meantime, we solved many of the challenges an
+    application developer might encounter and came up with solutions.
+  prefs: []
+  type: TYPE_NORMAL
+- en: By now, you should be armed with the knowledge that will help you decide whether
+    Deno will be part of the solution for your next project.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This chapter will begin with a short recap of what we have learned so far, going
+    through all the phases and learnings. Then, our focus will go—as the title of
+    the chapter suggests—toward the future. It will focus on what's next, both for
+    Deno as a runtime and also for you as a developer with a new tool under your belt.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We'll have a quick look at what the current priorities of Deno's core team are,
+    what they're working on, and what the proposed future features are. As the chapter
+    proceeds, we'll also have a look at what's happening in the community, highlighting
+    a few interesting initiatives.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The chapter will wrap up by demonstrating how we can publish a package to Deno's
+    official registry, among other ways to give back to the Deno community.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'By the end of this chapter, you''ll be comfortable with the following areas:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Looking back at our journey
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Deno's roadmap
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Deno's future and community
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Publishing a package to Deno's official registry
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Looking back at our journey
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: A lot of ground was covered. We trust the book was (hopefully) an interesting
+    journey, from not knowing Deno to building something with it, and finishing up
+    with a deployed application.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We started by getting to know the tool itself, first by learning about the functionalities
+    it provides, and then by writing simple programs with the standard library. As
+    our knowledge built up we rapidly started to have enough to build a real application
+    with it, and that's what we did.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The adventure began by building the simplest possible web server, using the
+    standard library. We used TypeScript extensively to help in specifying clear application
+    boundaries, and we managed to get a very simple application running, hitting our
+    very first checkpoint: **hello world**.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Our application evolved, and as it started to have more complex requirements,
+    we needed to dive into the web frameworks available on the Deno community. After
+    making a high-level comparison between all of them, and according to our application
+    needs, we went with `oak`. The next step was to migrate our (still) simple web
+    server to use a framework of our choice, and it was a breeze. Using a web framework
+    made our code simpler and enabled us to delegate things we really didn't want
+    to handle ourselves, allowing us to focus on the application itself.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The next step was to add users to our application. We created the application
+    endpoints to enable a user registry, and as the need to store users arose, we
+    connected the application to MongoDB. With users in place, it was a short step
+    to implement user authentication.
+  prefs: []
+  type: TYPE_NORMAL
+- en: As the application grew, so did the need to have more complex configurations.
+    From the server port it was running on to the location of certificate files, or
+    to database credentials, all of this needed to be handled on its own. We abstracted
+    the configuration from the application and centralized it. Along the way, we added
+    support for configuration to live in a file or in environmental variables. This
+    made it possible to run the application with different configurations depending
+    on the environment, while keeping sensitive values safe and outside of the code
+    base.
+  prefs: []
+  type: TYPE_NORMAL
+- en: As our journey was coming to an end, we wanted to make sure our code was reliable
+    enough. This pointed us toward a testing chapter, where we learned the basics
+    of testing in Deno and created different tests for a few use cases of the application
+    we had created. We went from a simple unit test to a cross-module test, to a test
+    that got the application running, and made a few requests to it. By the end of
+    the process, we had much more confidence that our code was working as expected,
+    and we added testing capabilities to our toolchain.
+  prefs: []
+  type: TYPE_NORMAL
+- en: To wrap things up, we turned the code we wrote into reality and we deployed
+    it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We got the application running on Heroku under a containerized environment.
+    In the meantime, we learned about Docker and how it can be used to make it easy
+    for developers to run and deploy their code. We finished this chapter with an
+    automated way of deploying a Deno application, closing the cycle from code to
+    deployment.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This was a journey whereby we went through the many common phases of an application's
+    development, encountering challenges and solving them with solutions adapted to
+    our use cases. I hope to have covered some of your main concerns and questions,
+    giving you a sound basis to help you in the future.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We don't know what's next, but we do know that it depends on Deno and its community,
+    and we hope that you see yourself as part of this. In the next section, we'll
+    have a look at Deno's future roadmap, what's planned, and where their short-term
+    efforts are directed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Deno's roadmap
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: A lot has changed since the first time Ryan presented Deno on JSConf; a few
+    big steps have been taken. With the first stable version of the runtime being
+    launched the community exploded, and many people from other JavaScript communities
+    joined in with many enthusiastic ideas.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Deno's core team is currently putting much of its efforts into pushing Deno
+    forward. This contribution not only happens in the form of code, issues, and helping
+    people, but also in planning and delineating what the next steps are.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'For the short-term roadmap, the core team makes sure that it is tracking initiatives.
+    The following two issues raised on GitHub have been used to track 2020''s Q4 and
+    2021''s Q1 efforts:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[https://github.com/denoland/deno/issues/7915](https://github.com/denoland/deno/issues/7915)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[https://github.com/denoland/deno/issues/8824](https://github.com/denoland/deno/issues/8824)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'If you have a detailed look at these, you can follow every discussion, code,
+    and decision that has been made regarding those features. I''ll list some of the
+    current initiatives here so that you can have a sneak peak of what''s happening:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The Deno **Language Server Protocol** (**LSP**) and language server
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Compilation to binary (single executable for a Deno application)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Data, blob, WebAssembly, and **JavaScript Object Notation** (**JSON**) imports
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Improved support for Web Crypto **application programming interfaces** (**APIs**)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Support for **Immediately Invoked Function Expressions** (**IIFE**) bundles
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: WebGPU support
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: HTTP/2 support
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: These are just a few examples of some of the important initiatives happening
+    with Deno. As you can imagine, and due to it being in the early stages, there
+    are currently a lot of efforts aimed at fixing bugs and refactoring code that
+    I haven't added to this list.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Feel free to dive deeper into the GitHub issues mentioned previously to get
+    more details about any of the initiatives.
+  prefs: []
+  type: TYPE_NORMAL
+- en: All these are Deno's core team efforts. Remember that Deno only exists because
+    there are people working on it in their free time. There are many ways to give
+    back to the community, be that with bug reports, code contributions, helping on
+    communication channels, or with donations.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'If Deno is helping you and your company turn ideas into reality, please consider
+    becoming a sponsor so that it stays healthy and keeps evolving. You can do this
+    on GitHub at the following link: [https://github.com/sponsors/denoland](https://github.com/sponsors/denoland).'
+  prefs: []
+  type: TYPE_NORMAL
+- en: There are other people who are also responsible for Deno, the enthusiasm around
+    it, and its evolution, and those people are Deno's community. In the next section,
+    we'll go over Deno's community, interesting things happening there, and how can
+    you play an active part in it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Deno's future and community
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The Deno community is growing rapidly—it is full of people who are excited about
+    it and eager to help it grow. As you start using it, as you did throughout the
+    course of this book, there will be very important contributions you can add to
+    it. This could be a bug you've encountered, a feature that makes sense to you,
+    or just something that you want to understand better.
+  prefs: []
+  type: TYPE_NORMAL
+- en: For you to be part of that, I'd recommend you joining Deno's Discord channel
+    ([https://discord.gg/deno](https://discord.gg/deno)). This is a very active place
+    where you can find other people interested in Deno and is useful if you want to
+    find package authors, build packages yourself, or help with Deno Core. From my
+    experience, I can only say that everyone I have met there is very friendly and
+    eager to help. It's also a great way of keeping updated on what's happening.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Another way to contribute is by following Deno's repositories on GitHub ([https://github.com/denoland](https://github.com/denoland)).
+    The main repository can be found at [https://github.com/denoland/deno](https://github.com/denoland/deno),
+    where you'll find the Deno **command-line interface** (**CLI**) and Deno Core,
+    while the standard library lives in its own repository ([https://github.com/denoland/deno_std](https://github.com/denoland/deno_std)).
+    There are also other repositories such as [https://github.com/denoland/rusty_v8](https://github.com/denoland/rusty_v8),
+    which hosts the Rust bindings used by Deno created for the V8 JavaScript engine,
+    or [https://github.com/denoland/deno_lint](https://github.com/denoland/deno_lint),
+    where the Deno linter is hosted, among others. Feel free to watch the repositories
+    that interest you on GitHub.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs: []
+  type: TYPE_NORMAL
+- en: A great way of being updated about what's happening on Deno without getting
+    too many notifications is by watching Deno's main repository for releases only.
+    You'll get a notification for every release whereby you can follow the very comprehensive
+    release notes. I'll leave you with an example of a release note so that you know
+    what they look like.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This is what a version update notification looks like:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Figure 10.1 – Deno''s v1.6.2 release notes'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '](img/Figure_10.1_B16380.jpg)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Figure 10.1 – Deno's v1.6.2 release notes
+  prefs: []
+  type: TYPE_NORMAL
+- en: On top of the GitHub releases shown in the preceding screenshot, the Deno team
+    has also made efforts to write comprehensive release notes on their website, another
+    great way of staying in the loop ([https://deno.land/posts](https://deno.land/posts)).
+  prefs: []
+  type: TYPE_NORMAL
+- en: And this is what you can do to be an integral part of Deno's community. All
+    it takes for you to start is for you to use it, report bugs, and meet new people,
+    and the rest will follow.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The community is not only made of the core and the people who help with Deno,
+    but also the packages and projects that have been built with it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the following section, I'll highlight some initiatives that I think are great
+    and that are pushing the community forward. This is a personal list; take it as
+    a recommendation and nothing more, as I'm sure there are other initiatives that
+    could also be added.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Interesting things happening in the community
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: During the last two years that I've been following Deno, a lot of things have
+    happened. After the v1.0.0 release and with more people joining, lots of ideas
+    arose. I'll list a few initiatives that I think are especially interesting, not
+    only for the functionality they provide but also as a great source of learning.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Denon
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: As Nodemon was the go-to solution when developing Node, Denon is one of the
+    most used tools when it comes to Deno. If you haven't heard of it, it basically
+    watches your files and reruns your Deno applications as soon as you change anything.
+    It's one of those tools you most likely want to keep on your toolchain while developing
+    with Deno. You can check out their GitHub page at [https://github.com/denosaurs/denon](https://github.com/denosaurs/denon).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Aleph.js
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Even though we don't have space to explore it much here, Deno's capabilities
+    to run on the browser unlock a full set of new functionalities, which has led
+    to initiatives such as Aleph.js. This initiative calls itself the *React framework
+    in Deno*, and it's been getting quite some usage and enthusiasm. If you haven't
+    heard about it, it takes many aspects from the Next.js framework ([https://nextjs.org/](https://nextjs.org/)),
+    implements them in Deno, and adds a few more things. It is quite new but already
+    has features such as server-side rendering, hot module reloading, and filesystem
+    and API routing, among others. You can read more about it at [https://alephjs.org/](https://alephjs.org/).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Nest.land
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Even though Deno has its own registry (which we'll use in the next section),
+    there are still reasons why the community created other registries. Nest.land
+    is one of them; it is a module registry based on blockchain technology that makes
+    sure modules hosted there are not deleted. It is free, decentralized, and works
+    without Git, and is the go-to solution for many package authors. Read more about
+    it at [https://nest.land/](https://nest.land/).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Pagic
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: As static site generators continue to get more and more usage, it was just a
+    matter of time until some of them were made with Deno. That's what Pagic does—it's
+    a static site generator with interesting features such as React, Vue, and M support,
+    among others. It uses convention over configuration, which means it is pretty
+    easy to get your first website running. Read more about it at [https://pagic.org/](https://pagic.org/).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Webview_deno
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: With many of the applications people use nowadays being written in JavaScript
+    and living inside a web view, it was just a matter of time until they arrived
+    on Deno. This module includes a Deno plugin and thus is still considered unstable.
+    However, even though it has limitations and is an ongoing project, it already
+    provides many of the interesting functionalities provided by Electron (the Node.js
+    alternative).
+  prefs: []
+  type: TYPE_NORMAL
+- en: On top of all the aforementioned packages, all the packages mentioned in [*Chapter
+    4*](B16380_04_Final_JM_ePub.xhtml#_idTextAnchor108), *Building a Web Application*,
+    are worth having a look at. They're web frameworks that are evolving fast and,
+    as we explored before, offer different benefits to the developers using them.
+    If you are developing web applications with Deno, make sure you keep an eye on
+    them. Check out their GitHub page at [https://github.com/webview/webview_deno](https://github.com/webview/webview_deno).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Do you think there is still functionality missing on Deno? Have you developed
+    anything that you think would be useful to more people? The core of open source
+    relies on those interesting pieces of software and the people behind them.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Made something you want to share? No worries—we've got you covered. In the next
+    section, you'll learn how can you do it!
+  prefs: []
+  type: TYPE_NORMAL
+- en: Publishing a package to Deno's official registry
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Open source is, at its core, made of people and companies that use free software
+    and have the desire to give back. When you create a piece of code that you think
+    is interesting enough, you most likely want to share it. This is not only a way
+    of helping other people but also a way to improve your own code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Open source and this culture of sharing is what made Deno, Node.js, and many
+    other technologies you probably use a reality. Since this book is all about Deno,
+    it wouldn't make sense to finish it without going over this topic.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Deno has an official module registry that we've used before. This is a place
+    where anyone with a GitHub account can share their own modules with the community,
+    and it provides automation and caching mechanisms to keep different versions of
+    modules.
+  prefs: []
+  type: TYPE_NORMAL
+- en: What we're going to do next is publish a module of our own to this same registry.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We'll use a piece of software that, until now, we made available via the direct
+    link to GitHub. This works but it has neither clear versioning nor any type of
+    cache, making it unusable if the code is deleted from GitHub.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Remember when we used an `AuthRepository` that lived inside a package we called
+    `jwt-auth`? At the time, for practical reasons, we used a direct GitHub link,
+    but from now on we'll publish it in Deno's module registry.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We'll use the exact same code that's hosted on GitHub but publish it with the
+    name of `deno_web_development_jwt_auth`. We're choosing this name to make it very
+    clear that it is part of this book's journey. We also don't want to grab meaningful
+    names from the registry for packages developed for learning purposes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s go! Proceed as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Create a repository for the module you want to publish. As mentioned, we'll
+    be using the `jwt-auth` module from [*Chapter 6*](B16380_06_Final_JM_ePub.xhtml#_idTextAnchor141),
+    *Adding Authentication and Connecting to the Database* ([https://github.com/PacktPublishing/Deno-Web-Development/tree/master/Chapter06/jwt-auth](https://github.com/PacktPublishing/Deno-Web-Development/tree/master/Chapter06/jwt-auth)),
+    but feel free to use any other module of your choice.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Clone the recently created `git` repository by following GitHub''s instructions.
+    Make sure you copy your module''s files to this repository folder, and run the
+    following commands (these are the same as those presented in GitHub''s instructions):'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Go to [https://deno.land/x](https://deno.land/x) and click the **Add a module**
+    button (you might need to scroll a little to find it), as illustrated in the following
+    screenshot:![Figure 10.2 – The Add a module button in the Deno module registry
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '](img/Figure_10.2_B16380.jpg)'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Figure 10.2 – The Add a module button in the Deno module registry
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Input the name of the module in the box that appears and click `deno_web_development_jwt_auth`
+    as the name of the package, but for obvious reasons you can't do the same.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Keep in mind that you should use a testing name if you're publishing a module
+    for testing reasons. We don't want to be using "real" module names with modules
+    used for testing purposes.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: In the next box that appears, choose the directory where the code to be published
+    is living.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: For our module, which will contain the `jwt-auth` code from [*Chapter 6*](B16380_06_Final_JM_ePub.xhtml#_idTextAnchor141),
+    *Adding Authentication and Connecting to the Database*, we'll leave this blank
+    because it is living on the root of the (new) repository created in *Step 1*.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Now, it's just a matter of adding the webhook by following the instructions.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: The Deno module registry uses GitHub webhooks to get updates for a package.
+    These webhooks should be triggered by new branches or tags, and Deno's module
+    registry will then create a version out of those GitHub tags.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'The next instructions are presented on Deno''s page, but I''ll list them here
+    for practical reasons:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: a. Navigate to the repository you want to add on GitHub.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: b. Go to the `https://api.deno.land/webhook/gh/<package_name>` (the package
+    name should be the same as the one you chose in *Step 4*).
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: f. Select `application/json` as the content type.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: g. Select **Let me select individual events**.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: h. Select only the **Branch or tag creation** event.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: i. Press **Add webhook**.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Now, it is just a matter of creating a release, which, as we mentioned, is
+    done via `git` tags. Assuming you have already committed your package''s code
+    in *Step 2*, we just need to create and push this tag, as follows:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'If we now navigate to [https://deno.land/x](https://deno.land/x) and search
+    for the name of your package (`deno_web_development_jwt_auth`, in our example),
+    it should appear there, as you can see in the following screenshot:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '![Figure 10.3 – A published package on Deno''s module registry](img/Figure_10.3_B16380.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Figure 10.3 – A published package on Deno's module registry
+  prefs: []
+  type: TYPE_NORMAL
+- en: And that is it—that is all you need to start sharing your amazing Deno code
+    with the community! From now on, you can not only use Deno to build applications
+    but also create packages and give something back to the community.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This wraps it up for this section and for the book—thanks for keeping up with
+    it and reaching the end. We hope it was useful for you and that it helped you
+    in learning Deno, and also that you are as excited about it as we are.
+  prefs: []
+  type: TYPE_NORMAL
+- en: I'd be very happy to get in touch if you think there's anything I can help on.
+    Feel free to reach me by the contacts present on the book's preface, via GitHub
+    or Twitter.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: First and foremost, thanks to all of you who stayed until the end of the book!
+    I hope it was an interesting journey for you, one that fulfilled your expectations
+    and addressed many of your questions and concerns about Deno.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This is only the start of a (hopefully big) journey. Deno is growing and you're
+    now part of it. The more you use it and contribute back, the more it will get
+    better. If, like me, you believe it offers a lot of benefits that can make it
+    a game changer for writing JavaScript applications, do not wait to share your
+    enthusiasm.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Lots of people like us are helping to push Deno forward, helping communities,
+    developing modules, and opening pull requests. At the end of the day, using it
+    for projects where it is well suited is the best recommendation you can make.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Throughout the book, I not only tried to highlight Deno's advantages but also
+    tried to make it very clear that it is not, and will not be, a silver bullet.
+    It offers a great set of advantages, especially when compared to Node.js, in the
+    same set of use cases (as you can check in [*Chapter 1*](B16380_01_Final_JM_ePub.xhtml#_idTextAnchor014),
+    *What is Deno?*). As we addressed in this chapter, there are many features being
+    added that will enable Deno to be used for more and more use cases, but I am sure
+    that there's a lot to come that we don't even know about.
+  prefs: []
+  type: TYPE_NORMAL
+- en: From here onward, it is all up to you. I hope this book left you excited and
+    that you can't wait to write Deno applications.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The next best step is to write applications yourself. This will lead you to
+    research, talk with people, and solve your own problems. I tried to ease your
+    path forward as much as possible by addressing some of the most common concerns.
+  prefs: []
+  type: TYPE_NORMAL
+- en: I am sure that there are lots of online resources, articles, and books, but
+    the true place to get better with Deno is still the Discord channel and the GitHub
+    repositories. Those are the places where the news comes in firsthand!
+  prefs: []
+  type: TYPE_NORMAL
+- en: I can't wait to see what you'll build next.
+  prefs: []
+  type: TYPE_NORMAL

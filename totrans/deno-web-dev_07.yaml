@@ -1,0 +1,1071 @@
+- en: '*Chapter 5*: Adding Users and Migrating to Oak'
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: At this point, we have laid the foundations for a web application with a structure
+    that will enable us to add more functionalities as we proceed. As you might have
+    guessed by the name of this chapter, we'll start this chapter by adding the middleware
+    framework of our choice to the current web application, Oak.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Together with Oak, and since our application is starting to have more third-party
+    dependencies, we'll use what we've learned in previous chapters to create a lock
+    file and perform integrity checking when installing dependencies. This way, we
+    can guarantee that our applications will run smoothly without dependency problems.
+  prefs: []
+  type: TYPE_NORMAL
+- en: As we get into this chapter, we'll start understanding how to simplify our code
+    using Oak's features. We'll make our routing logic more extendable but also more
+    scalable. Our first solution was to use `if` statements together with the standard
+    library to create a DIY routing solution, which we'll refactor here.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Once we've done this, we'll end up with much cleaner code and be able to use
+    Oak's features, such as automatic content-type definition, handling unallowed
+    methods, and route prefixing.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Then, we''ll add a feature that is crucial in pretty much every application:
+    users. We''ll create a module alongside museums to handle everything that is user-related.
+    In this new module, we''ll develop the business logic to create users, as well
+    as the code to create new users in the database, by using common practices such
+    as hashes and salts.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: While implementing these features, we will get to know other modules provided
+    by Deno, such as the hashing features of the standard library or the crypto APIs
+    that are included in the runtime.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Adding this new module and having it interact with the rest of the application
+    will be a nice way to test the application architecture. By doing this, we'll
+    understand how it scales while keeping everything that is related to a context
+    in a single place.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The following topics will be covered in this chapter:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Managing dependencies and lock files
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Writing a web server with Oak
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Adding users to the application
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Let's get started!
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Technical requirements
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This chapter will build on top of the code we developed in the previous chapter.
+    All the codes files for this chapter are available in this book's GitHub repository
+    at [https://github.com/PacktPublishing/Deno-Web-Development/tree/master/Chapter05/sections](https://github.com/PacktPublishing/Deno-Web-Development/tree/master/Chapter05/sections).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Managing dependencies and lock files
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In [*Chapter 2*](B16380_02_Final_JM_ePub.xhtml#_idTextAnchor056), *The Toolchain*,
+    we learned how Deno enables us to do dependency management. In this section, we'll
+    use it in a more practical context. We'll start by removing all the scattered
+    imports with URLs from our code and move them into a central dependency file.
+    After this, we'll create a lock file that makes sure our still young application
+    runs smoothly anywhere it is installed. We'll finish by learning how can we install
+    the project's dependencies based on a lock file.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using a centralized dependency file
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'In the previous chapter, you probably noticed that we were using direct URLs
+    to dependencies directly in our code. Even though this is possible, this was something
+    we discouraged a few chapters ago. It worked for us in that first phase, but as
+    the application starts growing, we''ll have to manage our dependencies properly.
+    We want to avoid struggles with conflicting dependency versions, typos in the
+    URLs, and having dependencies scattered across files. To solve this, we must do
+    the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Create a `deps.ts` file at the root of the `src` folder.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: This file can have whatever name you prefer. We're currently calling it `deps.ts`
+    as it is what is mentioned in Deno's documentation, and it's the naming convention
+    many modules use.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Move all the external dependencies from our code to `deps.ts`.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Currently, the only dependency we have is the HTTP module from the standard
+    library, which can be found in the `src/web/index.ts` file.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Move the import into the `deps.ts` file and change `import` to `export`:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Notice how the fixed version is on the URL:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: This is how versioning works in Deno, as we learned in [*Chapter 2*](B16380_02_Final_JM_ePub.xhtml#_idTextAnchor056),
+    *The Toolchain*.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: We now need to change the dependent files so that they import directly from
+    the `deps.ts` file instead of being directly imported from the URL.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'In `src/web/index.ts`, import the `serve` method from `deps.ts`:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: By having a centralized dependency file, we also have an easy way to make sure
+    we have all our dependencies locally downloaded without having to run any code.
+    With this, we now have a single file where we can run the `deno cache` command
+    (mentioned in [*Chapter 2*](B16380_02_Final_JM_ePub.xhtml#_idTextAnchor056), *The
+    Toolchain*).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Creating a lock file
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Having centralized our dependencies, we need to guarantee that whoever installs
+    the project is getting the same versions of the dependencies we did. This is the
+    only way we can guarantee that the code will run in the same way. We'll do this
+    by using a lock file. We learned how to do this in [*Chapter 2*](B16380_02_Final_JM_ePub.xhtml#_idTextAnchor056),
+    *The Toolchain*; here, we'll apply it to our application.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s run the `cache` command with the `lock` and `lock-write` flags, plus
+    a path to the lock file and a path to the centralized dependencies file, `deps.ts`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: A `lock.json` file should be generated in the current folder. If you open it,
+    it should contain a key-value pair of the URL, as well as the hash that's used
+    for performing integrity checks.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This lock file should then be added to version control. Later, if a coworker
+    wants to install this same project, they just have to run the same command without
+    the `--lock-write` flag:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: With that, the dependencies in `src/deps.ts` (this should be all of them) will
+    be installed and have their integrity checked according to the `lock.json` file.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now, every time we install a new dependency in the project, we must run the
+    `deno` `cache` command with the `lock` and `lock-write` flags, to make sure the
+    lock file is updated.
+  prefs: []
+  type: TYPE_NORMAL
+- en: That's pretty much it for this section!
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this section, we learned a simple but very important step in making sure
+    an application runs smoothly. This helps us avoid future hairy problems such as
+    dependency conflicts and mismatches in behavior across versions. We're also guaranteeing
+    resource integrity, something that is even more important in Deno, since its dependencies
+    are hosted in a URL instead of a registry.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the next section, we'll start *refactoring* our application from the standard
+    library HTTP server into Oak, which will result in our web code being simplified.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Writing a web server with Oak
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: At the end of the previous chapter, we looked at different web libraries. After
+    a brief analysis, we ended up choosing Oak. In this section, we'll rewrite part
+    of our web application so that we can use it instead of the HTTP module from the
+    standard library.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let's open `src/web/index.ts` and start tackling it step by step.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Following Oak''s documentation ([https://deno.land/x/oak@v6.3.1](mailto:https://deno.land/x/oak@v6.3.1)),
+    the only thing we''ll need to do is instantiate the `Application` object, define
+    a middleware, and call the `listen` method. Let''s do it:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Add Oak''s import to the `deps.ts` file:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: If you are using VSCode, then you've probably noticed that there is warning
+    saying that it couldn't find this version of the dependency locally.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Let's run the commands from the previous section to download it and add it to
+    the lock file.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Do not forget to do this every time we add a dependency so that we have better
+    autocompletion and our lock file is always updated:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: With all the necessary dependencies downloaded, let's start using them in our
+    code.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Delete all the code from the `createServer` function in `src/web/index.ts`.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Inside `src/web/index.ts`, import the `Application` class and instantiate it.
+    Create a very simple piece of middleware (as mentioned in the documentation) and
+    call the `listen` method:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Keep in mind that, while removing the old code, we also removed `console.log`
+    and thus it will not print anything just yet. Let''s run it and verify that it
+    has no problems:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: Now, if we access `http://localhost:8080`, we'll see the "Hello World!" response
+    there.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now, you might be wondering what the `use` method from Oak's application is.
+    Well, we'll be using this method to define middleware. For now, we just want it
+    to modify the response and add a message to its body. In the next chapter, we'll
+    learn about middleware functions in more depth.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Remember when we've removed `console.log` and that we don't get any feedback
+    if the application is running? We'll learn how to do this while we learn about
+    how to add event listeners to an Oak application.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Adding event listeners to an Oak application
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: So far, we've managed to get the application to run, but at the moment, we don't
+    have any message to acknowledge this. We'll use this as an excuse to learn about
+    event listeners in Oak.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Oak applications dispatch two different types of events. One of them is `listen`,
+    while the other is `the listen event` is the one we'll use to log to the console
+    when an application is running. The other, `error`, is the one we'll use to log
+    to the console when an error occurs.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'First, let''s add the event listener for the `listen` event, before the `app.listen`
+    statement:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: Note that we're not only printing a message to the console but also printing
+    `hostname` from the event and sending it a default value, in case it is undefined.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'For safety and to guarantee that we catch any unexpected errors, let''s also
+    add an error event listener. This error event will be triggered in case an error
+    that hasn''t been handled occurs in our application:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: These handlers, especially the `error` one, will help us a lot when we're developing
+    and want to gather quick feedback about what's happening. Later, when closer to
+    the production stage, we'll add proper logging middleware.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Now, you might be thinking that we''re still missing the functionality we had
+    when we started this chapter, and you''d be right: we''ve removed the endpoint
+    that listed all the museums from our application.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let's add it again and learn how can we create routes in an Oak application.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Handling routes in an Oak application
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Oak provides another object, alongside the `Application` class, that allows
+    us to define routes – the `Router` class. We'll use this to reimplement the route
+    we had before, which listed all the museums in the application.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s create it by sending the prefix property to the constructor. Doing this
+    means that all the routes defined there will be prefixed with that path:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Now, let''s get back our functionality, which returns the list of museums via
+    a `GET` request to `/api/museums`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: A few things are happening here.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Here, we're defining a route using Oak's router API by sending a URL and a handler
+    function. Our handler is then called with a context (`ctx`) object. All of this
+    is explained in detail in Oak's documentation ([https://doc.deno.land/https/deno.land/x/oak@v6.3.1/mod.ts#Router](mailto:https://doc.deno.land/https/deno.land/x/oak@v6.3.0/mod.ts#Router)),
+    but I'll leave you with a short resume.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In Oak, everything that a handler can do is done through the context object.
+    The request that's made is available in the `ctx.request` property, while the
+    response for the current request is available in `ctx.response`. Things such as
+    headers, cookies, parameters, the body, and so on are available in those objects.
+    Some properties, such as `ctx.response.body`, are writable.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'You can get a better overview of Oak''s functionality by looking at Deno''s
+    documentation website: [https://doc.deno.land/https/deno.land/x/oak@v6.3.1/mod.ts](mailto:https://doc.deno.land/https/deno.land/x/oak@v6.3.0/mod.ts).'
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this case, we're using the response body property to set its content. When
+    Oak can infer the response's type (which is JSON here), it automatically adds
+    the correct `Content-Type` header to the response.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We'll be learning more about Oak and its features throughout this book. The
+    next step is to connect our recently created router.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Connecting the router to the application
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Now that our router is defined, we need to register it on the application so
+    that it can start handling requests.
+  prefs: []
+  type: TYPE_NORMAL
+- en: To do that, we'll use a method of the application instance we've used previously
+    – the `use` method.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In Oak, once a `Router` has been defined (and its registered), it provides
+    two methods that return middleware functions. These functions can then be used
+    to register routes on the application. They are as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`routes`: Registers the registered route handlers in the application.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`allowedMethods`: Registers automatic handlers for the API calls of methods
+    that are not defined in the router, returning a `405 – Not allowed` response.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'We''ll use both of them to register our router in the main application, as
+    follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: And with this, our router registers its handlers in the application, and they
+    are ready to start handling requests.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Keep in mind that we have to register these before the Hello World middleware
+    we defined earlier. If we don't do this, the Hello World handler will respond
+    to all the requests before they reach our router, and thus it will not work.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Now, we can run our application by running the following command:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Then, we can perform a `curl` to the URL:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: As we can see, everything is working as expected! We've managed to migrate our
+    application to Oak.
+  prefs: []
+  type: TYPE_NORMAL
+- en: By doing this, we've vastly improved the readability of our code. We also used
+    Oak to handle stuff we didn't wanted to deal with, and we managed to focus on
+    our application.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the next section, we will add the concept of users to the application. More
+    routes will be created, as well as a whole new module and some business logic
+    to handle users.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs: []
+  type: TYPE_NORMAL
+- en: The code from this chapter is available, separated by sections, at [https://github.com/PacktPublishing/Deno-Web-Development/tree/master/Chapter05/sections](https://github.com/PacktPublishing/Deno-Web-Development/tree/master/Chapter05/sections).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now, let's add some users to the application!
+  prefs: []
+  type: TYPE_NORMAL
+- en: Adding users to the application
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: We currently have the first endpoint running and listing all the museums in
+    the application, but we're still far from meeting the final requirements.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We want to add users so that it is possible to register, log in, and interact
+    with the application with an identity.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We'll start by creating the object that will define the user, and then proceed
+    into the business logic to create and store it. After this, we'll create endpoints
+    that will allow us to interact with the application via HTTP, thus allowing users
+    to register.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Creating the user module
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'We currently have what we can call a single "module" in the application: the
+    `museums` module. Everything that is related to museums is there, from controllers
+    to repositories, object definitions, and so on. This module has one single interface,
+    which is its `index.ts` file.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: We did this so that we have the freedom of working inside the module while maintaining
+    its external API so that it's always stable. This gives us a nice degree of decoupling
+    between modules. To make sure that the pieces inside a module are reasonably decoupled,
+    we must also inject their dependencies via a constructor, allowing us to easily
+    swap pieces and test them in isolation (as you'll see in [*Chapter 8*](B16380_08_Final_JM_ePub.xhtml#_idTextAnchor178),
+    *Testing – Unit and Integration*).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Following those guidelines, we''ll keep using this "modules" system and create
+    one for our users by following these steps:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Create a folder named `src/users` and put the `index.ts` file inside it.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Create the `src/users/types.ts` file. This is where we''ll define the `User`
+    type:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Our user object will be very simple: it will have a `username`, a `createdAt`
+    date, and then two properties: `hash` and `salt`. We''ll use these to safeguard
+    the user''s password when we store it.'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Create the user controller in `src/users/controller.ts` with a `register` method.
+    It should receive a username and a password, and then create a user in the database:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Define `RegisterPayload` in `src/users/types.ts` and export it in `src/users/index.ts`,
+    removing it from `src/users/controller.ts`
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Inside `src/users/types.ts`, add the following:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Inside `src/users/index.ts`, add the following:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Let's stop here for now and think about the register logic.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: To create a user, we must check if that user exists in the database. If they
+    don't, we'll create them with the username and password that was entered, and
+    then return an object that doesn't contain sensitive data.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: In the previous chapter, we used the repository pattern every time we wanted
+    to interact with a data source. The repository kept all the *data accessing* logic
+    (`src/museums/repository.ts`).
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Here, we''re going to do the same. We''ve already noticed that our controller
+    needs to call two methods in `UserRepository`: one to check if a user exists and
+    another to create the user. That''s the interface we''re going to be defining
+    next.'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Go to `src/users/types.ts` and define the interface for `UserRepository`:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Note how we created a `CreateUser` type that contains all the properties of
+    `User` except for `createdAt`, which should be added by the repository.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: With the `UserRepository` interface defined, we can now move on to our user's
+    controller and make sure it receives an instance of the repository in the constructor.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'In `src/users/controller.ts`, create a `constructor` that receives the user
+    repository as an injected parameter and sets the class property with the same
+    name:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE21]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Write the logic for the `register` method, check if the user exists, and create
+    them if not:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE22]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Create a type called `UserDto` in `src/users/types.ts` that defines the format
+    of the `User` object without sensitive data:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE23]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Create a file called `src/users/adapter.ts` with a function called `userToUserDto`
+    inside it that converts a user into a `UserDto`:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE24]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Use the recently created function in the register method to make sure we''re
+    returning a `UserDto`:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE25]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: With that, the `register` method is complete!
+  prefs: []
+  type: TYPE_NORMAL
+- en: We're currently sending the hash and salt as two plain strings that don't mean
+    anything.
+  prefs: []
+  type: TYPE_NORMAL
+- en: You might be wondering why we don't send the password directly. This is because
+    we want to make sure we're not storing passwords in plain text in any database.
+  prefs: []
+  type: TYPE_NORMAL
+- en: To make sure we're following the best practices, we will use hashing and salting
+    to store the users' password in the database. While doing that, we also want to
+    learn about a couple more Deno APIs. That's what we'll do in the next section.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Storing a user in the database
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Even though we're using an in-memory database, we've decided that we won't store
+    the passwords in plain text. Instead, we'll use a common method to store passwords
+    called hashing and salting. If you are not familiar with it, auth0 has a great
+    article on it that I definitely recommend ([https://auth0.com/blog/adding-salt-to-hashing-a-better-way-to-store-passwords/](https://auth0.com/blog/adding-salt-to-hashing-a-better-way-to-store-passwords/)).
+  prefs: []
+  type: TYPE_NORMAL
+- en: The pattern itself is not complicated, and you can learn it just by following
+    the code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: So, what we will do is store our password hashed. We won't be storing the exact
+    hashed password the user entered, but the password plus a randomly generated string,
+    called a salt. This salt will then be stored alongside the password so that it
+    can be used later. After this, we will never need to decode the password again.
+  prefs: []
+  type: TYPE_NORMAL
+- en: With the salt, any time we want to check if a password is correct, we just have
+    to add the salt to whatever password the user entered, hash it, and verify that
+    the output matches what is stored in the database.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'If this still seems strange to you, I can guarantee it becomes much simpler
+    when you look at the code. Let''s implement these functions by following these
+    steps:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Create a utils file called `src/users/util.ts` with a `hashWithSalt` function
+    inside it that hashes a string with the provided salt:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE26]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: It should be clear by now that this function will return a string that is the
+    `hash` value of the provided string, plus a `salt`.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: It's also considered a best practice (as mentioned in the article mentioned
+    previously) to use different salts for different passwords. By generating a different
+    `salt` for each password, we ensure all the passwords are still safe if one password's
+    salt is leaked.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Let's proceed by creating a function that will generate a `salt`.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Create a `generateSalt` function using the `crypto` API ([https://doc.deno.land/builtin/stable#crypto](https://doc.deno.land/builtin/stable#crypto))
+    to get random values and generate a salt string from there:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE27]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: And that's all we need to generate hashed passwords for our application.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Now, we can start using the utility functions we just created in our controller.
+    Let's create a method so that we can hash our password there.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Create a private method inside `UserController` called `getHashedUser` that
+    receives a username and password and returns a user, along with their hash and
+    salt:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE28]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Use the recently created `getHashedUser` method in the `register` method:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE29]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: And we're done! With that, we've made sure that we aren't storing any plain
+    text passwords. In the path, we learned about the `crypto` APIs available in Deno.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We did all of this implementation while using on the `UserRepository` interface
+    that we defined previously. However, currently, we don't have a class that implements
+    it, so let's create one.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Creating the user repository
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'In the previous section, we created the interface that defined `UserRepository`,
+    so next, we''re going to create a class that implements it. Let''s get started:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Create a file called `src/users/repository.ts` with an exported `Repository`
+    class inside it:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE30]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: The interface guarantees that these two public methods need to exist.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Now, we need a way to store the users. For the purpose of this chapter, we'll
+    use an in-memory database again, very similar to what we did with our museums.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Create a property inside the `src/users/repository.ts` class called `storage`.
+    It should be a JavaScript Map, and it will work as the users'' database:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE31]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: With the database in place, we can now implement the logic for the two methods.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Get the user from the database in the `exists` method, returning `true` if
+    it is there and `false` if not:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE32]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: The `Map#get` function returns undefined if it can't get the record, so we're
+    converting it into a Boolean to make sure it always returns true or false.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: The `exists` method is quite simple; it just needs to check whether the user
+    is present in the database and a `boolean` is returned accordingly.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: To create a user, we need do perform one or two steps more than that. More than
+    just creating it, we'll have to ensure it also adds a `createdAt` date to the
+    user that's sent by whoever is calling this function.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Now, let''s go back and complete our main task: creating a user in the database.'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Open the `src/users/repository.ts` file and implement the `create` method, creating
+    a `user` object in the proper format.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Remember to add `createdDate` to the `user` object that was sent to the function:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[PRE33]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: And with that, our repository is complete!
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: It fully implements what we previously defined in the `UserRepository` interface
+    and is ready to be used.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: The next step is to wire all these pieces together. We've already created the
+    `User` controller and the `User` repository, but they're still not being used
+    anywhere.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Before we proceed, we need to expose these objects from the user module to the
+    outside world. We'll follow the rule we defined previously; that is, the modules
+    interface will always be an `index.ts` file at its root.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Open `src/users/index.ts` and export the `Controller`, the `Repository` classes,
+    and their respective types from the module:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE34]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: We can now make sure that every file in the user module is importing types directly
+    from this file (`src/users/index.ts`) instead of going directly to other files.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Now, any module that wants to import stuff from the user module must do so through
+    the `index.ts` file. Now, we can start to think about how the user will interact
+    with the business logic we just wrote. Since we're building an API, we'll learn
+    how to expose it via HTTP in the next section.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Creating the register endpoint
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: With the business logic and data accessing logic ready, the only thing missing
+    is the endpoint that the user can call to register itself.
+  prefs: []
+  type: TYPE_NORMAL
+- en: For the register request, we'll implement a `POST /api/users/register` expecting
+    a JSON object with a property named `user` containing two properties, `username`
+    and `password`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The first thing we''ll have to do is declare that our `createServer` function
+    in `src/web/index.ts` will depend on the `UserController` interface to be injected.
+    Let''s get started:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In `src/users/types.ts`, create the `UserController` interface. Make sure it
+    is also exported in `src/users/index.ts`:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE35]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Now, just to keep things tidy, go to `src/users/controller.ts` and make sure
+    that the class implements `UserController`:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE36]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Back inside `src/web/index.ts`, add `UserController` to the `createServer`
+    dependencies:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE37]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: We're now ready to create our register handler.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Create a handler that responds to a `POST` request in `/api/users/register`
+    and creates a user using the injected controller''s `register` method:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE38]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: This should be enough for the web layer to be able to answer our request perfectly.
+    Now, we just need to connect everything together.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Wiring the user controller with the web layer
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We have created the fundamental pieces of the application. There's the business
+    logic, there's the data accessing logic, and there's the web server to handle
+    the request. The only thing that is missing is something that connects them. In
+    this section, we'll instantiate the actual implementations of the interfaces we've
+    defined and inject them into the content that's expecting them.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Go back into `src/index.ts`. Let's do something similar to what we did with
+    the `museums` module. Here, we'll import the user repository and controller, instantiate
+    them, and send the controller to the `createServer` function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Follow the steps to do so:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In `src/index.ts`, import the user `Controller` and `Repository` from the user
+    module and instantiate them, sending the necessary dependencies while doing so:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE39]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Send the user controller to the `createServer` function:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE40]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'And with that, we''re done! To finish this, let''s run our application by running
+    the following command:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE41]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Now, let''s test the registered endpoint by making a request to `/api/users/register`
+    with `curl`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE42]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'As we can see, it''s working and returning the contents of `UserDto`. Our main
+    objective for this chapter has been achieved: we''ve created the user module and
+    added an endpoint to register a user!'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Our application went through a big change in this chapter!
+  prefs: []
+  type: TYPE_NORMAL
+- en: We started by migrating our application from the standard library HTTP module
+    to Oak. Not only did we migrate the logic to serve the app, but we also started
+    to define some routes using Oak's router. We noticed that the application logic
+    started to become simpler as Oak encapsulated part of the job that was done manually
+    previously. We managed to migrate all the HTTP code from the standard library
+    without having to change the business logic, which is a very good sign that we're
+    doing well in terms of application architecture.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We kept moving and learned how to listen and handle events in an Oak application.
+    As we started writing more code, we also became more familiar with Oak, understanding
+    its functionalities, exploring its documentation, and experimenting with it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Users are an important part of any application and with that in mind, we also
+    spent a big part of this chapter focusing on them. We not only added users to
+    our application but added it as a separate, self-contained module, alongside museums.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Once we'd developed the business logic for registering a user in the application,
+    the need for a persistency layer for it was imminent. This meant we had to develop
+    a user repository, which is responsible for creating users in the database. Here,
+    we dived a little deeper and implemented a hash and salt mechanism to store the
+    user's password on the database securely, while learning about a few Deno APIs
+    in the process.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'With the user business logic complete, we moved on to the part that was missing:
+    the HTTP endpoint. We added the register route to our HTTP router and got everything
+    set up with the help of Oak.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: To wrap things up, we wired everything up again using dependency injection.
+    Since all our modules' dependencies were based on interfaces, we easily injected
+    the needed dependencies and got our code to work.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This chapter was a journey toward making our application more scalable and readable.
+    We started by removing our DIY router code and moving it into Oak, and ended by
+    us adding one big and important *business* entity – users. The latter also worked
+    as a test for our architecture and to demonstrate how it can scale with different
+    business domains.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the next chapter, we'll keep iterating on the application by adding some
+    interesting features. By doing this, we will complete the functionality we created
+    here, such as user login, authorization, and persistence in a real database. Otherthings
+    we'll tackle will include common API practices, such as basic logging and error
+    handling.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Excited? So are we – let's go!
+  prefs: []
+  type: TYPE_NORMAL

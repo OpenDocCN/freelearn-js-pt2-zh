@@ -1,0 +1,975 @@
+- en: '*Chapter 9*: Deploying a Deno Application'
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Deployment is a crucial part of any application. We might build a great application,
+    follow best practices, and write tests, but at the end of the day, when it gets
+    to the user, this is where it will prove its value. As we want this book to be
+    a journey through all the different phases of an application, we'll use this chapter
+    about application deployment to close the cycle.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note that we didn't—and will not—mention deployment as the final phase of software
+    development, but as one phase of a cycle that will run multiple times. We truly
+    believe that deployments shouldn't be events that everyone is afraid of. Rather,
+    we see them as exciting moments whereby we're shipping features to our users.
+    That's how most companies look at deployments in modern software projects, and
+    we're true advocates of that. Deployments should be something regular, automated,
+    and easy to do. They're the first step in getting features to our users, not the
+    final step.
+  prefs: []
+  type: TYPE_NORMAL
+- en: To enable this type of agility of processes and speed of iteration in applications,
+    this chapter will focus on learning about containers and how to deploy a Deno
+    application using them.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We'll take advantage of the benefits of containerization to create an isolated
+    environment to install, run, and distribute our application.
+  prefs: []
+  type: TYPE_NORMAL
+- en: As the chapter proceeds, we will learn how to use Docker together with `git`
+    to create an automated workflow to deploy our Deno application in a cloud environment.
+    Then, we'll tweak the way our application loads configurations to support having
+    different configurations depending on the environment.
+  prefs: []
+  type: TYPE_NORMAL
+- en: By the end of this chapter, we'll have the application running in a cloud environment
+    and an automated process in place that enables us to ship iterations of it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In this chapter, you''ll get comfortable with the following topics:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Preparing the environment for the application
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Creating a `Dockerfile` for the Deno application
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Building and running the application in Heroku
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Configuring the application for deployment
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Technical requirements
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'The code used in this chapter can be found at the following GitHub link:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[https://github.com/PacktPublishing/Deno-Web-Development/tree/master/Chapter09](https://github.com/PacktPublishing/Deno-Web-Development/tree/master/Chapter09)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Preparing the environment for the application
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The environment where an application runs always has a big impact on it. It
+    is one of the big causes of the so-common statement, *"it works on my machine"*.
+    Over the years, developers have been creating solutions that try to minimize this
+    as much as possible. These solutions can go from automatically provisioning new
+    clean instances for the application to run, to creating more complete packages
+    where everything the application depends on is included.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We can refer to **virtual machines** (**VMs**) or containers as ways to achieve
+    this goal. Both are different solutions to the same problem but have one big thing
+    in common: resource isolation. Both try to isolate an application from the environment
+    around it. There are many reasons for this, from security, to automation, to reliability.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Containers are a modern way of providing a package for an application. Modern
+    software projects use them to provide a single container image that has pretty
+    much all it takes for an application to run.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'If you''re not aware of what a container is, I''ll provide you with a definition
+    from Docker''s (a container engine) official website:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*"A container is a standard unit of software that packages up code and all
+    its dependencies so the application runs quickly and reliably from one computing
+    environment to another."*'
+  prefs: []
+  type: TYPE_NORMAL
+- en: In our path to make our application easily deployable, we will create this layer
+    of isolation for our Deno application using Docker.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The end goal is to create an image that developers can use to deploy and test
+    a specific version of the application. To do this with Docker, we need to configure
+    the runtime where our application will run. This is defined in a file called a
+    `Dockerfile`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: That's what we'll learn about next.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Creating a Dockerfile for the Deno application
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: A `Dockerfile` will allow us to specify what is required to create a new Docker
+    image. This image will provide an environment containing all dependencies of the
+    application, which can be used both for development purposes and for production
+    deployments.
+  prefs: []
+  type: TYPE_NORMAL
+- en: What we'll do in this section is learn how to create a Docker image for the
+    Deno application. Docker provides a base image that is pretty much just the container
+    runtime with isolation, called `alpine`. We could use that image, configure it,
+    install all the tools and dependencies we need (namely Deno), and so on. However,
+    I believe that we shouldn't be reinventing the wheel here, thus we're using a
+    community Docker image.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Even though this image solves many of our problems, we still need to tweak it
+    to our use case. Dockerfiles can be composed, which means they can extend other
+    Docker images' functionality, and that's what we'll use.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Important note
+  prefs: []
+  type: TYPE_NORMAL
+- en: As you might imagine, we'll not go deep in the fundamentals of Docker, as that
+    would be a book in itself. If you're interested in Docker, you can start with
+    the *Getting started* guide on the official documentation ([https://docs.docker.com/get-started/](https://docs.docker.com/get-started/)).
+    However, don't worry if you aren't currently very comfortable with Docker as we'll
+    explain it enough for you to understand what we're doing here.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Before we start, make sure you install Docker Desktop on your machine by following
+    the steps listed in the following link: [https://docs.docker.com/get-docker/](https://docs.docker.com/get-docker/).
+    After you have installed and started it, we have everything it takes to create
+    our first Docker image! Let''s create it by following these steps:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Create a `Dockerfile` at the root of our project.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: As mentioned, we'll use an image from the community that already has Deno installed—`hayd/deno`
+    ([https://hub.docker.com/r/hayd/deno](https://hub.docker.com/r/hayd/deno)).
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'This image is versioned in the same way as Deno, thus we''ll use version `1.7.5.`
+    The `FROM` command from Docker allows us to extend an image, specifying its name
+    and version tag, as illustrated in the following code snippet:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: The next thing we need to do is to define, inside the container, the folder
+    we'll be working on.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Docker containers provide a Linux filesystem, and the default `workdir` is
+    the root of it (`/`). The `WORKDIR` command from Docker will allow us to work
+    from a folder inside this same filesystem, making things a little bit tidier.
+    The command can be seen here:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Now, we''ll need to copy some files into our container image. With the help
+    of the `COPY` command, we''ll copy only the files we need for the installation
+    step. In our case, these are the `src/deps.ts` and `lock.json` files, as illustrated
+    in the following snippet:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Having the files inside the container, we now need to install the application
+    dependencies. We''ll use `deno cache` to do this, as follows:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Dependencies installed, we now need to copy the application''s code into the
+    container. One more time, we''ll use Docker''s `COPY` command for that, as shown
+    here:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'The last thing we''ll need to do for our image to work out of the box is introduce
+    a command that will run whenever someone "executes" this image. We''ll use Docker''s
+    `CMD` command to do this, as illustrated in the following snippet:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: This command takes an array of commands and parameters that will be executed
+    when someone tries to run our image.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: And that should be all we need to define our Deno application's Docker image!
+    Having these capabilities in place will enable us to run our code locally in the
+    same way it runs in production, a great advantage when it comes to debugging and
+    investigating production issues.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The only thing we're missing is the actual step to generate the artifact.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We''ll use the `build` command from the Docker `-t` flag to set the tag. Follow
+    these steps to generate the artifact:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Inside the project folder, run the following command to generate the tag for
+    the image:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: museums-api:0.0.1. We could now publish it in a private image registry or use
+    a public one such as Docker Hub. The continuous integration (CI) pipeline we'll
+    set up later will be configured to perform this build step automatically.What
+    we can do now is run this image locally to verify that everything is working as
+    expected.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: To run the image locally, we'll use the Docker CLI `run` command.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'As we''re dealing with a web application, we need to expose the port it is
+    running on (set in the application''s `configuration` file). We''ll tell Docker
+    to bind the container port to our machine''s port by using the `-p` flag, as illustrated
+    in the following code snippet:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: We'll later use this image definition in a CI system that will create an image
+    whenever the code changes and push it to production.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Having a Docker image containing an application can serve multiple purposes.
+    One of them is this chapter''s objective: deploying it; however, this same Docker
+    image can also be used to run and debug an application at a specific version.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let's learn how we can run a Terminal in a specific version of an application,
+    a very common debug step.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Running a Terminal inside a container
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Another useful thing we can do with a Docker image is execute a Terminal inside
+    of it. This might be useful for debugging purposes or to try out something in
+    a specific version of an application.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We can do that by using the same command as previously, together with a couple
+    of different flags.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We''ll use the `-it` flag, which will allow us to have an interactive connection
+    to a Terminal inside the image. We''ll also send, as a parameter, the name of
+    the command we want to execute first inside the image. In this case it is `sh`,
+    the standard Unix shell, as you can check in the following example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This will run the `museums-api:0.0.1` image, bind its `8080` port to the `8080`
+    port on the host machine, and execute the `sh` command inside of it with an interactive
+    Terminal, as illustrated in the following code snippet:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: Note that the folder where the shell is initially open is the one we've defined
+    as our `WORKDIR` and that all our files are there. In the preceding example, we're
+    also executing the `ls` command.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'As we have an interactive shell attached to this container, we can use it to
+    run a Deno command, for instance, as illustrated in the following code snippet:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: This enables a full set of possibilities in terms of development and debugging,
+    as we'll have the ability to check how the application is running in a specific
+    version.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We've got to the end of this section. Here, we have explored containerization,
+    introducing Docker and how it enables us to create an "application package". This
+    package will take care of the environment around the application, making sure
+    that it will run wherever there's a Docker runtime.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the next section, we'll be using this same package to deploy an image we
+    built locally in a cloud environment. Let's go!
+  prefs: []
+  type: TYPE_NORMAL
+- en: Building and running the application in Heroku
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: As we mentioned when the chapter started, our initial objective was to have
+    an easy, automated, and replicable way to deploy the application. In the previous
+    section, we created our container image that will work as a basis for that. The
+    next step is to create the pipeline that builds and deploys our code anytime there's
+    an update. We'll use `git` as our source of truth and mechanism to trigger the
+    pipeline builds.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The platform where we'll deploy our code is Heroku. This is a platform that
+    aims to simplify tasks for developers and companies in the deployment process
+    by providing a set of tools that removes common obstacles, such as provisioning
+    machines and setting up big CI infrastructures. By using a platform such as this,
+    we can be more focused on the application and on Deno, which is the purpose of
+    this book.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Here, we'll use the `Dockerfile` that we previously created and set it up so
+    that it is deployed and runs on Heroku. We'll see how easy it is to set up an
+    application to run there, and later we'll also explore how we can define configuration
+    values via environment variables.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Before we start, make sure you''ve created an account and installed the Heroku
+    CLI before we proceed to the step-by-step guide, by following the two links provided
+    here:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Create an account: [https://signup.heroku.com/dc](https://signup.heroku.com/dc).'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Install the CLI: [https://devcenter.heroku.com/articles/heroku-cli](https://devcenter.heroku.com/articles/heroku-cli).'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Now that we have created an account and installed the CLI, we can start to set
+    up our project in Heroku.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Creating the application in Heroku
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Here, we will go through the steps needed to authenticate and create the application
+    in Heroku. We're almost ready to start, but there's another thing we have to make
+    clear first.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Important note
+  prefs: []
+  type: TYPE_NORMAL
+- en: As Heroku uses `git` as source of truth, you'll *not* be able to do the following
+    procedure inside the book's files repository, as it is already a Git repository
+    containing multiple stages of the application.
+  prefs: []
+  type: TYPE_NORMAL
+- en: What I recommend you do is copy the application files to a different folder,
+    *outside the book's repository*, and start the process from there.
+  prefs: []
+  type: TYPE_NORMAL
+- en: You can copy the latest version of the working application from [*Chapter 8*](B16380_08_Final_JM_ePub.xhtml#_idTextAnchor178),
+    *Testing – Unit and Integration* ([https://github.com/PacktPublishing/Deno-Web-Development/tree/master/Chapter08/sections/7-final-tested-version/museums-api](https://github.com/PacktPublishing/Deno-Web-Development/tree/master/Chapter08/sections/7-final-tested-version/museums-api)),
+    which is the one we'll use here.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Now that the files are copied into a new folder (outside the main repository),
+    let''s deploy the `Dockerfile` and run it on Heroku by following these steps:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The first thing we''ll do is log in with the CLI, running `heroku login`. This
+    should open a browser window where you can insert your username and password,
+    as illustrated in the following code snippet:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'As Heroku deployments are based on `git`, and since we''re now in a folder
+    that is not a Git repository, we''ll need to initialize it, as follows:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Then, we will create our application in Heroku by using `heroku create`, as
+    follows:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: If you go to the Heroku Dashboard after running the preceding commands, you'll
+    notice there's a new application living there. When the application is created,
+    Heroku prints a URL on the console; however, as we haven't configured anything,
+    our application is not available yet.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The next thing we'll need to do it to configure Heroku so that it knows it should
+    build and execute our image in every deployment.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Building and running the Docker image
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: By default, Heroku just tries to make your application available by running
+    the code. This is possible to do with many languages and you'll find guides for
+    it in the Heroku documentation. As we want to use a container to run our application,
+    the process needs a little more configuration.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Heroku provides a set of features that allow us to define what happens when
+    there are changes in the code, via a file named `heroku.yml`. That''s what we''ll
+    create now, as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Create a `heroku.yml` file at the root of your repository and add the following
+    lines of code there so that it builds our image using Docker, using the `Dockerfile`
+    we created in the previous section:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Now, in the same file, add the following lines of code to define the command
+    that will be executed by Heroku to run the application:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'The next thing we''ll have to do is to set the application type to `container`,
+    informing Heroku that''s how we want this application to run. The code for this
+    is shown in the following snippet:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Add all the files to make sure that `git` is tracking them:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Commit all the files with a message, as follows:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Now, it's a matter of pushing the files to the `heroku` remote.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'This should trigger the build process of the Docker image, as you can check
+    in the logs. This image is then pushed into Heroku''s internal image registry
+    in the last phase, as illustrated in the following code snippet:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'remote: === Pushing web (Dockerfile)'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'remote: Tagged image "5c154f3fcb23f3c3c360e16e929c22b62847fcf8" as "registry.heroku.com/boiling-dusk-18477/web"'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'remote: Using default tag: latest'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'remote: The push refers to repository [registry.heroku.com/boiling-dusk-18477/web]'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'remote: 6f8894494a30: Preparing'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'remote: f9b9c806573a: Preparing'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[PRE21]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Remember that our application depends on the configuration, and that part of
+    the configuration is coming from the environment. There's no way Heroku couldn't
+    have known which configuration values we needed. There are still some settings
+    we need to configure to get our application working, and that's what we'll do
+    next.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Configuring the application for deployment
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: We now have an application that, when code is pushed to `git`, starts the process
+    of building an image and deploying it. Our application currently gets deployed
+    but it's not actually working, and this is happening because it is lacking configuration.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The first thing you probably noticed is that our application is always loading
+    the configuration file from development, `config.dev.yml`, and it shouldn't.
+  prefs: []
+  type: TYPE_NORMAL
+- en: When we first implemented this, we thought that different environments would
+    have different configurations, and we were right. At the time, we didn't need
+    to have configurations for more than one environment, and we used `dev` as a default.
+    Let's fix that.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Remember that when we created the function that loads the configuration, we
+    explicitly used an argument for the environment? We didn't use it at the time,
+    but we left a default value.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Look at the following code snippet from `src/config/index.ts`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE22]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'What we''ll need to do is change this so that it supports multiple environments.
+    So, let''s do that by following these steps:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Go back into `src/index.ts` and make sure we''re sending the environment variable
+    named `DENO_ENV` to the `load` function, as illustrated in the following code
+    snippet:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE23]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Create the production configuration file, `config.production.yml`.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'For now, it shouldn''t be much different than `config.dev.yml`, with the exception
+    of the `port`, for now. Let''s get it running at port `9001` in production, as
+    follows:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[PRE24]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'To test this locally, we can run the application with the `DENO_ENV` variable
+    set to `production`, like this:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[PRE25]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: With what we just implemented, we're now able to control which configuration
+    values are loaded based on the environment. This is something we already tested
+    locally, but something we haven't done on Heroku.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We've solved part of the problem—we're loading a different configuration file
+    depending on the environment, but there are other configuration values that our
+    application depends on that are coming from the environment. Those are secret
+    values such as the **JSON Web Token** (**JWT**) key or the MongoDB credentials.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'There are many ways to do this, and all cloud providers provide a solution
+    for that. In Heroku, we can do this by using the `config` command, as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Define the MongoDB credential variables, the JWT key, and the environment using
+    the `heroku config:set` command, as follows:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE26]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: …
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'mongoDb:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'clusterURI: <add your cluster url>'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'database: <add your database name>'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[PRE27]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Once again, we''ll add our changes to `git`, as follows:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE28]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'And then, we''ll push the changes to Heroku to trigger the deployment process,
+    as follows:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE29]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: And it should be working. If we now go to the Heroku Dashboard ([https://dashboard.heroku.com/](https://dashboard.heroku.com/)),
+    then into our application's dashboard ([https://dashboard.heroku.com/apps/boiling-dusk-18477](https://dashboard.heroku.com/apps/boiling-dusk-18477),
+    in my case) and click the **Open Application** button, it should open our application,
+    right?
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Not yet, but we're almost there—we still need to sort out one more thing.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Getting the application port from the environment
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Heroku has some particularities when it comes to running Docker images. It doesn't
+    allow us to set the port where the application is running. What it does is assign
+    a port where the application should run, and then redirect **HyperText Transfer
+    Protocol** (**HTTP**) and **HyperText Transfer Protocol Secure** (**HTTPS**) traffic
+    from the application URL there. If this still feels strange, no worries—we'll
+    get there.
+  prefs: []
+  type: TYPE_NORMAL
+- en: As you know, we explicitly defined the port our application was going to run
+    on in the `config.production.yml` file. We need to adapt this.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The way Heroku defines which port an application should run on is by setting
+    the `PORT` environment variable. This is documented at the following link:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[https://devcenter.heroku.com/articles/container-registry-and-runtime#dockerfile-commands-and-runtime](https://devcenter.heroku.com/articles/container-registry-and-runtime#dockerfile-commands-and-runtime)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: You'll probably know from the title what we're doing next. We're going to change
+    our application so that the web server port coming from the environment overrides
+    the one defined in the configuration file.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Go back to `src/config/index.ts` in the application and make sure it is reading
+    the `PORT` variable from the environment, overriding the configuration coming
+    from the file. The code can be seen in the following snippet:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE30]'
+  prefs: []
+  type: TYPE_PRE
+- en: This way, we make sure that we're reading the variable from the `PORT` environment
+    variable, using the value in the configuration file as a default.
+  prefs: []
+  type: TYPE_NORMAL
+- en: And this should be all it takes to get our application running smoothly in Heroku!
+  prefs: []
+  type: TYPE_NORMAL
+- en: Once again, we can test this by going to the Heroku Dashboard ([https://dashboard.heroku.com/apps/boiling-dusk-18477](https://dashboard.heroku.com/apps/boiling-dusk-18477))
+    and clicking the **Open App** button, or you can do this by going directly to
+    the URL—in my case, it's [https://boiling-dusk-18477.herokuapp.com/](https://boiling-dusk-18477.herokuapp.com/).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Important note
+  prefs: []
+  type: TYPE_NORMAL
+- en: If you are using MongoDB Atlas, as we did in [*Chapter 6*](B16380_06_Final_JM_ePub.xhtml#_idTextAnchor141),
+    *Adding Authentication and Connecting to the Database*, and want to allow your
+    application to access the database, you have to configure it so that it enables
+    connections from "anywhere". This isn't recommended practice if you're exposing
+    an application to your users, and it only happens because we're using Heroku's
+    Free Tier. As it runs in a shared cluster, we have no way of knowing what the
+    fixed **Internet Protocol** (**IP**) address is of the machine running the application,
+    and we need to do it this way.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The following link demonstrates how can you configure network access to the
+    database: [https://docs.atlas.mongodb.com/security/ip-access-list](https://docs.atlas.mongodb.com/security/ip-access-list).
+    Make sure you click **ALLOW ACCESS FROM ANYWHERE** in the MongoDB Atlas network
+    access screen.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This is what the network access screen looks like:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Figure 9.1 – MongoDB Atlas network access screen'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '](img/Figure_9.1_B16380.jpg)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Figure 9.1 – MongoDB Atlas network access screen
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'After this, our application should work as expected; you can try to perform
+    a request to register a user (that connects to the database) and check that everything''s
+    fine, as demonstrated in the following code snippet:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE31]'
+  prefs: []
+  type: TYPE_PRE
+- en: If you got a response that's similar to the preceding one, you're all set! We
+    managed to configure and deploy our application in a cloud environment and created
+    an automated way to ship updates to our users.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To do a final test to check whether the code is being deployed successfully,
+    we can try to change part of the code and trigger the deployment process again.
+    Let''s do it! Proceed as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Change our `"Hello World"` message in `src/web/index.ts` to `"Hello Deno World!"`,
+    as illustrated in the following code snippet:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE32]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Add this change to version control, as follows:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE33]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Push it into Heroku''s `git` remote repository, like this:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE34]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: If we now access the application URL (which is [https://boiling-dusk-18477.herokuapp.com/](https://boiling-dusk-18477.herokuapp.com/),
+    in our case), you should get the `Hello Deno World` message.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: This means that our application was successfully deployed. Since we're using
+    a cloud platform that provides more than what we learned here, we can explore
+    other Heroku features, such as logging.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Next to the **Open app** button on the Heroku Dashboard ([https://dashboard.heroku.com/](https://dashboard.heroku.com/)),
+    you have a **More** button. One of the options is **View logs**, as you can see
+    in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Figure 9.2 – More application options in the Heroku Dashboard'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '](img/Figure_9.2_B16380.jpg)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Figure 9.2 – More application options in the Heroku Dashboard
+  prefs: []
+  type: TYPE_NORMAL
+- en: If you click there, an interface that shows the logs in real time will appear.
+    You can try it out by opening your application in a different tab (by clicking
+    the **Open app** button).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'You''ll see that the logs instantly update, and something like this should
+    appear there:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE35]'
+  prefs: []
+  type: TYPE_PRE
+- en: This is of great use when you want to have a very light monitoring of how your
+    application is running. The Logging feature is provided in the Free Tier, but
+    there are many more features you can explore, such as the **Metrics** one, which
+    we'll not do here.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'If you want to have a detailed look at when and by whom your application was
+    deployed, you can also use the **Activity** section from the Heroku Dashboard,
+    as illustrated in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Figure 9.3 – Heroku Dashboard application options](img/Figure_9.3_B16380.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Figure 9.3 – Heroku Dashboard application options
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'You''ll then see a log of your most recent deployments, another very interesting
+    feature of Heroku, as illustrated in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Figure 9.4 – Activity tab in the Heroku Dashboard application'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '](img/Figure_9.4_B16380.jpg)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Figure 9.4 – Activity tab in the Heroku Dashboard application
+  prefs: []
+  type: TYPE_NORMAL
+- en: This wraps up our section on deploying the application in a cloud environment.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We focused on the application and on topics that can and will be reused independent
+    of the platform on which your code is running. We've iterated the application
+    logic that loaded the configuration so that it could load different configurations
+    depending on the environment.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Then, we learned how we could send environment variables with secret configuration
+    values to our application, and we wrapped up by exploring logging on the platform
+    of choice for this example, Heroku—and that was it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We managed to get our application to run, and we created a whole infrastructure
+    around it that will enable future iterations to be easily shipped to our users.
+    Hopefully, we went through some of the phases you'll also go through next time
+    you decide to deploy a Deno application.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: And we're pretty much done! This chapter completes the cycle of development
+    phases in our application by deploying it. We went from building a very simple
+    application, to adding features to it, to adding tests, and—finally—to deploying
+    it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Here, we learned how we can use some of the benefits of containerization in
+    our applications. We started learning about Docker, our container runtime of choice,
+    and rapidly moved on to creating an image for our application. Learning about
+    some Docker commands as we moved through the process, we also experienced how
+    easy it is to prepare a Deno application to be deployed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Creating this Docker image enabled us to have a replicable way of installing,
+    running, and distributing our application, creating a package with everything
+    the applications needs.
+  prefs: []
+  type: TYPE_NORMAL
+- en: As the chapter proceeded, we started to explore how we can use this application
+    package to deploy it in a cloud environment. We started by configuring the cloud
+    platform of choice for this step-by-step guide, Heroku, so that it would rebuild
+    and run our application's code every time it changed, and we very easily made
+    it with the help of `git` and Heroku's documentation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: As the automated pipeline was configured, we understood the need to send configuration
+    values to our application. These same configuration values, which we previously
+    implemented in earlier chapters, needed to be sent to the application in two different
+    ways, via a configuration file and via the environment. We tackled each one of
+    those needs, first by iterating the application code so that it loaded different
+    configurations depending on the environment, and later by learning how to set
+    configuration values in an application living on Heroku.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We finally got our application to run flawlessly and completed the objective
+    of the chapter: to have a replicable, automated way to deploy code to our users.
+    In the meantime, we learned a bit about Docker and the benefits of containerization
+    and automation when it comes to releasing code.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: This pretty much wraps it up on the book's objective. We decided to make this
+    a journey of building an application, separately going through all its phases
+    and addressing them as needed. This was the last phase—deploying it, which hopefully
+    closes the cycle for you in terms of going from the first line of code to deployment.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The next chapter will focus on what's next when it comes to Deno, both for the
+    runtime and for you personally. I hope this has made you a Deno enthusiast and
+    that you are as excited as I am about it and the world of possibilities it opens
+    up.
+  prefs: []
+  type: TYPE_NORMAL

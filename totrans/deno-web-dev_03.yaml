@@ -1,0 +1,1649 @@
+- en: '*Chapter 2*: The Toolchain'
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Now that we're familiar with evented languages, Node's history, and the reasons
+    that led to Deno, we're in good shape to start writing some code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this chapter, the first thing we'll do is set up the environment and code
+    editor. We'll proceed by writing our first Deno program and using the REPL to
+    experiment with the runtime APIs. Then, we'll explore the module system and how
+    Deno cache and module resolution works with practical examples. We'll understand
+    versioning, and we'll also learn how to handle third-party dependencies. Then,
+    we'll use the CLI to explore packages and their documentation, as well as how
+    to install and reuse Deno scripts.
+  prefs: []
+  type: TYPE_NORMAL
+- en: After running and installing a few scripts, we'll dive into permissions by learning
+    how the permission system works and how we can secure the code we run.
+  prefs: []
+  type: TYPE_NORMAL
+- en: On our journey of learning about the toolchain, we can't leave code formatting
+    and linting out, so we'll also explore these topics in this chapter. We'll explore
+    Deno's test suite by writing and running some simple tests, and we'll finish by
+    presenting how Deno can bundle code into a self-sustainable binary or a single
+    JavaScript file.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In this chapter, we''ll cover the following topics:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Setting up the environment
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Installing VS Code
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Hello World
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The module system and third-party dependencies
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Running and installing scripts
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using the test command
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using permissions
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Formatting and linting code
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Bundling code
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Compiling to a binary
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using the upgrade command
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Let's get started!
+  prefs: []
+  type: TYPE_NORMAL
+- en: Technical requirements
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: All the code present in this chapter can be found at [https://github.com/PacktPublishing/Deno-Web-Development/tree/master/Chapter02](https://github.com/PacktPublishing/Deno-Web-Development/tree/master/Chapter02).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Setting up the environment
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: One of Deno's principles is to keep its single single executable as complete
+    as possible. This decision, among others, dramatically facilitates the installation
+    step. In this section, we'll install VS Code and the recommended plugins and learn
+    how to install Deno on different systems.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Installing Deno
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In the next few pages, we'll learn how to install Deno. To make sure everything
+    written in this book runs smoothly, we'll be using version 1.7.5\.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This is one of the rare parts of this book where things might differ, depending
+    on your operating system. After the installation is complete, it doesn't make
+    a difference how you installed Deno.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s get practical and install Deno on our machines. The following bullet
+    points show you how to install the runtime on different operating systems:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Shell (Mac, Linux)**:'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: '**PowerShell (Windows)**:'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Then, to make sure everything worked, let''s get the current Deno version by
+    running the following command:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We should get the following output:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: Now that we have the correct versions of Deno installed, we can start writing
+    and executing our programs. However, to make our experience smoother, we will
+    install and configure our editor of choice.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Installing VS Code
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: VS Code is the editor we will be using throughout this book. This is mainly
+    because it has an official Deno plugin. There are other editors that provide a
+    pleasant experience with JavaScript and TypeScript, so feel free to use them.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'These series of steps are not required for following the rest of this book
+    flawlessly, so feel free to skip them. To install it, follow these steps:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Go to [https://code.visualstudio.com/](https://code.visualstudio.com/) and click
+    the **Download** button.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Once the download is complete, install it on your system.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Once VS Code is installed, the last step is to install Deno's VS Code plugin.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'In the `Deno` and install the Deno plugin authored by Denoland, which is the
+    official one:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '![Figure 2.1 – Plugin icon on VS Code''s left bar'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '](img/Figure_2.1_B16380.jpg)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Figure 2.1 – Plugin icon on VS Code's left bar
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This is what Deno''s VS Code plugin looks like:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Figure 2.2 – Deno extension on the VS Code Marketplace](img/Figure_2.2_B16380.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Figure 2.2 – Deno extension on the VS Code Marketplace
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To enable the Deno plugin in your projects, you must create a local VS Code
+    folder where the workspace configuration files will live. To do that, we will
+    create a folder named `.vscode` with a file inside it called `settings.json` and
+    write the following in that file:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: This will make VS Code activate the extension inside the folder we're currently
+    in. When using unstable features, we can also enable the `deno.unstable` setting,
+    which is also mentioned in the plugin's documentation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Shell completions
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Deno also provides us with a way to generate shell completions. This way, we''ll
+    be getting autocomplete suggestions when writing Deno commands on the Terminal.
+    We can do this by running the following command:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: The possible values for shell are `zsh`, `bash`, `fish`, `powershell`, and `elvish`.
+    Make sure you choose the one you are using. This command will output the completions
+    to stdout. You can then paste that into your shell profile ([https://deno.land/manual@v1.7.5/getting_started/setup_your_environment#shell-autocomplete](mailto:https://deno.land/manual@v1.6.0/getting_started/setup_your_environment#shell-autocomplete)).
+  prefs: []
+  type: TYPE_NORMAL
+- en: With that, we've finished how to install it Deno. We also have the runtime and
+    the editor installed and configured. Now, let's write a Hello World program with
+    Deno!
+  prefs: []
+  type: TYPE_NORMAL
+- en: Hello World
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: With everything in place, let's write our first program!
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'First, we need to create a file named `my-first-deno-program.js` and write
+    something that we''re familiar with. We''ll use the `console` API to write a message
+    to the console:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'To execute this, let''s use the CLI we installed in the previous section. The
+    command we must use to execute programs is called `run`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: Tip
+  prefs: []
+  type: TYPE_NORMAL
+- en: All Deno CLI commands can be executed with the `--help` flag, which will detail
+    all the command's possible behaviors.
+  prefs: []
+  type: TYPE_NORMAL
+- en: At this point, we haven't really done anything we don't know what to do already.
+    We just wrote a `console.log` file in the language that we're familiar with, JavaScript.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The interesting thing is that we learned how to execute programs by using the
+    `run` command. We'll explore this in more detail later in this chapter.
+  prefs: []
+  type: TYPE_NORMAL
+- en: REPL
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The **Read Eval Print Loop**, also known as the **REPL**, is a tool that is
+    commonly used in interpreted languages. It allows users to run lines of code and
+    get their immediate output. Node.js, Ruby, and Python are a few examples of languages
+    where it is heavily used. Deno is no exception.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To open it, you just need to run the following command:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'You can now spend some time exploring the language (hint: there''s tab completion).
+    If you are curious about what APIs are available, you''re in the right place to
+    try them out. We''ll deep dive into those later, but just to give you a few suggestions,
+    you can look at the *Deno* namespace, Web API-compatible functions such as `fetch`,
+    or objects such as `Math` or `window`, all of which are listed in Deno''s documentation
+    ([https://doc.deno.land/builtin/stable](https://doc.deno.land/builtin/stable)).'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Try them out!
+  prefs: []
+  type: TYPE_NORMAL
+- en: Eval
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Another way to execute code that doesn''t live in a file is by using the `eval`
+    command:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: The `eval` command can be useful to run simple, inline scripts.
+  prefs: []
+  type: TYPE_NORMAL
+- en: So far, the programs we've have written have been quite simple. We just logged
+    values to the console in a few different ways. However, as we start getting closer
+    to the real world, we know we'll write more complex logic. With more complex logic
+    comes more bugs and thus the need to debug our code. That's what we'll learn about
+    next.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Debugging code in Deno
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Even when we're following best practices and doing our best to write simple,
+    clean code, any relevant program is very likely to need debugging once in a while.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Mastering the ability to quickly run and debug code is one of the best ways
+    to improve your learning curve for any technology. This skill makes it easy to
+    test and understand how stuff works by trial and error and fast experimentation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let's learn how can we debug our code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The first step is to create a second program. Let''s add a couple of variables
+    that we can inspect later. The main objective of this program is to return the
+    current time. We''ll be using the already known `Date` object to do this. Let''s
+    call this file `get-current-time.js`, like so:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'What if we want to debug the value of the `now` variable before it prints to
+    the console? This is where debugging comes in useful. Let''s run the same program
+    but with the `--inspect-brk` flag:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We can now open Google Chrome at `chrome://inspect/`. A remote target running
+    on localhost called `deno` will be listed. By clicking on `inspect`, the Chrome
+    DevTools inspector window will open and its execution will stop on the first line:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Figure 2.3 – Chrome stopping on the first line to be debugged'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '](img/Figure_2.3_B16380.jpg)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Figure 2.3 – Chrome stopping on the first line to be debugged
+  prefs: []
+  type: TYPE_NORMAL
+- en: At this point, we can add breakpoints, log certain values, inspect variables,
+    and so on. It enables the same as what we can do when we're debugging on Node
+    or in the browser.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `--inspect` flag could have also been used for this. However, we've used
+    `--inspect-brk` here for convenience. Both have similar behaviors, but `inspect`
+    requires a *debugger* to be present in the code. When the code executes and interprets
+    the *debugger* keyword, it tries to connect to an already running inspector instance.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now that we understand how to run and debug code, we can start writing our own
+    programs. There's still much to learn, but we are already comfortable with the
+    bare minimum.
+  prefs: []
+  type: TYPE_NORMAL
+- en: As we start writing our programs and our code base grows, it is very likely
+    that we'll start extracting logic into different modules. As these modules become
+    reusable, we might extract them into packages so that they can be shared across
+    projects. That's why we need to understand how Deno handles module resolution,
+    which we'll do in the next section.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Modules and third-party dependencies
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Deno uses ECMAScript modules and imports that are fully compatible with the
+    browser. The path to a module is absolute, so it includes the file extension,
+    which is also a standard in the *browser world*.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Deno takes the approach of being a *browser for scripts* quite seriously. One
+    of the things it has in common with web browsers is that it deeply leverages URLs.
+    They're one of the most flexible ways to share a resource and work beautifully
+    on the web. Why not use them for module resolution? That's what browsers did.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The fact that the path for modules is absolute makes it possible not to depend
+    on third-party entities such as npm, or complex module resolution strategies.
+    With absolute imports, we can import code directly from GitHub, from a proprietary
+    server, or even from a gist. The only requirement is that it has a URL.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This decision enables a completely decentralized module distribution to be used
+    and makes module resolution inside Deno simple and browser compatible. This is
+    something that doesn't happen on Node.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Deno even leverages URLs for versioning. For instance, to import version 0.83.0
+    the HTTP server from the standard library, we would use the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: And that's how simple you can import a module. Here, the code is loading from
+    [https://deno.land/](https://deno.land/), but modules can be loaded from anywhere
+    else. The only requirement is that there's a link to it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: For instance, if you have your own server where the files are available via
+    a URL, you can directly use them within Deno. Previously, we learned that Deno
+    automatically installs and caches dependencies, so let's learn a little more about
+    how that works.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Locally cached dependencies
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We already, we learned that Deno doesn't have conventions such as `node_modules`.
+    For someone coming from Node, this might sound strange. Does this mean your code
+    is always fetching modules from the internet? No. Can you still work offline?
+    Yes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let's see this in practice.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Create a file called `hello-http-server.js` and add the following code there:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: As you can probably guess, this program starts an HTTP server at port `8080`
+    and responds to every request made with `Hello deno`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If that still feels strange to you, don't worry – we will have a more in-depth
+    look at the standard library in the next chapter.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s run the program and pay attention to what Deno does before executing
+    the code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: What happened? Before it runs the code, Deno looks at the code's imports, downloads
+    any dependencies, compiles them, and stores them in a local cache. There's still
+    an error at the end, but we'll get to that later.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To understand what Deno does with the downloaded files, we''ll use another
+    command named `info`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: This prints information about Deno's installation. Note `DENO_DIR`, which is
+    the path where Deno is storing its local cache. If we navigate there, we can access
+    the `.js` files and respective source maps.
+  prefs: []
+  type: TYPE_NORMAL
+- en: After downloading and caching the modules for the first time, Deno will not
+    redownload them and will keep using the local cache until it is explicitly asked
+    not to.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Caching without running the code
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'To make sure you have a local copy of your code''s dependencies without having
+    to run it, you can use the following command:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: This will do the exact same thing that Deno does before running your code; the
+    only difference is that it doesn't run. Due to this, we can establish some parallelism
+    between the `deno cache` command and what `npm install` does on Node.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Reloading the cache
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'The `cache` and `run` commands can use the `--reload` flag to force the dependencies
+    to be downloaded. A comma-separated list of modules that must be reloaded can
+    be sent as a parameter to the `--reload` flag:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: In the preceding example, only modules from [https://deno.land/std@0.83.0/http/server.ts](mailto:https://deno.land/std@0.64.0/http/server.ts)
+    would be redownloaded, as we can confirm by looking at the command's output.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Finally running the server
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Now that the dependencies have been downloaded, we still have something preventing
+    us from running the server, a `PermissionDenied` error:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'For now, let''s follow the recommendation and add the `--allow-net` flag, which
+    will grant our program full network access. We''ll get into permissions later
+    in this chapter:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs: []
+  type: TYPE_PRE
+- en: Tip (Windows)
+  prefs: []
+  type: TYPE_NORMAL
+- en: Keep in mind that, if you are using Windows, you might get Windows' native network
+    authorization popup, informing you that a program (Deno) is trying to access the
+    network. If you want this web server to be able to run, you should click **Allow
+    access**.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Now, our server should be running. If we `curl` to port `8080`, it will show
+    us `Hello` `Deno`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs: []
+  type: TYPE_PRE
+- en: This wraps up for our simplest web server; we'll come back to this in a few
+    pages.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Managing dependencies
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: If you have used other tools, or even Node.js itself, you might be feeling that
+    it is not very intuitive to have URLs all around the code. We can also argue that,
+    by directly writing URLs in our code, we might cause problems, such as having
+    two different versions of the same dependency or having typos in the URL.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Deno solved this problem by getting rid of complex module resolution strategies
+    and using plain JavaScript and absolute imports instead.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The proposed solution to keep track of dependencies, which is no more than a
+    suggestion, is to use a file that exports all the required dependencies and place
+    them in a single file that contains URLs. Let's see it in action.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Create a file called `deps.js` and add our dependencies there, exporting the
+    ones we need:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE21]'
+  prefs: []
+  type: TYPE_PRE
+- en: By using the preceding syntax, we're importing the `serve` method from the standard
+    library's HTTP server and exporting it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Back in our `hello-http-server.js` file, we can now change the imports so that
+    we can use the exported function from the `deps.js` file:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE22]'
+  prefs: []
+  type: TYPE_PRE
+- en: Now, every time we add a dependency, we can run `deno cache deps.js` to guarantee
+    that we have a local copy of the module.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This is Deno's way of managing dependencies. It is that simple – no magic, no
+    complex standards, just a file that imports and exports symbols.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Integrity checking
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Now that you know how to import and manage third-party dependencies, you might
+    be feeling that something is still missing.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*What can guarantee that the next time we, a coworker, or even a CI tries to
+    install the project that our dependencies haven''t changed?*'
+  prefs: []
+  type: TYPE_NORMAL
+- en: That's a fair question, and since it's a URL, this might happen.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We'll can solve this by using integrity checking.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Generating a lock file
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: Deno has a feature that can store and check sub-resource integrity by using
+    a JSON file, similar to the lock file approach that's used by other technologies.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To create our first lock file, let''s run the following command:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE23]'
+  prefs: []
+  type: TYPE_PRE
+- en: Using the `--lock` flag, we select the name of the file, and by using `--lock-write`,
+    we're giving Deno permission to create or update that same file.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Looking at the generated `lock.json` file, this is what we''ll find there:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE24]'
+  prefs: []
+  type: TYPE_PRE
+- en: It generates a JSON object where the keys are the paths to dependencies and
+    the values are the hashes Deno uses to warrant resource integrity.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This file should then be checked into your version control system.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the next section, we'll learn how to install dependencies and make sure everyone
+    is running the exact same version of the code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Installing dependencies with a lock file
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: 'Once the lock file has been created, anyone that wants to download the code
+    can run the cache command with the `--lock` flag. This enables integrity checking
+    while you''re downloading dependencies:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE25]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'It is also possible to use the `--lock` flag with the `run` command to enable
+    runtime verification:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE26]'
+  prefs: []
+  type: TYPE_PRE
+- en: Important note
+  prefs: []
+  type: TYPE_NORMAL
+- en: When using the lock flags with the `run` command, code containing dependencies
+    that haven't been cached yet will not be checked against the lock file.
+  prefs: []
+  type: TYPE_NORMAL
+- en: To make sure the new dependencies are checked at runtime, we can use the `--cached-only`
+    flag.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This way, Deno will throw an error if any dependencies that are not in the `lock.json`
+    file are used by our code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: And that's all we need to do to make sure we're running the exact versions of
+    the dependencies we want, eliminating any problems that might come out of version
+    changes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Import maps
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Deno supports import maps ([https://github.com/WICG/import-maps](https://github.com/WICG/import-maps)).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'If you are not familiar with what they are, I''ll explain them briefly for
+    you: they are used to control JavaScript imports. If you''ve used JavaScript with
+    code bundlers such as webpack before, then this is a feature similar to what you
+    know as "aliases".'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Important note
+  prefs: []
+  type: TYPE_NORMAL
+- en: This feature is currently unstable, so it must be enabled using the `--unstable`
+    flag.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let's create a JSON file. The name doesn't matter here, but we'll name it `import-maps.json`
+    for simplicity.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Inside this file, we''ll create a JavaScript object with the `imports` key.
+    In this object, any keys will be the module names and any values will be the real
+    import paths. Our first *import map* will be one that maps the `http` word to
+    the standard library HTTP module''s root:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE27]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'By doing this, we can now import the standard library''s HTTP module into our
+    `deps.js` file, like so:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE28]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'To run it, we will use the `--import-map` flag. By doing this, we can select
+    the file where the import maps are. Then, because this feature is still unstable,
+    we must use the `--unstable` flag:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE29]'
+  prefs: []
+  type: TYPE_PRE
+- en: As we can see, our code runs perfectly.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This is an easy way to customize module resolution that doesn't depend on any
+    external tools. It's also been proposed as something to be added to browsers.
+    Hopefully, this will be accepted in the near future.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Inspecting modules
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We just used the standard library's HTTP module to create a server. Don't worry
+    if you are not very familiar with the standard library yet; we'll explain it in
+    more detail in the next chapter. For now, all we need to know is that we can explore
+    its modules on its website ([https://deno.land/std](https://deno.land/std)).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let's take a look at the module we used in the previous script, the HTTP module,
+    and use Deno to find out more information about it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We can use the `info` command to do this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE30]'
+  prefs: []
+  type: TYPE_PRE
+- en: This command lists a great amount of information about the HTTP module. Let's
+    break it down.
+  prefs: []
+  type: TYPE_NORMAL
+- en: On the first line, we get the path to the cached version of the script. On the
+    line after that, we see the type of the file. We already know that the standard
+    library was written in TypeScript, so this should be of no surprise to us. The
+    next line is also a path, this time for the compiled version of the module, since
+    TypeScript modules are compiled to JavaScript in the download step.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The last part of the command's output is the dependency tree. By looking at
+    it, we can quickly identify that it just links to other modules in the standard
+    library.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs: []
+  type: TYPE_NORMAL
+- en: We can use the `--unstable` and `--json` flags together with `deno` `info` to
+    get a programmatically accessible JSON output.
+  prefs: []
+  type: TYPE_NORMAL
+- en: When using third-party modules, more than knowing what they depend on, we need
+    to know what functions and objects are made available by the module. We'll learn
+    about this in the next section.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Exploring the documentation
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Documentation is a crucial aspect of any software project. Deno does a good
+    job of keeping all the APIs well-documented, and TypeScript helps a lot with this.
+    As the standard library and runtime functions are all written in TypeScript, most
+    of the documentation is automatically generated.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The documentation is available at [https://doc.deno.land/](https://doc.deno.land/).
+  prefs: []
+  type: TYPE_NORMAL
+- en: If you don't have internet access and want to access the documentation of a
+    module you have installed locally, Deno has got you covered.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Many editors, namely VS Code, allow you to do this, with the famous *Cmd/Ctrl*
+    + click being an example. However, Deno doesn't depend on editor features for
+    this as the `doc` command provides all the essential features you'll need.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s have a look at the documentation for the standard library''s HTTP module:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE31]'
+  prefs: []
+  type: TYPE_PRE
+- en: We can now see the exposed methods and types.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In one of our previous programs, we used the `serve` method. To find out more
+    about this specific method, we can send the method (or any other symbol) name
+    as a second argument:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE32]'
+  prefs: []
+  type: TYPE_PRE
+- en: This is a very useful feature that enables developers to navigate the documentation
+    of the locally installed modules without having to depend on an editor.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'As we will learn in the next chapter, and as you probably noticed by using
+    the REPL, Deno has a built-in API. To check out its documentation, we can run
+    the following command:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE33]'
+  prefs: []
+  type: TYPE_PRE
+- en: The output will be massive as it lists all the public methods and types.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In *nix systems, this can easily be piped into an application such as `less`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE34]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Similar to remote modules, it''s also possible to filter by method name. Take,
+    for instance, the `writeFile` function that''s present in Deno''s namespace:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE35]ts'
+  prefs: []
+  type: TYPE_NORMAL
+- en: const encoder = new TextEncoder();
+  prefs: []
+  type: TYPE_NORMAL
+- en: const data = encoder.encode("Hello world\n");
+  prefs: []
+  type: TYPE_NORMAL
+- en: await Deno.writeFile("hello1.txt", data);  // overwrite "hello1.txt" or create
+    it
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'await Deno.writeFile("hello2.txt", data, {create: false});  // only works if
+    "hello2.txt" exists'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'await Deno.writeFile("hello3.txt", data, {mode: 0o777});  // set permissions
+    on new file'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'await Deno.writeFile("hello4.txt", data, {append: true});  // add data to the
+    end of the file'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE36]'
+  prefs: []
+  type: TYPE_PRE
+- en: The `doc` command is a useful part of the development workflow. However, if
+    you have internet access and want to access it in a more digestible and visual
+    way, [https://doc.deno.land/](https://doc.deno.land/) is the place to go.
+  prefs: []
+  type: TYPE_NORMAL
+- en: You can use the documentation website to find out more about the built-in APIs
+    or standard library modules. In addition, it also allows you to display the documentation
+    for any module that's available. To do this, we just need to replace the `://`
+    part of the module's URL with a single backslash, `/`, and prepend [https://doc.deno.land/](https://doc.deno.land/)
+    to the URL.
+  prefs: []
+  type: TYPE_NORMAL
+- en: For instance, to access the documentation of the HTTP module, the URL would
+    be [https://doc.deno.land/https/deno.land/std@0.83.0/http/server.ts](mailto:https://doc.deno.land/https/deno.land/std@0.64.0/http/server.ts).
+  prefs: []
+  type: TYPE_NORMAL
+- en: If you navigate to that URL, a clean interface will be displayed containing
+    the module's documentation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We now know how to use and explore third-party modules. However, as we start
+    writing our applications, there might be some utilities that we want to share
+    across projects. We may also want to have that specific package available everywhere
+    in our system. The next section will help us do that.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Running and installing scripts
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'In one of his first talks, and in Deno'' first version release notes ([https://deno.land/posts/v1#a-web-browser-for-command-line-scripts](https://deno.land/posts/v1#a-web-browser-for-command-line-scripts))
+    Dahl used a sentence I like a lot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '"Deno is like a web browser for command-line scripts."'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Every time I use Deno, this sentence makes more and more sense to me. I'm sure
+    it will also start to make sense for you as the book proceeds. Let's explore it
+    a little further.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In a browser, when you access a URL, it runs the code that is there. It interprets
+    the HTML and the CSS, and then executes some JavaScript.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Deno, by following its premise of being a browser for scripts, just needs a
+    URL to run code. Let's see it in action.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Honestly, it is not very different from what we''ve already done a couple of
+    times already. As a refresher, the last time we executed our simple web server,
+    we did the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE37]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here, `hello-http-server.js` was just a file in the current folder.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let's try to do the same but with a remote file – a file that is served through
+    HTTP.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We''ll execute an "echo server" from the Deno standard library''s set of examples.
+    You can check out the code for this here ([https://deno.land/std@0.83.0/examples/echo_server.ts](mailto:https://deno.land/std@0.64.0/examples/echo_server.ts)).
+    It is a server that echoes back whatever is sent to it:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE38]'
+  prefs: []
+  type: TYPE_PRE
+- en: Important note
+  prefs: []
+  type: TYPE_NORMAL
+- en: If you're using a Windows machine, it might not be possible to access `0.0.0.0:8080`;
+    you should access `localhost:8080` instead. They both refer to the same thing
+    in your local machine. However, when `0.0.0.0` appears throughout the rest of
+    book, you should try to access `localhost` if you're running Windows.
+  prefs: []
+  type: TYPE_NORMAL
+- en: As it happens, every time files are not cached, Deno downloads and executes
+    them.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Does it differ that much from a web browser? I wouldn't say so. We gave it a
+    URL, and it ran the code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To make sure it is working, we can establish a Telnet ([https://en.wikipedia.org/wiki/Telnet](https://en.wikipedia.org/wiki/Telnet))
+    connection and send a message that the server echoes back:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE39]'
+  prefs: []
+  type: TYPE_PRE
+- en: You can do this with any available Telnet client; here, we're using a macOS
+    client that we installed via Homebrew ([https://brew.sh/](https://brew.sh/)).
+    The first "hello buddy" is the message we sent, while the latter is the one that
+    was echoed back. With this, we can verify that the echo server is working.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Important note
+  prefs: []
+  type: TYPE_NORMAL
+- en: If you are using any other telnet client, make sure you enable "Local line editing"
+    setting. Some clients don't have this enabled by default and send characters as
+    you type them, resulting in a message with duplicated characters. The image below
+    shows you how can you configure that setting in PuTTY for Windows.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Figure 2.4 – PuTTY local line editing setting'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '](img/Figure_2.4_B16380.jpg)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Figure 2.4 – PuTTY local line editing setting
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This confirms what we previously stated, in that Deno uses the same approach
+    to run code it uses to resolve modules: it treats local and remote codes in a
+    similar way.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Installing utility scripts
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: There are utility programs we write once and those that we use multiple times.
+    Sometimes, to facilitate reusing them, we just copy those scripts from project
+    to project. For others, we keep them in a GitHub repository and keep going there
+    to get them. The ones we use the most might need to be wrapped in a shell script,
+    added it `/usr/local/bin` (on *nix systems) and made usable across our system.
+  prefs: []
+  type: TYPE_NORMAL
+- en: For this, Deno provides the `install` command.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This command wraps a program into a thin shell script and puts it into the
+    installation bin directory. The permissions for the script are set at the time
+    of its installation and never asked for again:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE40]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here, we used another module from the standard library called `file_server`.
+    It creates an HTTP server that serves the current directory. You can see its code
+    by accessing the import URL ([https://deno.land/std@0.83.0/http/file_server.ts](mailto:https://deno.land/std@0.64.0/http/file_server.ts)).
+  prefs: []
+  type: TYPE_NORMAL
+- en: The installation command will make the `file_server` script available on your
+    system.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To give it a name other than `file_server`, we can use the `-n` flag, like
+    so:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE41]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Now, let''s serve the current directory:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE42]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'If we access `http://localhost:4507`, this is what we''ll get:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Figure 2.5 – Deno file server web page'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '](img/Figure_2.5_B16380.jpg)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Figure 2.5 – Deno file server web page
+  prefs: []
+  type: TYPE_NORMAL
+- en: This works with remote URLs but can also work with local ones. If you have a
+    program written in Deno that you want to transform into an executable, you can
+    also use the `install` command to do so.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We can do this with our simple web server, for instance:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE43]'
+  prefs: []
+  type: TYPE_PRE
+- en: By running the preceding code, a script called `hello-http-server` is created
+    and available across our system.
+  prefs: []
+  type: TYPE_NORMAL
+- en: That's all we need to run in order to execute local and remote scripts. Deno
+    makes this very easy because it treats imports and modules in a very straightforward
+    way, very much like browsers do.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Previously, we've used permissions to allow scripts to access resources like
+    network or the filesystem. In this section, we've used permissions with the `install`
+    command, but we previously did this with the `run` command too.
+  prefs: []
+  type: TYPE_NORMAL
+- en: By now, you probably understand how they work, but we'll look at them in more
+    detail in the following section.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Permissions
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: We came across Deno's permissions for the first time a few pages ago when we
+    wrote our first HTTP server. At the time, we had to give our script permission
+    to access the network. Since then, we've used them a few times without knowing
+    too much about how they work.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this section, we'll explore how permissions work. We'll learn what permissions
+    exist and how to configure them.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If we run `deno run --help`, we get the help output for the `run` command, which
+    is where, among other things, certain permissions are listed. To make this easier
+    for you, we will list all the existing permissions and provide a brief explanation
+    of each.
+  prefs: []
+  type: TYPE_NORMAL
+- en: -A, --allow-all
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: This disables all permission checks. Running code with this flag means it will
+    have access to everything the user has, quite similar to what happens with Node.js
+    by default.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Be careful when you run code with this, and be especially careful when the code
+    is not yours.
+  prefs: []
+  type: TYPE_NORMAL
+- en: --allow-env
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: This grants access to the environment. It's used so that programs can access
+    environment variables.
+  prefs: []
+  type: TYPE_NORMAL
+- en: --allow-hrtime
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: This grants access to high-resolution time management. It can be used for precise
+    benchmarking. Giving this permission to the wrong scripts can allow for fingerprinting
+    and timing attacks.
+  prefs: []
+  type: TYPE_NORMAL
+- en: --allow-net=<domains>
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: This grants access to the network. When used without arguments, it allows all
+    network access. When used with arguments, it allows us to pass a comma-separated
+    list of domains where network communication will be allowed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: --allow-plugin
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: This allows plugins to be loaded. Note that this is still an unstable feature.
+  prefs: []
+  type: TYPE_NORMAL
+- en: --allow-read=<paths>
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: This grants read access to the filesystem. When used without arguments, it grants
+    access to everything the user has access to. With arguments, this only allows
+    access to the folders provided by a comma-separated list.
+  prefs: []
+  type: TYPE_NORMAL
+- en: --allow-run
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: This grants access to running subprocesses (for instance, with `Deno.run`).
+    Keep in mind that subprocesses are not sandboxed and should be used with caution.
+  prefs: []
+  type: TYPE_NORMAL
+- en: --allow-write=<paths>
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: This grants filesystem write access. When used without arguments, it grants
+    access to everything the user has access to. With arguments, it only allows access
+    to folders provided by a comma-separated list.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Every time a program runs and it doesn't have the correct permissions, a `PermissionError`
+    will be thrown.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Permissions are used on the `run` and `install` commands. The only difference
+    between them is the moment you give the permissions. For `run`, you have to give
+    them when running, while for `install`, you give them when you install the script.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There is another way for a Deno program to have permissions. It doesn't require
+    the permissions to be given upfront, and instead will ask for them as they're
+    needed. We'll explore this feature in the next chapter, where we'll learn about
+    Deno's namespace.
+  prefs: []
+  type: TYPE_NORMAL
+- en: And that's it! There's really not much to add on permissions, except that they're
+    a very important feature in Deno as it sandboxes our code by default and lets
+    us decide on what should our code have access to. We'll keep using permissions
+    on the applications we'll be writing throughout this book.
+  prefs: []
+  type: TYPE_NORMAL
+- en: So far, we've learned how to run, install, and cache modules, as well as how
+    to use permissions. As we write and run more complex programs, the need to test
+    them starts to arise. We can do this with the `test` command, as we'll learn in
+    the next section.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using the test command
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Included as part of the main binary, Deno also provides a test runner. The command
+    for it, not surprisingly, is called `test`. In this section, we'll explore it
+    and run a couple of tests.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this section, we'll mainly explore the command itself and not the test syntax.
+    We'll look at the syntax and best practices for it in more depth in a dedicated
+    chapter later on the book.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `test` command finds files to run based on the `{*_,*.,}test.{js,mjs,ts,jsx,tsx}`
+    glob expression.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Since glob expressions might not be too intuitive to read, we'll explain them
+    briefly.
+  prefs: []
+  type: TYPE_NORMAL
+- en: It matches any files with the `js`, `mjs`, `ts`, `jsx`, and `tsx` extensions
+    and that have `test` in their name preceded by an underscore (`_`) or a dot (`.`)
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'A few examples of files that will match the expression and be considered tests
+    are as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`example.test.ts`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`example_test.js`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`example.test.jsx`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`example_test.mjs`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Deno tests also run inside the sandbox environment, so they need permissions.
+    Take a look at the previous section to find out more about how to do this.
+  prefs: []
+  type: TYPE_NORMAL
+- en: When running tests, it is also possible to use the debugging commands we learned
+    about earlier in this chapter.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Filtering tests
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: A common need when you have a complete test suite is to run only a specific
+    part of it. For this, the `test` command provides the `--filter` flag.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Imagine that we have the following file, with two tests defined:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE44]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'If we want to run just one of them, we can use the `--filter` flag and pass
+    a string or pattern that will match the test names:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE45]'
+  prefs: []
+  type: TYPE_PRE
+- en: The preceding code just ran the test that matched the filter. This feature becomes
+    very useful when we're developing tests for a small part of the code base and
+    we want to get quick feedback about the process.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Fail fast
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In environments such as a continuous integration server, we might want to fail
+    fast if it doesn't really matter how many tests are failing and we just want the
+    testing phase to be over if any test fails.
+  prefs: []
+  type: TYPE_NORMAL
+- en: To do this, we can use the `--fail-fast` flag.
+  prefs: []
+  type: TYPE_NORMAL
+- en: And that's all we need to know about testing for now. As we mentioned previously,
+    we'll get back into testing in [*Chapter 8*](B16380_08_Final_JM_ePub.xhtml#_idTextAnchor178)*,
+    Testing - Unit and Integration*. We just wanted to become familiar with the CLI
+    command here.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We consider tests as a tool that guarantees that our code is working but also
+    as a way to document our code's behavior. Tests are fundamental in any working
+    and evolving code base, and Deno makes them first-class citizens by including
+    a test runner in its binary. However, testing is just a part of a bigger toolset
+    – one where developer needs such as linting and formatting are also covered.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the next section, we'll learn how Deno solves these problems.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Formatting and linting
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Linting and formatting are two capacities considered crucial for maintaining
+    consistency and enforcing good practices in any code base. With this in mind,
+    Deno has embedded the tools to enable both in its CLI. We'll get to know them
+    in this section.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Formatting
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: To format Deno's code, the CLI provides the `fmt` command. This is an opinionated
+    formatter that aims to solve any questions regarding code formatting. The main
+    goal is for developers to not have to care about the format of their code – not
+    when writing code nor when reviewing pull requests.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Running the following command with no argument formats all the files in the
+    current directory:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE46]'
+  prefs: []
+  type: TYPE_PRE
+- en: If we want to format a single file, we can send it as an argument.
+  prefs: []
+  type: TYPE_NORMAL
+- en: To check files for formatting errors, we can use this together with the `--check`
+    flag, which will output the errors that were found in our files to stdout.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Ignoring lines and files
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'To make the formatter ignore a single line or a complete file, we can use the
+    `ignore` comment:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE47]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Using `deno-fmt-ignore` ignores the line right after the comment:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE48]'
+  prefs: []
+  type: TYPE_PRE
+- en: Using `deno-fmt-ignore-file` ignores the whole file.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Lint
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Still under the unstable flag, the `lint` command prints warnings and errors
+    found in our code to stdout.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s see it in action by running the linter against a script called `to-lint.js`.
+    You can run it against whatever you want. Here, we just a file that will throw
+    an error since it contains a `debugger`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE49]'
+  prefs: []
+  type: TYPE_PRE
+- en: In this section, we learned how do use the `fmt` and `lint` commands to enforce
+    code consistency and best practices across a code base.
+  prefs: []
+  type: TYPE_NORMAL
+- en: These are two of the commands that are provided by the Deno CLI that will be
+    used in our daily life when writing Deno programs. They both happen to be very
+    opinionated, so there is no space to support different standards. This should
+    be of no surprise since Deno is heavily inspired by *golang*, and this approach
+    is in line with what can be done by tools such as *gofmt*.
+  prefs: []
+  type: TYPE_NORMAL
+- en: With that, we know how to format and check our code for best practices. Adding
+    this to what we learned in the previous sections, there is nothing stopping us
+    from running our code in production.
+  prefs: []
+  type: TYPE_NORMAL
+- en: When we get into production, we obviously want our servers to be as fast as
+    possible. In the previous chapter, we learned that one of slowest parts of Deno
+    is TypeScript parsing. When we write TypeScript code, we don't want to sacrifice
+    time parsing it every time a new instance of the server starts up. At the same
+    time, as we write clean, separate modules, we don't want to ship them separately
+    into the production environment.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This is why Deno provides a feature that allows us to bundle code into a single
+    file. We'll learn about this in the next section.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Bundling code
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In the previous chapter, when we presented Deno, we elected bundling code as
+    an exciting feature for many reasons. This feature has enormous potential, and
+    we will explore this in more detail in [*Chapter 7*](B16380_07_Final_JM_ePub.xhtml#_idTextAnchor165)*,
+    HTTPS, Extracting Configuration, and Deno in the Browser*. But since we're exploring
+    the CLI here, we'll get to know the appropriate command.
+  prefs: []
+  type: TYPE_NORMAL
+- en: It is called `bundle`, and it bundles code into a single, self-contained ES
+    module.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Bundled code that doesn't depend on the Deno namespace can also run in the browser
+    with `<script type="module">` and in Node.js.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s use it to build our `get-current-time.js` script:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE50]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Now, we can run the generated `bundle.js`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE51]'
+  prefs: []
+  type: TYPE_PRE
+- en: This will print the current time.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We can also execute it with Node.js since it is ES6 compatible JavaScript (you
+    need to have Node.js installed to be able to run the following command):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE52]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'To use this same code in the browser, we can create a file named `index-bundle.html`
+    and import our generated bundle:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE53]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'With the knowledge we gained from the previous section, we can run the standard
+    library''s file server in the current folder:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE54]'
+  prefs: []
+  type: TYPE_PRE
+- en: Now, if you navigate to `http://localhost:4507/index-bundle.html`, and open
+    the browser console, you'll see that the current time has been printed..
+  prefs: []
+  type: TYPE_NORMAL
+- en: Bundling is a very promising feature that we will explore later in [*Chapter
+    7*](B16380_07_Final_JM_ePub.xhtml#_idTextAnchor165), *HTTPS, Extracting Configuration,
+    and Deno in the Browser*. It allows us to create a single JavaScript file with
+    our application.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We'll get back to this and show you what things it enables later on in this
+    book. Bundling is a nice way to distribute your Deno applications, as we saw in
+    this chapter. But what if you want to distribute your application so that it can
+    run in places that are not your computer? Does the `bundle` command do this for
+    us?
+  prefs: []
+  type: TYPE_NORMAL
+- en: Well, not really. It does this if the place where the code will be executed
+    has Node, Deno, or a browser installed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: But what if it doesn't? That's what we'll learn about next.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Compiling to a binary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: When Deno was initially launched, Dahl stated that one of its objectives was
+    to be able to ship Deno code as a single binary, something similar to what golang
+    does, from day one. This is very similar from the work that nexe ([https://github.com/nexe/nexe](https://github.com/nexe/nexe))
+    or pkg ([https://github.com/vercel/pkg](https://github.com/vercel/pkg)) do for
+    Node.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This is different from the bundle feature, where a JavaScript file is generated.
+    What happens when you compile Deno code to a binary is that all the runtime and
+    code is included in that binary, making it self-sustainable. Once you've compiled
+    it, you can just send this binary anywhere, and you'll be able to execute it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Important note
+  prefs: []
+  type: TYPE_NORMAL
+- en: At the time of writing, this is still an unstable feature with many limitations,
+    as mentioned in its release notes at https://deno.land/posts/v1.7#improvements-to-codedeno-compilecode.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This process is very simple. Let's see how we can do this.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We just need to use the `compile` command. For this example, we''ll use the
+    script we used in the previous section; that is, `get-current-time.js`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE55]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This emits a binary named `get-current-time`, which we can now execute:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE56]'
+  prefs: []
+  type: TYPE_PRE
+- en: It's working! This feature allows us to easily distribute the application. This
+    is possible because it includes the code and all its dependencies, including the
+    Deno runtime, making it self-sustainable.
+  prefs: []
+  type: TYPE_NORMAL
+- en: As Deno continues to evolve, new features, bug fixes, and improvements will
+    be added. At its current pace of a few releases per quarter, it's very common
+    that you might want to upgrade our version of Deno. The CLI also provides a command
+    for this. We'll learn about this in the next section.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using the upgrade command
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: We started this chapter by learning how to install Deno, and we installed a
+    single version of the runtime. But Deno is constantly shipping bug fixes and improvements
+    – even more so in these early versions.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'When there are new updates, we can use the same package manager we used to
+    install Deno to upgrade it. However, the Deno CLI provides a command it can use
+    to upgrade itself. The command is called `upgrade` and can be used together with
+    the `--version` flag to select the version we''re upgrading to:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE57]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'If no version is provided, it defaults to the latest version. To install the
+    newer version in another location, instead of replacing the current installation,
+    you can use the `--output` flag, like so:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE58]'
+  prefs: []
+  type: TYPE_PRE
+- en: And that's it – `upgrade` is one more utility that follows the Deno philosophy
+    of providing all we need to write and maintain applications, and part of that
+    cycle is definitely updating our runtime.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this chapter, our main focus was to get to know the tools Deno provides,
+    including those in its main binary. These tools will be heavily used in our daily
+    life and throughout the rest of this book.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We started by getting our environment and editor in place and then deep dived
+    into the toolchain.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Then, we wrote and executed a `eval` command were presented as ways to enable
+    experimentation and running code without a file. After that, we look at the module
+    system. We not only imported and used modules, but we also looked under the hood
+    and understood how Deno downloads and caches dependencies locally.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'After become familiar with the module system, we learned about how to manage
+    external dependencies, namely lock files and integrity checking. We couldn''t
+    leave this section without speaking a little about a still unstable but promising
+    feature: import maps.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: After that, we explored some third-party modules and their code and dependencies
+    with the help of the `info` command. The documentation wasn't left on the side
+    by Deno, and we also learned how we can use the `documentation` command and the
+    respective website to look at third-party's code documentation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Since scripting is a first-class citizen in Deno, we explored the commands that
+    enable us to reuse code by directly running code from a URL and installing utility
+    scripts globally.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Throughout this book, we've mentioned that permissions are one of Deno's highlights.
+    In this chapter, we learned how to use permissions when running code to fine-tune
+    its privileges.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Next, we learned about the test runner, and how to run and filter tests. Another
+    feature we learned about was how to format and lint our code according to Deno's
+    standards. We got to know the `fmt` and `lint` commands, two opinionated tools
+    that ensure that developers don't have to be concerned about formatting and linting
+    since they're handled automatically.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Finally, we introduced the `bundle` and `compile` commands. We learned how we
+    can bundle our code into a single JavaScript file, and how to generate a binary
+    that includes our code and the Deno runtime, making it self-sustainable.
+  prefs: []
+  type: TYPE_NORMAL
+- en: A lot of interesting ground was covered in this chapter. I promise you that
+    what's next is even more exciting. In the next chapter, we'll get to know the
+    standard library and write simple applications with it while we learn about Deno's
+    APIs.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Excited? Let's go!
+  prefs: []
+  type: TYPE_NORMAL
