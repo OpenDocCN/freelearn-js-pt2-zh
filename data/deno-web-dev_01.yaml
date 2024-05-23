@@ -1,47 +1,37 @@
-- en: 'Section 2: Building an Application'
+- en: 'Section 1: Getting Familiar with Deno'
   id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
-  zh: 第二部分：构建应用程序
-- en: In this hands-on section, you will create a Deno application, starting from
-    a server-side rendered website and then moving on to **Representational State
-    Transfer** (**REST**) **application programming interfaces** (**APIs**) that connect
-    with databases and have authentication.
+  zh: 第1节：熟悉Deno
+- en: In this section, you will get to know what Deno is, why it was created, and
+    how it was created. This section will help you set up the environment and get
+    familiar with the ecosystem and available tooling.
   id: totrans-1
   prefs: []
   type: TYPE_NORMAL
-  zh: 在这个动手实践部分，你将创建一个Deno应用程序，从服务器端渲染的网站开始，然后过渡到**代表性状态传输**（**REST**）**应用程序编程接口**（**APIs**），这些接口与数据库连接并具有身份验证功能。
+  zh: 在本节中，你将了解Deno是什么，它为何被创建，以及它是如何被创建的。本节将帮助你设置环境并熟悉生态系统的相关工具。
 - en: 'This section contains the following chapters:'
   id: totrans-2
   prefs: []
   type: TYPE_NORMAL
   zh: 本部分包含以下章节：
-- en: '[*Chapter 4*](B16380_04_Final_JM_ePub.xhtml#_idTextAnchor108), *Building a
-    Web Application*'
+- en: '[*Chapter 1*](B16380_01_Final_JM_ePub.xhtml#_idTextAnchor014), [*What Is Deno?*](https://epic.packtpub.com/index.php?module=oss_Chapters&action=DetailView&record=9acbdeda-16ff-b77c-78da-5f32428f1e3c)'
   id: totrans-3
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
-  zh: '[第4章](B16380_04_Final_JM_ePub.xhtml#_idTextAnchor108)，[构建Web应用程序](https://epic.packtpub.com/index.php?module=oss_Chapters&action=DetailView&record=9932a37e-89e6-72d0-adbb-5f3242397a64)'
-- en: '[*Chapter 5*](B16380_05_Final_JM_ePub.xhtml#_idTextAnchor124), [*Adding Users
-    and Migrating to Oak*](https://epic.packtpub.com/index.php?module=oss_Chapters&action=DetailView&record=7ba1253a-67f3-ded3-ed2a-5f324271642a)'
+  zh: '[第1章](B16380_01_Final_JM_ePub.xhtml#_idTextAnchor014)，[Deno是什么？](https://epic.packtpub.com/index.php?module=oss_Chapters&action=DetailView&record=9acbdeda-16ff-b77c-78da-5f32428f1e3c)'
+- en: '[*Chapter 2*](B16380_02_Final_JM_ePub.xhtml#_idTextAnchor056), [*The Toolchain*](https://epic.packtpub.com/index.php?module=oss_Chapters&action=DetailView&record=28007db8-c7cd-f7e7-f001-5f32420421d8)'
   id: totrans-4
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
-  zh: '[第5章](B16380_05_Final_JM_ePub.xhtml#_idTextAnchor124)，[添加用户并将应用程序迁移到Oak](https://epic.packtpub.com/index.php?module=oss_Chapters&action=DetailView&record=7ba1253a-67f3-ded3-ed2a-5f324271642a)'
-- en: '[*Chapter 6*](B16380_06_Final_JM_ePub.xhtml#_idTextAnchor141), [*Adding Authentication
-    and Connecting to the Database*](https://epic.packtpub.com/index.php?module=oss_Chapters&action=DetailView&record=9932a37e-89e6-72d0-adbb-5f3242397a64)'
+  zh: '[第2章](B16380_02_Final_JM_ePub.xhtml#_idTextAnchor056)，[工具链](https://epic.packtpub.com/index.php?module=oss_Chapters&action=DetailView&record=28007db8-c7cd-f7e7-f001-5f32420421d8)'
+- en: '[*Chapter 3*](B16380_03_Final_JM_ePub.xhtml#_idTextAnchor089), *The Runtime*
+    [*and Standard Library*](https://epic.packtpub.com/index.php?module=oss_Chapters&action=DetailView&record=543934d7-4ca4-7b9f-4311-5f32428a2967)'
   id: totrans-5
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
-  zh: '[第6章](B16380_06_Final_JM_ePub.xhtml#_idTextAnchor141)，[添加身份验证并连接到数据库](https://epic.packtpub.com/index.php?module=oss_Chapters&action=DetailView&record=27af6495-f282-9e92-d711-5f324262765f)'
-- en: '[*Chapter 7*](B16380_07_Final_JM_ePub.xhtml#_idTextAnchor165), [*HTTPS, Extracting
-    Configuration, and Deno in the Browser*](https://epic.packtpub.com/index.php?module=oss_Chapters&action=DetailView&record=27af6495-f282-9e92-d711-5f324262765f)'
-  id: totrans-6
-  prefs:
-  - PREF_UL
-  type: TYPE_NORMAL
-  zh: '[第7章](B16380_07_Final_JM_ePub.xhtml#_idTextAnchor165)，[HTTPS、提取配置以及在浏览器中使用Deno](https://epic.packtpub.com/index.php?module=oss_Chapters&action=DetailView&record=27af6495-f282-9e92-d711-5f324262765f)'
+  zh: '[第3章](B16380_03_Final_JM_ePub.xhtml#_idTextAnchor089)，[运行时](https://epic.packtpub.com/index.php?module=oss_Chapters&action=DetailView&record=543934d7-4ca4-7b9f-4311-5f32428a2967)与标准库'

@@ -1,1 +1,0 @@
-["```js\nconst result = readFile('./README.md');\n// Use result\n```", "```js\nconst result = readFileAsync('./README.md', function(result) {\n  // Use result\n});\n```", "```js\nimport { serve } from 'https://deno.land/std@0.83.0/http/server.ts'\n```"]

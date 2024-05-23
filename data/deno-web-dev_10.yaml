@@ -1,240 +1,38 @@
-- en: '![](img/Packt_Logo_Orange__f36f261.png)'
+- en: 'Section 3: Testing and Deploying'
   id: totrans-0
-  prefs: []
-  type: TYPE_IMG
-  zh: '![](img/Packt_Logo_Orange__f36f261.png)'
-- en: '[Packt.com](http://Packt.com)'
-  id: totrans-1
-  prefs: []
-  type: TYPE_NORMAL
-  zh: '[Packt.com](http://Packt.com)'
-- en: Subscribe to our online digital library for full access to over 7,000 books
-    and videos, as well as industry leading tools to help you plan your personal development
-    and advance your career. For more information, please visit our website.
-  id: totrans-2
-  prefs: []
-  type: TYPE_NORMAL
-  zh: 订阅我们的在线数字图书馆，全面访问7000多本图书和视频，以及行业领先工具，帮助您规划个人发展并推进您的职业生涯。更多信息，请访问我们的网站。
-- en: Why subscribe?
-  id: totrans-3
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
-  zh: 为什么要订阅？
-- en: Spend less time learning and more time coding with practical eBooks and Videos
-    from over 4,000 industry professionals
+  zh: 第3节：测试与部署
+- en: In this section, you will be creating meaningful integration and unit tests
+    that enable the application to grow, and will also learn how to containerize and
+    deploy Deno applications in the cloud.
+  id: totrans-1
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在本节中，你将创建有意义的集成和单元测试，使应用程序能够增长，并将学习如何将Deno应用程序容器化并在云端部署。
+- en: 'This section contains the following chapters:'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本节包含以下章节：
+- en: '[*Chapter 8*](B16380_08_Final_JM_ePub.xhtml#_idTextAnchor178), [*Testing –
+    Unit and Integration*](https://epic.packtpub.com/index.php?module=oss_Chapters&action=DetailView&record=825fa87f-4618-2790-1a60-5f32422b4c47)'
+  id: totrans-3
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[第8章](B16380_08_Final_JM_ePub.xhtml#_idTextAnchor178)，[测试 – 单元和集成](https://epic.packtpub.com/index.php?module=oss_Chapters&action=DetailView&record=825fa87f-4618-2790-1a60-5f32422b4c47)'
+- en: '[*Chapter 9*](B16380_09_Final_JM_ePub.xhtml#_idTextAnchor190), [*Deploying
+    a Deno Application*](https://epic.packtpub.com/index.php?module=oss_Chapters&action=DetailView&record=98b91ae7-2855-39f3-f6b4-5f32426d1b76)'
   id: totrans-4
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
-  zh: 与4000多名行业专业人士实践性的电子书和视频，节省学习时间，更多时间编码
-- en: Improve your learning with Skill Plans built especially for you
+  zh: '[第9章](B16380_09_Final_JM_ePub.xhtml#_idTextAnchor190)，[部署Deno应用程序](https://epic.packtpub.com/index.php?module=oss_Chapters&action=DetailView&record=98b91ae7-2855-39f3-f6b4-5f32426d1b76)'
+- en: '[*Chapter 10*](B16380_10_Final_JM_ePub.xhtml#_idTextAnchor201), [*What''s Next?*](https://epic.packtpub.com/index.php?module=oss_Chapters&action=DetailView&record=6128cca6-e773-f0c6-9ca0-5f3242cf7f1e)'
   id: totrans-5
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
-  zh: 使用专门为您打造的技能计划来提升您的学习
-- en: Get a free eBook or video every month
-  id: totrans-6
-  prefs:
-  - PREF_UL
-  type: TYPE_NORMAL
-  zh: 每月免费获得一本电子书或视频
-- en: Fully searchable for easy access to vital information
-  id: totrans-7
-  prefs:
-  - PREF_UL
-  type: TYPE_NORMAL
-  zh: 完全可搜索，轻松访问重要信息
-- en: Copy and paste, print, and bookmark content
-  id: totrans-8
-  prefs:
-  - PREF_UL
-  type: TYPE_NORMAL
-  zh: 复制、打印和书签内容
-- en: Did you know that Packt offers eBook versions of every book published, with
-    PDF and ePub files available? You can upgrade to the eBook version at [packt.com](http://packt.com)
-    and as a print book customer, you are entitled to a discount on the eBook copy.
-    Get in touch with us at [customercare@packtpub.com](mailto:customercare@packtpub.com)
-    for more details.
-  id: totrans-9
-  prefs: []
-  type: TYPE_NORMAL
-  zh: 您知道Packt提供每本书的电子书版本，并提供PDF和ePub文件吗？您可以在[packt.com](http://packt.com)升级到电子书版本，作为印刷书客户，您有权以折扣价购买电子书。更多详情请联系我们：[customercare@packtpub.com](mailto:customercare@packtpub.com)
-- en: At [www.packt.com](http://www.packt.com), you can also read a collection of
-    free technical articles, sign up for a range of free newsletters, and receive
-    exclusive discounts and offers on Packt books and eBooks.
-  id: totrans-10
-  prefs: []
-  type: TYPE_NORMAL
-  zh: 在[www.packt.com](http://www.packt.com)，您还可以阅读一系列免费的技术文章，订阅一系列免费新闻通讯，并获得Packt书籍和电子书的独家折扣和优惠。
-- en: Other Books You May Enjoy
-  id: totrans-11
-  prefs:
-  - PREF_H1
-  type: TYPE_NORMAL
-  zh: 您可能会喜欢的其他书籍
-- en: 'If you enjoyed this book, you may be interested in these other books by Packt:'
-  id: totrans-12
-  prefs: []
-  type: TYPE_NORMAL
-  zh: 如果您喜欢这本书，您可能对这些由Packt出版的其它书籍感兴趣：
-- en: '[![](img/Full-Stack_React,_TypeScript,_and_Node.png)](https://www.packtpub.com/product/full-stack-react-typescript-and-node/9781839219931)'
-  id: totrans-13
-  prefs: []
-  type: TYPE_NORMAL
-  zh: '[![](img/Full-Stack_React,_TypeScript,_and_Node.png)](https://www.packtpub.com/product/full-stack-react-typescript-and-node/9781839219931)'
-- en: '**Full-Stack React, TypeScript, and Node**'
-  id: totrans-14
-  prefs: []
-  type: TYPE_NORMAL
-  zh: '**全栈React，TypeScript和Node**'
-- en: David Choi
-  id: totrans-15
-  prefs: []
-  type: TYPE_NORMAL
-  zh: 大卫·乔伊
-- en: 'ISBN: 978-1-83921-993-1'
-  id: totrans-16
-  prefs: []
-  type: TYPE_NORMAL
-  zh: 'ISBN: 978-1-83921-993-1'
-- en: Discover TypeScript's most important features and how they can be used to improve
-    code quality and maintainability
-  id: totrans-17
-  prefs:
-  - PREF_UL
-  type: TYPE_NORMAL
-  zh: 探索TypeScript最重要的功能以及如何使用它们来提高代码质量和可维护性
-- en: Understand what React Hooks are and how to build React apps using them
-  id: totrans-18
-  prefs:
-  - PREF_UL
-  type: TYPE_NORMAL
-  zh: 了解React Hooks是什么以及如何使用它们来构建React应用
-- en: Implement state management for your React app using Redux
-  id: totrans-19
-  prefs:
-  - PREF_UL
-  type: TYPE_NORMAL
-  zh: 使用Redux为您的React应用实现状态管理
-- en: Set up an Express project with TypeScript and GraphQL from scratch
-  id: totrans-20
-  prefs:
-  - PREF_UL
-  type: TYPE_NORMAL
-  zh: 从零开始设置一个使用TypeScript和GraphQL的Express项目
-- en: Build a fully functional online forum app using React and GraphQL
-  id: totrans-21
-  prefs:
-  - PREF_UL
-  type: TYPE_NORMAL
-  zh: 使用React和GraphQL构建一个功能齐全的在线论坛应用
-- en: Add authentication to your web app using Redis
-  id: totrans-22
-  prefs:
-  - PREF_UL
-  type: TYPE_NORMAL
-  zh: 使用Redis为您的网络应用添加身份验证
-- en: Save and retrieve data from a Postgres database using TypeORM
-  id: totrans-23
-  prefs:
-  - PREF_UL
-  type: TYPE_NORMAL
-  zh: 使用TypeORM从Postgres数据库保存和检索数据
-- en: Configure NGINX on the AWS cloud to deploy and serve your apps
-  id: totrans-24
-  prefs:
-  - PREF_UL
-  type: TYPE_NORMAL
-  zh: 在AWS云上配置NGINX以部署和服务您的应用
-- en: '[![](img/Node_Cookbook_-_Fourth_Edition.png)](https://www.packtpub.com/product/node-cookbook-fourth-edition/9781838558758?utm_source=github&utm_medium=repository&utm_campaign=9781838558758)'
-  id: totrans-25
-  prefs: []
-  type: TYPE_NORMAL
-  zh: '[![](img/Node_Cookbook_-_Fourth_Edition.png)](https://www.packtpub.com/product/node-cookbook-fourth-edition/9781838558758?utm_source=github&utm_medium=repository&utm_campaign=9781838558758)'
-- en: '**Node Cookbook - Fourth Edition**'
-  id: totrans-26
-  prefs: []
-  type: TYPE_NORMAL
-  zh: '**Node Cookbook - 第四版**'
-- en: Bethany Griggs
-  id: totrans-27
-  prefs: []
-  type: TYPE_NORMAL
-  zh: 贝瑟尼·格里格斯
-- en: 'ISBN: 978-1-83855-875-8'
-  id: totrans-28
-  prefs: []
-  type: TYPE_NORMAL
-  zh: 'ISBN: 978-1-83855-875-8'
-- en: Understand the Node.js asynchronous programming model
-  id: totrans-29
-  prefs:
-  - PREF_UL
-  type: TYPE_NORMAL
-  zh: 了解Node.js异步编程模型
-- en: Create simple Node.js applications using modules and web frameworks
-  id: totrans-30
-  prefs:
-  - PREF_UL
-  type: TYPE_NORMAL
-  zh: 使用模块和网络框架创建简单的Node.js应用程序
-- en: Develop simple web applications using web frameworks such as Fastify and Express
-  id: totrans-31
-  prefs:
-  - PREF_UL
-  type: TYPE_NORMAL
-  zh: 使用Fastify和Express等网络框架开发简单的网络应用程序
-- en: Discover tips for testing, optimizing, and securing your web applications
-  id: totrans-32
-  prefs:
-  - PREF_UL
-  type: TYPE_NORMAL
-  zh: 发现测试、优化和保护您的网络应用程序的技巧
-- en: Create and deploy Node.js microservices
-  id: totrans-33
-  prefs:
-  - PREF_UL
-  type: TYPE_NORMAL
-  zh: 创建并部署Node.js微服务
-- en: Debug and diagnose issues in your Node.js applications
-  id: totrans-34
-  prefs:
-  - PREF_UL
-  type: TYPE_NORMAL
-  zh: 在您的Node.js应用程序中调试和诊断问题
-- en: Packt is searching for authors like you
-  id: totrans-35
-  prefs:
-  - PREF_H1
-  type: TYPE_NORMAL
-  zh: Packt正在寻找像您这样的作者
-- en: If you're interested in becoming an author for Packt, please visit [authors.packtpub.com](http://authors.packtpub.com)
-    and apply today. We have worked with thousands of developers and tech professionals,
-    just like you, to help them share their insight with the global tech community.
-    You can make a general application, apply for a specific hot topic that we are
-    recruiting an author for, or submit your own idea.
-  id: totrans-36
-  prefs: []
-  type: TYPE_NORMAL
-  zh: 如果你有兴趣成为 Packt 的作者，请访问[作者页面](http://authors.packtpub.com)并尽快申请。我们已经与数千名开发者和技术专业人士合作，就像你一样，帮助他们将他们的见解分享给全球技术社区。你可以提交一个普通的申请，申请一个我们正在招募作者的热门话题，或者提交你自己的想法。
-- en: Leave a review - let other readers know what you think
-  id: totrans-37
-  prefs:
-  - PREF_H1
-  type: TYPE_NORMAL
-  zh: 留下评论 - 让其他读者知道你的看法
-- en: Please share your thoughts on this book with others by leaving a review on the
-    site that you bought it from. If you purchased the book from Amazon, please leave
-    us an honest review on this book's Amazon page. This is vital so that other potential
-    readers can see and use your unbiased opinion to make purchasing decisions, we
-    can understand what our customers think about our products, and our authors can
-    see your feedback on the title that they have worked with Packt to create. It
-    will only take a few minutes of your time, but is valuable to other potential
-    customers, our authors, and Packt. Thank you!
-  id: totrans-38
-  prefs: []
-  type: TYPE_NORMAL
-  zh: 请通过在你购买本书的网站上留下评论，与其他人分享你对这本书的看法。如果你从亚马逊购买了这本书，请在本书的亚马逊页面上留下一个诚实的评论。这对其他潜在读者非常重要，他们可以看到并使用你的客观意见来做出购买决定，我们可以了解我们的客户对我们产品的看法，我们的作者可以看到他们对与
-    Packt 合作创作的标题的反馈。这只需要花费你几分钟的时间，但对其他潜在客户、我们的作者和 Packt 来说非常有价值。谢谢你！
+  zh: '[第10章](B16380_10_Final_JM_ePub.xhtml#_idTextAnchor201)，[接下来做什么？](https://epic.packtpub.com/index.php?module=oss_Chapters&action=DetailView&record=6128cca6-e773-f0c6-9ca0-5f3242cf7f1e)'
