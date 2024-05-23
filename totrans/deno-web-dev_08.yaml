@@ -1114,24 +1114,29 @@
   id: totrans-165
   prefs: []
   type: TYPE_NORMAL
+  zh: 网络访问屏幕看起来是这样的：
 - en: '![Figure 9.1 – MongoDB Atlas network access screen'
   id: totrans-166
   prefs: []
   type: TYPE_NORMAL
+  zh: '![图9.1 – MongoDB Atlas网络访问屏幕'
 - en: '](img/Figure_9.1_B16380.jpg)'
   id: totrans-167
   prefs: []
   type: TYPE_NORMAL
+  zh: '](img/Figure_9.1_B16380.jpg)'
 - en: Figure 9.1 – MongoDB Atlas network access screen
   id: totrans-168
   prefs: []
   type: TYPE_NORMAL
+  zh: 图9.1 – MongoDB Atlas网络访问屏幕
 - en: 'After this, our application should work as expected; you can try to perform
     a request to register a user (that connects to the database) and check that everything''s
     fine, as demonstrated in the following code snippet:'
   id: totrans-169
   prefs: []
   type: TYPE_NORMAL
+  zh: 之后，我们的应用应该能如预期般正常工作；你可以尝试执行一个注册用户的请求（它连接到数据库）并检查一切是否正常，如下面的代码片段所示：
 - en: '[PRE31]'
   id: totrans-170
   prefs: []
@@ -1143,18 +1148,21 @@
   id: totrans-171
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你得到的响应与前面的类似，那就大功告成了！我们成功地在云环境中配置并部署了我们的应用，并创建了一种自动化的方式将更新部署给我们的用户。
 - en: 'To do a final test to check whether the code is being deployed successfully,
     we can try to change part of the code and trigger the deployment process again.
     Let''s do it! Proceed as follows:'
   id: totrans-172
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了进行最后的测试，以确保代码正在成功部署，我们可以尝试更改代码的一部分并再次触发部署过程。让我们这样做！按照以下步骤进行：
 - en: 'Change our `"Hello World"` message in `src/web/index.ts` to `"Hello Deno World!"`,
     as illustrated in the following code snippet:'
   id: totrans-173
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 将`src/web/index.ts`中的`"Hello World"`消息更改为`"Hello Deno World!"`，如图所示：
 - en: '[PRE32]'
   id: totrans-174
   prefs:
@@ -1166,6 +1174,7 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 将此更改添加到版本控制中，如下所示：
 - en: '[PRE33]'
   id: totrans-176
   prefs:
@@ -1177,6 +1186,7 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 将其推送到Heroku的`git`远程仓库，像这样：
 - en: '[PRE34]'
   id: totrans-178
   prefs:
@@ -1189,41 +1199,50 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 如果你现在访问应用的URL（在我们的案例中是[https://boiling-dusk-18477.herokuapp.com/](https://boiling-dusk-18477.herokuapp.com/)），你应该会看到`Hello
+    Deno World`的消息。
 - en: This means that our application was successfully deployed. Since we're using
     a cloud platform that provides more than what we learned here, we can explore
     other Heroku features, such as logging.
   id: totrans-180
   prefs: []
   type: TYPE_NORMAL
+  zh: 这意味着我们的应用已成功部署。由于我们使用的是一个提供比我们在这里学到的更多功能的云平台，我们可以探索其他Heroku功能，比如日志记录。
 - en: 'Next to the **Open app** button on the Heroku Dashboard ([https://dashboard.heroku.com/](https://dashboard.heroku.com/)),
     you have a **More** button. One of the options is **View logs**, as you can see
     in the following screenshot:'
   id: totrans-181
   prefs: []
   type: TYPE_NORMAL
+  zh: 在Heroku控制面板上的**打开应用**按钮旁边，有一个**更多**按钮。其中一个选项是**查看日志**，正如你在下面的屏幕截图中所看到的：
 - en: '![Figure 9.2 – More application options in the Heroku Dashboard'
   id: totrans-182
   prefs: []
   type: TYPE_NORMAL
+  zh: '![图9.2 – Heroku控制面板中的应用更多选项'
 - en: '](img/Figure_9.2_B16380.jpg)'
   id: totrans-183
   prefs: []
   type: TYPE_NORMAL
+  zh: '](img/Figure_9.2_B16380.jpg)'
 - en: Figure 9.2 – More application options in the Heroku Dashboard
   id: totrans-184
   prefs: []
   type: TYPE_NORMAL
+  zh: 图9.2 – Heroku控制面板中的应用更多选项
 - en: If you click there, an interface that shows the logs in real time will appear.
     You can try it out by opening your application in a different tab (by clicking
     the **Open app** button).
   id: totrans-185
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你点击那里，一个显示实时日志的界面将会出现。你可以尝试通过点击另一个标签页中的**打开应用**按钮来打开你的应用。
 - en: 'You''ll see that the logs instantly update, and something like this should
     appear there:'
   id: totrans-186
   prefs: []
   type: TYPE_NORMAL
+  zh: 你会看到日志立即更新，那里应该会出现类似这样的内容：
 - en: '[PRE35]'
   id: totrans-187
   prefs: []
@@ -1236,37 +1255,45 @@
   id: totrans-188
   prefs: []
   type: TYPE_NORMAL
+  zh: 这对于你想对应用的运行情况进行非常轻量级的监控非常有用。日志记录功能在免费层中提供，但还有许多其他功能供你探索，比如我们在这里不会做的**指标**功能。
 - en: 'If you want to have a detailed look at when and by whom your application was
     deployed, you can also use the **Activity** section from the Heroku Dashboard,
     as illustrated in the following screenshot:'
   id: totrans-189
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你想要详细查看你的应用是在何时以及由谁部署的，你也可以使用Heroku控制面板上的**活动**部分，如图所示：
 - en: '![Figure 9.3 – Heroku Dashboard application options](img/Figure_9.3_B16380.jpg)'
   id: totrans-190
   prefs: []
   type: TYPE_IMG
+  zh: '![图9.3 – Heroku控制面板应用选项](img/Figure_9.3_B16380.jpg)'
 - en: Figure 9.3 – Heroku Dashboard application options
   id: totrans-191
   prefs: []
   type: TYPE_NORMAL
+  zh: 图9.3 – Heroku控制面板应用选项
 - en: 'You''ll then see a log of your most recent deployments, another very interesting
     feature of Heroku, as illustrated in the following screenshot:'
   id: totrans-192
   prefs: []
   type: TYPE_NORMAL
+  zh: 然后，你会看到你最近部署的日志，这是Heroku的另一个非常有趣的功能，如图所示：
 - en: '![Figure 9.4 – Activity tab in the Heroku Dashboard application'
   id: totrans-193
   prefs: []
   type: TYPE_NORMAL
+  zh: '![图9.4 – Heroku控制面板应用活动标签'
 - en: '](img/Figure_9.4_B16380.jpg)'
   id: totrans-194
   prefs: []
   type: TYPE_NORMAL
+  zh: '](img/Figure_9.4_B16380.jpg)'
 - en: Figure 9.4 – Activity tab in the Heroku Dashboard application
   id: totrans-195
   prefs: []
   type: TYPE_NORMAL
+  zh: 图9.4 – Heroku控制面板应用活动标签
 - en: This wraps up our section on deploying the application in a cloud environment.
   id: totrans-196
   prefs: []
