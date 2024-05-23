@@ -621,11 +621,13 @@
   id: totrans-87
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这个示例中，如果你不确定`underterminedValue`变量如果从外部接口设置值可能持有的类型。如果`isNaN()`没有被处理，`parseInt()`将抛出异常，程序可能会崩溃。
 - en: String
   id: totrans-88
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 字符串
 - en: 'In JavaScript, strings are a sequence of Unicode characters (each character
     takes 16 bits). Each character in the string can be accessed by its index. The
     first character index is zero. Strings are enclosed inside `"` or `''`—both are
@@ -633,6 +635,7 @@
   id: totrans-89
   prefs: []
   type: TYPE_NORMAL
+  zh: 在JavaScript中，字符串是Unicode字符的序列（每个字符占用16位）。字符串中的每个字符可以通过其索引来访问。第一个字符的索引是零。字符串被包含在`"`或`'`内——两者都是表示字符串的有效方式。让我们来看看以下内容：
 - en: '[PRE14]'
   id: totrans-90
   prefs: []
@@ -644,46 +647,55 @@
   id: totrans-91
   prefs: []
   type: TYPE_NORMAL
+  zh: 最后一行展示了当使用反斜杠`\`对某些字符字面量进行转义时，它们可以作为特殊字符使用。以下是一些这样的特殊字符：
 - en: '`\n`: Newline'
   id: totrans-92
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`\n`: 换行'
 - en: '`\t`: Tab'
   id: totrans-93
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`\t`: 制表符'
 - en: '`\b`: Backspace'
   id: totrans-94
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`\b`: 退格'
 - en: '`\r`: Carriage return'
   id: totrans-95
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`\r`: 回车'
 - en: '`\\`: Backslash'
   id: totrans-96
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`\`: 反斜杠'
 - en: '`\''`: Single quote'
   id: totrans-97
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`''`: 单引号'
 - en: '`\"`: Double quote'
   id: totrans-98
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`"`: 双引号'
 - en: 'You get default support for special characters and Unicode literals with JavaScript
     strings:'
   id: totrans-99
   prefs: []
   type: TYPE_NORMAL
+  zh: 你可以在JavaScript字符串中获得对特殊字符和Unicode字面量的默认支持：
 - en: '[PRE15]'
   id: totrans-100
   prefs: []
@@ -695,6 +707,7 @@
   id: totrans-101
   prefs: []
   type: TYPE_NORMAL
+  zh: 关于JavaScript字符串、数字和布尔值的一个重要事情是，它们实际上有包装对象围绕在其原始等效物周围。以下示例显示了包装对象的使用：
 - en: '[PRE16]'
   id: totrans-102
   prefs: []
@@ -704,23 +717,28 @@
   id: totrans-103
   prefs: []
   type: TYPE_NORMAL
+  zh: JavaScript也允许多行字符串。字符串被包含在[PRE17]
 - en: console.log(`string text on first line
   id: totrans-104
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: console.log(`第一行上的字符串文本
 - en: string text on second line `);
   id: totrans-105
   prefs: []
   type: TYPE_NORMAL
+  zh: 第二行上的字符串文本 `);
 - en: '"string text on first line'
   id: totrans-106
   prefs: []
   type: TYPE_NORMAL
+  zh: 第一行上的字符串文本 "
 - en: string text on second line "
   id: totrans-107
   prefs: []
   type: TYPE_NORMAL
+  zh: 第二行上的字符串文本 "
 - en: '[PRE18]'
   id: totrans-108
   prefs: []
@@ -730,10 +748,12 @@
   id: totrans-109
   prefs: []
   type: TYPE_NORMAL
+  zh: var a=1, b=2;
 - en: console.log("Sum of values is :" + (a+b) + " and multiplication is :" + (a*b));
   id: totrans-110
   prefs: []
   type: TYPE_NORMAL
+  zh: console.log("数值之和为:" + (a+b) + " 和乘积为:" + (a*b));
 - en: '[PRE19]'
   id: totrans-111
   prefs: []
@@ -743,6 +763,7 @@
   id: totrans-112
   prefs: []
   type: TYPE_NORMAL
+  zh: console.log(`数值之和为:${a+b}，乘积为:${a*b}`);
 - en: '[PRE20]'
   id: totrans-113
   prefs: []
@@ -753,24 +774,29 @@
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: var xl;
 - en: console.log(typeof xl);
   id: totrans-115
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: console.log(typeof xl);
 - en: undefined
   id: totrans-116
   prefs: []
   type: TYPE_NORMAL
+  zh: undefined
 - en: console.log(null==undefined);
   id: totrans-117
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: console.log(null==undefined);
 - en: 'true'
   id: totrans-118
   prefs: []
   type: TYPE_NORMAL
+  zh: 'true'
 - en: '[PRE21]'
   id: totrans-119
   prefs: []
@@ -781,11 +807,13 @@
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: var pBooleanTrue = true;
 - en: var pBooleanFalse = false;
   id: totrans-121
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: var pBooleanFalse = false;
 - en: '[PRE22]'
   id: totrans-122
   prefs:
@@ -797,11 +825,13 @@
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: var fBooleanTrue = Boolean(true);
 - en: var fBooleanFalse = Boolean(false);
   id: totrans-124
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: var fBooleanFalse = Boolean(false);
 - en: '[PRE23]'
   id: totrans-125
   prefs:
@@ -812,78 +842,97 @@
   id: totrans-126
   prefs: []
   type: TYPE_NORMAL
+  zh: var oBooleanTrue = new Boolean(true);
 - en: var oBooleanFalse = new Boolean(false);
   id: totrans-127
   prefs: []
   type: TYPE_NORMAL
+  zh: var oBooleanFalse = new Boolean(false);
 - en: console.log(oBooleanTrue); //true
   id: totrans-128
   prefs: []
   type: TYPE_NORMAL
+  zh: console.log(oBooleanTrue); //true
 - en: console.log(typeof oBooleanTrue); //object
   id: totrans-129
   prefs: []
   type: TYPE_NORMAL
+  zh: console.log(typeof oBooleanTrue); //object
 - en: if(oBooleanFalse){
   id: totrans-130
   prefs: []
   type: TYPE_NORMAL
+  zh: if(oBooleanFalse){
 - en: console.log("I am seriously truthy, don't believe me");
   id: totrans-131
   prefs: []
   type: TYPE_NORMAL
+  zh: console.log("我是认真的真值，别信我");
 - en: '}'
   id: totrans-132
   prefs: []
   type: TYPE_NORMAL
+  zh: '}'
 - en: '>"I am seriously truthy, don''t believe me"'
   id: totrans-133
   prefs: []
   type: TYPE_NORMAL
+  zh: '>"我也是认真的真值，别信我"'
 - en: if(oBooleanTrue){
   id: totrans-134
   prefs: []
   type: TYPE_NORMAL
+  zh: if(oBooleanTrue){
 - en: console.log("I am also truthy, see ?");
   id: totrans-135
   prefs: []
   type: TYPE_NORMAL
+  zh: console.log("我也是真值，看?");
 - en: '}'
   id: totrans-136
   prefs: []
   type: TYPE_NORMAL
+  zh: '}'
 - en: '>"I am also truthy, see ?"'
   id: totrans-137
   prefs: []
   type: TYPE_NORMAL
+  zh: '>"我也是真值，看?"'
 - en: //Use valueOf() to extract real value within the Boolean object
   id: totrans-138
   prefs: []
   type: TYPE_NORMAL
+  zh: //使用valueOf()方法来提取布尔对象内的真实值
 - en: if(oBooleanFalse.valueOf()){
   id: totrans-139
   prefs: []
   type: TYPE_NORMAL
+  zh: if(oBooleanFalse.valueOf()){
 - en: console.log("With valueOf, I am false");
   id: totrans-140
   prefs: []
   type: TYPE_NORMAL
+  zh: console.log("使用valueOf，我是假的");
 - en: '}else{'
   id: totrans-141
   prefs: []
   type: TYPE_NORMAL
+  zh: '}else{'
 - en: console.log("Without valueOf, I am still truthy");
   id: totrans-142
   prefs: []
   type: TYPE_NORMAL
+  zh: console.log("不使用valueOf，我仍然是真值");
 - en: '}'
   id: totrans-143
   prefs: []
   type: TYPE_NORMAL
+  zh: '}'
 - en: '>"Without valueOf, I am still truthy"'
   id: totrans-144
   prefs: []
   type: TYPE_NORMAL
+  zh: '>"不使用valueOf，我仍然是真值"'
 - en: '[PRE24]'
   id: totrans-145
   prefs: []
@@ -893,22 +942,27 @@
   id: totrans-146
   prefs: []
   type: TYPE_NORMAL
+  zh: var aStringObject = new String("string");
 - en: console.log(typeof aStringObject);        //"object"
   id: totrans-147
   prefs: []
   type: TYPE_NORMAL
+  zh: console.log(typeof aStringObject); //"object"
 - en: console.log(aStringObject instanceof String);    //true
   id: totrans-148
   prefs: []
   type: TYPE_NORMAL
+  zh: console.log(aStringObject instanceof String); //true
 - en: var aString = "This is a string";
   id: totrans-149
   prefs: []
   type: TYPE_NORMAL
+  zh: var aString = "这是一个字符串";
 - en: console.log(aString instanceof String);     //false
   id: totrans-150
   prefs: []
   type: TYPE_NORMAL
+  zh: console.log(aString instanceof String); //false
 - en: '[PRE25]'
   id: totrans-151
   prefs: []
@@ -918,6 +972,7 @@
   id: totrans-152
   prefs: []
   type: TYPE_NORMAL
+  zh: var dataObject = new Date([参数]);
 - en: '[PRE26]'
   id: totrans-153
   prefs: []
@@ -927,42 +982,52 @@
   id: totrans-154
   prefs: []
   type: TYPE_NORMAL
+  zh: var today = new Date();
 - en: console.log(today.getDate()); //27
   id: totrans-155
   prefs: []
   type: TYPE_NORMAL
+  zh: console.log(today.getDate()); //27
 - en: console.log(today.getMonth()); //4
   id: totrans-156
   prefs: []
   type: TYPE_NORMAL
+  zh: console.log(today.getMonth()); //4
 - en: console.log(today.getFullYear()); //2015
   id: totrans-157
   prefs: []
   type: TYPE_NORMAL
+  zh: console.log(today.getFullYear()); //2015
 - en: console.log(today.getHours()); //23
   id: totrans-158
   prefs: []
   type: TYPE_NORMAL
+  zh: console.log(today.getHours()); //23
 - en: console.log(today.getMinutes()); //13
   id: totrans-159
   prefs: []
   type: TYPE_NORMAL
+  zh: console.log(today.getMinutes()); //13
 - en: console.log(today.getSeconds()); //10
   id: totrans-160
   prefs: []
   type: TYPE_NORMAL
+  zh: console.log(today.getSeconds()); //10
 - en: //number of milliseconds since January 1, 1970, 00:00:00 UTC
   id: totrans-161
   prefs: []
   type: TYPE_NORMAL
+  zh: //自1970年1月1日以来，00:00:00 UTC的毫秒数
 - en: console.log(today.getTime()); //1432748611392
   id: totrans-162
   prefs: []
   type: TYPE_NORMAL
+  zh: console.log(today.getTime()); //1432748611392
 - en: console.log(today.getTimezoneOffset()); //-330 Minutes
   id: totrans-163
   prefs: []
   type: TYPE_NORMAL
+  zh: console.log(today.getTimezoneOffset()); //-330分钟
 - en: //Calculating elapsed time
   id: totrans-164
   prefs: []
