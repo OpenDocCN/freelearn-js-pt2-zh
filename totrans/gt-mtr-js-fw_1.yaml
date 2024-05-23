@@ -3,12 +3,14 @@
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 第1章。设置和安装
 - en: Under the hood, Meteor is really just a bunch of files and scripts, designed
     to make the building of a web application easier. That's a terrible way to describe
     something so elegant, but it helps us better understand what we're using.
   id: totrans-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 在底层，Meteor其实只是一堆文件和脚本，旨在让构建Web应用程序变得更容易。这是描述某样东西如此优雅的一种糟糕方式，但它帮助我们更好地理解我们在使用什么。
 - en: After all, Mila Kunis is really just a bunch of tissue wrapped around bone,
     with some vital organs inside. I know you hate me now for that description, but
     you get the point. She's beautiful. So is Meteor. But it doesn't do us any good
@@ -17,6 +19,8 @@
   id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 毕竟，米拉·库尼斯其实只是一堆组织包裹在骨骼周围，里面有一些重要的器官。我知道你现在可能恨我因为这个描述，但你知道我的意思。她很美。Meteor也是。但我们不能就停留在那。如果我们想要在我们的
+    own上重现这种美丽，我们必须了解到底发生了什么。
 - en: So, files and scripts… We're going to walk through how to get the Meteor package
     properly installed on your Linux or Mac OS X system, and then see that package
     of files and scripts in action. Note that Windows support is coming, but as of
@@ -24,30 +28,36 @@
   id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: 所以，文件和脚本……我们将带你了解如何在你的Linux或Mac OS X系统上正确安装Meteor包，然后看看这个文件和脚本的包如何运行。请注意，Windows支持即将推出，但截至本文写作时，只有Linux和Mac版本可用。
 - en: 'In this chapter, you will learn:'
   id: totrans-4
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本章中，你将学习到：
 - en: Downloading and installing Meteor via curl
   id: totrans-5
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 通过curl下载并安装Meteor
 - en: Loading an example application
   id: totrans-6
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 加载一个示例应用程序
 - en: Making changes and watching Meteor in action
   id: totrans-7
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 进行更改并观察Meteor的实际运行
 - en: Installing with curl
   id: totrans-8
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 使用curl安装
 - en: There are several ways to install a package of files and scripts. You can manually
     download and transfer files, you can use a pretty installation wizard/package
     with lots of "next" buttons, or you can do what *real* developers do, and use
@@ -57,6 +67,7 @@
   id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 安装文件和脚本有几种方法。你可以手动下载和传输文件，你可以使用一个有很多“下一步”按钮的漂亮安装向导/包，或者你可以像*真正的*开发者那样做，使用命令行。这会让你变得更有男子气概。然而，我现在想想，这可能并不是一个非常想要的事情。好吧，没有头发；我撒谎了。但仍然，你想使用命令行，相信我。相信刚刚对你撒谎的那个人。
 - en: '`curl` (or cURL if you want to get fancy) is a command-line tool used to transfer
     files and run scripts, using standard URL locations. You probably already knew
     that, or you probably don''t care. Either way, we''ve described it and we''re
@@ -64,10 +75,12 @@
   id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: '`curl`（如果你想弄得花哨一点，就是cURL）是一个命令行工具，用于使用标准URL位置传输文件和运行脚本。你可能已经知道了，或者你可能不在乎。无论如何，我们描述了一下，现在我们继续使用它。'
 - en: 'Open a terminal window or the command line, and enter the following:'
   id: totrans-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 打开一个终端窗口或命令行，并输入以下内容：
 - en: '[PRE0]'
   id: totrans-12
   prefs: []
@@ -78,10 +91,12 @@
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 提示
 - en: '**Downloading the example code**'
   id: totrans-14
   prefs: []
   type: TYPE_NORMAL
+  zh: '**下载示例代码**'
 - en: You can download the example code files for all Packt books you have purchased
     from your account at [http://www.PacktPub.com](http://www.PacktPub.com). If you
     purchased this book elsewhere, you can visit [http://www.PacktPub.com/support](http://www.PacktPub.com/support)
@@ -89,6 +104,7 @@
   id: totrans-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 你可以从你账户中下载你购买的所有Packt书籍的示例代码文件。[http://www.PacktPub.com](http://www.PacktPub.com)有你购买这本书以外的所有书籍的示例代码文件。如果你在其他地方购买了这本书，你可以访问[http://www.PacktPub.com/support](http://www.PacktPub.com/support)并注册，以便文件直接发送到你的邮箱。
 - en: This will install Meteor on your system. `curl` is the command to go and fetch
     the script. [https://install.meteor.com](https://install.meteor.com) is the URL/location
     of the script, and `/bin/sh` is, of course, the location of the script interpreter
@@ -96,20 +112,24 @@
   id: totrans-16
   prefs: []
   type: TYPE_NORMAL
+  zh: 这将会在你的系统上安装Meteor。`curl`是去获取脚本的命令。[https://install.meteor.com](https://install.meteor.com)是脚本的URL/位置，`/bin/sh`当然是脚本解释器“Shell”的位置，它将会运行脚本。
 - en: 'Once you''ve run this script, assuming you have an Internet connection and
     the proper permissions, you will see the Meteor package download and install:'
   id: totrans-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 一旦你运行了此脚本，假设你有互联网连接和适当的权限，你就会看到Meteor包的下载和安装：
 - en: '![Installing with curl](img/0823OS_01_08.jpg)'
   id: totrans-18
   prefs: []
   type: TYPE_IMG
+  zh: '![使用curl安装](img/0823OS_01_08.jpg)'
 - en: 'The key thing we''re looking for in the preceding installation text is the
     location of Meteor:'
   id: totrans-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 在前面的安装文本中我们要找的关键信息是Meteor的位置：
 - en: '[PRE1]'
   id: totrans-20
   prefs: []
