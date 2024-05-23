@@ -1,13 +1,17 @@
 - en: Chapter 4. Implementing Promises
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 第 4 章. 实现承诺
 - en: In the last chapter, [Chapter 3](ch03.html "Chapter 3. The Promise Paradigm"),
     *The Promise Paradigm*, we have seen how promise and its theories were fabricated
     together to form a whole new amazing picture of the software engineering paradigm,
     and especially in today's modern asynchronous application development life cycle.
+  id: totrans-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 在上一章中，[第 3 章](ch03.html "第 3 章. 承诺范式")，*承诺范式*，我们看到了承诺及其理论是如何结合在一起，形成软件工程范式的一个全新的惊人的图片，尤其是在当今现代异步应用开发生命周期中。
 - en: In this chapter, we will start experimenting on how this concept can take shape
     by implementing promises in real time. Why do we need to see its implementation?
     The answer to this question is quite simple; we need to see how the concept we
@@ -15,12 +19,16 @@
     Also, with these little implementations of promises, we will plot the base of
     our foundation to use promise in other technologies in later chapters. So, let's
     see how we will go about with this implementation phase.
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本章中，我们将开始实验如何通过实现承诺来形成这个概念。为什么我们需要了解它的实现？这个问题的答案很简单；我们需要了解我们迄今为止开发的这个概念是否真实，以及这个概念有多少是真正适用的。另外，通过这些承诺的小实现，我们将绘制我们基础的基石，以便在后面的章节中在其他技术中使用承诺。那么，让我们来看看我们将如何进行这个实现阶段。
 - en: How to implement promises
+  id: totrans-3
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 如何实现承诺
 - en: So far, we have learned the concept of promise, its basic ingredients, and some
     of the basic functions it has to offer in nearly all of its implementations, but
     how are these implementations using it? Well, it's quite simple. Every implementation,
@@ -28,18 +36,24 @@
     promises. It then maps it to a compiler/interpreter or in code. This allows the
     written code or functions to behave in the paradigm of promise, which ultimately
     presents its implementations.
+  id: totrans-4
   prefs: []
   type: TYPE_NORMAL
+  zh: 到目前为止，我们已经了解了承诺的概念、它的基本组成部分以及它在几乎所有实现中提供的一些基本功能，但是这些实现是如何使用它的呢？嗯，其实很简单。每种实现，无论是作为一种语言还是一种库，都会映射承诺的基本概念。然后，它将其映射到一个编译器/解释器或代码中。这使得编写的代码或函数以承诺的范式行为，最终呈现出它的实现。
 - en: Promises are now part of the standard package for many languages. The obvious
     thing is that they have implemented it in their own way as per the need. We will
     be examining more on how these languages are implementing the concept of promise
     in detail in this chapter.
+  id: totrans-5
   prefs: []
   type: TYPE_NORMAL
+  zh: 承诺现在已经成为了许多语言的标准包的一部分。显而易见的是，它们根据自己的需求以自己的方式实现了它。我们将在本章中详细探讨这些语言是如何实现承诺的概念。
 - en: Implementations in Java
+  id: totrans-6
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 在 Java 中的实现
 - en: Java is among the world's favorite and most admired programming languages and
     is used in millions of devices across the globe. There is no need to say anything
     further about Java, except that it's the first choice of engineers when it comes
@@ -47,62 +61,81 @@
     patterns and behaviors. Java is one of the few languages that has implemented
     asynchronous behavior by default in its compiler, which helps programmers to write
     robust, scalable, and maintainable pieces of software.
+  id: totrans-7
   prefs: []
   type: TYPE_NORMAL
+  zh: Java 是世界上最受欢迎和最受尊敬的编程语言之一，并在全球各地的数百万设备上使用。除了 Java 之外，无需再说什么，它是工程师在创建使用多线程和受控异步模式和行为的应用程序软件时的首选。Java
+    是少数几种默认在编译器中实现异步行为的语言之一，这有助于程序员编写健壮、可扩展和可维护的软件。
 - en: The util package of Java
+  id: totrans-8
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: Java 的 util 包
 - en: Naturally, Java has more acceptability for the concept of promise and its implementation.
     There are many implementations in the package of `java.util.concurrent`, regarding
     promise and its implementations. We have handpicked some of the interfaces and
     classes that are helping out in implementing promises or nearly matching the concept.
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 自然地，Java 对承诺的概念及其实现有更广泛的接受。在 `java.util.concurrent` 包中，关于承诺及其实现有很多实现。我们挑选了一些有助于实现承诺或与该概念相匹配的接口和类。
 - en: The mechanics of Java to implement a promise
+  id: totrans-10
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: Java 实现承诺的机制
 - en: Within the `java.util.concurrent` package, there are a number of interfaces
     and classes that will help us to write concurrent and asynchronous code, but there
     are a few particular interfaces and libraries that are specific to this promise/future
     implementation.
+  id: totrans-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 在 `java.util.concurrent` 包中，有许多接口和类可以帮助我们编写并发和异步代码，但有一些特定的接口和库是专门用于这个承诺/未来的实现。
 - en: The `java.util.concurrent` package is home to concurrent programming (as the
     name says) and is the home of few small standardized extensible frameworks. This
     also helps in implementing some of the core classes, which in normal conditions,
     are hard to work with.
+  id: totrans-12
   prefs: []
   type: TYPE_NORMAL
 - en: The core components of java.util.concurrent
+  id: totrans-13
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: 'The `java.util.concurrent` package has many classes and components, but some
     of the core components that make this particular package more adaptable to work
     are:'
+  id: totrans-14
   prefs: []
   type: TYPE_NORMAL
 - en: '![The core components of java.util.concurrent](img/5500OS_04_01.jpg)'
+  id: totrans-15
   prefs: []
   type: TYPE_IMG
 - en: Core components of the Java util.concurrent package
+  id: totrans-16
   prefs: []
   type: TYPE_NORMAL
 - en: Executor
+  id: totrans-17
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
 - en: '`Executor` is a simple standardized interface, which is commonly used to define
     custom threaded subsystems. These subsystems include the thread pools, asynchronous
     I/O, and task-based lighter frameworks.'
+  id: totrans-18
   prefs: []
   type: TYPE_NORMAL
 - en: Tasks created in the thread can either be executed in "the same task-execution
     thread" or in a new thread; this may also be executed in the thread calling execute
     sequentially or concurrently. Whichever thread the execute pattern task adopts
     is purely based on the concrete `Executor` class used.
+  id: totrans-19
   prefs: []
   type: TYPE_NORMAL
 - en: The `ExecutiveService` interface provides a fully stacked asynchronous tasks
@@ -113,13 +146,16 @@
     is `ScheduledExecutorService`, a subinterface that works with the `ExecutiveService`
     interface in managing the delayed and periodic tasks executing whenever called
     upon.
+  id: totrans-20
   prefs: []
   type: TYPE_NORMAL
 - en: There is another interface called the `ExecutorService` interface, which provides
     methods to arrange the execution of any function that is expressed as callable.
+  id: totrans-21
   prefs: []
   type: TYPE_NORMAL
 - en: Queues
+  id: totrans-22
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
@@ -129,41 +165,51 @@
     nonblocking FIFO queue by employing the `ConcurrentLinkedQueue` class from its
     `java.util.concurrent` package. In the same package, five implementations support
     the `BlockingQueue` interface.
+  id: totrans-23
   prefs: []
   type: TYPE_NORMAL
 - en: The `BlockingQueue` interface is a queue, which has an advanced wait mechanism.
     This holds the queue to further get into processing until all the previous processing
     is done. This also waits for the space to make the queue available when storing
     an element.
+  id: totrans-24
   prefs: []
   type: TYPE_NORMAL
 - en: 'The five implementations of the `BlockingQueue` interface are listed as follows:'
+  id: totrans-25
   prefs: []
   type: TYPE_NORMAL
 - en: '`LinkedBlockingQueue`'
+  id: totrans-26
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '`ArrayBlockingQueue`'
+  id: totrans-27
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '`SynchronousQueue`'
+  id: totrans-28
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '`PriorityBlockingQueue`'
+  id: totrans-29
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '`DelayQueue`'
+  id: totrans-30
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: We will discuss some of these relevant implementations in the following section.
+  id: totrans-31
   prefs: []
   type: TYPE_NORMAL
 - en: Timing
+  id: totrans-32
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
@@ -172,12 +218,14 @@
     such package is the timing of a method or interface. This is to perform certain
     instructed operations, and eventually, they time out themselves once the operation
     is done.
+  id: totrans-33
   prefs: []
   type: TYPE_NORMAL
 - en: Most of us are already aware of the importance of session creation and session
     timeout, especially those of us who are programmers for the Web. Session tracking
     is a subject in its own and doesn't really link that much from the structure of
     this chapter, so we will return our focus to the topic of timing.
+  id: totrans-34
   prefs: []
   type: TYPE_NORMAL
 - en: This packing is like a timing belt of Java programs. In any engine, the role
@@ -187,9 +235,11 @@
     The point to remember is that all these methods use the time out in every case.
     This helps threads define the amount of time a method spends within a thread pool
     and saves the actual program to perform with scalability.
+  id: totrans-35
   prefs: []
   type: TYPE_NORMAL
 - en: Synchronizers
+  id: totrans-36
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
@@ -200,73 +250,89 @@
     At this time, Java was much more advanced in controlling multiple threads than
     its competing languages, but still playing with threads was a fairly hard task
     for Java engineers.
+  id: totrans-37
   prefs: []
   type: TYPE_NORMAL
 - en: In the later versions of Java, this problem was considered as the most important
     one to find a regulation, and finally, with the emergence of version 7, the compiler
     has fixed most of the problems faced by engineers.
+  id: totrans-38
   prefs: []
   type: TYPE_NORMAL
 - en: 'In the current version, which is version 8, five classes aid the purpose of
     synchronization:'
+  id: totrans-39
   prefs: []
   type: TYPE_NORMAL
 - en: The `Semaphore` class is a classic concurrency tool and has been around for
     a very long time ([http://docs.oracle.com/javase/7/docs/api/java/util/concurrent/Semaphore.html](http://docs.oracle.com/javase/7/docs/api/java/util/concurrent/Semaphore.html))
+  id: totrans-40
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: The `CountDownLatch` class is a very simple yet common utility for blocking
     until a given number of signals, events, or operations being performed in other
     thread are being taken care off ([http://docs.oracle.com/javase/7/docs/api/java/util/concurrent/CountDownLatch.html](http://docs.oracle.com/javase/7/docs/api/java/util/concurrent/CountDownLatch.html))
+  id: totrans-41
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: The `CyclicBarrier` class is a resettable multiway synchronization point, which
     is useful in some styles of parallel programming ([http://docs.oracle.com/javase/7/docs/api/java/util/concurrent/CyclicBarrier.html](http://docs.oracle.com/javase/7/docs/api/java/util/concurrent/CyclicBarrier.html))
+  id: totrans-42
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: The `Phaser` class provides a more flexible form of barrier that may be used
     to control phased computation among multiple threads ([http://docs.oracle.com/javase/7/docs/api/java/util/concurrent/Phaser.html](http://docs.oracle.com/javase/7/docs/api/java/util/concurrent/Phaser.html))
+  id: totrans-43
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: The `Exchanger` class allows two threads to exchange objects at a rendezvous
     point and is useful in several pipeline designs ([http://docs.oracle.com/javase/7/docs/api/java/util/concurrent/Exchanger.html](http://docs.oracle.com/javase/7/docs/api/java/util/concurrent/Exchanger.html))
+  id: totrans-44
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Concurrent collections
+  id: totrans-45
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: The `Concurrent` packages provide the implementations for a multithreaded context
     and has the following implementations.
+  id: totrans-46
   prefs: []
   type: TYPE_NORMAL
 - en: 'Since it has more specific sync facilities, some of its classes use the prefix
     `Concurrent` to highlight the additional facilitates it is providing. A few more
     prominent ones are:'
+  id: totrans-47
   prefs: []
   type: TYPE_NORMAL
 - en: '`ConcurrentHashMap`'
+  id: totrans-48
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '`ConcurrentSkipListMap`'
+  id: totrans-49
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '`ConcurrentSkipListSet`'
+  id: totrans-50
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '`CopyOnWriteArrayList`'
+  id: totrans-51
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '`CopyOnWriteArraySet`'
+  id: totrans-52
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
@@ -276,62 +342,75 @@
     do we use synchronized classes? The answer is that they are very useful in preventing
     all the access to a collection using a single lock, but it has a cost, and poorer
     scalability.
+  id: totrans-53
   prefs: []
   type: TYPE_NORMAL
 - en: In other cases where multiple threads are in line to access a common collection,
     the current version of classes is more advisable, whereas unsynchronized locks
     are used when either collections are unshared or they can be accessed when holding
     other locks.
+  id: totrans-54
   prefs: []
   type: TYPE_NORMAL
 - en: The implementation of promise by Java
+  id: totrans-55
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: 'Java implements the paradigm of promise using its promising class and interfaces.
     Although its asynchronous behavior is one of the core and flagship features of
     Java, here are the ingredients of how promise is implemented in Java:'
+  id: totrans-56
   prefs: []
   type: TYPE_NORMAL
 - en: 'Interfaces:'
+  id: totrans-57
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '`CompletionService`'
+  id: totrans-58
   prefs:
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
 - en: '`ExecutorService`'
+  id: totrans-59
   prefs:
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
 - en: '`Future`'
+  id: totrans-60
   prefs:
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
 - en: 'Classes:'
+  id: totrans-61
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '`Delayed`'
+  id: totrans-62
   prefs:
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
 - en: '`DelayQueue`'
+  id: totrans-63
   prefs:
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
 - en: '`FutureTask`'
+  id: totrans-64
   prefs:
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
 - en: CompletionService
+  id: totrans-65
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
@@ -344,24 +423,29 @@
     I/O is the tasks that are submitted in one part of the program or set of programs
     or in a system, and then acted upon the different parts of the program. The submission
     order may be different than the order they were requested initially.
+  id: totrans-66
   prefs: []
   type: TYPE_NORMAL
 - en: The mechanism of an asynchronous I/O is that it reads tasks and stores it in
     one part of the program, such as buffer.
+  id: totrans-67
   prefs: []
   type: TYPE_NORMAL
 - en: This can be a single program (such as browser) or a set of programs (such as
     an operating system thread pool). The thread handler decides which thread needs
     to be executed first.
+  id: totrans-68
   prefs: []
   type: TYPE_NORMAL
 - en: This interface relies on a separate executor or actually executes the tasks
     due to which the `CompletionService` interface only manages an internal completion
     queue. As interfaces implement, they need a class to do so, and the `ExecutorCompletionService`
     class provides such a facility.
+  id: totrans-69
   prefs: []
   type: TYPE_NORMAL
 - en: ExecutorService
+  id: totrans-70
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
@@ -369,27 +453,33 @@
     methods to manage the termination of asynchronous tasks, and the other is to provide
     the methods that can produce a future value for tracing. This tracking can be
     done for either one or more asynchronous tasks.
+  id: totrans-71
   prefs: []
   type: TYPE_NORMAL
 - en: 'The use of an `Executor` for `ExecutorService`:'
+  id: totrans-72
   prefs: []
   type: TYPE_NORMAL
 - en: '`ExecutorService` inherits `Executor`, which provides the methods to manage
     termination and production of a future value to track the progress.'
+  id: totrans-73
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '`ExecutorService` when shutdown rejects all the new tasks. They have been loaded
     with two different methods:'
+  id: totrans-74
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '`shutdown()`'
+  id: totrans-75
   prefs:
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
 - en: '`shutdownNow()`'
+  id: totrans-76
   prefs:
   - PREF_IND
   - PREF_UL
@@ -400,111 +490,150 @@
     such liberty; it just terminates whatever is in the memory, then and there. This
     also totally rejects the entry of new tasks in the memory by nullifying the existing
     thread.
+  id: totrans-77
   prefs: []
   type: TYPE_NORMAL
 - en: Both the methods have their own significance, but since both are related to
     termination of existing tasks, they must be used with much care and with proper
     understanding of the potential consequences.
+  id: totrans-78
   prefs: []
   type: TYPE_NORMAL
 - en: 'The following code snippet is taken from the original Java docs, which is available
     at [http://docs.oracle.com/javase/7/docs/api/java/util/concurrent/ExecutorService.html](http://docs.oracle.com/javase/7/docs/api/java/util/concurrent/ExecutorService.html):'
+  id: totrans-79
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE0]'
+  id: totrans-80
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: 'The following method shuts down an `ExecutorService` interface in two phases:
     first, by calling shutdown to reject incoming tasks, and then by calling `shutdownNow()`,
     if necessary, to cancel any lingering tasks:'
+  id: totrans-81
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE1]'
+  id: totrans-82
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: Future
+  id: totrans-83
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: In Java, `future` represents the value of the result of an asynchronous computation.
     Methods are provided to track the status of result. These methods indicate whether
     the current state is waiting or not.
+  id: totrans-84
   prefs: []
   type: TYPE_NORMAL
 - en: The catch is, you can only yield the result using `get` or when the computation
     is done.
+  id: totrans-85
   prefs: []
   type: TYPE_NORMAL
 - en: Cancellation can be done via the cancel method; this sounds very easy to remember.
     Cancellation of a `Future` value can be done using the cancellation method.
+  id: totrans-86
   prefs: []
   type: TYPE_NORMAL
 - en: You can also check whether the task was completed normally or cancelled by virtue
     of this method invocation. Once the computation is done, it cannot be cancelled;
     this sounds so promising to us, just like the concept of promise.
+  id: totrans-87
   prefs: []
   type: TYPE_NORMAL
 - en: You can also use `Future` to cancel tasks. Although it's not a very good approach,
     if you want to do it, then you can declare many types of `Future` objects and
     ask the method to return null; that's it! You got your task cancelled once again.
     This must be done before the final computation of the tasks.
+  id: totrans-88
   prefs: []
   type: TYPE_NORMAL
+  zh: 你也可以使用`Future`来取消任务。尽管这并不是一个很好的方法，如果你想要这么做，那么你可以声明许多类型的`Future`对象，并要求方法返回null；就这样！你的任务再次被取消了。这必须在任务最终计算之前完成。
 - en: 'Here is the code snippet:'
+  id: totrans-89
   prefs: []
   type: TYPE_NORMAL
+  zh: 以下是代码片段：
 - en: '[PRE2]'
+  id: totrans-90
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: 'The `FutureTask` class is an implementation of `Future` that implements `Runnable`,
     and so may be executed by an `Executor`. For example, the previous construction
     with submit can be replaced by the following:'
+  id: totrans-91
   prefs: []
   type: TYPE_NORMAL
+  zh: '`FutureTask`类是实现`Future`并实现`Runnable`的`Future`的实现，因此可以由`Executor`执行。例如，使用submit的先前构造可以替换为以下内容：'
 - en: '[PRE3]'
+  id: totrans-92
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: Delay and DelayedQueue
+  id: totrans-93
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 延迟和DelayedQueue
 - en: '`Delay` is an interface that uses a marker to mark those objects that were
     acted upon, after they were given a delay.'
+  id: totrans-94
   prefs: []
   type: TYPE_NORMAL
+  zh: '`Delay`是一个使用标记来标记在延迟之后进行操作的对象的接口。'
 - en: '`DelayedQueue` is an unbounded queue that is used to collect all the objects
     that were delayed/expired. Since it''s a queue, it must have a header element
     whose delay has expired long ago.'
+  id: totrans-95
   prefs: []
   type: TYPE_NORMAL
+  zh: '`DelayedQueue`是一个用于收集所有延迟/过期的对象的无限队列。由于它是一个队列，必须有一个延迟已经很久很久的头元素。'
 - en: Since it's a queue and is similar to a `queue` data structure, it has a starting
     point called header and an ending point called footer. When it comes to future,
     the queue we are referring to here has a value, which has already expired due
     to the failed promise or unfulfilled promise.
+  id: totrans-96
   prefs: []
   type: TYPE_NORMAL
+  zh: 由于它是一个队列，并且与`queue`数据结构相似，它有一个称为头部的起始点和一个称为脚部的结束点。当说到未来时，我们在这里提到的队列有一个值，它已经由于失败的承诺或未实现的承诺而过期。
 - en: If such an element was not found, will the poll return null when the expiration
     occurs? Well, it occurs when the method `getDelay(TimeUnit.NANOSECONDS)` returns
     the value as less than or equal to zero. The expired elements in this way cannot
     be removed, so they are treated as normal ones.
+  id: totrans-97
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果没有找到这样的元素，在过期发生时，轮询会返回null吗？嗯，当方法`getDelay(TimeUnit.NANOSECONDS)`返回的值小于或等于零时，它就会发生。以这种方式过期的元素不能被移除，所以它们被视为正常元素。
 - en: FutureTask
+  id: totrans-98
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: '`FutureTask`'
 - en: '`FutureTask` is the cancellable asynchronous computation. This is the basic
     provider of `Future` that is loaded with methods from start of a method to cancel
     it. This also helps in the retrieving of the result of the computation, and since
     it''s an implementation, the result can be extracted when the computation has
     been completed. Needless to mention that once the result is computed, it cannot
     be pulled back or changed as it''s a promise.'
+  id: totrans-99
   prefs: []
   type: TYPE_NORMAL
+  zh: '`FutureTask`是可取消的异步计算。这是`Future`的基本提供者，它从开始一个方法到取消它都加载了方法。这也有助于检索计算的结果，因为它是实现，当计算完成时可以提取结果。不用说，一旦计算出结果，它就不能被拉回或更改，因为这是一个承诺。'
 - en: Summing up Java and Promises.js
+  id: totrans-100
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 总结Java和Promises.js
 - en: If we conclude the preceding discussion, it's clear that Java has a clearer
     approach and implementation when it comes to Promises.js. It's a mature way of
     handling asynchronous behavior, and especially, the way it handles multithreading
@@ -513,20 +642,26 @@
     just copy and paste the theory as it is with any compiler/interpreter. There are
     few more supportive frameworks/libraries contributed by an open source community
     to add the remainder of its implementation.
+  id: totrans-101
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果我们总结一下前面的讨论，很清楚Java在处理Promises.js方面有更清晰的方法和实现。它是一种处理异步行为成熟的方式，特别是，它在处理多线程方面的表现远胜于其他语言。然而，每种实现都有它的缺点，Java也是如此，这是可以接受的，因为你不能简单地复制和粘贴理论，就像任何编译器/解释器一样。开源社区贡献了少数更多支持的框架/库来补充它的实现。
 - en: Say hello to JDeferred
+  id: totrans-102
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 向JDeferred打个招呼
 - en: Inspired by the implementation of promise in jQuery, few Java Engineers have
     started to develop a library called `JDeferred`. This implements the concept of
     promise as robustly as it should be by leaving the gaping holes of the `java.util.concurrent`
     package. This was a brief of how `JDeferred` works. Let's dive deep into what
     it is and its unique advantages, as compared to other implantations available
     in the market.
+  id: totrans-103
   prefs: []
   type: TYPE_NORMAL
+  zh: 受到jQuery中承诺实现的启发，一些Java工程师开始开发一个名为`JDeferred`的库。它通过留下`java.util.concurrent`包中的巨大漏洞，实现了承诺的概念。这是`JDeferred`工作的简要介绍。让我们深入了解它是什么以及与其他市场上可用的实现相比的独特优势。
 - en: Just like jQuery has a deferred object, `JDeferred` is designed in a similar
     way to behave and contact with Java's compiler. `JDeferred` is not only similar
     with jQuery's implementation of promise, but it also extends its support to the
@@ -534,9 +669,11 @@
     *Promises in jQuery* is the dedicated chapter on jQuery and its mechanism and
     working on promise, so we can skip that part for now and see what the Android
     Deferred Object is, and how it fits into the implementation of promise.
+  id: totrans-104
   prefs: []
   type: TYPE_NORMAL
 - en: A few words about Android Deferred Object
+  id: totrans-105
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -548,6 +685,7 @@
     It also can relay the state of success or failure to whichever function is waiting
     for; it doesn't matter whether it's a synchronous function or an asynchronous
     function.
+  id: totrans-106
   prefs: []
   type: TYPE_NORMAL
 - en: Its working is quite straightforward. You obtain a promise out of a function
@@ -555,36 +693,47 @@
     attach callbacks to get notified about the success or failure. Whenever this piece
     of program that was working asynchronously finishes off as expected, the promise
     is called to be resolved in case of any error; it calls the `rejected` parameter.
+  id: totrans-107
   prefs: []
   type: TYPE_NORMAL
 - en: Use case 1 – object success and failure callbacks for a task
+  id: totrans-108
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: 'Say that you need an asynchronous HTTP request. A simple way of using Android
     Deferred Object is to wrap the request in to `DeferredAsyncTask` and attach callbacks
     to your action. Here is the code for such a scenario:'
+  id: totrans-109
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE4]'
+  id: totrans-110
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: The reference to preceding code is available at [https://github.com/CodeAndMagic/android-deferred-object](https://github.com/CodeAndMagic/android-deferred-object).
+  id: totrans-111
   prefs: []
   type: TYPE_NORMAL
 - en: Use case 2 – merging several promises
+  id: totrans-112
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: 'This use case is best for when you need to add several executed promises into
     a single one by merging them as a single promise. A convenient way is to call
     the `DeferredObject.when` method:'
+  id: totrans-113
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE5]'
+  id: totrans-114
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: Mechanics of JDeferred
+  id: totrans-115
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
@@ -592,9 +741,11 @@
     that this implementation has adopted from promises and considered to be more promised
     than any other library. We will look at what the features it's providing are,
     and how they are implemented within.
+  id: totrans-116
   prefs: []
   type: TYPE_NORMAL
 - en: Features of JDeferred
+  id: totrans-117
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -602,168 +753,223 @@
     the promise paradigm in Java. This has features such as deferred objects and promise,
     promise callbacks, multiple promises, callable and runnable methods, and Java's
     generic support.
+  id: totrans-118
   prefs: []
   type: TYPE_NORMAL
 - en: 'The following table summarizes the features, along with their available implementation:'
+  id: totrans-119
   prefs: []
   type: TYPE_NORMAL
 - en: '| Feature | Available implementation |'
+  id: totrans-120
   prefs: []
   type: TYPE_TB
 - en: '| --- | --- |'
+  id: totrans-121
   prefs: []
   type: TYPE_TB
 - en: '| Deferred object and promise | N/A |'
+  id: totrans-122
   prefs: []
   type: TYPE_TB
 - en: '| Promise callbacks | `.then(…)``.done(…)``.fail(…)``.progress(…)``.always(…)`
     |'
+  id: totrans-123
   prefs: []
   type: TYPE_TB
 - en: '| Multiple promises | `.when(p1, p2, p3, …).then(…)` |'
+  id: totrans-124
   prefs: []
   type: TYPE_TB
 - en: '| Callable and runnable wrappers | `.when(new Runnable() {…})` |'
+  id: totrans-125
   prefs: []
   type: TYPE_TB
 - en: '| Java generic support | `Deferred<Integer, Exception, Double> deferred;``deferred.resolve(10);``deferred.reject(new
     Exception());``deferred.progress(0.80);` |'
+  id: totrans-126
   prefs: []
   type: TYPE_TB
 - en: Playing with the code using JDeferred
+  id: totrans-127
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: 'We will now explore some of the common examples of this implementation, which
     are used most often. We will be looking at the following topics:'
+  id: totrans-128
   prefs: []
   type: TYPE_NORMAL
 - en: Deferred object and promise
+  id: totrans-129
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Deferred Manager
+  id: totrans-130
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Runnable and callable
+  id: totrans-131
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '`wait()` and `waitSafely()`'
+  id: totrans-132
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Filters
+  id: totrans-133
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Pipes
+  id: totrans-134
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Deferred object and promise
+  id: totrans-135
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: 'The following code will help you understand how `JDeferred` implements deferred
     objects and promise. This code has comments for a better understanding:'
+  id: totrans-136
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE6]'
+  id: totrans-137
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: Deferred Manager
+  id: totrans-138
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: 'Deferred Manager is a simple way to manage your deferred objects. Call the
     default method of Deferred Manager, and then add the number of promises you want:'
+  id: totrans-139
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE7]'
+  id: totrans-140
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: Runnable and callable
+  id: totrans-141
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: 'Runnable and callable, which is as good as promise, can be used as follows:'
+  id: totrans-142
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE8]'
+  id: totrans-143
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: 'You can use `DeferredCallable` and `DeferredRunnable` if you want to do the
     following:'
+  id: totrans-144
   prefs: []
   type: TYPE_NORMAL
 - en: Be notified about the progress made by the callable or runnable
+  id: totrans-145
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: You want to make your `Deferred` object
+  id: totrans-146
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: 'Here is an example code:'
+  id: totrans-147
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE9]'
+  id: totrans-148
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: 'Extending `DeferredRunnable`:'
+  id: totrans-149
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE10]'
+  id: totrans-150
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE10]'
 - en: wait() and waitSafely()
+  id: totrans-151
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: 'The `wait()` and `waitSafely()` functions are the part of `JDeferred` that
     wants to assume the control of all asynchronous tasks. This is not recommended,
     but can be very useful in some cases:'
+  id: totrans-152
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE11]'
+  id: totrans-153
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE11]'
 - en: 'The shortcut to the preceding code is as follows:'
+  id: totrans-154
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE12]'
+  id: totrans-155
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE12]'
 - en: Filters
+  id: totrans-156
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: 'Here is the code that we will use for the filtration of promise and deferred
     objects:'
+  id: totrans-157
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE13]'
+  id: totrans-158
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE13]'
 - en: Pipes
+  id: totrans-159
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: 'Pipes in `JDeferred` also act for the asynchronous computation of tasks within
     the ordered manner:'
+  id: totrans-160
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE14]'
+  id: totrans-161
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE14]'
 - en: Ultimate JDeferred
+  id: totrans-162
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: As you have seen, it's a much more powerful implementation of Java using promise.
     Java is very powerful when it comes to implementing the promise paradigm.
+  id: totrans-163
   prefs: []
   type: TYPE_NORMAL
 - en: Actually, Java itself has many powerful features, but when it comes to proper
@@ -771,9 +977,11 @@
     they have a problem in terms of quality, as you may find nontested and unverified
     code that can waste your time. However, `JDeferred` has almost identical implementation,
     compared to jQuery.
+  id: totrans-164
   prefs: []
   type: TYPE_NORMAL
 - en: Summary
+  id: totrans-165
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
@@ -789,9 +997,14 @@
     it. `JDeferred` has cleared the rest of the doubts out of our minds by taking
     full advantage of implementing the core values of promise, such as `future`, `deferred`,
     and so on.
+  id: totrans-166
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本书的这一章节中，我们实际上已经开始掌握Promise的旅程了。这一章节涵盖了为什么我们要实现Promise以及为什么我们选择Java作为本章节的核心。Java的功能比任何其他编程语言都要丰富，并且它也非常努力地使其与异步行为的自动化保持更多或
+    less 相似。我们详细探讨了Java的`util.concurrent`类的核心组件，并通过这些组件我们看到了来自Java在线文档的许多实际例子。由于Java由于我们所看到的限制而不能完全实现承诺范式，因此有一个开源库，其行为与承诺范式完全一样。`JDeferred`通过充分利用实现承诺的核心价值观（如`future`、`deferred`等）消除了我们心中的其他疑虑。
 - en: In the next chapter, we will carry out a more practical work to develop our
     understanding of promise with WinRT.
+  id: totrans-167
   prefs: []
   type: TYPE_NORMAL
+  zh: 在下一章中，我们将通过一个更实用的例子来加深对WinRT中Promise的理解。
