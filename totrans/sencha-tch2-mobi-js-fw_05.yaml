@@ -1,0 +1,970 @@
+- en: Chapter 5. Events and Controllers
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In the previous chapter, we took a closer look at the components available in
+    Sencha Touch. However, simply creating components isn't enough to build an application.
+    The components still need to communicate with each other in order to make our
+    application do anything truly useful. This is where events and controllers come
+    into play.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In this chapter, we will examine events and controllers in Sencha Touch: what
+    they are, why we need them, and how they work. We will discuss how to use listeners
+    and handlers to make your application react to the user''s touch as well as to
+    events happening behind the scenes. We will also cover some helpful concepts such
+    as observable capture and event delegation. We will finish up with a walkthrough
+    of the touch-specific events and a look at how you can get more information from
+    the Sencha Touch API.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The chapter will cover the following points:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Events
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Listeners and handlers
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Controllers
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Listener options
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Scope
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Removing events
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Handlers and buttons
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Common events
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Additional information on events
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Exploring events
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: As programmers, we tend to think of code as an orderly sequence of instructions,
+    executing one line after another. It's easy to lose sight of the fact that our
+    code really spends a lot of time sitting and waiting for the user to do something.
+    It's waiting for the user to click on a button, open a window, or select from
+    a list. The code is waiting for an event to occur.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Typically, an event occurs right before or immediately after a component performs
+    a specific task. When the task is performed, the event is broadcasted to the rest
+    of the system, where it can trigger a specific code or can be used by other components
+    to trigger new actions.
+  prefs: []
+  type: TYPE_NORMAL
+- en: For example, a button in Sencha Touch will trigger an event whenever it is tapped.
+    This tap can execute code inside the button that creates a new dialog box, or
+    a panel component can "listen" to what the button is doing and change its color
+    when it "hears" the button trigger a `tap` event.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Given that most applications are intended for human interaction, it's safe to
+    say that a lot of the functionality of your programs will come from responding
+    to events. From a user's perspective, the events are what make the program actually
+    "do" something. The program is responding to the user's request.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In addition to responding to requests, events also have an important role to
+    play in making sure that things happen in the correct order.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Asynchronous versus synchronous actions
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Albert Einstein once remarked:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '"The only reason for time is so that everything doesn''t happen at once."'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: While this might seem like an offhand comment, it actually has a great deal
+    of relevance when it comes to writing code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: As we write our code in Sencha Touch, we are directing the web browser to create
+    and destroy components on the user's screen. The obvious limitation of this process
+    is that we can neither manipulate a component before it gets created nor after
+    it's destroyed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This seems pretty straightforward at first glance. You would never write a line
+    of code that tries to talk to a component on the line before you actually create
+    the component, so what's the problem?
+  prefs: []
+  type: TYPE_NORMAL
+- en: The problem has to do with asynchronous actions within the code. While most
+    of our code will execute sequentially or in a synchronous fashion, there are a
+    number of cases where we will need to send out a request and get back a response
+    before we can proceed. This is especially true with web-based applications.
+  prefs: []
+  type: TYPE_NORMAL
+- en: For example, let's say we have a line of code that builds a map using a request
+    from Google Maps. We will need to wait until we have received a response from
+    Google and render our map before we can start working on it. However, we don't
+    want the rest of our application to freeze while we wait on the response. So we
+    make an asynchronous request, one that happens in the background, while the rest
+    of our application goes about its business.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Such asynchronous requests are called Ajax requests. **Ajax** stands for **Asynchronous
+    JavaScript and XML**. If we configure one of our buttons to send out an AJAX request,
+    the user can still do other things while the application is waiting for a response.
+  prefs: []
+  type: TYPE_NORMAL
+- en: On the interface side of things, you will probably want to let the user know
+    that we made the request and are currently waiting for a response. In most cases,
+    this means displaying a loading message or an animated graphic.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using events in Sencha Touch, we can show the loading graphic by tying into
+    the `beforerequest` event in the Ajax component. Since we need to know when to
+    make the loading message disappear, our component will wait for the `requestcomplete`
+    event from our Ajax request. Once that event fires, we can execute some code to
+    tell the loading message to go away. We can also use the `requestexception` event
+    to inform the user whether errors occurred during the request.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using this type of event-driven design allows you to respond quickly to the
+    user's actions, without making them wait for some of the more time-consuming requests
+    your code needs to perform. You can also use the events to inform the user about
+    the errors. The key to events is getting your other components to "listen" for
+    the event, and then telling them how to handle the information they receive.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Adding listeners and handlers
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Every component in Sencha Touch has a long list of events that it generates.
+    Given the number of components you will likely have in your application, you can
+    expect a lot of chatter.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Imagine a party with 100 people, all having lots of different conversations.
+    Now imagine trying to pick out all of the useful information from each conversation.
+    It's impossible. You have to focus on a specific conversation in order to gather
+    anything useful.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the same way, components also have to be told what to listen for, or else
+    our unfortunate partygoer would quickly be overwhelmed. Fortunately for us, there's
+    a configuration for that.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The `listeners` configuration tells the component what events it needs to pay
+    attention to. Listeners can be added like any other configuration option in Sencha
+    Touch. For example, the configuration option on a panel might look like the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: This configuration option tells the panel to listen for the `singletap` event
+    when the user taps once on the element (on the inside) of the panel. When the
+    `singletap` event occurs, we execute the function listed in the `fn` configuration
+    option (this is typically referred to as a handler). In this case, we pop up a
+    message box with the message alert `Single Tap`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Note that the items in our `listeners` configuration are always part of an
+    object (curly braces on either side), even if there is only one event we are listening
+    for. If we were to add a second event, it would look like the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'If the event has no other properties, you can also shorten the event declaration
+    like this: `hide: function(){ this.destroy(); }`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We can also get information back from the listener and use it in our handler
+    functions. For example, the `singletap` event sends back the `event` object, the
+    DOM element that was clicked, and the `listener` object itself, if we have the
+    following listener on a panel:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'When the user taps inside the panel, we will get a view on our console, something
+    similar to this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Adding listeners and handlers](img/748OS_05_1.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '**Arguments for events**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: You will notice that certain values are passed to our event by default. These
+    default values can be found in the Sencha Touch API event documentation for each
+    component at [http://docs.sencha.com/touch/2.2.1/](http://docs.sencha.com/touch/2.2.1/).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Each event will have its own default values. Select a component from the Sencha
+    API documentation, and then click on `Events` at the top of the page to see a
+    list of all events of the component. The description of each event will include
+    its default arguments.
+  prefs: []
+  type: TYPE_NORMAL
+- en: As you can see from the console, our `event` object contains a Unix `timeStamp`
+    for when the tap occurred, the `pageX` and `pageY` coordinates of the tap itself,
+    as well as the entire content of the `div` tag that was tapped. You may have also
+    noticed that our `tap` event is referred to as a `mouseup` event in our debug
+    output. In Sencha Touch, the `singletap` and `mouseup` events are aliases of one
+    another. This preserves compatibility between the desktop browser's traditional
+    `mouseup` event and the mobile browser's `singletap` event.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We can use all of this information inside our function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'For this example, we will create a simple panel with a red container. Our `singletap`
+    listener will change the size of the red box to match where we tap on the screen,
+    as shown in the following code snippet:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: If we run this code with the console open, we can see that the x and y coordinates
+    of the location where we tap will appear in the console. Our box also grows or
+    shrinks to match these values.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Adding listeners and handlers](img/748OS_05_2.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'As you can see in the preceding code, we listen for the `tap` event. We then
+    grab the `container` component using `Ext.getCmp(''tapTarget'');`, and change
+    the size of the red box based on the value we got back from the `tap` event:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: This is a very simple example of using events in Sencha Touch. However, most
+    of our applications will typically do more than one simple thing. We can also
+    use IDs and grab them with `Ext.getCmp()`. In a large application it gets very
+    easy to accidentally create components with the same ID, or create a component
+    with an ID that is already used by Sencha Touch. This will typically lead to the
+    spiraling death of your application and much hair pulling.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: As the best practice, it is a good idea to avoid IDs for addressing components.
+    In the next few sections, we will begin showing you more reliable ways to address
+    our various components.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If we are going to build anything more complex than this kind of "one-trick
+    pony", we probably want to start thinking about splitting our events and actions
+    out into a proper controller, and find a better way to address our different components.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Controllers
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In [Chapter 3](ch03.html "Chapter 3. Styling the User Interface"), *Styling
+    the User Interface*, we talked a bit about the **Model View Controller** (**MVC**)
+    architecture. This architecture splits our files out into datafiles (`Models`
+    and `Stores`), interface files (`Views`), and files that handle functionality
+    (`Controllers`). In this section, we will focus on the controller part of the
+    MVC.
+  prefs: []
+  type: TYPE_NORMAL
+- en: At its most basic level, a controller assigns listeners and actions within the
+    application. Unlike our previous example, where the single component is responsible
+    for handling an event, the controller will handle the events for every component
+    in our application.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This division of labor offers a few different advantages when creating an application;
+    they are as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The code is easier to navigate when we know that our functions are all in the
+    controller and separate from the display logic.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The controller offers an easier communications layer between the various display
+    components in our application.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Controllers can be divided into separate files based on the functionality. For
+    example, we can have a user controller that handles events and listeners for our
+    user data and a separate company controller that handles events and listeners
+    for our company data. This means that if a form for saving new users is not working
+    correctly, we know which file to look at to try and find out the problem.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Let''s take a look at an example to see what we are talking about. We will
+    start with the basic starter application we generate from Sencha Cmd using the
+    following command line:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: '![Controllers](img/748OS_05_3.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: The path will vary based on your setup, but this will give us the basic application
+    we will add our controller to.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: For a review of the basics of Sencha Cmd and MVC, see [Chapter 3](ch03.html
+    "Chapter 3. Styling the User Interface"), *Styling the User Interface*.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'If we look in the `app`/`controller` folder of our newly generated application,
+    we will see that it is empty. Let''s start by creating a `Main.js` file here.
+    Inside the new file, we will add:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This extends the base `Ext.app.Controller` component, but doesn''t really do
+    anything else. Our controller needs to understand a few basic things in order
+    to function correctly; they are as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: What pieces of the application does the controller control?
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: What component events should it be listening to?
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: What should it do when one of those events is fired?
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The first part of this puzzle is handled by the references (`refs`).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Refs and control
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The `refs` section uses the `ComponentQuery` syntax to create internal references
+    to the components in your application. The `ComponentQuery` syntax allows us to
+    find components based on ID, xtype, and any other configuration option.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'For example, we have a `Main.js` file in our `app/view` directory (it was automatically
+    generated by Sencha Cmd). The `view` component has an `xtype` value of `main`.
+    We can add this view file to our controller as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: This tells our controller that it has control of the `TouchStart.views.Main`
+    view file and that we will be referencing that particular component with a shorthand
+    m(this is an utterly arbitrary name of our choice). By creating this reference,
+    we automatically create a getter function for the component. This means that when
+    we need to refer to this component elsewhere in the controller, for example if
+    we need to add a new tab to our tab panel, we can just grab the component using
+    `this.getMainView()`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: This is another spot where capitalization can attack without warning. You will
+    notice that despite the fact that we named our reference with a lowercase `m`,
+    the get function uses an uppercase `M`. If we had named our reference `mainPanel`,
+    the get function would be `this.getMainPanel()`. The first letter will always
+    be in uppercase.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s add some elements to our basic application to see exactly how this works.
+    First we need to add a button to the `Main.js` view file. Inside our first panel
+    (the one with the title), modify the items section as follows to add a button:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Notice that we don''t add a handler here this time, but we do have an `action`
+    of `addtab`, which we will use to reference the button inside our controller:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Refs and control](img/748OS_05_4.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'Back in our `Main.js` file located at `app/controller/`, we will add a `refs`
+    and `control` section as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We now have a new reference for our button:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'It should be noted that our `action` configuration on the button is totally
+    arbitrary. We could call it `myPurposeInLife: ''addtab''` and it would make no
+    difference to the component itself. We would have simply referenced the button
+    as `addBtn: ''button[myPurposeInLife = addtab]''` in that case. The term `action`
+    is typically used by convention but it is not a default configuration option for
+    the button. It is simply a value that we will use to find the button later on
+    in our controller using `ComponentQuery`.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Now that we have our reference, we can use `addBtn` when we set our control.
+    This `control` section is where we set a listener for this particular button:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This `control` section says that we want our controller to listen to the tap
+    event on the `addBtn button` and fire the `addNewTab` function when the user taps
+    the button. Next, we need to add this `addNewTab` function at the bottom of our
+    controller just after the `config` section (don''t forget to put a comma between
+    the end of the `config` section and the new function), as shown in the following
+    code snippet:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This function uses our `this.getMainView()` function to grab our main tab panel
+    and add a new tab to it. When we click on the button now, we should get a new
+    tab with a star icon and our HTML text:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Refs and control](img/748OS_05_5.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Each controller file can contain any number of views, references, and functions.
+    However, it's often best to split your controllers into separate files based on
+    the kind of data they handle (a controller for users, one for companies, another
+    for messages, and so on). This code organization is entirely up to the coder,
+    but it helps a great deal when trying to hunt down problems.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Referencing multiple items with ComponentQuery
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: As we have seen in our previous examples, the `refs` section gives us shorthand
+    reference names for our components and the `control` section lets us assign listeners
+    and functions to our components. While we can use the control section to assign
+    a single function to multiple components, the items we include in our `refs` section
+    can only be singular. We cannot create a single reference for multiple components
+    in our `refs` section.
+  prefs: []
+  type: TYPE_NORMAL
+- en: However, we can get around this by using `Ext.ComponentQuery`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To demonstrate this, let''s take a look at a real-world example: a list of
+    items, with buttons for adding, editing, and deleting. The **Add** button should
+    always be enabled but the **Edit** and **Delete** buttons should only be active
+    when something in the list is selected.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Referencing multiple items with ComponentQuery](img/748OS_05_6.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'We will create our list in a separate file called `PersonList.js` in the `view`
+    folder, as shown in the following code snippet:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: This is similar to the list we created in [Chapter 5](ch05.html "Chapter 5. Events
+    and Controllers"), *Events and Controllers*, except we have made it into a separate
+    `view` component by using `Ext.define` and extending the `Ext.dataview.List` object.
+    We could have simply made it part of our `Main.js` view file, but splitting it
+    out allows us to define a custom `xtype` of `personlist`, which will make it easier
+    to reference later on in our controller.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: For the sake of simplicity, we have left `store` as part of our view instead
+    of splitting it out into its own separate file in the `store` directory. We will
+    talk about how that gets done in [Chapter 7](ch07.html "Chapter 7. Getting the
+    Data Out"), *Getting the Data Out*, and [Chapter 8](ch08.html "Chapter 8. Creating
+    the Flickr Finder Application"), *Creating the Flickr Finder Application*, where
+    we cover stores and models.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Now that we have our `personlist` view, we need to add it into our `Main.js`
+    view file. Let''s replace the second panel in the `Main.js` file (the one with
+    the video link in it). The new panel will look like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: This code creates a new panel with a `fit` layout and two items inside it. The
+    first item is a toolbar docked at the top of the panel. The second item (down
+    at the very bottom) is our `personlist` component.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The toolbar has its own items, which consist of three buttons with the text:
+    `Add`, `Edit`, and `Delete`. Each of these buttons has its own individual `action`
+    configuration, and the `Edit` and `Delete` buttons have an extra configuration:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Note that like `action`, the `enableOnSelection` configuration is an arbitrary
+    value and not a default configuration for a button component.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The individual `action` configurations will let us assign functions to each
+    of those buttons. The shared `enableOnSelection` configuration will allow us to
+    grab both the `Edit` and `Delete` buttons with a single reference. Let's head
+    back to our `Main.js` controller to see how this works.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The first thing we want to do is let the `Main.js` controller know that it
+    is responsible for our new `personlist` view. We do this by adding it to the list
+    of `views` in our controller, as shown in the following code snippet:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Next, we need to create our references in the `refs` section, as shown in the
+    following code snippet:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We will then modify our `control` section to look as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here we have set our `personList` component to listen for the `select` event
+    and fire the `enableItemButtons` function when the event occurs. We have also
+    assigned a single `tempFunction` function to the `tap` event of our three buttons.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Our `tempFunction` is added after the existing `addNewTab` function and looks
+    as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs: []
+  type: TYPE_PRE
+- en: This is just a placeholder function for demonstration purposes (we will cover
+    adding, editing, and deleting actions in more detail in [Chapter 7](ch07.html
+    "Chapter 7. Getting the Data Out"), *Getting the Data Out*, and [Chapter 8](ch08.html
+    "Chapter 8. Creating the Flickr Finder Application"), *Creating the Flickr Finder
+    Application* ). For now, this temporary function just logs the arguments that
+    are sent to it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The `arguments` variable is a special variable in JavaScript and it contains
+    many variables that are passed to the function. It's great for use with console
+    logs where you might not be clear on which variables your function is receiving,
+    their order, or their format.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The second function will handle our list selection:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'As we noted previously, we cannot simply create a `refs` listing for our two
+    disabled buttons. If we had tried `myButtons: ''button[enableOnSelection]''` in
+    our `refs` section, we would only get back the first one.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: However, we can use the exact same selector with `Ext.ComponentQuery.query('button[enableOnSelection]');`
+    and get back both of our buttons as an array of button objects. We can then use
+    `Ext.each` to step through each of the buttons in turn and run a function on them.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this case, we just run `button.enable();` on each button. Now when an item
+    is selected in the list, both of our buttons will be enabled.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Referencing multiple items with ComponentQuery](img/748OS_05_7.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: By using `Ext.ComponentQuery`, a single event can easily affect multiple components
+    based on their attributes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting more out of events
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Now that we have seen how events and controllers fit together, we need to take
+    a look at the other uses and options available to us with events.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Custom events
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: While Sencha Touch components respond to a large number of events, it can sometimes
+    be helpful to fire custom events within your application.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'For example, you could fire a custom event called `vikinginvasion`, which might
+    trigger additional actions within your application. For this example, we will
+    assume we have a component called `cmp`. We can fire events with this component
+    simply by calling:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE21]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'You can then add a listener to any component in the `control` section of your
+    controller for `vikinginvasion`, along with a function to handle the event. If
+    we want to add the listener for our custom event to a component called `trebuchet`,
+    it might look as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE22]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'You can also check a component to see if it has a specific listener, using
+    the `hasListener()` method:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE23]'
+  prefs: []
+  type: TYPE_PRE
+- en: There are also a number of helpful options you can use to control how listeners
+    will check for events.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Exploring listener options
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'For the most part, listeners can simply be configured with the event name,
+    handler, and scope, but sometimes you need a bit more control. Sencha Touch provides
+    a number of helpful options to modify how the listener works; they are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`delay`: This will delay the handler from acting after the event is fired.
+    It is given in milliseconds.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`single`: This provides a one-shot handler that executes after the next event
+    fires and then removes itself.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`buffer`: This causes the handler to be scheduled to run as part of an `Ext.util.DelayedTask`
+    component. This means that if an event is fired, we wait a certain amount of time
+    before we execute the handler. If the same event fires again within our delay
+    time, we reset the timer before executing the handler (only once). This can be
+    useful for monitoring the change event in a textfield—wait 300 ms after the user''s
+    last change before firing the function for the event.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`element`: This allows us to specify a specific element within the component.
+    For example, we can specify a body within a panel for a `tap` event. This would
+    ignore taps to the docked items and only listen for a tap on the body of the panel.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`target`: This will limit the listener to the events coming from the target
+    and it will ignore the same event coming from any of its children.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Using the different listener options, the code would look something like the
+    following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE24]'
+  prefs: []
+  type: TYPE_PRE
+- en: This example would add a listener for `vikinginvasion` and execute a function
+    called `handleInvasion` in this scope. The handler would only execute once, after
+    a 100-millisecond delay. It would then remove itself from the component.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'If you are inside a controller, you can accomplish the same thing in the `control`
+    section like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE25]'
+  prefs: []
+  type: TYPE_PRE
+- en: Since we are setting options on the event listener for `vikinginvasion`, it
+    becomes its own configuration object. In turn, our `handleInvasion` function becomes
+    a configuration option called `fn`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This basic list of configuration options gives you quite a bit of flexibility
+    when adding listeners. However, there is one additional configuration option available
+    in listeners that will require a bit more explanation. It's called `scope`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Taking a closer look at scope
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Within your handler function is a special variable called `this`. Usually,
+    `this` refers to the component that fired the event, in which case, the `scope`
+    would typically be set to `scope: this`. However, it''s possible to specify a
+    different value for `scope` in your listener configuration:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE26]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here we create a button called `btn` and a panel called `Mainpanel`. We then
+    attach two listeners. The first one is on the button's `painted` event. This event
+    fires as soon as the button is "painted" (appears) on screen. In this case, the
+    function's scope is the `button` as we would expect by default.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The second is on the `tap` event for the `button`. The `tap` event has a `scope`
+    of `Mainpanel`. This means that even though the listener is attached to the button,
+    the function treats `this` as the `Mainpanel` component and not the button.
+  prefs: []
+  type: TYPE_NORMAL
+- en: While `scope` may be a hard concept to grasp, it is a very useful part of the
+    listener configuration.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Removing listeners
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Normally, listeners are removed automatically when a component is destroyed.
+    However, sometimes you will want to remove the listener before the component is
+    destroyed. To do so, you'll need a reference to the handler function you created
+    the listener with.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'So far, we''ve been using anonymous functions to create our listeners, but
+    if we''re going to remove the listener, we have to do it a bit differently:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE27]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This can be a good practice as it allows you to define the handler functions
+    once and re-use them wherever you need them. It also allows you to remove the
+    handler later:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE28]'
+  prefs: []
+  type: TYPE_PRE
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: In Sencha parlance, `on()` is an alias for `addListener()` and `un()` is an
+    alias for `removeListener()`, meaning that they do the exact same thing. Feel
+    free to use whichever you prefer, when dealing with events.
+  prefs: []
+  type: TYPE_NORMAL
+- en: It should also be noted that listeners that are added as part of the `control`
+    section of a controller are never removed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using handlers and buttons
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'As you might have noticed from some of our previous code, buttons have a default
+    configuration called `handler`. This is because the purpose of a button is generally
+    to be clicked or tapped. The `handler` configuration is just useful shorthand
+    for adding the `tap` listener. As such, the following two pieces of code do exactly
+    the same thing:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE29]'
+  prefs: []
+  type: TYPE_PRE
+- en: Next we will take a look at some common events.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Exploring common events
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Let's take a look at our old friend `Ext.Component` and see some of the common
+    events available to us. Remember, since most of our components will inherit from
+    `Ext.Component`, these events will be common across most of the components we
+    use. The first of these events revolves around the creation of the component.
+  prefs: []
+  type: TYPE_NORMAL
+- en: When the web browser executes your Sencha Touch code, it writes the components
+    into the web page as a series of `div`, `span`, and other standard HTML tags.
+    These elements are also linked to the code within Sencha Touch that standardizes
+    the look and functionality of the component for all supported web browsers. This
+    process is commonly referred to as rendering the component. The event that governs
+    this rendering in Sencha Touch is called `painted`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Some other common events include:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`show`: This is fired when the `show` method is used on the component'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`hide`: This is fired when the `hide` method is used on the component'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`destroy`: This is fired when the component is destroyed'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`disabledchange`: This is fired when the `disabled` configuration is changed
+    by `setDisabled`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`widthchange`: This is fired when `setWidth` is called on the component'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`heightchange`: This is fired when `setHeight` is called on the component'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: These events provide a way to base the actions of your code on what is being
+    done by, or done to, your components.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Every event whose name ends with `changed` is fired as a result of a `config`
+    option that has changed; for example, `setWidth`, `setHeight`, and `setTop`. Although
+    listening to these events is like listening to any other event, it is useful to
+    know this convention.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Each component will also have some specific events associated with it. For a
+    list of these events, please consult the documentation available at [http://docs.sencha.com/touch/2.2.1](http://docs.sencha.com/touch/2.2.1).
+    Select a component from the list on the left-hand side and click on the **Events**
+    button at the top of the page.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Additional information
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: information about events is the Sencha Docs at [http://docs.sencha.com/touch/2.2.1](http://docs.sencha.com/touch/2.2.1).
+    Select a component in the list on the left, and look for the **Events** button
+    at the top. You can click on **Events** to go to the beginning of the section
+    or hover your mouse pointer to see the full list of events and select a specific
+    event from that list.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Clicking on the down arrow next to the event will display a list of parameters
+    for the event and any available examples on how the event can be used.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Another good place to find out about touch-specific events is the Kitchen Sink
+    example application ([http://dev.sencha.com/deploy/touch/examples/kitchensink/](http://dev.sencha.com/deploy/touch/examples/kitchensink/)).
+    Inside the application is a **Touch Events** section. This section allows you
+    to tap or click on the screen to see which events are generated from the different
+    taps and gestures.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The WebKit team at Sencha Touch has also created an event recorder for Android.
+    You can find more information at [http://www.sencha.com/blog/event-recorder-for-android-web-applications/](http://www.sencha.com/blog/event-recorder-for-android-web-applications/).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this chapter, we have covered a basic overview of events, and how to use
+    listeners and handlers to get your program to respond to these events. We took
+    a deeper look at controllers and how they use references and the `control` section
+    to attach listeners to components. We covered `Ext.ComponentQuery()` for grabbing
+    components inside the event handlers. We talked about custom events, handlers
+    in buttons, and listed some of the common events.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the next chapter, we will cover how to get and store data in Sencha Touch,
+    using JSON, data stores, models, and forms.
+  prefs: []
+  type: TYPE_NORMAL

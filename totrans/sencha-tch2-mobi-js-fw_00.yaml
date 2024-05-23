@@ -1,0 +1,288 @@
+- en: Preface
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Since its initial launch, Sencha Touch has quickly become the gold standard
+    for developing rich mobile web applications with HTML5\. Sencha Touch is the first
+    HTML5 mobile JavaScript framework that allows you to develop mobile web apps that
+    look and feel like native apps on iPhone, Android, BlackBerry, and Windows Phone
+    touch-screen devices. Sencha Touch is the world's first application framework
+    built specifically to leverage HTML5, CSS3, and JavaScript for the highest level
+    of power, flexibility, and optimization. It makes specific use of HTML5 to deliver
+    components such as audio and video as well as a localStorage proxy for saving
+    data offline. Sencha Touch also makes extensive use of CSS3 in its components
+    and themes to provide an incredibly robust styling layer, giving you total control
+    over the look of your application.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Sencha Touch enables you to design for multiple platforms without the need to
+    learn multiple arcane programming languages. Instead you can leverage your existing
+    knowledge of HTML and CSS to quickly create rich web applications for mobile devices
+    in JavaScript. This book will show you how you can use Sencha Touch to efficiently
+    produce attractive, exciting, and easy-to-use web applications that keep your
+    visitors coming back for more.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The Sencha Touch Mobile JavaScript framework teaches you all you need to get
+    started with Sencha Touch and build awesome mobile web applications. Beginning
+    with an overview of Sencha Touch, this book will guide you through creating a
+    complete simple application followed by styling the user interface and will explain
+    the list of Sencha Touch components through comprehensive examples. Next, you
+    will learn about the essential touch and component events, which will help you
+    create rich, dynamic animations. The book follows this up with information about
+    core data packages and dealing with data, and wraps it up with building another
+    simple but powerful Sencha Touch application.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In short, this book has a step-by-step approach and extensive content to turn
+    a beginner to Sencha Touch into an ace quickly and easily.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Exploit Sencha Touch, a cross-platform library aimed at next generation, touch-enabled
+    devices.
+  prefs: []
+  type: TYPE_NORMAL
+- en: What this book covers
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: '[Chapter 1](ch01.html "Chapter 1. Let''s Begin with Sencha Touch"), *Let''s
+    Begin with Sencha Touch*, provides an overview of Sencha Touch and a walk-through
+    of the basics of setting up the library for development. We will also talk about
+    programming frameworks and how they can help you develop touch-friendly applications
+    quickly and easily.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[Chapter 2](ch02.html "Chapter 2. Creating a Simple Application"), *Creating
+    a Simple Application*, starts out by creating a simple application and using it
+    to discover the basic elements of Sencha Touch. We will also explore some of the
+    more common components such as lists and panels, and we will show you how to find
+    common errors and fix them when they occur.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[Chapter 3](ch03.html "Chapter 3. Styling the User Interface"), *Styling the
+    User Interface*, explores ways to change the look and feel of individual components
+    using CSS styles once we have our simple application. Then we will dive into using
+    Sencha Touch themes to control the look of your entire application using SASS
+    and Compass.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[Chapter 4](ch04.html "Chapter 4. Components and Configurations"), *Components
+    and Configurations*, examines the individual components for Sencha Touch in greater
+    detail. We will also cover the use of layouts in each component, and how they
+    are used to arrange the different pieces of your application.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[Chapter 5](ch05.html "Chapter 5. Events and Controllers"), *Events and Controllers*,
+    helps us take a look at the Sencha Touch events system, which allows these components
+    to respond to the users'' touch and communicate with each other. We will cover
+    the use of listeners and handlers, and explore ways to monitor and observe events
+    so that we can see what each part of our application is doing.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[Chapter 6](ch06.html "Chapter 6. Getting the Data In"), *Getting the Data
+    In*, explains the different methods for getting data into our application using
+    forms to gather information from the user, ways to verify the data, and details
+    about how to store it as data is a critical part of any application. We will also
+    talk about the different data formats that are used by Sencha Touch, and how we
+    can manipulate that data using Sencha Touch''s models and stores.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[Chapter 7](ch07.html "Chapter 7. Getting the Data Out"), *Getting the Data
+    Out*, will discuss the use of panels and XTemplates to display the data, as after
+    we have data in our application, we need to be able to get it back out to display
+    to the user. We will also take a look at using our data to create colorful charts
+    and graphs using Sencha Touch Charts.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[Chapter 8](ch08.html "Chapter 8. Creating the Flickr Finder Application"),
+    *Creating the Flickr Finder Application*, creates a more complex application that
+    grabs photos from Flickr, based on our current location, using the information
+    we have learned about Sencha Touch. We will also use this as an opportunity to
+    talk about best practices for structuring your application and its files.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[Chapter 9](ch09.html "Chapter 9. Advanced Topics"), *Advanced Topics*, explores
+    ways to synchronize your data with a database server by creating your own API.
+    Additionally, we will look at ways to synchronize data between the mobile device
+    and a database server, compiling your application with Phone Gap and NimbleKit.
+    We will also look at ways to get started as an Apple iOS or Google Android developer.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: What you need for this book
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'To accomplish the tasks in the book, you will need a computer with the following
+    items:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Sencha Touch 2.1.x
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Sencha Cmd 3.1.x or greater
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: A programming editor such as BBEdit, Text Wrangler, UltraEdit, TextMate, WebStorm,
+    Aptana, or Eclipse
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: A local web server such as the built-in Apple OSX web server, Microsoft's built-in
+    IIS server, or the downloadable WAMP server and software package
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Links for these items are provided in the *Setting up your development environment*
+    section in [Chapter 1](ch01.html "Chapter 1. Let's Begin with Sencha Touch"),
+    *Let's Begin with Sencha Touch*. Other optional but helpful software will be linked
+    in specific sections when needed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Who this book is for
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: This book is ideal if you want to gain practical knowledge in using the Sencha
+    Touch mobile web application framework to make attractive web apps for mobiles.
+    You should have some familiarity with HTML and CSS. If you are a designer, this
+    book will give you the skills you need to implement your ideas and if you are
+    a developer, this book will provide you with creative inspiration through practical
+    examples. It is assumed that you know how to use touch screens, touch events,
+    and mobile devices such as Apple iOS, Google Android, Blackberry, and Windows
+    Phone.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Conventions
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this book, you will find a number of styles of text that distinguish between
+    different kinds of information. Here are some examples of these styles, and an
+    explanation of their meaning.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Code words in text are shown as follows: "The title at the top also lists the
+    `xtype` value for the component right next to it."'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'A block of code is set as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'When we wish to draw your attention to a particular part of a code block, the
+    relevant lines or items are set in bold:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Any command-line input or output is written as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: '**New terms** and **important words** are shown in bold. Words that you see
+    on the screen, for example, in menus or dialog boxes appear in the text like this:
+    "There is also a **Select Code** option, which will let you copy the code and
+    paste it into your own applications."'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Warnings or important notes appear in a box like this.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Tips and tricks appear like this.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Reader feedback
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Feedback from our readers is always welcome. Let us know what you think about
+    this book—what you liked or may have disliked. Reader feedback is important for
+    us to develop titles that you really get the most out of.
+  prefs: []
+  type: TYPE_NORMAL
+- en: To send us general feedback, simply send an e-mail to `<[feedback@packtpub.com](mailto:feedback@packtpub.com)>`,
+    and mention the book title via the subject of your message.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If there is a topic that you have expertise in and you are interested in either
+    writing or contributing to a book, see our author guide on [www.packtpub.com/authors](http://www.packtpub.com/authors).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Customer support
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Now that you are the proud owner of a Packt book, we have a number of things
+    to help you to get the most from your purchase.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Downloading the example code
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: You can download the example code files for all Packt books you have purchased
+    from your account at [http://www.packtpub.com](http://www.packtpub.com). If you
+    purchased this book elsewhere, you can visit [http://www.packtpub.com/support](http://www.packtpub.com/support)
+    and register to have the files e-mailed directly to you.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Errata
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Although we have taken every care to ensure the accuracy of our content, mistakes
+    do happen. If you find a mistake in one of our books—maybe a mistake in the text
+    or the code—we would be grateful if you would report this to us. By doing so,
+    you can save other readers from frustration and help us improve subsequent versions
+    of this book. If you find any errata, please report them by visiting [http://www.packtpub.com/submit-errata](http://www.packtpub.com/submit-errata),
+    selecting your book, clicking on the **errata submission form** link, and entering
+    the details of your errata. Once your errata are verified, your submission will
+    be accepted and the errata will be uploaded on our website, or added to any list
+    of existing errata, under the Errata section of that title. Any existing errata
+    can be viewed by selecting your title from [http://www.packtpub.com/support](http://www.packtpub.com/support).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Piracy
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Piracy of copyright material on the Internet is an ongoing problem across all
+    media. At Packt, we take the protection of our copyright and licenses very seriously.
+    If you come across any illegal copies of our works, in any form, on the Internet,
+    please provide us with the location address or website name immediately so that
+    we can pursue a remedy.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Please contact us at `<[copyright@packtpub.com](mailto:copyright@packtpub.com)>`
+    with a link to the suspected pirated material.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We appreciate your help in protecting our authors, and our ability to bring
+    you valuable content.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Questions
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: You can contact us at `<[questions@packtpub.com](mailto:questions@packtpub.com)>`
+    if you are having a problem with any aspect of the book, and we will do our best
+    to address it.
+  prefs: []
+  type: TYPE_NORMAL

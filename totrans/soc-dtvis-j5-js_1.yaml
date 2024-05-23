@@ -1,0 +1,429 @@
+- en: Chapter 1. Visualizing Data
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'A scant few years ago this book would not have been possible. The rapid expansion
+    in social media, data processing, and web technologies has enabled a fusion of
+    divergent fields. From this fusion we can create fascinating displays of data
+    about exotic topics. The beauty that is inherited in data can be exposed in a
+    fashion that is accessible to the masses. Visualizations such as the following
+    word map ([http://gigaom.com/2013/07/19/the-week-in-big-data-on-twitter-visualized/](http://gigaom.com/2013/07/19/the-week-in-big-data-on-twitter-visualized/)),
+    can unlock hidden information while delighting users with an extraordinary experience:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Visualizing Data](img/6542OS_01_01.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: The size of words in this visualization gives a hint as to their frequency of
+    use. The placement of words is calculated by an algorithm designed to create a
+    pleasing visualization.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this chapter we'll be looking at how the growth in data is so great that
+    we need to change our tools for looking at it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There's a lot of data out there
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: It shouldn't come as a surprise to anybody that the amount of data humans are
+    recording is growing at an amazing rate. Every few years the data storage company
+    EMC produces a report on just how much data is being preserved ([http://www.emc.com/collateral/analyst-reports/idc-the-digital-universe-in-2020.pdf](http://www.emc.com/collateral/analyst-reports/idc-the-digital-universe-in-2020.pdf)).
+    In 2012, it was estimated that between 2005 and 2020 the amount of data stored
+    globally will grow from 130 to 40, 000 exabytes. That works out at 5.2 terabytes
+    for each person on the planet. It is such a staggering amount of information that
+    understanding how much of it exists is difficult. By 2020, it will work out to
+    11 spindles of 100 DVDs per person. If we switch to Blu-ray discs, which have
+    a capacity of 50 GB, the stack of them required to store all 40, 000 Exabytes
+    would still reach far beyond the orbit of the moon.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The growth in data is inevitable as people put more of their lives online. The
+    adoption of smartphones has turned everybody into a photographer. **Instagram**,
+    a popular image sharing site, gathers some 40 million photos a day. One wonders
+    how many photos of people's meals the world really needs. In the past few months
+    there has been an explosion of video clip sharing sites such as Vine and Instagram,
+    which generate massive amounts of data. A myriad of devices are being created
+    to extend the reach of smartphones beyond gathering photographic data. The latest
+    generation of smartphones include temperature, humidity, and pressure sensors
+    in addition to the commonplace GPS, gyroscopic, geomagnetic, and acceleration
+    sensors. These allow for recording an accurate representation of the world around
+    the user.
+  prefs: []
+  type: TYPE_NORMAL
+- en: An increase in the number of sensors is not a trend that is limited to smartphones.
+    The price of sensors and radios has reached a tipping point where it is economical
+    to create standalone devices that record and transmit data about the world. There
+    was a time when building an array of temperature sensors that report back to a
+    central device was the realm of large SCADA systems. One of my first jobs was
+    testing a collection of IP-enabled monitoring devices at a refinery. At the time,
+    the network hardware alone was worth millions. That same system can be built for
+    a few hundred dollars now. A trip to a crowdsourcing site such as Kickstarter
+    or Indiegogo will find countless Bluetooth or Wi-Fi enabled sensor devices. These
+    devices may find your lost keys or tell you when to water your tomatoes. A huge
+    number of them exist, which suggests that we're entering into an age of autonomous
+    devices reporting about the world. A sort of Internet of things is emerging.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'At the same time, the cost per gigabyte of storing data is decreasing. Cheaper
+    storage makes it economical to track data that would have previously been thrown
+    away. In the 1970s, BBC had a policy of destroying recordings of TV programs once
+    they reached a certain age. This resulted in the loss of more than a hundred episodes
+    of the cult classic *Doctor Who*. The low data density of storage media available
+    in the 1960s meant that retaining complete archives was cost-prohibitive. Such
+    deletion now would be unimaginable as the cost of storing video has dropped substantially.
+    The cost for storing a gigabyte of information on Amazon''s servers is on the
+    order of a penny-a-month and can be even cheaper if the right expertise are available
+    in house. The Parkinson''s law states the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Work expands so as to fill the time available for its completion.
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: In a restatement of this law, in our case, it would be "*the amount of data
+    will grow to fill the space available to it.*"
+  prefs: []
+  type: TYPE_NORMAL
+- en: The growth in data has made our lives more difficult. While the amount of data
+    has been growing, our ability to understand them has remained more or less stagnant.
+    The tools available to refine and process large quantities of data have not kept
+    pace. Running simple queries against gigabytes of data is a time-consuming process.
+    Queries such as "list all the tweets that contain the word 'Pepsi'" cannot be
+    realistically completed on anything but a cluster of machines working in parallel.
+    Even when the result is returned, the number of matching records is too large
+    to be processed by a single person or even a team of people.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The term "Big Data" is commonly used to describe the sorts of very large datasets
+    that are becoming more common. Like most terms that have become marketing terms,
+    Big Data is defined differently by different people and companies. In this book
+    we'll think of it as any quantity where running simple queries using traditional
+    database tools on consumer grade hardware is difficult due to computational, storage,
+    or retrieval limits.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Understanding the world of Big Data is a complex proposition. Visualizing data
+    in a meaningful way is going to be one of the great problems of the coming decade.
+    What's more, is that it is going to be a problem that will need to be addressed
+    in domains that have not been traditionally data-rich.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Consider a coffee shop; this is not a company that one would expect would produce
+    a great deal of data. However, consumers who are hungry for data are starting
+    to demand to know from whence the beans for their favorite coffee came, for how
+    long they were roasted, and how they were brewed. A similar program called **ThisFish**
+    already exists that allows consumers to track the origin of their seafood ([http://thisfish.info](http://thisfish.info))
+    all the way back to when it was caught. Providing data about its coffee in an
+    easily accessible form becomes a selling feature for the coffee shop. The following
+    screenshot shows a typical label from a coffee shop showing the source of the
+    beans, roasting time, and organic certification:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![There''s a lot of data out there](img/6542OS_01_02.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: People are very interested in data, especially data about their habits. But
+    as interested as people are in data, nobody wants to trawl through an Excel file.
+    They would like to see data presented to them in an accessible and fun way.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting excited about data
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The truth is that data is interesting! It's amazingly interesting because it
+    tells a story. The issue is that most of the time that story is hidden behind
+    a raft of seemingly uninteresting numbers. It takes some skill to extract the
+    key data and display it to people in a meaningful way. Humans are visual creatures
+    and are more readily able to process images than tables of numbers.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The best data visualizations arise from a sense of passion in the subject of
+    your visualization. Don't we all work better if the subject of our work is something
+    in which we're really interested? Great visualizations don't just educate their
+    viewers, they delight their users. They present data in a novel way that is still
+    easily understood by the audience. Great visualizations strip away the excess
+    information to reveal a kernel of information. At the same time, great visualizations
+    have a degree of beauty to them. Don't be fooled into thinking that this beauty
+    serves no purpose. In a world of ever shortening attention spans, there is still
+    a place for beauty. We still stop and pause for a moment when presented with as
+    aesthetically pleasing visualization. The extra few seconds that the beauty buys
+    you may be what keep people interested long enough to take in your meaning.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Even the most benign data has a story worth telling. To most, there is very
+    little that seems less interesting than tax revenue statistics. However, there
+    have been some very compelling stories found within that raft of data. The data
+    tells a story about which companies are avoiding paying tax revenues. It tells
+    another story about which cities have the highest per capita income. Within that
+    boring data are countless interesting stories that can be extracted though a passionate
+    application of data visualization.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Data is a lot of things, but it is never boring. You can get excited about data
+    too and uncover the hidden stories in any dataset. In every dataset, there is
+    an interesting conclusion waiting to be exposed by a data sleuth such as yourself.
+    You should share your excitement with others in the form of data visualizations.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Data beyond Excel
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: By far, the most popular data manipulation and visualization tool in the world
+    is Microsoft Excel. Excel has been around for almost three decades, and during
+    that time has grown to be the de facto tool on which businesses rely to perform
+    data analytics. Excel has the ability to sort and group data and to create graphs
+    for the resulting information.
+  prefs: []
+  type: TYPE_NORMAL
+- en: As we saw previously, the amount of data in the world is huge. The first step
+    in most data visualizations is to filter and aggregate the data down into a dataset
+    that contains the key insights you want to share with your users. If it sounds
+    like extracting, meaning that it is an opinionated process, that's because it
+    is. Presenting an unbiased visualization is just about impossible. That's okay,
+    though. Not everybody is an expert on your data, and guiding others to your conclusions
+    is valuable.
+  prefs: []
+  type: TYPE_NORMAL
+- en: You'll find that the data you have from which to derive visualizations is hardly
+    ever in a format you can use right off the bat. You will need to manipulate the
+    data to get it into a form you can use. If your source dataset is small enough
+    and your manipulations sufficiently trivial, you may be able to do your preprocessing
+    in Microsoft Excel. Excel provides a suite of tools for sorting, filtering, and
+    summarizing data. There are numerous books and articles available on how to work
+    with data in Excel as well as how to create graphs, but we won't delve into it
+    here.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The problem with Excel is that it is old news. Everybody has seen the rather
+    pedestrian graphs you get out of Excel. With the exception of a couple, these
+    are the same charts which were produced by Excel 95\. Where is the excitement
+    about data? It seems to be missing. If you create your visualizations wholly in
+    Excel, your users are going to miss out on your enthusiasm for data.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Swiss army knives are famous for having a dozen different features. You can
+    use the same tool to open a bottle of wine as you use for removing stones from
+    the shoes of horses (a far more common application around most parts). When you
+    build a tool to be multi-functional, you end up with a tool that does nothing
+    particularly well. Simply looking at the length of the help index for Microsoft
+    Excel should tell you that Excel falls solidly into the category of multi-functional
+    tools. You can do your accounting with Excel or track how quickly you can run
+    a 5K; you can even build graphs with that data. But what you can't do is build
+    really good graphs. For that, you're going to need specialized tools with a narrower
+    focus on data visualizations.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Social media data
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We've talked a lot about visualizations and data, but the other part of this
+    book's title is to do with social media. Unless you've been living in a cave without
+    Internet, you will be at least slightly aware of the social media wave that has
+    swept the planet in the last decade. Has it really been only a decade? Facebook
+    was founded in 2004\. While one can point to examples from before 2004, I would
+    argue that Facebook was the first social media site to enter into the common consciousness
+    of the population.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Defining what exactly makes a site a social media site is difficult. There needs
+    to be some aspect of social interaction on the site and some sort of a connection
+    between the users. To avoid labeling any site with a comment section as a social
+    media site, the primary purpose of the site must be to enable the interactions
+    between users. Content on these sites is typically user-generated rather than
+    being created by the owners of the site. Social media sites enable interaction
+    between users with similar interests.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Why should I care?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The role that social media now plays in our world cannot be understated. Even
+    if you avoid membership in all social media sites and believe that social media
+    has no impact upon your life, it does. A great example of the real-world impact
+    of social media is how reliant news media has become on social media. Earlier
+    this year, the Associated Press' Twitter account was hijacked and several messages
+    were sent suggesting that the White House had been attacked by terrorists. While
+    the news was quickly rebuffed, stock markets declined sharply on the news. Had
+    the subterfuge not been so quickly discovered, the real-world consequences could
+    have been far worse.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Data from social media provides a context for events happening around the world.
+    One has simply to look at the trends on Twitter to pick out the important news
+    stories of the day. As newspaper subscriptions drop, the number of people on Twitter,
+    Facebook, and other sites grow. Traditional news outlets have started to integrate
+    commenting and sharing on their stories via social media. The commentary on the
+    story often becomes the story instead of simply providing a meta-story. Many commentators
+    have pointed to the importance of Twitter in the Arab Spring and even in protests
+    in the US. Social media is quickly overtaking more traditional sources of news
+    and is becoming a driving force for society.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Social media is not limited to person-to-person interactions. More and more,
+    it is being used by businesses to connect with their customers. Frequently, the
+    best way to get service from a faceless corporation is to post a message on their
+    Facebook page or send them a tweet. I have certainly had the experience of tweeting
+    about a company or a service only to have their social media people reach out
+    to me. Anything that empowers companies to develop better relations with their
+    customers is a powerful tool and likely to have a long life.
+  prefs: []
+  type: TYPE_NORMAL
+- en: From the perspective of visualizations, social media is a phenomenal source
+    of interesting data. I can think of very little that is as compelling as a source
+    of data as the social interactions between people. Humans evolved to be social
+    animals so we have a built-in interest in what is happening in our social circles.
+    In addition to their websites, many social media sites have APIs that promote
+    building applications that use their data. The theory is that if they can enable
+    an ecosystem for their valuable data, people are far more likely to visit their
+    site frequently and third-party applications may even draw in new users.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Social media is the very definition of Big Data. Facebook has something like
+    a billion users, each of which may generate a dozen pieces of data a day. Twitter,
+    LinkedIn, and Facebook have all created their own database technologies after
+    having found the amount of data with which they have to deal, to be too large
+    for traditional databases. Fortunately, there is little need to work with the
+    full scale of social data. Narrower sets of data can be accessed through the various
+    data access APIs. The key is to shift as much of the filtering and aggregation
+    to the social media sites as possible. By exploring the available information,
+    it is possible to draw interesting conclusions and expose information through
+    visualizations that aren't typically apparent to users.
+  prefs: []
+  type: TYPE_NORMAL
+- en: HTML visualizations
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The final piece in the puzzle is HTML5\. When I was young, a new version of
+    HTML meant another long-winded specification from the World Wide Web consortium.
+    The specification process for a new version of HTML would take several years and
+    would be planned out by a committee with members from large technical organizations
+    such as Microsoft and IBM. While there is an HTML5 specification, it is not as
+    formal as previous iterations. The term HTML5 has come to describe a collection
+    of future-oriented technologies that can be used to create powerful web applications.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'HTML5 includes specification for diverse features such as the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Web workers (multi-threaded JavaScript)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Touch events for touchscreen devices
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Micro-data formats
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Canvas
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Scalable Vector Graphics
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Camera API
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Geolocation API
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Offline data
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Through these new APIs and features, HTML5 has become a major player not just
+    on browsers, but also on mobile devices and on the desktop. Through toolkits such
+    as PhoneGap ([http://phonegap.com/](http://phonegap.com/)), HTML and Microsoft's
+    WinJS JavaScript can be used as primary development languages on iPhones, Android,
+    Windows Phone, and even Blackberry. The native APIs are bound to JavaScript equivalents
+    opening up the camera, GPS, and filesystem to JavaScript applications. HTML5 can
+    also be used as a development platform for Windows 8-style applications (previously
+    known as Metro). On non-Windows platforms, desktop applications can be developed
+    in HTML5 using a toolkit-like Adobe Air ([http://www.adobe.com/products/air.html](http://www.adobe.com/products/air.html)).
+    HTML5 offers a multi-platform development environment that allows taking skills
+    from the Web to tablet to desktop.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The offline data tools remove the dependence on having a web server to serve
+    content to your application. Embedding data directly on the client machine instead
+    of having to pull it down repeatedly from a server allows for applications to
+    be truly mobile—the network is no longer crucial.
+  prefs: []
+  type: TYPE_NORMAL
+- en: HTML5 has been hugely beneficial to visualization developers. Canvas and SVG
+    both offer enticing functionalities. CSS3 also allows for a greater degree of
+    flexibility around styling. Before HTML5 came onto the scene, interactive data
+    visualizations in a browser could best be achieved using third-party tools such
+    as Java Applets or Adobe Flash. The adoption rates for these technologies, while
+    high, still cut off a large number of users. Even with high adoption rates, the
+    versions of these tools being run in the wild were frequently archaic. Neither
+    Java Applets, nor Adobe Flash is available on the increasingly popular mobile
+    platforms. HTML5, on the other hand, is now supported in some form on the vast
+    majority of smart phones.
+  prefs: []
+  type: TYPE_NORMAL
+- en: One of the best features of developing a visualization in HTML is that it is
+    possible to allow users to interact with the visualization. Famous visualizations
+    such as the *London Underground Map* have been crippled by being drawn on a static
+    piece of paper. Interactions provide a whole new level of user engagement—previously
+    impossible. It should not surprise you if users of interactive visualizations
+    find ways to manipulate the visualization to derive whole new conclusions.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The industry support for HTML and JavaScript technologies is impressive. All
+    the technology giants have invested heavily in developing browsers and development
+    tools based on HTML5 and JavaScript. The pace of change in the web development
+    sphere is stunning. There is not a week that goes by when I fail to hear about
+    an innovative new JavaScript library or a new take on a development platform.
+    The ready availability of cloud-based hosting has enabled startups to flourish
+    on the web.
+  prefs: []
+  type: TYPE_NORMAL
+- en: When choosing a tool in which to develop visualizations, HTML provides an excellent
+    option. Broad support, good tooling, and a well-known API ensure that developing
+    will be a pleasure. Well, maybe not a pleasure, but at least relatively painless.
+    HTML and JavaScript are the lingua franca for all web developers. No matter if
+    development is being done with Ruby on Rails, ASP.NET, or even Wordpress as a
+    backend, the frontend is always going to be written in HTML and JavaScript. This
+    gives a big pool of developers from which talent may be pulled.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Communicating information to users is tricky. The problem is compounded by the
+    huge quantity of data that is now available at the click of a mouse or the punch
+    of a key. As a visualization developer, it is your role to sort through clouds
+    of irrelevant data to extract the bits in which you're interested and then to
+    present that data to your users in an interesting way. People are interested in
+    data, but they are rarely interested in sorting through reams of tabular data.
+    Visualizations are frequently the best tools for presenting that data to your
+    users.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The confluence of readily accessible, high quality, social data from social
+    media sites coupled with new visualization tools present a never before seen opportunity
+    to create interesting visualizations. Through the passion of developers who can
+    see beyond the standard Microsoft Excel graphs and tables, there is a future for
+    not just static visualizations but also interactive, fun visualizations that will
+    delight users while they explore previously invisible aspects of data.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the next chapter we'll examine some of the ways in which we can create visualizations
+    using modern web development tools.
+  prefs: []
+  type: TYPE_NORMAL

@@ -1,0 +1,1141 @@
+- en: Chapter 6. Getting the Data In
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: One of the key aspects of any application is the handling of data—getting data
+    into the application, so that you can manipulate and store it, and then get it
+    out again for display. We will spend the next two chapters covering data handling
+    in Sencha Touch. This first chapter on data will focus on getting data into your
+    application.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We will start with a discussion of the data models that are used to describe
+    your data. We will then discuss the readers that gather the data and the stores
+    used to hold the data for use in our application. Once we have a grasp on where
+    the data goes, we will cover how to use forms to get it there. We will look at
+    how to validate your data and provide you with some examples of form submission.
+    We will finish up with a look at getting the data back into a form for editing.
+    This will serve as our starting point for the next chapter on data, which will
+    cover getting data back for display.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This chapter covers the following topics:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Data models
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Data formats
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Data stores
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using forms and data stores
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Models
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The first step in working with data in a Sencha Touch application is to create
+    a model of the data. If you are used to database-driven applications, it's helpful
+    to think of the model as being a database schema; it's a construct that defines
+    the data we are going to store, including the data type, validations, and structure.
+    This provides the rest of our application with a common map for understanding
+    the data being passed back and forth.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In Sencha Touch 2, the model can also be used to hold the information for a
+    single data record. This means that we can create, read, update, and delete the
+    single record using functions that are already built in to the Sencha Touch `Ext.data.Model`
+    component.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The basic model
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'At its most basic, the model describes the data fields using `Ext.define()`
+    as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: The first line declares that we have named our new model `User` and that we
+    are extending the default `Ext.data.Model`. We set up the model's configuration
+    options inside the `config` section.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The model setup has changed a bit in Version 2\. We now use `Ext.define` and
+    extend instead of creating things through the old Model Manager. We also wrap
+    the model's options in a `config` section. Outside the `extend` setting, the rest
+    of your model options should be wrapped in this `config` section.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Inside the `config` section, we describe our data fields as an array of `fields`
+    including `name`, `type`, and optional `defaultValue` fields. The `name` field
+    is simply how we want to refer to the data in our code. The valid values for `types`
+    are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`auto`: This is a default value that just accepts the raw data without conversion'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`string`: This converts the data into a string'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`int`: This converts the data into an integer'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`float`: This converts the data into a floating point integer'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`boolean`: This converts the data into a true or false Boolean value'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`date`: This converts the data into a JavaScript `Date` object'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'The `defaultValue` field can be used to set a standard value to be used if
+    no data is received for that field. In our example, we set the value of `active`
+    to `true`. We can use this when creating a new user instance with `Ext.create()`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: Notice that we did not provide a value for `active` in our new user instance,
+    so it just uses our `defaultValue` field from the model definition. This can also
+    help when the user forgets to enter a value. We can also double-check the information
+    our user enters by using `validations`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Model validations
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Model validations ensure that we are getting the data we think we are getting.
+    These validations serve two functions. The first is to provide the guidelines
+    for how data is entered. For example, we would typically want a username to consist
+    only of letters and numbers; the validation can enforce this constraint and inform
+    the user when they use the wrong character.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The second is security; malicious users can also use the form field to send
+    information that might potentially be harmful to our database. For example, sending
+    `DELETE * FROM users;` as your username can cause problems if the database is
+    not properly secured. It is always a good idea to validate data, just in case.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We can declare `validations` as part of our data model in much the same way
+    that we declare our fields. For example, we can add the following code to our
+    `User` model:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'In our example, we have added four validations. The first one tests the presence
+    of an `age` value. If there is no value for `age`, we get an error. The second
+    validator, `exclusion`, tests for things we don''t want to see as a value for
+    this field. In this case, we have a list of two items for the username that we
+    don''t want to see: `Admin` and `Root`. The third validator tests to make sure
+    that our value for the username is at least three characters long. The final validator
+    checks the format of our username using a regular expression.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '**Regular expressions**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Regular expressions**, also called **regexes** or **regexps**, are an extremely
+    powerful tool for matching the structure of a string. You can use RegEx to search
+    for particular characters, words, or patterns within a string. A discussion of
+    regular expressions would require its own book, but there are a number of good
+    resources available online.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Good tutorials are available at:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[http://www.zytrax.com/tech/web/regex.htm](http://www.zytrax.com/tech/web/regex.htm).'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'A searchable database of regular expressions can be found at:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[http://regexlib.com](http://regexlib.com).'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'A wonderful regular expression tester is also available at:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[http://www.rexv.org/](http://www.rexv.org/).'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We can test our validations by using the `validate` method on our new `User`
+    instance:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Note that we intentionally dropped the `age` field this time, to give us an
+    error. If we take a look at our console, we can see the `Ext.data.Errors` object
+    that we get back, as shown in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Model validations](img/0748OS_06_01.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'This is the console output for our `errors` object. The `errors` object includes
+    a method called `isValid()`, which will return a `true` or `false` value. We can
+    use this method to test for errors and return a message to the user, using something
+    as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here, we test `errors` to see if it is valid and if not, display the information
+    from the first error. We then use `getField()` and `getMessage()` to display in
+    our alert to the user. This detailed error information is included in the `items`
+    list of the `errors` object. In practical usage there could be more than one error,
+    so we would need to loop through the `items` list to grab all of the errors.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We can also change the default error message by setting additional configuration
+    options on the validations for:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`exclusionMessage`: This is used when we get an excluded value for a field'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`formatMessage`: This is used when we get an improperly formatted value for
+    a field'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`inclusionMessage`: This is used when we do not get an included value for a
+    field'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`lengthMessage`: This is used when we get a value for a field that does not
+    meet our required length'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`presenceMessage`: This is used when we do not reserve a required value for
+    a field'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Customizing these errors will help the user understand exactly what went wrong
+    and what needs to be done to correct the problem.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Model methods
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Our models can also contain methods that can be called on any instance of our
+    model. For example, we can add a method called `deactivate` to our model by adding
+    the following to our `User` model after the `fields` list:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This function tests to see if our current value of `active` is `true`. If it
+    is, we set it to `false`. Once we create `newUser` as we did previously, we can
+    call the function as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: These model methods provide a great way to implement common functions in your
+    model.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '**CRUD**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: While model methods might look like a good place for adding functions to save
+    our model, you really don't need to. These types of functions—`Create`, `Read`,
+    `Update`, and `Destroy`—are often referred to by the unattractive acronym **CRUD**,
+    and they are handled automatically by Sencha Touch. We will go over these functions
+    a bit later in this chapter.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now that we have our model's fields, validations, and functions defined, we
+    need a way to pass data to and from the model for the storing and retrieving of
+    our users. This is where the proxy and reader come in.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Proxies and readers
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In the model, the proxy and reader form a partnership to store and retrieve
+    data to be used by the model. The proxy tells a model where its data will be stored,
+    and the reader tells the model what format is being used to store the data.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'There are two main types of proxies: local and remote. A local proxy stores
+    its data locally on the device with one of the two proxy types:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`LocalStorageProxy`: This saves the data to the local storage via the browser.
+    This data is persistent across sessions, unless deleted by the user.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`MemoryProxy`: This holds the data in the local memory. When the page is refreshed,
+    the data is deleted.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'The remote proxy has two basic types:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`AjaxProxy`: This sends requests to a server within the current domain.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`JsonP`: This sends requests to a server on a different domain (this was called
+    a `scripttag` proxy in the previous versions).'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Additionally, there are a few specialized proxies, which include:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`Direct`: This is a proprietary Sencha technology which, like Ajax, allows
+    asynchronous communication with a remote server. However, unlike Ajax, `Direct`
+    does not need to keep a socket open to the remote server waiting for a response.
+    This makes it ideal for any process that may require a long response delay from
+    the server. For more information on `Direct`, go to:'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[http://docs.sencha.com/touch/2.2.0/#!/api/Ext.direct.Manager](http://docs.sencha.com/touch/2.2.0/#!/api/Ext.direct.Manager).'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '`Rest`: The `Rest` proxy takes the basic proxy functions (`Create`, `Read`,
+    `Edit`, and `Delete`) and maps these to HTTP request types (`POST`, `GET`, `PUT`,
+    and `DELETE`, respectively). This type of communication is very common in commercial
+    APIs.For more information on the rest of the proxies, go to:'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[http://docs.sencha.com/touch/2.2.0/#!/api/Ext.data.proxy.Rest.](http://docs.sencha.com/touch/2.2.0/#!/api/Ext.data.proxy.Rest)'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'For more information on the REST protocol itself, visit:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[http://net.tutsplus.com/tutorials/other/a-beginners-introduction-to-http-and-rest/](http://net.tutsplus.com/tutorials/other/a-beginners-introduction-to-http-and-rest/).'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '`Sql`: This proxy lets you store data in a local SQL database. This should
+    not be confused with an actual SQL server. The Sencha Touch SQL proxy outputs
+    the model data into an HTML5 local database using WebSQL.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: For this chapter and the next, we will be dealing mostly with local proxies.
+    We will cover remote proxies and synchronizing data in [Chapter 9](ch09.html "Chapter 9. Advanced
+    Topics"), *Advanced Topics*.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The proxy can be declared as part of the model, shown as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: All proxies require a type (local storage, session storage, and so on); however,
+    some proxies will require additional information such as the unique ID required
+    by the `localstorage` proxy.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We can also add a reader to this proxy configuration. The reader''s job is
+    to tell our proxy what format to use for sending and receiving data. The reader
+    understands the following formats:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`array`: A simple JavaScript array'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`xml`: An Extensible Markup Language format'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`json`: A JavaScript Object Notation format'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'The reader gets declared as part of the proxy:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '**Declaring proxies and readers**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The proxies and readers can be declared as part of the data store as well as
+    the model. If different proxies are declared for a store and a model, then calling
+    `store.sync()` will use the store's proxy, while calling `model.save()` will use
+    the model's proxy. Using separate proxies on both models and the store is typically
+    only needed in complex situations. It can also be confusing, so it's best to only
+    define proxies in the model unless you're sure of what you are doing.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Introducing data formats
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Before we move on to data stores, we need to take a brief look at data formats.
+    The three currently supported by Sencha Touch are Array, XML, and JSON. For each
+    example, we will take a look at how the data would appear for a simple `contact`
+    model with three fields: an ID, a name, and an e-mail ID.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Arrays
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'An `ArrayStore` data format uses a standard JavaScript array, which would look
+    something like this for our `contact` example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'One of the first things we notice about this type of array is that there are
+    no field names included as part of a JavaScript array. This means if we want to
+    refer to the fields by the name in our template, we have to set up our model to
+    understand where these fields should be mapped by using the `mapping` configuration
+    option:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This sets up our `id` field as index `0` of our data, which is the default
+    value. We then use the `mapping` configuration to set `name` and `email` as index
+    `1` and `2` respectively, of the items in our data array. We can then set the
+    template values for the display component using the configuration:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: While arrays are typically used for simple data sets, a larger or nested data
+    set can become very unwieldy using the simple JavaScript array structure. This
+    is where our other formats come in.
+  prefs: []
+  type: TYPE_NORMAL
+- en: XML
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '**Extensible Markup Language** (**XML**) should be a familiar looking format
+    to anyone who has worked with HTML web pages in the past. XML consists of data
+    nested within a series of tags that identify the name of each part of the dataset.
+    If we put our previous example into an XML format, it would look as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: Notice that XML always begins with a version and encoding line. If this line
+    is not set, the browser will not interpret the XML correctly and the request will
+    fail.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We also include tags for defining the individual contacts. One advantage of
+    this is that we can now nest data, as shown in the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: In this nested example, we have each individual `contact` tag nested inside
+    a `contacts` tag. We also have tags for our `total` and `success` values.
+  prefs: []
+  type: TYPE_NORMAL
+- en: As we have a nested data structure, we will also need to let the reader know
+    where to look for the pieces we need.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: The `root` property tells the reader where to start looking for our individual
+    contacts. We also set a value outside of our contacts list for `totalProperty`.
+    This tells the store that there are a total of 25 contacts, even though the store
+    only receives the first three. The `totalProperty` property is used for paging
+    through the data (that is, showing three of 25).
+  prefs: []
+  type: TYPE_NORMAL
+- en: The other property outside of our `contacts` list is `successProperty`. This
+    tells the store where to check whether the request was successful.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The only disadvantage of XML is that it's not a native JavaScript format, so
+    it adds a little bit of overhead when it's parsed by the system. Typically, this
+    is only noticeable in very large or deeply nested arrays, but it can be an issue
+    for some applications.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Fortunately for us, we can also use JSON.
+  prefs: []
+  type: TYPE_NORMAL
+- en: JSON
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '**JavaScript Object Notation** (**JSON**) has all of the advantages of XML,
+    but as a native JavaScript construct, it has less overhead associated with parsing.
+    If we look at our data set as JSON, we would see the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We can also nest JSON in much the same way we do with XML:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The reader would then be set up just as our XML reader, but with the type listed
+    as JSON:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: As before, we set properties for both `totalProperty` and `successProperty`.
+    We also provide the reader with a place to start looking for our `contacts` list.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: It should also be noted that the default values for `totalProperty` and `successProperty`
+    are `total` and `success` respectively. If you are using `total` and `success`
+    in your JSON return values, you don't really need to set these configuration options
+    on `reader`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: JSONP
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: JSON also has an alternate format called JSONP, or JSON with padding. This format
+    is used when you need to retrieve data from a remote server. We need this option
+    because most browsers follow a strict same-origin policy when handling JavaScript
+    requests.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The same-origin policy means that a web browser will permit JavaScript to run
+    as long as the JavaScript is running on the same server as the web page. This
+    will prevent a number of potential JavaScript security issues.
+  prefs: []
+  type: TYPE_NORMAL
+- en: However, there are times when you will have a legitimate reason for making a
+    request from a remote server, for example querying an API from a web service such
+    as Flickr. Because your app isn't likely to be running on [flickr.com](http://flickr.com),
+    you'll need to use JSONP, which simply tells the remote server to encapsulate
+    the JSON response in a function call.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Luckily, Sencha Touch handles all of that for us. When you set up your proxy
+    and reader, set the proxy type to `jsonp`, and set your reader up like you would
+    a regular JSON reader. This tells Sencha Touch to use `Ext.data.proxy.JsonP` to
+    do the cross-domain request, and Sencha Touch takes care of the rest.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: If you'd like to see JSONP and `Ext.data.proxy.JsonP` in action, we use both
+    to build the **Flickr Finder** application in [Chapter 8](ch08.html "Chapter 8. Creating
+    the Flickr Finder Application"), *Creating the Flickr Finder Application*.
+  prefs: []
+  type: TYPE_NORMAL
+- en: While we have a number of formats to choose from, we will be using the JSON
+    format for all of our examples moving forward in this chapter.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Introducing stores
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Stores, as the name implies, are used to store data. As we have seen in previous
+    chapters, the list components require a store in order to display data, but we
+    can also use a store to grab information from forms and hold it for use anywhere
+    in our application.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The store, in combination with the model and proxy, works in much the same way
+    as a traditional database. The model provides the structure for our data (say
+    a schema in a traditional database), and the proxy provides the communication
+    layer to get the data in and out of the store. The store itself holds the data
+    and provides a powerful component interface for sorting, filtering, saving, and
+    editing data.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The store can also be bound to a number of components, such as lists, nested
+    lists, select fields, and panels, to provide data for display.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We will cover display, sorting, and filtering in [Chapter 7](ch07.html "Chapter 7. Getting
+    the Data Out"), *Getting the Data Out*, but for now, we are going to look at saving
+    and editing data with the store.
+  prefs: []
+  type: TYPE_NORMAL
+- en: A simple store
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'As this chapter is concerned with getting data into the store, we are going
+    to start out with a very simple local store for our example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: This example tells the store which model to use, which in turn defines both
+    the fields the store knows about and also the proxy the store should use, since
+    the store will adopt both the field list and the proxy from its model. We also
+    set the store to `autoLoad`, which means that it will load the data as soon as
+    the store is created.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: If you declare a proxy in the store configuration, that proxy will be used instead
+    of the model's proxy. This is useful in some situations where you want to store
+    information about the collection of records such as a group of admin users. In
+    that case, the model would be used to store the user details, but the store would
+    be used to collect several users of a specific type (admin users) together.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We also need to be sure our model is set up correctly in order to use this
+    store. Since we don''t have a proxy listed as part of the store, we need to be
+    sure the model has one if we want to save our data:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This is our simple model with three items: an ID, a name, and an e-mail address.
+    We would then create a new contact as we did before:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Notice that we don''t set the ID this time. We want the store to set that for
+    us (similar to the way autoincrement works in a typical database). We can then
+    add this new contact to the store and save it:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE21]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The first line adds the user to the store and the second line saves the contents
+    of the store. By splitting the `add` and `sync` functionalities, you can add multiple
+    users to the store and then perform a single save, as shown in the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE22]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'In both the cases, when we add contacts to the store, we set up a return variable
+    to grab the return value of the `add` method. This method returns an array of
+    contacts that will now have a unique ID as part of each `contact` object. We can
+    take a look at these values by adding a couple of console logs after our sync:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE23]'
+  prefs: []
+  type: TYPE_PRE
+- en: This will show that two `contact` objects in an array are returned. It also
+    shows how to get at the data we need from those objects by using the index number
+    of the specific contact in the array. We can then drill down into the data for
+    a name and the new ID that was assigned when we synced.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![A simple store](img/0748OS_06_02.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Now that we have a general idea of how to get data into a store, let's take
+    a look at how to do it with a form.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Forms and stores
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'For this example, we are going to use the same store and model as our previous
+    example, but we will add a list and a form so that we can add new contacts and
+    see what we have added. Let''s start with the list:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE24]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'You will get something similar to what is shown in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Forms and stores](img/0748OS_06_03.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Most of the code here is pretty similar to the previous examples. We have a
+    single panel with a `list` component. Our list has a template `itemTpl` that uses
+    the same field names as our `contact` model and arranges the manner in which they
+    will be displayed. We have also added a docked toolbar with our new **Add** button.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The `toolbar` component has also changed from the previous versions of Sencha
+    Touch. In Version 2, `toolbar` is part of the `items` list and not a separate
+    `dockedItem`, as in the past versions. Additionally, the position of the `toolbar`
+    was previously set by the `dock` configuration option. This was changed to `docked`
+    in Sencha Touch 2\. It should also be noted that if you try using the older `dockedItem`
+    and `dock` configurations, you will not get any errors. You will also not get
+    a toolbar. This can lead to a great deal of hair pulling and coarse language.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The button has a very simple function that will add an Ext.Sheet called `addNewContact`
+    to our viewport and then show the sheet. Now we need to actually create the sheet:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE25]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This gives us our new sheet that will appear when we click the **Add** button.
+    Now, we need to add our form fields to the `items` section of the sheet we just
+    created:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE26]'
+  prefs: []
+  type: TYPE_PRE
+- en: We start by creating our `formpanel` component and then adding `textfield` and
+    `emailfield` to the `items` list of `formpanel`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Specialty text fields
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Sencha Touch uses specialty text fields such as `emailfield`, `urlfield`, and
+    `numberfield`, to control which keyboard is used by the mobile device, as in the
+    following iPhone examples:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Specialty text fields](img/0748OS_06_04.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'The types of keyboards shown in the preceding figure are explained as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**The URL Keyboard** replaces the traditional Space bar with keys for dot (**.**),
+    slash (**/**), and **.com**'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**The Email Keyboard** shortens the Space bar and makes room for **@** and
+    dot (**.**)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**The Number Keyboard** initially presents the numeric keyboard instead of
+    the standard QWERTY keyboard'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: These specialty fields do not automatically validate the data the user enters.
+    Those kinds of validations are handled through model validations.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '**Specialty keyboards**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Android and iOS have slightly different special keyboards, so you may find some
+    variation between the two. It is usually helpful to run your application through
+    both the Android and iOS simulators to ensure that the correct keyboard type is
+    being used.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Mapping fields to the model
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: You will also notice that the name of each field in our form matches the name
+    used by our `contact` model; this will allow us to easily create our contacts
+    and add them to the store. However, before we get there, we need to add two buttons
+    (**Save** and **Cancel**) to tell the form what to do.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'After the `emailfield` object in our form, we need to add the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE27]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The gives us two buttons at the bottom of our form. Right now, both our **Save**
+    and **Cancel** buttons do the same thing: they call a function to hide the sheet
+    that holds our form. This is a good starting point, but we need a bit more to
+    get our **Save** button to save our data.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Mapping fields to the model](img/0748OS_06_05.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'Since we were good little coders and named our fields to match our model, we
+    can just use the following code in our button handler to add our form to our store:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE28]'
+  prefs: []
+  type: TYPE_PRE
+- en: The first line uses the `up` method to grab the form that surrounds the button.
+    The second line uses `form.getValues()` and pipes the output directly into a new
+    `Contact` model, using the `create()` method from our previous examples. We can
+    then add the new contact to the store and sync, as we did before.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The last bit of cleanup we need to do is to clear all of the form values by
+    using `form.reset()` and then hide the sheet, as before. If we don't reset the
+    fields, the data would still be there the next time we showed the form.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The list connected to the store will refresh when we sync the store, and our
+    new contact will appear.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Mapping fields to the model](img/0748OS_06_06.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Since this store uses local storage for holding the data, our list will stay
+    in place even after we quit the Safari browser. This can be a bit of a pain when
+    you are testing an application, so let's take a look at how to clear out the store.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Clearing the store data
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Local and session storage saves information on our local machine. As we plan
+    on doing lots of testing while coding, it''s a good idea to know how to clear
+    out this kind of data without removing other data that you might still need. To
+    clear out the data for your local or session store, use the following steps:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Open up **Web Inspector** from the **Develop** menu and select the **Resources**
+    tab.![Clearing the store data](img/0748OS_06_07.jpg)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: In the **Local Storage** or **Session Storage** section (depending on the method
+    you use), you should see your application's database. Once you select the database,
+    you can delete specific records or empty out the database completely. Just select
+    the records on the right-hand side of the screen, and click on the **X** at the
+    bottom to delete the record.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: You can also reset the value for the counter by double-clicking on it and then
+    changing the number. Be careful not to create multiple records with the same number.
+    This will cause big problems.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Once you are finished in the **Resources** section, let's move on to editing
+    data with our forms.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Editing with forms
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Now that we have taken a look at the basics of getting data into a store, let's
+    look at how to edit that data, using a few modifications to our current form.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The first thing we want to add is an `itemsingletap` listener on our list.
+    This will let us tap an item in the list and bring up the form with the selected
+    entry included in the fields for us to edit. The listener looks like the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE29]'
+  prefs: []
+  type: TYPE_PRE
+- en: Our `itemsingletap` listener will automatically get back a copy of the `list`,
+    the `index` attributes of the item, the `target` element, and the `record` behind
+    the item that got tapped. We can then grab the form inside our sheet and set the
+    record on it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'It is often useful to chain functions together in this fashion, especially
+    if the piece you need has to be used only once. For example, we could have done:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE30]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This would also let us use that `form` variable in a number of places within
+    the function. Since we only need it to set the record, we can combine both of
+    these lines as a single line:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE31]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This loads the data into our form in the following manner:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Editing with forms](img/0748OS_06_08.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'There''s still one more problem to be dealt with: our **Save** button is hardcoded
+    to add a new record to the store. If we tap **Save** right now, we will just end
+    up with multiple copies of the same contact. We need to make a change to our form
+    to let us switch what the **Save** button does, depending on whether we are editing
+    or creating a new contact.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Switching handlers
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'In order to change the handler, the button fires to save our contact; we need
+    to separate the bulk of code from the button itself. To begin, locate the handler
+    for our **Save** button and copy the current function to your clipboard. Next,
+    we want to replace that function with the name of an external function:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE32]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We are also going to add an additional `config` option to our button in the
+    following manner:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE33]'
+  prefs: []
+  type: TYPE_PRE
+- en: This will make it easier to grab our button with a component query later on.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The `action` config option is a totally arbitrary name. You are not restricted
+    to just the options defined by Sencha. You can define any additional options you
+    like for the components and reference them in your handlers and controllers just
+    like any other config option.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Now, we have to create the new `addContact` function for this handler to use.
+    In our JavaScript file, right before where we create our `addNewContact` sheet,
+    add a new function called `addContact` and paste in the code from our old `handler`
+    function. It should look as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE34]'
+  prefs: []
+  type: TYPE_PRE
+- en: This is the same old form-saving function we used on our button before, and
+    it will work just fine for adding new contacts. Now, we need to create a similar
+    function to update our contacts when we click on them in the list.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'On top of our `addContact` function, add the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE35]'
+  prefs: []
+  type: TYPE_PRE
+- en: This does almost the same thing as our other function. However, instead of grabbing
+    the form fields and creating a new record, we grab the record from the form itself
+    using `form.getRecord()`. This record is the one we need to update with our new
+    information.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We then grab the current values of the form using `form.getValues()`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Our `rec` variable is now set to the old record from the data store. We can
+    then pass that record to our new data using `rec.set(values)`, which will overwrite
+    the old information in the store record with our current form values. The ID will
+    stay the same as we do not pass a new value for that.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'After we update the record, we just perform the following actions we did earlier:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`sync`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`reset`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`hide`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Now that the code for our two functions is in place, we need to switch the handler
+    for our **Save** button based on whether the user clicked on the **Add** button
+    at the top of our list or selected an item in the list.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s start with the **Add** button. Locate the handler for our **Add** button
+    at the top of our `list` object. We need to add some code to this button that
+    will change the handler on the **Save** button:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE36]'
+  prefs: []
+  type: TYPE_PRE
+- en: As our `addNewContact` sheet is already defined as a variable elsewhere in the
+    code, we can grab `button` using the `down()` method and make a few changes. The
+    first is to update the handler to see our new `addContact` function, and the second
+    is to change the text of the button to `Create`. We can then add our `addNewContact`
+    sheet to the viewport and call `addNewContact.show()`, as before.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Our **Add** button is now set to show the form and change the text and handler
+    for the button.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Now, we need to do something similar to the `itemsingletap` hander on our list:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE37]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here, we still take the record and load it into the form, but we grab `button`
+    with the `action` value of `saveContact` and make changes to the handler and text
+    as well. The changes point the **Save** button to our `updateContact` function
+    and change the text to `Update`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Switching handlers](img/0748OS_06_09.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Deleting from the data store
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: If you remember earlier, when we talked about CRUD functions, you can see that
+    we successfully covered `Create`, `Read`, and `Update`. These are all handled
+    automatically by the store with very little code required. What about `Delete`?
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'As it turns out, `Delete` is just as simple as our other store methods. We
+    can use either of the two methods: the first is `remove()`—it takes a record as
+    its argument—and the second is `removeAt`, which takes an index to determine the
+    record to remove. We could implement either of these as part of our edit form
+    by adding a new button at the bottom of the form as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE38]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Using `remove` requires the store record, so we grab the record from our form
+    panel:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE39]'
+  prefs: []
+  type: TYPE_PRE
+- en: That takes care of all of our basic `Create`, `Read`, `Edit`, and `Delete` functions.
+    As long as you remember to set up your model and match your field names, the store
+    will handle most of the basics automatically.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '**Further Information**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Sencha has a number of good tutorials on using forms, models, and stores at
+    [http://docs.sencha.com/touch/2.2.1/#!/guide](http://docs.sencha.com/touch/2.2.1/#!/guide).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this chapter, we covered the data model that forms the basic structure for
+    all of our data in Sencha Touch. We looked at the proxy and reader that handle
+    communications between the data store and our other components. We also discussed
+    the data store that holds all of our data in Sencha Touch. Finally, we took a
+    look at how you can use forms to get data in and out of the stores as well as
+    at how to delete the data when it is no longer needed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the next chapter, we will take a look at all of the other things we can do
+    with data once we get it out of the store.
+  prefs: []
+  type: TYPE_NORMAL

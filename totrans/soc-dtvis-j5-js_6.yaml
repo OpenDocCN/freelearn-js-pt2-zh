@@ -1,0 +1,308 @@
+- en: Chapter 6. Stack Overflow
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In 2008, the programming question market on the Internet was dominated by a
+    company called Experts Exchange. Many were dissatisfied with the culture on the
+    site and the requirement that people had to be registered to view answers. Programmers
+    Jeff Atwood and Joel Spolsky launched the "question and answer" site, Stack Overflow.
+    Since then, the site has, taken off, quickly growing to become one of the top
+    100 sites on the Internet. Users can ask and answer questions on the site about
+    a wide variety of programming topics. Answering a question well or asking a well
+    thought-out question wins reputation points, which are prominently displayed.
+    Although, it's not a social media site like Facebook and Twitter, Stack Overflow's
+    content is all user-created and user-moderated. Stack Overflow offers an API against
+    which you can query for all sorts of interesting information.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Authenticating
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Much of the query API is available without authenticating. However, if you want
+    private information about users or want to write to the site, then you'll need
+    to authenticate. There is also a much higher request limit for authenticated applications.
+    Without authenticating, a single IP address is limited to 300 requests a day.
+    With an authenticated application, this limit is raised to 10,000 requests.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '**Rate limits**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Many social media sites use rate limits in their APIs. These limits are in place
+    to prevent you from overloading the site, and also to save you from asking for
+    too much data. Twitter processes more than 4,000 tweets a second. Without very
+    special preparation, your infrastructure would quickly be overwhelmed if you were
+    to process them all.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Again, this is a site that makes use of **OAuth** to authorize users. However,
+    they make use of OAuth 2.0, which is much easier than the OAuth 1.0a we used in
+    the previous chapter. We'll limit ourselves to making use of public information
+    to avoid authenticating. Should you wish to authenticate, I promise it is easier
+    than Twitter. You can find instructions at [https://api.stackexchange.com/docs/authentication.](https://api.stackexchange.com/docs/authentication.)
+    Stack Overflow uses the same authorization system as Facebook, so the example
+    from the OAuth chapter should work perfectly.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Creating a visualization
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Many of the questions on Stack Overflow have a large number of answers. The
+    site is not optimized to show the latest answers; the answers are ranked by being
+    the most accepted answer then randomly. This is done to give all answers a chance
+    at being shown near the top which should, in theory, encourage people to vote
+    for the best answer instead of just the first answer shown.
+  prefs: []
+  type: TYPE_NORMAL
+- en: For this visualization, I would like to show how a question has been answered
+    over time. Are more recent answers likely to get a higher score? Is the first
+    answer always the best?
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let's start by pulling down the data for an individual question which has a
+    large number of answers. To do this, we'll make use of the questions API. All
+    of the API endpoints are hosted on [https://api.stackexchange.com](https://api.stackexchange.com).
+    We're going to make use of the latest API which is Version 2.1\. This is also
+    encoded into the URI, as is the specific endpoint and the ID. Within the question
+    API, we're interested in the answers, so we can query specifically for them, giving
+    us a URI of [https://api.stackexchange.com/2.1/questions/{id}/answers](https://api.stackexchange.com/2.1/questions/{id}/answers).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In the query string, we''ll specify the site against which we want to query.
+    Stack Exchange hosts several dozen question and answer sites modeled on Stack
+    Overflow, all of which are served from the same API endpoint, so it is necessary
+    to filter just for Stack Overflow by passing in `site=stackoverflow`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: Twitter provided us with the continuation tokens that we could pass back to
+    Twitter to request the next page of data. Stack Overflow takes a different approach
+    and assigns page numbers, allowing us to browse through the results with ease.
+    Embedded in the response for every API call is a token called `has_more`, which
+    is true whenever there are more pages of data that match the current query.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this code, we make use of the continuation token and the page number to perform
+    as many queries as necessary to retrieve all the answers. We are making use of
+    the jQuery function `ajax,` instead of the more common `getJson` function, because
+    we would like to retrieve the data synchronously. We do this because we want the
+    entire dataset at one time. If your visualization allows for data to be added
+    dynamically then you can relax the `async:false` requirement.
+  prefs: []
+  type: TYPE_NORMAL
+- en: What's returned is an array of objects, each one of which represents an answer
+    to a question. If we give the `retrieveQuestionAnswers` method an ID such as `901115`,
+    then we'll get back an array of 50 answers. These come back over the course of
+    two requests and the code above merges them together into the results array which
+    is returned.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Each `Answer` contains a number of fields. A list of the fields returned by
+    default can be found at [https://api.stackexchange.com/docs/types/answer](https://api.stackexchange.com/docs/types/answer).
+    For the purpose of our visualization, we''re most interested in when the answer
+    was originally suggested, its score, and also whether it was chosen as the accepted
+    answer. These bits of information can be found in the fields: `creation_date`,
+    `score`, and `is_accepted`. We''ll ignore the rest of the fields for now.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now that we have some basic data, we can start thinking about the visualization.
+    We're trying to convey the relationship between the age of a question and its
+    score. This sounds a lot like a use for a scatter plot. The data points stand
+    on their own and can be placed along two axis, date and points. My theory before
+    starting on this that answers that are older will tend to have a higher score,
+    because they've been around longer to gather points. People are programmed to
+    believe that numbers going up are positive, so let's play to that and plot points
+    versus age which will, if my theory holds, have higher values on the right.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Of course, a scatter plot is boring and nothing we couldn't generate outside
+    of Excel. We'll add some interactivity to it, but to start, we'll still need a
+    simple scatter plot.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This is easily done with a couple of scales and some circles, as shown in the
+    following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This gives a very flat graph with the majority of the data being close to zero,
+    while the scale is skewed by a high outlier with a score over 2000, as can be
+    seen in the following figure:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Creating a visualization](img/6542OS_06_02_New.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: This can be ameliorated by using a logarithmic scale. Any time you use a non-standard
+    scale like logarithmic, you'll want to put in axis labels to prevent causing confusion
+    or misleading the consumer of the visualization.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: The labels in this graph are manually assigned to give the best spread. You
+    can automatically assign labels, but I found them to be declared at odd places.
+    I also defined a function to format the labels, otherwise they had a tendency
+    to be formatted using scientific notation (*2 * 10^3*). Finally, I appended some
+    text as an axis label. I also added an age axis that lists the age of the answer
+    in days.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The only special thing worth noting in this code is that the label is rotated
+    using a transform, as it appears along a vertical axis. The resulting graph looks
+    like this figure:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Creating a visualization](img/6542OS_06_02.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Now that we have a basic visualization, we can start spiffing it up with some
+    interaction.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The simplest interaction we can add is to pop up a label when somebody moves
+    the mouse pointer over one of the points.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This can be done by using the `on()` function of `d3`. This function can tie
+    event listeners to the elements created as part of an SVG. To start, we add to
+    the end of circle appending from above, as shown in the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here, the `showTip()` function will be called whenever the user hovers the mouse
+    over one of the circles in the above graph. The `item` parameter, which is passed
+    into the event handler, is the item from the data collection that is attached
+    to the hovered circle. If you need additional information about the event, and
+    we do, then that can be found attached to the global variable `d3.event`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In the event handler, we first highlight the selected circle by ensuring all
+    other circles are black and then making the selected one blue:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'It may also be useful to change the size of the circle to draw even more attention
+    to it. This can be done by simply updating its attributes. Next, we hide the previous
+    tip and set the inner contents of the tip to take values from the selected data
+    element:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Finally, we move the tool tip to be next to the circle and have it fade in:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The end result looks like the following diagram:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Creating a visualization](img/6542OS_06_03.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Adding interactivity to your visualization allows you to present far more data
+    than would normally be possible. Hiding data so that it can only be seen by moving
+    the mouse over, or clicking on it prevents overwhelming your users while still
+    providing the maximum amount of information.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Filters
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The data returned by our query isn't exactly what we want. For instance, we
+    don't care about `last_edit_date` or even the `last_activity_date`, but we do
+    care about the number of up and down votes. By pulling extra data back, we're
+    wasting bandwidth and slowing down the visualization for our users. Fortunately,
+    Stack Overflow has a solution for that in the form of filters.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '**Deep queries**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: If you find that you need to explore the Stack Overflow data in greater depth
+    than is provided for by the API, you can download a dump of the entire site at
+    [http://www.clearbits.net/creators/146-stack-exchange-data-dump](http://www.clearbits.net/creators/146-stack-exchange-data-dump).
+    This dump is provided every three months, and currently clocks in at 13.4 GB compressed.
+    With this dump, you can run much more complex queries without the fear of hitting
+    a rate limit.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Filters govern what data is returned from the API, and can be used to either
+    add or remove fields. They are statically created so you should only need to create
+    them once and there is no need to create a new filter each time you query the
+    site, or even each time your application is launched. In fact, I actually make
+    use of the API explorer provided by Stack Exchange to create my filters ahead
+    of time. The URL for creating filters is [https://api.stackexchange.com/docs/create-filter](https://api.stackexchange.com/docs/create-filter).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In the **include** field, you can place a semi-colon to include a delimited
+    series of names. Everything which is part of the answer object is prefaced by
+    answer, so the answer owner would be referred to as `answer.owner`. The default
+    filter is quite inclusive so as a base filter I''ve used the special `none` filter.
+    This includes no fields unless they are explicitly included. Using the `none`
+    filter as a base is the best practice to reduce excess queries, as shown in the
+    following figure:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Filters](img/6542OS_06_04.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'If you do start with the `none` filter, be sure to add the tokens `.items`
+    and `.has_more` to the include list. Without items, the items collection—which
+    holds either questions, answers, or users depending on the query—isn''t included
+    and `has_more` is needed to tell if there are additional pages. For our purposes,
+    the following filter is perfect:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The `create` filter returns an alpha-numeric string which can then be used
+    in our query to filter it appropriately. The URL against which we''re querying
+    becomes the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: By using a filter, I was able to reduce the payload returned from the API to
+    3kB from 22kB. This is a significant saving, especially over low bandwidth connections.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: You should now be able to query against the Stack Exchange API for not just
+    the Stack Overflow but for all the Stack Exchange sites. You should also have
+    some idea of how to add interactivity to your visualizations through the use of
+    `d3`. In the next chapter we'll take a look at using Facebook as a source of data
+    to visualize.
+  prefs: []
+  type: TYPE_NORMAL

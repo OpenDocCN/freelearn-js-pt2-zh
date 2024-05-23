@@ -1,0 +1,216 @@
+- en: Preface
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The world is an interesting place, about this there can be no doubt. We experience
+    the world through our senses, which gather data to be processed by our brains.
+    Frequently the world is disordered, requiring us to think long and hard to get
+    meaning out of things. To ease this process, data can be transformed into other
+    forms that are simpler to understand.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This book is about molding data into a form which is more understandable. It
+    is about taking some of the richest data sources of our time—social networks—and
+    turning their vast array of data into an understandable format. To that effect,
+    we make use of the latest in HTML and JavaScript.
+  prefs: []
+  type: TYPE_NORMAL
+- en: What this book covers
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: '[Chapter 1](ch01.html "Chapter 1. Visualizing Data"), *Visualizing Data*, introduces
+    us to a world full of ever growing datasets. It also discusses how this river
+    of data can be navigated using visualizations as our canoe.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[Chapter 2](ch02.html "Chapter 2. JavaScript and HTML5 for Visualizations"),
+    *JavaScript and HTML5 for Visualizations*, looks at new features in HTML and JavaScript
+    that present opportunities for visualizing data. It discusses both canvas and
+    Scalable Vector Graphics.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[Chapter 3](ch03.html "Chapter 3. OAuth"), *OAuth*, examines the often confusing
+    OAuth technology and shows how it can be used to delegate authority to our application.
+    This is because much of the data on social media sites is private and there might
+    be times when we need to get this data.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[Chapter 4](ch04.html "Chapter 4. JavaScript for Visualization"), *JavaScript
+    for Visualization*, looks at Raphaël.js and d3.js which are great JavaScript libraries
+    that can reduce the pain involved in building visualizations by hand, which is
+    otherwise a time-consuming and error-prone task.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[Chapter 5](ch05.html "Chapter 5. Twitter"), *Twitter*, looks at how to retrieve
+    data from Twitter and use it to build a visualization.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[Chapter 6](ch06.html "Chapter 6. Stack Overflow"), *Stack Overflow*, looks
+    at how to retrieve the data API of the ever popular Stack Overflow, which presents
+    some tantalizing opportunities for visualization that can be used to create an
+    interactive graph.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[Chapter 7](ch07.html "Chapter 7. Facebook"), *Facebook*, explores the Facebook
+    JavaScript API and how to use it to retrieve data to use as the basis of our next
+    visualization. In my mind, the original and still the largest social media network
+    on the planet is Facebook.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[Chapter 8](ch08.html "Chapter 8. Google+"), *Google+*, looks at Google''s
+    latest foray into social media and how to retrieve data to create a force-directed
+    graph.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: What you need for this book
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: There are very few tools needed to make use of the examples and code in this
+    book. You'll need to install node.js ([http://node.org](http://node.org)) which
+    is covered in [Chapter 5](ch05.html "Chapter 5. Twitter"), *Twitter*. You'll want
+    to download d3.js ([http://d3js.org](http://d3js.org)), jQuery ([http://jquery.com](http://jquery.com)),
+    and Raphael.js ([http://raphaeljs.com/](http://raphaeljs.com/)). All the demos
+    can be viewed in any modern web browser. The code has been tested against Chrome
+    but should work on FireFox, Opera, and even Internet Explorer.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Who this book is for
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: This book is for anybody who is excited about data and wants to share that excitement
+    with others. Anybody who is interested in data that can be extracted from social
+    networks would also find this book interesting. Readers should have a working
+    knowledge of both JavaScript and HTML. jQuery is used numerous times throughout
+    the book, so readers would do well to be familiar with the basics of that library.
+    Some exposure to node.js would be helpful but not necessary.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Conventions
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this book, you will find a number of styles of text that distinguish between
+    different kinds of information. Here are some examples of these styles, and an
+    explanation of their meaning.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Code words in text are shown as follows: "Once permissions are assigned, Facebook
+    will redirect the user back to your `redirect_uri` allowing you to leverage the
+    token to query the Facebook API."'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'A block of code is set as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'When we wish to draw your attention to a particular part of a code block, the
+    relevant lines or items are set in bold:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: '**New terms** and **important words** are shown in bold. Words that you see
+    on the screen, in menus or dialog boxes for example, appear in the text like this:
+    "This can be done from the **API Access** tab in which you should click on **Create
+    an OAuth 2.0 client ID…**."'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Warnings or important notes appear in a box like this.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Tips and tricks appear like this.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Reader feedback
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Feedback from our readers is always welcome. Let us know what you think about
+    this book—what you liked or may have disliked. Reader feedback is important for
+    us to develop titles that you really get the most out of.
+  prefs: []
+  type: TYPE_NORMAL
+- en: To send us general feedback, simply send an e-mail to `<[feedback@packtpub.com](mailto:feedback@packtpub.com)>`,
+    and mention the book title via the subject of your message.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If there is a topic that you have expertise in and you are interested in either
+    writing or contributing to a book, see our author guide on [www.packtpub.com/authors](http://www.packtpub.com/authors).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Customer support
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Now that you are the proud owner of a Packt book, we have a number of things
+    to help you to get the most from your purchase.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Downloading the example code
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: You can download the example code files for all Packt books you have purchased
+    from your account at [http://www.packtpub.com](http://www.packtpub.com). If you
+    purchased this book elsewhere, you can visit [http://www.packtpub.com/support](http://www.packtpub.com/support)
+    and register to have the files e-mailed directly to you.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Errata
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Although we have taken every care to ensure the accuracy of our content, mistakes
+    do happen. If you find a mistake in one of our books—maybe a mistake in the text
+    or the code—we would be grateful if you would report this to us. By doing so,
+    you can save other readers from frustration and help us improve subsequent versions
+    of this book. If you find any errata, please report them by visiting [http://www.packtpub.com/submit-errata](http://www.packtpub.com/submit-errata),
+    selecting your book, clicking on the **errata** **submission** **form** link,
+    and entering the details of your errata. Once your errata are verified, your submission
+    will be accepted and the errata will be uploaded on our website, or added to any
+    list of existing errata, under the Errata section of that title. Any existing
+    errata can be viewed by selecting your title from [http://www.packtpub.com/support](http://www.packtpub.com/support).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Piracy
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Piracy of copyright material on the Internet is an ongoing problem across all
+    media. At Packt, we take the protection of our copyright and licenses very seriously.
+    If you come across any illegal copies of our works, in any form, on the Internet,
+    please provide us with the location address or website name immediately so that
+    we can pursue a remedy.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Please contact us at `<[copyright@packtpub.com](mailto:copyright@packtpub.com)>`
+    with a link to the suspected pirated material.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We appreciate your help in protecting our authors, and our ability to bring
+    you valuable content.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Questions
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: You can contact us at `<[questions@packtpub.com](mailto:questions@packtpub.com)>`
+    if you are having a problem with any aspect of the book, and we will do our best
+    to address it.
+  prefs: []
+  type: TYPE_NORMAL

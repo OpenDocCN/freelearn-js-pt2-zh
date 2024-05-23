@@ -1,0 +1,653 @@
+- en: Chapter 2. JavaScript and HTML5 for Visualizations
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'In the previous chapter I mentioned that there have been some developments
+    in HTML5 that have made visualizations far easier. This chapter is going to explore
+    a couple of them, namely the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Canvas
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Scalable Vector Graphics (SVG)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: If you're familiar with the functionality of these two tools, you might want
+    to give this chapter a skip.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Canvas
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Canvas is one of the features of HTML5 that gets the most play in technical
+    articles and in demos. The things that can be done with canvas are very impressive,
+    so it is no surprise that it appears so frequently. Canvas provides a low-level
+    bitmap interface for drawing. You can think of it as Microsoft Paint in a browser.
+    The images that are generated on the canvas are all raster images, meaning that
+    the images are built from a grid of pixels rather than a set of geometric objects,
+    as is the case in a vector image. Interaction with elements drawn on a canvas
+    must be done through filters and global transformations; precise control is problematic
+    if not impossible.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Creating a canvas element on your page is simple. You simply need to add an
+    HTML element such as the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '**Downloading the example code**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: You can download the example code files for all Packt books you have purchased
+    from your account at [http://www.packtpub.com](http://www.packtpub.com). If you
+    purchased this book elsewhere, you can visit [http://www.packtpub.com/support](http://www.packtpub.com/support)
+    and register to have the files e-mailed directly to you.
+  prefs: []
+  type: TYPE_NORMAL
+- en: You can also find all the code examples for this book at [https://github.com/stimms/SocialDataVisualizations](https://github.com/stimms/SocialDataVisualizations).
+  prefs: []
+  type: TYPE_NORMAL
+- en: This will create a square canvas of 200 x 200 pixels. Should the browser being
+    used not support the canvas element, the alternate text will be shown. Fortunately,
+    it is pretty rare that you'll see this warning, as canvas has wide support. By
+    the middle of 2013 canvas was available to 87 percent of Internet users. For the
+    latest numbers, check out [http://caniuse.com/#feat=canvas](http://caniuse.com/#feat=canvas).
+    This site also has browser support information for other HTML5 features. There
+    is even support for mobile browsers on iOS, Android, BlackBerry, and Windows Phone.
+    The only commonly used browsers that don't have support for canvas are versions
+    of Internet Explorer prior to Version 9.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'If you''re in a situation where your target demographic makes heavy use of
+    older Internet Explorer versions, all is not lost. There is a handy JavaScript
+    **polyfill**; a downloadable piece of code that provides canvas functionality
+    to older versions of Internet Explorer. The library is available at [https://code.google.com/p/explorercanvas](https://code.google.com/p/explorercanvas).
+    To make use of it, a conditional include may be used, as shown in the following
+    code snippet:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: This will only include `excanvas.js` if the browser running is an older version
+    of Internet Explorer.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Excanvas** does not fully support canvas, with features such as shadows and
+    3D missing, but the vast majority of the features are available. There is also
+    a performance hit to using the JavaScript version of canvas, so, if you make use
+    of animations, they may not be as smooth as they would on a modern browser. This
+    is a small price to pay for reaching the remaining few percent of users. As browsers
+    are updated, this problem will become less and less important.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Drawing simple shapes on the canvas is easy, but there is also the power to
+    draw some very complex objects, including drawing in 3D. We'll limit our discussion
+    to some of the simpler shapes and functions that would be useful in creating visualizations.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Before we get into drawing, we hold the introduction of the coordinate system
+    for canvas. The origin of the coordinate system is located in the top-left corner
+    and grows towards the bottom-right. To draw on the canvas, as shown in the following
+    figure, JavaScript is used:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Canvas](img/6542OS_02_01.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'The first step in drawing is to get a handle for the instance of the canvas
+    to which you would like to draw. You can, of course, have as many canvas elements
+    on a page as you wish. Here, we''ll create a canvas with an ID of `demo`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We can now select the element using standard JavaScript methods:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Alternately, if you''re making use of a CSS selector library, such as jQuery,
+    you can select the element using that:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The next step is to get a reference to the drawing context itself. The context
+    contains a collection of methods for drawing and will be what we use for all canvas
+    operations:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Canvas supports a number of basic shapes from which it is possible to build
+    complex objects. The simplest shape is the lowly rectangle. This can be created
+    by calling the `strokeRect()` function:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: This will create a rectangle that starts at coordinates (20, 30) with a width
+    of 100 pixels and a height of 50 pixels. In fact, this will draw the previously
+    shown rectangle but shifted 20 pixels to the right and 30 pixels down. So, the
+    signature for this method is to give the x, y coordinates for the starting point
+    of the rectangle followed by the width and height. In addition to the `strokeRect()`
+    function, there are `fillRect` and `clearRect`. When drawing on canvas, one can
+    draw a stroke which is a line, draw a filled structure, or clear the content of
+    an area.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'If rectangles aren''t your style, perhaps you would be more interested in drawing
+    a circle? Canvas actually considers a circle to be a special case of an arc. Thus,
+    to draw a circle with a radius of 50px, you need to specify not just the center
+    point and radius, but also the starting and ending angle. The code for such a
+    circle is as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here, the center point is given as (75, 75) and the radius 50\. The fourth term
+    is the starting angle which we give as 0 and the `2*Math.PI` is the ending angle—the
+    whole way round the circle. An optional final argument determines if the arc is
+    to be drawn anti-clockwise. It defaults to `false` or `clockwise`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Alerting the final parameter gives different arcs, as shown in the following
+    screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Canvas](img/6542OS_02_02.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: As you can see, all of the angles used in canvas are denoted in radians. To
+    convert from an angle in degrees to one in radians, you can multiply it by `Pi/180`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'For more complex shapes, canvas supports straight line or a path. To draw a
+    line, you set a starting coordinate, then give an ending point, and then call
+    the `stroke()` function. Canvas will extrapolate where to draw the line, as shown
+    in the following code snippet:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here we start a new path; the pen is moved to (0, 0), then a line is drawn to
+    (50, 120), and then the path is ended. It is important to begin and end your paths,
+    or subsequent calls to `stroke()` functions will result in a continuation from
+    the last point. You can think of it like using a pen; `beginPath` puts the pen
+    on the piece of paper, `moveTo` temporarily lifts the pen and moves it, `lineTo`
+    moves the pen to the destination and draws a line behind it, and finally `closePath`
+    picks the pen back up off the paper. Without picking the pen up, the next time
+    you draw a line to somewhere, the pen will already be on the paper and you'll
+    get an extra line.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'If you think the syntax for drawing a line is a bit arcane, you''re not alone.
+    The multiple calls enable you to build more complex lines with several segments.
+    By using a loop, we can build relatively complex shapes, as shown in the following
+    code snippet:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This code will generate a spiral. On each iteration of the loop, we move towards
+    the center of the image by 4 pixels, one pixel on each edge. The result is as
+    shown in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Canvas](img/6542OS_02_03.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: The canvas maintains a state between calls to it, so, if you set the color of
+    the fill using `context.fillStyle`, all subsequent calls to fill a shape will
+    take on the same fill style. As you can probably imagine, this is a common source
+    of bugs when building a visualization using canvas. It is especially problematic
+    when calling functions to operate on the canvas.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Fortunately, there is an easy solution: the context state can be saved and
+    restored when entering and exiting a function. It is polite to keep your functions
+    from messing around with a global state and will certainly reduce the number of
+    bugs:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: In the first line of the function, the current drawing context is pushed onto
+    a stack and then it is restored on the last line of the function. By doing this,
+    we can make as many changes to the context within the method as we like and rest
+    assured that the context of the caller will not be corrupted.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Canvas has support for a full palette of colors and also allows for transparency
+    and even gradients. So far, the examples have used color names. These names date
+    way back to the mid 1990s and actually hail from the X11 windowing system. However,
+    there are two other ways to specify a color for canvas. The first is by using
+    a hexadecimal string that specifies the values for red, green, and blue as two-digit
+    hexadecimals digits. The larger the value, the higher is the intensity of that
+    color, as shown in the following figure:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Canvas](img/6542OS_02_04.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'The final, and my preference, is to use decimal RGB values, as shown in the
+    following figure, which I think is far more readable and also easier to build
+    programmatically:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Canvas](img/6542OS_02_05.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: A slight variant on the decimal format is to use the `rgba` function instead
+    of `rgb`. This adds an extra parameter, which is a decimal number between 0 and
+    1, which denotes the opacity. 1 is fully opaque and 0 is completely transparent.
+  prefs: []
+  type: TYPE_NORMAL
+- en: As canvas is a raster-based drawing system, it is possible to include most other
+    raster files in it. Raster file formats include JPEG, PNG, GIF, and BMP. Being
+    able to import an existing image can be a very handy tool for visualizations.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'However, there are some caveats to using images on canvas. When you''re including
+    an image, you can''t just load it from a URL directly. First, a JavaScript Image
+    object needs to be created and the source of that image needs to be set to the
+    URL. This Image object can then be used on the canvas:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Requesting images from another domain can be tricky. In order to maintain security
+    in the browser requesting data, other domains are restricted. For images, you
+    can request permission from the hosting domain to use the image by setting the
+    `crossOrigin` property on the image:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here, the value of the `crossOrigin` policy has been set to `anonymous`. This
+    means that the browser won't pass on any authentication information to the server
+    hosting the image. You can also set a value of user-credentials if you do want
+    to pass credential information. Support for `crossOrigin` on images is relatively
+    new, so you may do better to host the images on the same domain as the canvas.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Because loading an image can take some time, it is not advisable to set the
+    value of `src` on an image and immediately attempt to draw it on the canvas. Instead,
+    you should hook into the `onload` event on the image:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: Using the `onload` function will prevent an empty image from being rendered
+    to the canvas. If you're loading multiple images, the order in which they are
+    loaded is indeterminate. You may wish to check that all images are loaded before
+    continuing. Complex dependency chains can be managed using jQuery's `Deferred`
+    functionality. The second and third parameter to `drawImage` is, predictably,
+    the coordinates at which to draw the image. There are more advanced versions of
+    `drawImage` that allow for scaling and cropping of an image before drawing it
+    to the canvas.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The final feature of canvas which we'll look at is the transformation. When
+    composing more complex scenes or visualizations, it is frequently easier to build
+    the object at a different scale, location, or orientation. Transformations provide
+    a mechanism for altering the shapes you draw on canvas.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'A function, in this context the scaling function, will multiply every coordinate
+    by the x or y scaling factor. Canvas provides for independently scaling the x
+    and y values. This means that it is easy to stretch a shape in just one direction:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The preceding code, which simply draw a series of three rectangles, will produce
+    an output that looks like the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Canvas](img/6542OS_02_06.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: You'll note that our scaling didn't just create larger images, it also multiplied
+    the coordinates of the rectangles. The other thing to note is that the size increase
+    doesn't seem to be uniform. That's because canvas is stateful. If you apply several
+    scale functions in a series without resetting the scaling, each one will build
+    on the last scaling. You can keep a track of your transformations and apply a
+    reversing function. For instance, if you have scaled by 2, you can scale by the
+    multiplicative inverse of 2, which is 1/2, to get back to the original scaling.
+    It is more likely easier to save the context and restore it using the `save` and
+    `restore` functions we spoke of earlier.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'If we modify our function, you can see that the resulting image is very different,
+    as shown in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Canvas](img/6542OS_02_07.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'Frequently, when applying a scaling transformation, you''ll want to apply a
+    translation transformation to move the starting coordinates to where you expect
+    them to be. You can do this by employing a translate transformation:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'On the highlighted line, we shift the canvas over so it is as if the rectangle
+    is drawn at the origin. The order of the application of transformations is important,
+    as shown in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Canvas](img/6542OS_02_08.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: On the left-hand side, you can see the output of our code and on the right-hand
+    side, the result of swapping the `translate` and `scale` operations.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There are a lot of other great features of canvas. Going into everything is
+    just too much for a book of this length; it is most likely a book in its own right.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Scalable Vector Graphics
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Scalable Vector Graphics, or as they are more commonly known, SVGs, are another
+    feature relatively new to HTML. They fulfill a similar role to canvas, but differ
+    by the fact that they are vector-based instead of raster-based. This means that
+    every image is made up of a series of basic shapes. This might sound a bit like
+    canvas, after all, we created all our canvas images using basic shapes. The difference
+    is that with SVG, the basic shapes remain as distinct objects after they've been
+    drawn. With canvas, the source commands used to create the image are lost as soon
+    as it is rendered. The information about the source of the pixel is lost in a
+    jumble of canvas commands.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Conveniently, SVGs are stored as XML files. While I would typically not even
+    consider the idea of storing anything but the combination to my safety deposit
+    box, in such an inaccessible file format it does integrate nicely with HTML. Raster
+    images are typically linked in a separate file from the HTML. SVGs can be embedded
+    directly into the HTML document. This technique can be used to reduce the number
+    of server trips necessary to render a page on a user agent. However, the real
+    advantage is that it allows for the SVG to be integrated into the HTML **Document
+    Object Model** (**DOM**), allowing you to manipulate the SVG using the same techniques
+    you might use to manipulate any other element.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The source for a simple SVG may look like the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'You can paste this into any HTML document and you''ll get a simple rectangle
+    that looks like the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Scalable Vector Graphics](img/6542OS_02_09.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: The code is quite easy to understand, and the syntax should be familiar to anybody
+    who has built a website. We first open new SVG element. Without any explicit sizing
+    information the SVG fills its container. Inside of the SVG, we create a new rectangle
+    with a width of 50px and a height of 150px. The outline of the rectangle is black
+    and has a width of 2px while the inside is filled with a grey color.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The primitives you can use to build your images should also be somewhat familiar,
+    now that you've seen canvas in action. `rect` and `path` remain unchanged from
+    canvas. However, SVG differs in its treatment of circles and provides an actual
+    `<circle>` tag as well as an `<elipse>` tag for round shapes with two foci. `<polygon>`
+    and `<polyline>` tags provide for drawing free-form straight-edged shapes with
+    the polygon being a filled shape and the polyline being just a line. Should you
+    desire a more curvy shape, SVG provides a `path` element that allows for defining
+    complex curves and arcs. It is very tricky to build a curved path by hand. Typically,
+    for curved paths you'll want to make use of an editor or an SVG library. Finally,
+    SVG has support for writing text using the aptly named `<text>` element.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Building multiple elements in SVG is as simple as adding another child to the
+    SVG , as shown in the following code snippet:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This results in an image that looks like the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Scalable Vector Graphics](img/6542OS_02_10.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'As you can see, the code is quite repetitive. On every single rectangle, we
+    specify the `stroke` and `fill` information. This repetition can be eliminated
+    in two ways. The first is to use a group of elements to define the styling information.
+    SVG provides a generic grouping container which is denoted by the `<g>` tag. The
+    styling information can be applied to that container instead of the individual
+    elements:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'An alternative is to use CSS to do the styling for you:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs: []
+  type: TYPE_PRE
+- en: In the preceding code, the styling information is attached directly to all elements
+    of type `rect`. Typically, you would want to avoid using broad selectors such
+    as these, as they will apply to all the SVG elements on the page. It is better
+    to narrow the selectors either by making them apply to just that one SVG or, preferably,
+    by assigning a class to the SVG elements you wish to style. It is generally preferred
+    to style your elements, even those that are part of an SVG, using CSS. It is likely
+    that your SVG will contain multiple rectangles that you don't want to take on
+    the same styling.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The style properties (`fill,` `stroke`, and so on) used in the CSS do not differ
+    from those used in in the SVG markup. More advanced CSS selectors are also available,
+    such as `nth-child`, which selects just children matching a specific pattern.
+    Consider the following code snippet:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Adding the preceding code in our example will, very simply, create a zebra
+    striping effect on our graph, as shown in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Scalable Vector Graphics](img/6542OS_02_11.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'We can even get fancy and use CSS to add some interaction to our graph by simply
+    specifying a `:hover` pseudo selector in the CSS and changing the color under
+    the cursor:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE21]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The following screenshot shows the resulting graph:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Scalable Vector Graphics](img/6542OS_02_12.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Of course, having the SVG as part of the DOM opens other doors to factors other
+    than styling. It is also possible to manipulate the elements of an SVG using JavaScript.
+    You can even assign event listeners to the SVG elements.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'By making use of the fantastic jQuery library, we can easily add event listeners
+    to the nodes in the graph SVG we''ve been building so far:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE22]'
+  prefs: []
+  type: TYPE_PRE
+- en: If you've never seen jQuery before, what is happening here is that we're selecting
+    all the `rect` elements on the page, and when a click is fired, it opens an alert
+    box with the height of the column on which we clicked.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Throughout this book, we'll be making extensive use of the jQuery library and
+    this style of lambda-based programming. If you're not familiar with jQuery, it
+    would be advisable to take a break and read some tutorials, such as [http://try.jquery.com/](http://try.jquery.com/).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We''ve covered all the basic functionality of SVGs, but there is one advanced
+    feature I''d like to mention: filters. **Filters** are transformations that can
+    be applied to elements of an SVG. These filters go beyond the scaling and translation
+    transformations we saw in canvas, although both `scale` and `translate` are supported
+    in SVG. There are about 20 of these filters and each one performs different transformations.
+    We won''t be able to go into each, but we''ll look at a couple of them.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'One of the most common requirements in visualization is to give things a 3D
+    feel. Full 3D can be very difficult, but we can trick the eye by using shadows.
+    These shadows can be created using a combination of three different filters: offset,
+    Gaussian blur, and blend.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To use a filter, we start by defining it. A `filter` element can be defined
+    as a number of sequentially applied filters. To figure out what filters we need
+    for a shadow, we can work backwards from the properties of a shadow. The first
+    thing to notice is that shadows are offset from the things casting them. For this,
+    we can use an offset filter that will shift the element in one direction or another.
+    Where you want to shift the element depends on where your light source is. For
+    our purposes, let''s say that it is above and to the left of the SVG. This will
+    cast shadows down and to the right:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE23]'
+  prefs: []
+  type: TYPE_PRE
+- en: On the filter line, we need to specify a height for our filtered element, which
+    is greater than the original. If we don't do so, much of our shadow will be cut
+    off as it extends beyond the boundary of the source object. Here we have given
+    our filter an ID so it is easily applied later. You'll also note that we've specified
+    an `in` and `out` property for `feOffset`. This allows us to chain the filters
+    together. In our case, we're taking `SourceAlpha`, which is just the alpha, or
+    the `transparency` property from the original image.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s apply this filter to just one element of our graph so we can see what
+    is happening to it. I''ve removed the other styling so as not to confuse matters.
+    The filter is applied by using the `filter` attribute and giving it the ID of
+    the filter created previously:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE24]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The following will be the result:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Scalable Vector Graphics](img/6542OS_02_13.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'Shadows are also fuzzier than the original image. This can be achieved by using
+    a Gaussian blur filter:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE25]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Gaussian filters randomly move points inside your image based on a normal distribution
+    function. You might wish to play around with the standard deviation to achieve
+    different blur effects; I found somewhere in the 8-12 range to be good for shadows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE26]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Finally, we want to take the blurred black box we''ve created and combine it
+    with the original:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE27]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Applying this filter on hover gives a very convincing pop-up effect when users
+    hover over the image, as shown in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Scalable Vector Graphics](img/6542OS_02_14.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: SVG provides for easy manipulation of parts of an image though the styling tools
+    that are already well known to you from your work with CSS. At the same time,
+    being able to attach events to the image allows the creation of impressive user
+    interaction.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Which one to use?
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Deciding whether to use canvas or SVG can be a difficult problem. It mostly
+    comes down to which one feels more comfortable. Those with a background in computer
+    graphics or animation are more likely going to be happier with canvas, as the
+    `redraw` loop of canvas will be familiar. Canvas is better suited to redrawing
+    entire scenes or even if you plan on using 3D elements. If your visualization
+    makes use of textures or rendered images, canvas' ability to draw them to the
+    canvas directly is almost certainly going to be advantageous. For visualizations
+    that have some reliance on maintaining a fast frame rate, canvas is generally
+    high performing.
+  prefs: []
+  type: TYPE_NORMAL
+- en: On the other hand, SVG can be a much simpler technology to use. Each element
+    in an SVG can be individually manipulated, which makes small animations far easier.
+    The integration with the DOM allows for events to be fired on interaction with
+    a single element of the SVG. To achieve that in the canvas, you must manually
+    track what is being drawn at that location. That SVG can also be styled using
+    CSS, which allows for components to be more easily reusable on sites with different
+    themes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: For the purposes of this book, we're going to focus on SVGs. The resolution
+    independence of SVG coupled with the ease of use and fantastic support libraries
+    makes it a logical choice. I don't believe there is a visualization we'll be creating
+    that cannot be created with canvas but the effort would be far greater. This is
+    doubly so for the interactive visualizations.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: You should now be able to make an informed decision between SVG and canvas-build
+    simple static images. We're going to take a break from the visual aspects in the
+    next chapter and talk about the OAuth protocol, which is used by many social media
+    sites to protect their data.
+  prefs: []
+  type: TYPE_NORMAL

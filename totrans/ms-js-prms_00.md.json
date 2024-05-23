@@ -1,0 +1,1 @@
+["```js\nQ.fcall(imException)\n.then(\n    // first handler-fulfill\n    function() { },\n\n);\n```", "```js\nD:\\> node –v\nD:\\> NPM  –v\n\n```"]

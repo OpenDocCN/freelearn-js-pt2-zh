@@ -1,0 +1,360 @@
+- en: Chapter 1. Promises.js
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In today's world, computer programming languages are getting much more advanced
+    and there is a shift in the approach of using technologies. This is due to the
+    fact that technology has been emerging with the rapid change in businesses and
+    their needs. The vast expansion of business on electronic devices has led universities,
+    researchers, and industries to invest in generating the latest technologies and
+    tools that result in the inception of many new computer languages.
+  prefs: []
+  type: TYPE_NORMAL
+- en: However, this is not the case with JavaScript. It's relatively new. It has been
+    used and dumped at least three times by the modern programming landscape and is
+    now widely accepted as the tool to develop modern, scalable, and real-time web
+    applications in today's cyberspace.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the mid 90s, the era of dot-com was born and it was during this time when
+    companies wanted to dominate the newly created market called cyberspace. Although
+    this was a virtual place and had no physical existence, the war for dominance
+    was at its peak. Netscape Communications Corporation wanted its own variant of
+    a lightweight interpreted language that would complement Java by appealing to
+    nonprofessional programmers. This task was given to Brendan Eich who developed
+    the first version of JavaScript with the name "Mocha". Officially, it was called
+    LiveScript when it was first released in September 1995 in Netscape's browser
+    in beta version 2.0.
+  prefs: []
+  type: TYPE_NORMAL
+- en: However, the name was changed to JavaScript when the version 2.0 B3 rolled out
+    later. Since 1995, JavaScript has seen many ups and downs. There are stories of
+    it being adopted, rejected, and adopted again. Soon after its launch, JavaScript
+    gained a very popular response throughout the industry. Every major company contributed
+    to its growth and used it after slight adjustment for their needs.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The fall and rise of JavaScript
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The Netscape browser witnessed the fall of JavaScript in the late 90s and early
+    2000\. The face of web development was maturing, but very few were still interested
+    in investing in JavaScript.
+  prefs: []
+  type: TYPE_NORMAL
+- en: It was the advent of the Mozilla foundation that released the first open source
+    browser, Firefox, in early 2002-2003 since the base was the successor of the former
+    Netscape browser. They employed JavaScript again within their product. In 2004,
+    Google introduced **Asynchronous JavaScript and XML** (**AJAX**). This led to
+    the foundation of many techniques and made communication easy with a black and
+    white frontend and server by minimizing the server calls.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Google's contributions to JavaScript
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Google has made more contributions in evolving, developing, and utilizing of
+    JavaScript than any other organization. It was Google that introduced the V8 engine
+    in its flagship web browser, Chrome. V8 is the backbone engine of the browser,
+    and due to the smart usage of JavaScript, the browser is faster, robust, and adaptable
+    to web and Android devices.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the year 2009, Node.js arrived based on the same V8 engine as in Chrome.
+    This is the server side of JavaScript, but far more better and advanced than what
+    Netscape had introduced in late 90s. The whole idea of Node.js is to develop nonblocking
+    **input/output** (**I/O**) and with few lines of codes, the server can serve up
+    to 20K clients at a given slot of time.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Soon after Node.js, an entire stack of development has been introduced by the
+    name of MEAN stack, which is an acronym of MongoDB, Express.js, Angular.js, and
+    Node.js; where MongoDB is document based, NoSQL is a JavaScript-based database,
+    Express.js is for a presentation layer, Angular.js is for frontend development
+    of an app, and Node.js as the server that runs the entire show.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Where Promises.js came in?
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Those of you who are aware of how a server-side script executes in an I/O event
+    know that reading or writing data to and from a drive is blocking in nature, that
+    is, during its execution, no other operation can be performed by a server-side
+    language, even by the client. Well, with Promises.js, this is no longer the case.
+    Promises.js utilizes a nonblocking strategy to perform I/O operations, so a client
+    using your web app is free to perform any other tasks they want to without having
+    to wait for the data read/write operation to be completed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: What is a promise?
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: When an eventual value is returned from the completion of a single operation,
+    it represents a **promise**. If we analyze promise as a pact from human, it will
+    help us understand the concept of promises in computer programming especially
+    from the JavaScript perspective. Every promise is a pact among two or more parties
+    to deliver some value to the other. The value can either be tangible or intangible,
+    but a promise must deliver something in return. Until the promise is fulfilled,
+    it remains in an unfulfilled state. However, when the said commitment has been
+    made, the promise is said to be fulfilled. If the promise is not delivered as
+    anticipated, the promise is said to fail.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'So, what is a promise? According to the official definition:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*Promise is an object or a function with a then method whose behavior confirms
+    to this specification and represents the eventual result of an asynchronous operation.*'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: The source of this definition is slide number 21 at [http://www.slideshare.net/wookieb/callbacks-promises-generators-asynchronous-javascript](http://www.slideshare.net/wookieb/callbacks-promises-generators-asynchronous-javascript).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Why do we need promise in JS?
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Promises.js is a JavaScript library that promises asynchronous I/O operations
+    such as reading and writing on a file. Whenever there is a callback method that
+    involves making all operations related to I/O, they are to be made asynchronous.
+    This extra callback parameter confuses our idea of what is the input and what
+    will be its return value. It never works with control flow primitives. It also
+    doesn't handle errors thrown by a callback method.
+  prefs: []
+  type: TYPE_NORMAL
+- en: So, we need to handle errors thrown by a callback method, but also need to be
+    careful not to handle errors thrown by the callback method. By the time we are
+    done with this, our code will be a mess of error handling.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Despite all this mess of error handling code, we are still left with the problem
+    of the extra callback parameter hanging around. Promises help you naturally handle
+    errors, and write cleaner code by not having callback parameters.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Software prerequisites
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Before starting [Chapter 2](ch02.html "Chapter 2. The JavaScript Asynchronous
+    Model"), The *JavaScript Asynchronous Model*, you must need a set of prerequisite
+    concepts that will make you better understand where to use Promises.js, and how
+    it can save your time and effort in your recent or upcoming projects. The following
+    section will elaborate what these concepts are and how we will use these as a
+    base for our understanding of promise.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The prerequisite of this book is that you have a good understanding of procedural
+    programing and a compulsory knowledge of basic JavaScript. Since this book is
+    designed to develop a deeper knowledge of a concept (promise) and its use in different
+    technologies, it's also imperative that you have a very good understanding of
+    HTML and how to embed the code for your need.
+  prefs: []
+  type: TYPE_NORMAL
+- en: An understanding of basic programming will help you begin with experiments with
+    the help of a sample code as soon as you are done with any chapter/section. In
+    this book, I've tried to make every section self-explanatory and every sample
+    of code as a standalone script/program up to maximum strength. However, where
+    there was need, we've added a snippet of code or algorithm to present our point
+    more clearly.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Environment you need before getting started
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: To use the code within this book, you don't need any extra piece of software/IDE
+    to start. To sample the code provided in this book, you only need free software/IDE
+    such as Notepad++ or any other preferred open source GPL or GNU product.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Also, to view the result of your code, you need a web browser such as Google's
+    Chrome or Mozilla's Firefox. For some examples related to Microsoft technologies,
+    you will need Internet Explorer 9 or higher.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Future, promise, and delay
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Future, promise, and delay describe an object that acts as proxy to a result
+    that is initially unknown due to computation of its value, which is yet to be
+    completed. They are normally referred to as constructs used for synchronizing
+    in some concurrent programming language.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Daniel P. Friedman and David Wise proposed the term "promise" in 1975\. Peter
+    Hibbard called it "eventual". The term promise was coined by Liskov and Shrira,
+    although they referred to the pipelining mechanism by the name "call-stream".
+    The term promise refers to the fact that in completion of any said operation,
+    an eventual value will be obtained. In the same way, the value can also be taken
+    as eventual because it will only yield out on the occurrence of any event. Thus,
+    both terms refer to the same fact simultaneously.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The terms future, promise, and delay are often used interchangeably. There is
+    some core difference in implementing these terms. Future is revered as the read-only
+    placeholder view of the variable, while promise is a writeable single assignment
+    container that sets the value of the future.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In many cases, future promise are created together. In simple words, future
+    is a value and promise is a function that sets the value. The future reruns the
+    value of an async function (promise); setting the value of future is also called
+    **resolving**, **fulfilling**, or **binding** it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Promise pipelining
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Using future can dramatically reduce the latency in distributed systems; for
+    example, promise enables promise pipelining in programming languages E and Joule,
+    which were also called **call-stream** in the Argus language.
+  prefs: []
+  type: TYPE_NORMAL
+- en: A note to remember here is that promise pipelining should be distinguished from
+    a parallel asynchronous message passing to a system supporting parallel message
+    passing but not pipelining. It should also not be confused with pipelined message
+    processing in actor systems, where it is possible for an actor to specify and
+    begin executing a behavior for the next message before having completed processing
+    of the current message.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Read-only views
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The read-only view allows reading its value when resolved, but doesn't permit
+    you to resolve it, thus making it possible to obtain a read-only view of the future.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The support for read-only views is consistent with the principle of least authority.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The read-only view enables you to set the value to be restricted to the subject
+    that needs to set it. The sender of an asynchronous message (with result) receives
+    the read-only promise for the result, and the target of the message receives the
+    resolver.
+  prefs: []
+  type: TYPE_NORMAL
+- en: States of a promise
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Promise is based on three states. Each state has a significance and can be
+    used to drive a certain level of result as per the need. This can help a programmer
+    choose as per his/her need. The three states of a promise are as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Pending**: This is the initial state of a promise'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Fulfilled**: This is the state of a promise representing a successful operation'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Rejected**: This is the state of a promise representing a failed operation'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Once a promise is fulfilled or rejected, it is immutable (that is, it can never
+    change again).
+  prefs: []
+  type: TYPE_NORMAL
+- en: With reference to the concepts discussed earlier, it's now clear what a promise
+    is and how you can use it with all its potential.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How do we keep Promises.js in this book?
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: This book will cover the use of Promises.js with every major technology that
+    has implemented the concept of promise. The book has been carefully divided into
+    chapters to introduce, discuss, and explain the use of promise within that particular
+    technology. Every chapter has its standalone set of examples of code to better
+    understand the best use of Promises.js and its outcome.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The examples will be assuming that the selection of an operating system is purely
+    your discretion. It may vary from reader to reader based on his/her licenses.
+  prefs: []
+  type: TYPE_NORMAL
+- en: All the code is clearly printed with instructions and comments for a better
+    understanding. Also, a soft copy is provided with this book enlisting every piece
+    of code sorted in its respective chapter/section.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Browser compatibility
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Promises support is extended to many modern browsers but not to all. A handy
+    reference of what browser it supports is given in desktop and mobile screen resolutions:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Desktop compatibility:'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '| Feature | Chrome | Firefox | Internet Explorer | Opera | Safari |'
+  prefs:
+  - PREF_IND
+  type: TYPE_TB
+- en: '| --- | --- | --- | --- | --- | --- |'
+  prefs:
+  - PREF_IND
+  type: TYPE_TB
+- en: '| Basic support | 36 | 31 | Not supported till IE 11\. Added inEdge | 27 |
+    8 |'
+  prefs:
+  - PREF_IND
+  type: TYPE_TB
+- en: 'Mobile compatibility:'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '| Feature | Android | Firefox Mobile (Gecko) | IE Mobile | Opera Mobile | Safari
+    Mobile | Chrome for Android |'
+  prefs:
+  - PREF_IND
+  type: TYPE_TB
+- en: '| --- | --- | --- | --- | --- | --- | --- |'
+  prefs:
+  - PREF_IND
+  type: TYPE_TB
+- en: '| Basic support | 4.4.4 | 31 | Edge | Not supported | Not supported | 42 |'
+  prefs:
+  - PREF_IND
+  type: TYPE_TB
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this chapter, we learned where JavaScript began and how it shaped into one
+    of the leading technologies in modern application development. We discussed why
+    there was a need for JavaScript in the early 90s and how this language has seen
+    ups and downs throughout its existence.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We have also seen how investments from tech companies made their contributions
+    in creating, developing, and evolving JavaScript as a major player in a dynamic
+    and fast growing market of web, mobile, and real-time apps.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The adaptation of promises concept will make JavaScript much stronger and will
+    help developers and engineers to write better code in an efficient manner.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the next chapter, we will see what is an asynchronous model and how it's
+    better fitted with JavaScript. This will help us understand to adopt and implement
+    Promises.js in various languages.
+  prefs: []
+  type: TYPE_NORMAL

@@ -1,0 +1,1679 @@
+- en: Chapter 8. Creating the Flickr Finder Application
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'So far, we have looked at Sencha Touch components individually or in small,
+    simple applications. In this chapter, we are going to create a well-structured
+    and more detailed application using Sencha Touch. We will attempt to leverage
+    all of the skills from our previous chapters to create an application that will
+    let us search for photos taken near our location. This chapter will include:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: An introduction to the **Model View Controller** (**MVC**) design pattern
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Setting up a more robust folder structure
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Setting up the main application files
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using the Flickr API
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Registering components
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Setting up the `SearchPhotos` component
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Setting up the `SavedPhotos` component
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Adding the finishing touches to publish the application
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Generating the basic application
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The basic idea for this application will be to use the Flickr API to discover
+    photos taken near our location. We will also add the ability to save interesting
+    photos we might want to look at later.
+  prefs: []
+  type: TYPE_NORMAL
+- en: When you are first creating an application, it's always a good idea to sketch
+    out the interface. This gives you a good idea of the pieces you will need to build
+    and also allows you to navigate through the various screens the way a user would.
+    It doesn't need to be pretty; it just needs to give you a basic idea of all the
+    pieces involved in creating the application.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Aim for something very basic, such as this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Generating the basic application](img/0748OS_08_01.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Next, you will want to tap your way through the paper interface, just as you
+    would with a real application and think about where each tap will take the user,
+    what might be missing, and what might be confusing for the user.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Our basic application needs to be able to display a list of photos as well as
+    a close-up of a single photo. When we tap on a photo in the list, we will need
+    to show the larger close-up photo. We will also need a way to get back to our
+    list when we are done with the photo.
+  prefs: []
+  type: TYPE_NORMAL
+- en: When we see a photo we like, we need to be able to save it, which means that
+    we will need a button to save the photo, as well as a separate list of saved photos,
+    and a close-up single view for the saved photo.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Once we are happy with the drawings, we can start putting together the code
+    to make our paper mock-up into something like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Generating the basic application](img/0748OS_08_02.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Introducing the Model View Controller
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Before we get started with building our application, we should spend some time
+    talking about structure and organization. While this might seem like a boring
+    detour into application philosophy, it's actually one of the most critical considerations
+    for your application.
+  prefs: []
+  type: TYPE_NORMAL
+- en: First, consider the monolithic application, with everything in one enormous
+    file. It seems crazy, but you will encounter hundreds of applications that have
+    been coded in just this fashion. Attempting to debug something such as this is
+    a nightmare. Imagine finding the missing closing curly brace inside of a component
+    array 750 lines long. Yuck!
+  prefs: []
+  type: TYPE_NORMAL
+- en: The question then becomes one of how to break up the files in a logical fashion.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'As discussed earlier in this book, the Model View Controller, or MVC, architecture
+    organizes the application files based on the functionality of the code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Models describe your data
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Views control how the data will be displayed
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Controllers handle the user interactions by taking input from the user and telling
+    the views and models how to respond based on the user's input
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Sencha Touch also uses stores, which describe the storage and transmission
+    of the data between components. When we split these pieces of the application
+    apart, it means each part of your application will have separate files for each
+    of these parts. Let''s take a look at how this is structured:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Introducing the Model View Controller](img/0748OS_08_03.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'This is a basic application skeleton output from Sencha Cmd, which we will
+    be using for our `FlickrFindr` project. In the root directory, we have folders
+    for:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**app**: This folder contains our main application files'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**packages**: This folder is used for any external libraries we might need'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**resources**: This folder contains our CSS, SASS, icons, and various image
+    files'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**touch**: This folder contains a copy of the Sencha Touch library'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Inside our **app** directory, we have separate files for:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**controller**: Our controllers will contain the functionality of our application.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**form**: Our forms will control the appearance of any forms we use.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**model**: Our models will describe the data we are using.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**profile**: Our profiles will contain display information for different types
+    of devices. This is not covered in this book, but a detailed explanation can be
+    found on the Sencha website at [http://docs.sencha.com/touch/2.2.1/#!/guide/profiles](http://docs.sencha.com/touch/2.2.1/#!/guide/profiles).'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**store**: Our stores determine how the application''s data will be stored.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**view**: Our views control the appearance of the application.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: By splitting the files out this way, it is much easier to re-use code across
+    applications. For example, let's say you build an application that has a model,
+    store, controller, and views for a user. If you want to create another application
+    that needs to deal with users, you can simply copy over the individual files for
+    the model, store, views, and controller into your new application. If all the
+    files are copied over, then the user code should work just as it did in the earlier
+    application.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If we build a monolithic application, you would have to hunt through the code,
+    grab out bits and pieces, and reassemble them in the new application. This would
+    be a slow and painful process. By separating our components through functionality,
+    it's much easier to re-use code between projects.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Splitting up the pieces
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The next thing we need to consider is how our application gets split into our
+    separate MVC pieces. For example, if your application tracks people and what cars
+    they own, you would likely have a model and controller for the people and a separate
+    model and controller for the cars. You would also likely have multiple views for
+    both cars and people, such as `add`, `edit`, `list`, and `details`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In our application, we will be dealing with two different types of data. The
+    first is search data for our photos and the second is our saved photos.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'If we break this down into models, stores, views, and controllers, we get something
+    like the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Splitting up the pieces](img/0748OS_08_04.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Our controllers are separated through functionality for **Saved Photos** and
+    **Search Photos**.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Since they are dealing with the same type of data, each of our controllers can
+    use the same **Photos** model, but they will need different stores (**Search Photos**
+    and **Saved Photos**), since they're each using different actual data sets.
+  prefs: []
+  type: TYPE_NORMAL
+- en: For views, our search needs a list view for **Search List** and a **Search Details**
+    view. The saved photos will also need a view for the **Saved List** list and a
+    view for editing/adding **Saved Details**.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now that we have a clear map of the files we need, it's time to start building
+    our application.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Building the foundation with Sencha Cmd
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In Version 1 of Sencha Touch, the setup process for an application was very
+    manual and time consuming. However, the introduction of Sencha Cmd allows us to
+    generate most of the core application files with a single command.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Sencha Cmd is a set of command-line tools that perform a number of basic tasks
+    in Sencha Touch, such as:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Generating an application skeleton that you can use as the basis for your application
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Generating controllers, forms, and models
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Building your application to "minify" and compress JavaScript and images for
+    production applications
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Building your application as a standalone binary that you can sell in the App
+    Store
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Sencha Cmd has a number of additional uses and configuration options. More
+    information on these can be found at [http://docs.sencha.com/touch/2.2.1/#!/guide/command](http://docs.sencha.com/touch/2.2.1/#!/     guide/command).'
+  prefs: []
+  type: TYPE_NORMAL
+- en: For this project, we will mainly be using the `generate` command to build our
+    basic application, controllers, and models. However, first we need to get everything
+    installed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Installing Sencha Cmd
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Sencha Cmd is a separate download from our Sencha Touch code and can be found
+    at: [http://www.sencha.com/products/sencha-cmd/download](http://www.sencha.com/products/sencha-cmd/download).
+    This download is available for Windows, OS X, and Linux (32 bit and 64 bit). When
+    you unzip the downloaded file, you can double-click on it to install Sencha Cmd.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: For this book, we are using Sencha Cmd Version 3 (at least Version 3.1.2 or
+    greater is required). Detailed installation instructions can be found at [http://docs.sencha.com/touch/2.2.1/#!/guide/command](http://docs.sencha.com/touch/2.2.1/#!/guide/command).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Once you have installed Sencha Cmd, you can open up the command line on your
+    computer as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: On Mac OS X, go to **Applications** and launch **Terminal**
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: On Windows, go to **Start** | **Run** and type `cmd`
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Once your terminal is open, type `sencha`. You should see something like the
+    following screenshot in your terminal:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Installing Sencha Cmd](img/0748OS_08_05.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Now that we have Sencha Cmd installed, it's time to generate the skeleton for
+    our application.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'First, you will need to change to the directory where your Sencha Touch files
+    are installed (not the Sencha Cmd files we just downloaded, but your original
+    Sencha Touch 2.1 files):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Sencha Cmd will use the files from this Sencha Touch directory to generate
+    our application. From here, we use the `generate` command as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: You will, of course, need to adjust the preceding path to match your own personal
+    development environment. This will create our basic application with the directory
+    structure we showed in the the *Introducing the Model View Controller* section.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In addition to the folders we covered earlier, you will also see a number of
+    files that are already created. You can consult the Sencha Cmd documentation for
+    a full listing of what all the files do, but for now we only want to look at the
+    file called `app.js`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The `app.js` file loads when our application launches and takes care of our
+    basic setup. If you look beneath the comments at the top of the file, you should
+    see something like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: This sets the path to our copy of the Sencha Touch Framework, which Sencha Cmd
+    copied into a `touch` directory as part of our `generate app` command.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The few lines that follow set our namespace (`name`) for the application and
+    handle our required files:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: The `requires` section lists any internal or external libraries that we need
+    for our application. The `Ext.MessageBox` component is included by default. We
+    also have a `views` section where we can list any of the views our application
+    requires. Separate sections can also be added for models, stores, and controllers.
+    We will get to those a bit later.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The next few sections concern themselves with our application icon and startup
+    screen (`startupImage`). These images can be modified by either replacing the
+    existing image or changing the URL to point to a new image file.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The last part of our `app.js` file is the `launch` function. This gets called
+    after all our components are loaded:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: This function removes the loading indicator and displays our main window. The
+    `FlickrFindr.view.Main` file is in our `views` folder; we will be modifying that
+    shortly.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Notice that the name of the file in our example is `FlickrFindr.view.Main`,
+    which tells the application that this file is called `Main.js` and that it is
+    located in our `app/view` folder.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If we had a significant number of views, we could split them up into directories
+    inside the `views` folder. For example, we could have `search` and `saved` folders
+    for our application. In that case, the `Details.js` view for our `search` folder
+    would be `FlickrFindr.view.search.Details`, and the `Details.js` view for our
+    `saved` folder would be `FlickrFindr.view.saved.Details`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We will come back to this file a bit later, but for now, just familiarize yourself
+    with the contents.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now that we have an idea of how our application needs to be laid out, we have
+    one last task to perform before we really get started. We need to get an API key
+    from Flickr.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using the Flickr API
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The majority of popular web applications have made an **API** (**Application**
+    **Programming Interface**) available for use in other applications. This API works
+    in pretty much the same way as our Sencha Touch Framework. The API provides a
+    list of methods that can be used to read from, and even write data to, the remote
+    server.
+  prefs: []
+  type: TYPE_NORMAL
+- en: These APIs typically require a key in order to use them. This allows the service
+    to keep track of who is using the service and curtail any abuses of the system.
+    API keys are generally free and easy to acquire.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Go to the Flickr API site [http://www.flickr.com/services/api/](http://www.flickr.com/services/api/)
+    and look for the phrase **API Keys**. Follow the link and apply for an API key
+    using the form provided. When you receive your API key, it will be a 32-character-long
+    string composed of numbers and lowercase letters.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Each time you send a request to the Flickr API server, you will need to transmit
+    this key as well. We will get to that part a bit later.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The Flickr API covers a little over 250 methods. Some of these require you to
+    be logged in with a Flickr account, but the others only require an API key.
+  prefs: []
+  type: TYPE_NORMAL
+- en: For our purposes, we will be using a single API method called `flickr.photos.search`,
+    which requires no login. This method looks for photos based on some criteria.
+    We will be using the current latitude and longitude of the device to get back
+    photos within a specified distance from our current location.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Our search results come back to us as a big bundle of JSON format that we will
+    need to decode for display.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Once we have the API key, we can begin setting up our models, stores, views,
+    and controllers.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Adding to the basic application
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Let''s start by taking a look at our raw generated application. Currently,
+    if you load the application into your web browser, you should see something like
+    this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Adding to the basic application](img/0748OS_08_06.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'This view we are looking at comes from the `app/view/Main.js` file, which is
+    a tab panel with two subpanels. We are going to replace this code with a much
+    simpler tab panel:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: Like the code we are replacing, this component extends a tab panel and sets
+    an `xtype` of `main`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this context, `xtype` can seem a little confusing since `Ext.tab.Panel` already
+    has `xtype` of `tabpanel`. However, since we are extending the tab panel, we are
+    actually creating a new component, and this means that we can set `xtype` for
+    the component. `xtype` is completely arbitrary, but it must be unique across all
+    components (including Sencha's own components). The use of `main` as `xtype` is
+    a general convention for the starting container of your application. By setting
+    a custom `xtype`, we can easily find the container from the controllers that we
+    will create later on.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In our `requires` section, we have two new views listed, one for `FlickrFinder.view.SearchPanel`
+    and the other for `FlickrFinder.view.SavedPanel`. Further down in this code block,
+    you will see two `xtype` values listed in the `items` section, `searchpanel` and
+    `savedpanel`, which correspond to these two required files. We need to create
+    these files next.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In your text editor, you need to create two new panel files in your `app/view`
+    folder. The first one is called `SearchPanel.js`, and the code will look like
+    this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: As with our `Main.js` file, we start out by setting the filename within the
+    namespace to `FlickrFinder.view.SearchPanel`. However, this time we extend the
+    `Ext.Panel` component instead of the tab panel.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We also set `xtype` to `searchpanel`, which should match the value we had in
+    the `items` section of `app/view/Main.js`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Lastly, we set up our `config` section with `title`, `iconCls`, and `html`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Next, we create a second panel in `app/view` called `SavedPanel.js`. This panel''s
+    code looks almost the same as our previous panel:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'As you can see, we have just replaced the word `search` with the word `saved`.
+    Once this second panel has been saved, you can reload the page to see this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Adding to the basic application](img/0748OS_08_07.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: We now have our tab panel with two base panels, and we can switch back and forth
+    between the two.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Right now, our application doesn't do a lot, but we can fix that. Let's start
+    by adding a pair of controllers to our application.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Generating controllers with Sencha Cmd
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Much like our starter application, we can also generate controllers with Sencha
+    Cmd. To do this, you will need to switch back to your terminal program and from
+    there, change into your application directory (not the Sencha directory like we
+    did when we generated the application). Changing into this directory lets Sencha
+    Cmd know where to create the controller file:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This will create two starter files for our controllers, and adds a reference
+    to those files in `app.js`. If you open up `app.js` after running those commands,
+    you should now see a `controllers` section like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'If you open up one of the new controller files, you should see something like
+    this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: By creating these two empty controllers first, we can then add any models, views,
+    and stores into our two `controller` files and leave `app.js` as it is (as it
+    already includes our controllers).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: In some older versions of Sencha Cmd, using the `generate controller` command
+    would create the files but not add the `controllers` section to `app.js`. It's
+    a good idea to check and make sure that the `controllers` section gets added or
+    your files will fail to load. This will lead to errors and a lot of hair-pulling.
+  prefs: []
+  type: TYPE_NORMAL
+- en: A brief word about including files
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: When you split code out into separate files, the framework needs to have a basic
+    understanding of what files need to be included in order to make the application
+    work.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Both `app.js` and our `controller` files can include sections for models, views,
+    and stores. These sections can be specified in either set of files, but the best
+    practice is to include `controllers` in `app.js` and let the individual controllers
+    include the models, stores, and views.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Other components can contain a `required` section for including files. For example,
+    in our `main.js` view, we require the two panel views (`savedPanel` and `searchPanel`)
+    that are used in the `items` section of our `main.js` file. The `requires` section
+    is used for any dependencies that are used directly in the component.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We will see some examples of this when we create our models and stores.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Creating the Photo data model
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Both our search and saved photos will be dealing with the same set of information.
+    This means we can create a single shared model called Photo.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Our photo data will be constrained in part by the data we can get back from
+    the Flickr API. However, we also want to display the images as part of our search
+    results. This means that we need to look at the Flickr API and see what is required
+    to display an image from Flickr in our application.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'If we take a look at [http://www.flickr.com/services/api/misc.urls.html](http://www.flickr.com/services/api/misc.urls.html),
+    we see that **Photo Source URLs** in Flickr has the following structure:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This means that, in order to display each photo, we need the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`farm-id`: This variable indicates the group of servers the image is on'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`server-id`: This variable indicates the specific server the image is on'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`id`: This variable indicates a unique ID for the image'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`secret`: This variable indicates the code used by the Flickr API to route
+    requests'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: These are all the variables that we get back as part of our `flickr.photos.search`
+    request. We also get back the title for the photo, which we can use as part of
+    our display. Now, we will use this information to create our model.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In the model directory, create a new file called `Photo.js`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: We start by defining our new model and extending `Ext.data.Model`. Next, we
+    supply our field definitions in a series of `name type` values. If you leave the
+    type blank, Sencha Touch will try to figure things out on its own, but it's a
+    good idea to specify the type whenever possible.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now that we have a shared `Photo` model defined, we need to set up our individual
+    components starting with our `SearchPhotos` components.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Making the SearchPhotos components
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: For searching photos, we will need a store and two views (list and details).
+    When our application launches, the `SearchPhotos.js` controller will determine
+    the user's current location. The controller will then load the store based on
+    that location and display the photos in our list component. When the user taps
+    on an item in the list, the controller will grab our details view and use it to
+    display more information about the photo.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let's start by creating our data store.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Creating the SearchPhotos store
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The data store is in charge of contacting the Flickr API and getting the photos
+    for our list. We will also need to include some basic information for paging and
+    a reference to our shared model file.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Create a new file in `app/store` called `SearchPhotos.js` and add the following
+    code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here, we define the `FlickrFindr.store.SearchPhotos` store and extend the standard
+    `Ext.data.Store` store. Since we are using our previously created `Photo` model,
+    we also need to add it to our `requires` section. We will be using a `jsonp` proxy
+    for this store.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If you remember from [Chapter 6](ch06.html "Chapter 6. Getting the Data In"),
+    *Getting the Data In*, this proxy type is used for handling requests to a separate
+    server, much like JSONP. These cross-site requests require a callback function
+    in order to process the data returned by the server. However, unlike JSONP, the
+    `jsonp` proxy will handle the callback functionality for us almost automatically.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We say almost because Flickr''s API expects to receive the callback variable
+    as:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'By default, the store sends this variable as:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Fortunately, we can change this by setting the following configuration option:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The next section in the previous code snippet sets the URL for contacting the
+    Flickr API, that is, `url: ''`[http://api.flickr.com/services/rest/](http://api.flickr.com/services/rest/)`''`.
+    This URL is the same for any requests to the Flickr API.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: There are a number of additional parameters we will need to send to the Flickr
+    API to get what we need, but we will handle that later on in the controller.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Once we get our data back, we pass it to the reader:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Since our response from Flickr''s API will be in JSON, we need to set `type:
+    ''json''` in our `reader` function, We also need to tell the `reader` function
+    where to start looking for photos in the `json` array that gets returned from
+    Flickr. In this case, `root: ''photos.photo''` is the correct value. The last
+    thing we need is `totalProperty` that tells the reader where to get the total
+    number of photos we get back from Flickr. We will use this value for paging.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Now that we have our data model and store set up, we need two views: the `SearchPhotoList`
+    view and the `SearchPhotoDetails` view.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Creating the SearchPhotos list
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'We need two views for the `SearchPhotos` part of our applications: a list component
+    and a panel for the details. We will start out by creating our list component.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Create a `SearchPhotoList.js` file in our `views` folder. This will be the first
+    of our two views for `SearchPhotos`. Each view represents a single Sencha Touch
+    display component. In this case, we will be using an `Ext.dataview.List` class
+    for display and an XTemplate to control the layout of the list.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'At the top of the file, our XTemplate looks as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: The first part of our XTemplate supplies the HTML we are going to populate with
+    our date. We start by declaring a `div` tag with the class `searchresult`. This
+    gives us a class we can use later on to specify which photo result is being tapped.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Next, we have an image tag, which needs to include a Flickr image URL for the
+    photo we want in the list. We could assemble this string as part of the HTML of
+    our XTemplate, but we are going to take the opportunity to add some flexibility
+    by making this into a function on our XTemplate.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Flickr offers us a number of sizing options when using photos in this way.
+    We can pass any of the following options along as part of our Flickr image URL:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`s`: This refers to a small square, 75 x 75'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`t`: This refers to a thumbnail, 100 on the longest side'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`m`: This refers to a small image, 240 on the longest side'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`-`: This refers to a medium image, 500 on the longest side'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`z`: This refers to a larger image, 640 on the longest side'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`b`: This refers to a large image, 1024 on the longest side'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`o`: This refers to the original image, either JPG, GIF, or PNG, depending
+    on the source format'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: We want to set our function to take one of these options along with our template
+    values and create the Flickr image URL. Our function first looks to see if we
+    were passed a value for size, and if not, we set it to `s`, by default using `size
+    = size || 's';`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Next, we assemble the URL using our XTemplate values and the respective sizes.
+    Finally, we return the URL for use in our XTemplate HTML. This will let us create
+    a thumbnail for each of our images.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Now, we need to define our list and pass it the XTemplate and store we created
+    previously. After the definition for our XTemplate, add the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here we define and extend, just as we have done with our other components.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Since we are using `SearchPhotosStore` to feed our list, we also need to have
+    it in our `requires` section. Down in the `config` section, we have the basic
+    `store` and `itemTpl` configurations for our `list` component.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Creating the Navigation view
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Now that we have `SearchPhotoList`, we need to add it to the `SearchPhotos`
+    panel, but before we do that, we need to talk a bit about our functionality.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The idea of a list-and-details view is very common among applications: This
+    comprises a list of items with limited information, which the user can select
+    to view a more detailed page on the item. The details page typically includes
+    a button or link back to the main list. In fact, this functionality is so common
+    that Sencha has a built-in component for handling it, called a **Navigation view**.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The Navigation view functions much like a card layout, where only one of the
+    items inside the container is visible at a time. However, the Navigation layout
+    has two special functions:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**push**: This function adds a new component to the Navigation view and shows
+    the new component with an animated transition'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**pop**: This function removes a component from the Navigation view and shows
+    the previous component with an animated transition'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The Navigation view also adds a **Back** button each time you push a new container
+    onto it. This allows you to deeply nest data and have the layout itself control
+    your navigation.We will use this type of view to control the flow between our
+    list and details views, which means that we need to make a change to our `SearchPanel.js`
+    file.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'First, locate the line that says:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Then change it to:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE21]'
+  prefs: []
+  type: TYPE_PRE
+- en: This single change turns our exiting panel into a Navigation view.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Next, we need to remove our HTML from the old panel and add in our `ShowPhoto`
+    list. By adding it directly to the Navigation view, we will make it the first
+    thing we see when the panel loads. To do this, change the line:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE22]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'To:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE23]'
+  prefs: []
+  type: TYPE_PRE
+- en: Later on in the controller, we will see how the details panel is added to the
+    navigation view, but first we need to create the details view itself.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Creating the SearchPhotoDetails view
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: As we said before, when the user clicks on a photo in the list, we want to be
+    able to show a larger version of the photo and offer the user the opportunity
+    to add this to a saved list of photos.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We will start out with a very basic panel for this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE24]'
+  prefs: []
+  type: TYPE_PRE
+- en: Now that we have our two views, we need to edit our controller to make the views
+    actually work.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Creating the SearchPhotos controller
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Our `SearchPhotos` controller needs to accomplish the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Obtain the user's location
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Load photos from Flickr that are close to that location
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Allow the user to page through the photos
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Allow the user to select a photo from the list and view a larger version
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The first two pieces of this will be accomplished inside the controller's `launch`
+    function so that they happen automatically when the application starts. The others
+    will be handled by separate functions that we attach to the events from our components.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Before we get to that, we want to include our store and view files and set up
+    a few references to make it easier to address the components inside our controller.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Open up our `SearchPhotos.js` file in the `controller` folder. If you followed
+    along with us and generated the controller files from Sencha Cmd, you will see
+    placeholders for `refs` and `controls`. On top of these placeholders and inside
+    the `config` section, we need to add our views and our store:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE25]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The `views` and `stores` sections list the pieces of our application that this
+    controller will be communicating with. Next, we will add some references to make
+    it easier to access these pieces from inside the controller. In the `refs` section
+    (after our `stores` section), add the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE26]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The `refs` section consists of sets of name: target pairs. The name is arbitrary
+    and the target can be `xtype` or a valid `Ext.ComponentQuery()` string.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '`Ext.ComponentQuery` lets you search for a specific component using a language
+    similar to a standard CSS selector. For more details, see [http://docs.sencha.com/touch/2.2.0/#!/api/Ext.ComponentQuery](http://docs.sencha.com/touch/2.2.0/#!/api/Ext.ComponentQuery).'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'These `refs` will allow us to grab a component from anywhere inside our controller
+    using `this.getName()`. For example, if we need to add a component to our `searchpanel`
+    from inside our controller, we can simply use the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE27]'
+  prefs: []
+  type: TYPE_PRE
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: It is important to note that the names will always be uppercased when using
+    `this.getName()`. So if we had set up our reference to be `searchPhotoList:'searchphotolist'`
+    (with a lowercase "s"), we would still need to use `this.getSearchPhotoList()`
+    (with a capital "S") to return the component.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now that we have our references, we are going to skip the `controls` section
+    right now and set up our `launch` function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Setting up the launch function
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Our `launch` function is where we find the user's location and contact the Flickr
+    API to get back our photos. The first thing we need to do is set up some default
+    values—just in case the user declines to share their location, or we can determine
+    their location.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE28]'
+  prefs: []
+  type: TYPE_PRE
+- en: The first part of the preceding code snippet creates a new date by using the
+    current date and subtracting one year from it. This gives us the date exactly
+    one year ago from this date. We will use this date to get back only photos that
+    have been posted in the last year.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Our `easyparams` variable is a set of default parameters that we will send to
+    Flickr's API if we cannot get a valid user location. These include our minimum
+    upload date, latitude, and longitude (our defaults are for New York, in the middle
+    of Times Square). We also include values for accuracy, radius, and radius units,
+    to define how wide our search should be.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Lastly, we have a method (which is the API method we will use), your Flickr
+    API key, and a format for the returned data (in this case, JSON). As previously
+    noted in the *Using the Flickr API* section, you will need to obtain your own
+    API key and use it here.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now that we have some defaults, let's see if we can grab the user's location
+    with `Ext.util.Geolocation`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using Ext.util.Geolocation
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The `Ext.util.Geolocation` component allows us to use the web browser to retrieve
+    the user's location. This class is based on the Geolocation API specification
+    built into most modern browsers. When this component is called, the user is prompted
+    and asked if they are willing to share their location with the application. If
+    they confirm, the component will return a latitude and longitude for the user's
+    current location.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'After our default `easyparams` definition, add the following code to access
+    the Geolocation component:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE29]'
+  prefs: []
+  type: TYPE_PRE
+- en: This one is a bit long, so let's take it one piece at a time.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We begin by creating a new instance of the `Ext.util.Geolocation` component.
+    We set `autoUpdate` to `false`, which keeps the component from trying to continually
+    update our location. The idea is that the component will fire only once the application
+    opens (this also keeps us from hammering the user's battery life). Next, we set
+    a `timeout value` of 10000 milliseconds (10 seconds). This means that once the
+    user confirms we are allowed to access their location, the component will spend
+    10 seconds attempting to get the location information before timing out and reporting
+    an error.
+  prefs: []
+  type: TYPE_NORMAL
+- en: That's really it for the configuration of `Ext.util.Geolocation`, but now we
+    need to set up listeners for dealing with the data that comes back from the component.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We have two basic possibilities for event feedback from `Ext.util.Geolocation`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`locationupdate`: We get this if we got back a valid location for the user'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`locationerror`: We get this if something happened and we are unable to get
+    a valid location for the user'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Both of these events return our `Geolocation` object with some new data attached
+    to it. In the case of `locationUpdate`, we get back:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`accuracy`: This gives the last retrieved accuracy level of the latitude and
+    longitude coordinates'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`altitude`: This gives the last retrieved height of the position specified
+    in meters above the ellipsoid'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`altitudeAccuracy`: This gives the last retrieved accuracy level of the altitude
+    coordinate, specified in meters'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`heading`: This gives the last retrieved direction of travel of the hosting
+    device, specified in non-negative degrees between 0 and 359, counting clockwise
+    relative to the true north (this reports `NAN` if the speed is zero)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`latitude`: This gives the last retrieved geographical coordinate specified
+    in degrees'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`longitude`: This gives the last retrieved geographical coordinate specified
+    in degrees'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`speed`: This gives the last retrieved current ground speed of the device specified
+    in meters per second'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'For this application, we are only interested in the latitude and longitude
+    that we will pass in to our `easyparams` object. From the previous example code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE30]'
+  prefs: []
+  type: TYPE_PRE
+- en: This is the same as our default object, but with accurate coordinates for our
+    location. We can then grab our data `store`, add the `easyparams` object, so it
+    gets sent with our request, and call the store's `load` function to retrieve the
+    photos.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE31]'
+  prefs: []
+  type: TYPE_PRE
+- en: This will cause the photos to appear in our `SearchPhotoList` component.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `locationError` listener will fire if we can't get a location for the user.
+    It simply alerts the user that we could not get a location and then loads our
+    default set of `easyparams`, with the New York location.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The last thing we do in our `launch` function is fire the `updateLocation` function
+    on our `Geolocation` object using `geo.updateLocation();`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: At this point, you should be able to launch the application and see a list of
+    photos near your location.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Using Ext.util.Geolocation](img/0748OS_08_08.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Now that we have our basic list working, we can swipe up or down to scroll.
+    However, we need to add a bit more functionality before we finish up with our
+    controller.
+  prefs: []
+  type: TYPE_NORMAL
+- en: As you may have noticed, we can scroll but can't view any details yet. Also,
+    we only loaded the first 25 photos from our search results. We need to have a
+    way to tell the list that we want to tap an item to view the details and swipe
+    an item to page through our list of photos. However, as it turns out, we don't
+    want to tell the list anything. We actually want to listen to it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Listening to the list
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Our list has a number of helpful events that it sends out in response to the
+    user's interactions. The ones we are most concerned with are `itemswipe` and `itemtap`.
+    We need to listen for those events in our controller and write functions to execute
+    when those events occur. Let's start with our `itemtap` event.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In order to listen to an event, we need to add it into the `controls` section
+    of `controller` as shown in the following code snippet:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE32]'
+  prefs: []
+  type: TYPE_PRE
+- en: Since we previously made a reference to `SearchPhotoList:'searchphotolist'`
+    in our `controller`, we can use the shorthand `SearchPhotoList` to indicate that
+    we are adding listeners to our list.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Here, we have specified that when our list fires the `itemtap` event, we want
+    to execute a function called `showSearchPhotoDetails`. Next, we need to add that
+    function to our `controller`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Add a comma after the `launch` function in `controller`, and then add the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE33]'
+  prefs: []
+  type: TYPE_PRE
+- en: This function creates a new instance of our `SearchPhotoDetails` panel and sets
+    its `title` and `record` based on the list item that was tapped (the record is
+    passed along as part of the item tap event).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The Sencha Touch Docs available at [http://docs.sencha.com/touch/2.2.0/](http://docs.sencha.com/touch/2.2.0/)
+    will show a list of any values passed for a given event. Locate your component
+    and then select an event from the **Events** list. A list of values passed by
+    the event will be on the right-hand side of the event name. Clicking on the blue
+    disclosure triangle will provide details on those event values.
+  prefs: []
+  type: TYPE_NORMAL
+- en: By setting the record, we are also setting the data that will be used by our
+    details template for display.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Lastly, we push the new panel onto our `SearchPanel` navigation view component.
+    Remember, since we added `ref` for this in `controller`, we can retrieve it using
+    `this.getSearchPanel()`. Once we push the new panel onto our navigation view,
+    the list will be hidden and the new panel shows up with our **Back** button. Give
+    it a try.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Listening to the list](img/0748OS_08_09.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: If you click on the **Back** button, the details panel is automatically removed
+    from the stack, and the list will show up again.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Next, we need to handle the `itemswipe` function, so that it will load the next
+    or previous page of items. In this case, we also need to do a bit of math to make
+    sure that we don't try to page further than the beginning or end of our list.
+    We will also need to do a bit of exploring to get the information we need from
+    the event.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'First, let''s add our listener to `controller` by modifying the `controls`
+    section to look like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE34]'
+  prefs: []
+  type: TYPE_PRE
+- en: Next, we need to add our `pageChange` function after our previous `showSearchPhotoDetails`
+    function. We will use this function to figure out the direction in which the user
+    has swiped, so we know if we should go forward or backward in our paging.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'From the Sencha Docs, we can see that the `itemswipe` event returns the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`this`: This is our list component'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`index`: This is the index of the item swiped'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`target`: This is the element or `DataItem` swiped'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`record`: This is the record associated with the item'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`e`: This is the `event` object'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`eOpts`: This is the `options` object passed to `Ext.util.Observable.addListener`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'The direction that the user is swiping is buried inside the event object `e`.
+    We can find the values we need by outputting the `event` object to the console
+    log. So to begin with, let''s make our `pageChange` function look like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE35]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'If we reload our application and swipe one of the items in our list, we should
+    see a listing for `e` in our console. Click on the disclosure triangle next to
+    the listing to see all the details as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Listening to the list](img/0748OS_08_10.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: From the details in the preceding screenshot, we can see that we get a lot of
+    information back from the event, but the piece we need is just the **direction**.
+    This means we can test for `e.direction` in our function to see which way we need
+    to page the list of photos.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE36]'
+  prefs: []
+  type: TYPE_PRE
+- en: First, we get our store by grabbing the list and calling `getStore()`. Next,
+    we test whether our swipe direction is to the `left` or not. If the swipe goes
+    to the left, we are paging back.If our current page is `1`, we don't want to go
+    backwards. If our page is greater than `1`, we page back using `store.previousPage();`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If we have swiped to right, we need to make sure we are not at the last page
+    before we try to go to the next page. We do this by grabbing the `total` number
+    of photos and `pageSize` from `store`. By dividing the total number of photos
+    by the page count and rounding it off (`Math.floor`), we can get the number of
+    the last page. We can then compare that to `currentPage` and decide whether we
+    need to move forward to the next page.You should now be able to swipe back and
+    forth across an item to navigate the pages of the list.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now that we can view our photos in full size, let's set up a `savedphoto` component
+    that will allow us to save a link to any photos we like.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Building the SavedPhotos components
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Our `SavedPhotos` components will need to store the information for a single
+    photo from our search results. We will also need a list view for our saved photos
+    and a details view, just like our previous `SearchPhotosList` and `SearchPhotoDetails`
+    models.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Creating the SavedPhotos store
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Since our `SavedPhotos` and `SearchPhotos` components are storing the same type
+    of data, we don't need to create a new model. We can just use our `Photo.js` model.
+    However, we do need a separate data store, one that will store our `Photo` model
+    locally.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s create a new file called `SavedPhotosStore.js` in our `app/store` folder
+    and add the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE37]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Here, we just create our `FlickrFindr.store.SavedPhotosStore` class and extend
+    `Ext.data.store`. We also reuse our `FlickrFindr.model.Photo` model and set it
+    as part of our required files. We also want this store to load up when the application
+    launches (`autoLoad: true`) and we want it to set the page size to `25`. Since
+    it is grabbing local data, this should not present a huge load for the application.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: For this store, we are going to include a `storeId`, so we can grab the store
+    later on in our `controller`.We set our proxy to store the data locally and assign
+    the proxy an `id` component, `flickr-saved`, that will be used to store our data.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Once we are finished with the `SavedPhotosStore.js` file, we will need to add
+    it to our `SavedPhotos.js` controller. Open the `controller` file and add the
+    following in the `config` section:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE38]'
+  prefs: []
+  type: TYPE_PRE
+- en: This will make sure our store gets loaded. Next, we need to set up our two views
+    for list and details.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Creating the SavedPhoto views
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: For the `SavedPhoto` views, we need a list and a details view. These views will
+    be very close to what we already have for our `SearchPhotosList` and `SearchPhotoDetails`
+    models. In fact, we can start by making copies of those two files and tweaking
+    our layouts a bit.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In the `views` folder, make a copy of `SearchPhotoList.js`, and rename it as
+    `SavedPhotoList.js`. You will also need to replace all the occurrences of `SearchPhoto`
+    and `searchphoto`, with `SavedPhoto` and `savedphoto`, respectively (remember
+    that JavaScript is case-sensitive). Your code should look as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE39]'
+  prefs: []
+  type: TYPE_PRE
+- en: You will notice that we have created a duplicate of the original `SearchResultTpl`
+    template in this file. If we wanted, we could simply reuse our `FlickrFindr.view.SearchResultTpl`
+    class from the `SearchPhotos.js` file. It is perfectly fine to reuse the template,
+    but this allows us the option of changing the look of saved photos in a list if
+    we choose to.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Other than that, the file is largely the same as our `SearchPhotosList.js` file.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: While it might seem a bit redundant to have two files that are so similar, it
+    should be noted that they both read from different data stores, and that they
+    need to be addressed differently by the controllers. It also gives us the opportunity
+    to tweak the look of our different views later on.
+  prefs: []
+  type: TYPE_NORMAL
+- en: For our `SavedPhotoDetails` view, we will take a similar approach. Copy the
+    `SearchPhotoDetails.js` file to your `views` folder and rename it as `SavedPhotoDetails.js`.
+    This file will display a single saved photo. However, unlike the details for our
+    search photos, this saved photo details panel will get a **Remove** button instead
+    of a **Save** button.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'You will need to modify the file to change the **Save** button as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE40]'
+  prefs: []
+  type: TYPE_PRE
+- en: This is much the same as the `SearchPhotoDetails` file we created earlier; we
+    have switched the names and changed our **Add** button to a **Remove** button.
+    We will add the functionality for these buttons into our controllers in just a
+    moment.
+  prefs: []
+  type: TYPE_NORMAL
+- en: First, as we did with `SearchPhotosList`, we need to add `SavedPhotosList` to
+    our `SavedPanel.js` file, and change it to extend `Ext.navigation.View` instead
+    of `Ext.Panel`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Open up `SavedPanel.js` and modify the code to make it look like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE41]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Once we have the two views, we will need to add them into our `SavedPhotos.js`
+    controller. Open the `app/controller/SavedPhotos.js`file and add the following
+    code inside the `config` section:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE42]'
+  prefs: []
+  type: TYPE_PRE
+- en: Now we can start hooking up the rest of the controllers. We will start by taking
+    a trip back to our `SearchPhotos.js` controller to hook up the **Add** button.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Finishing up the Add button in SearchPhotos
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Open up `SearchPhotos.js` in the `controller` folder; let''s add a control
+    for our **Save** button. In the `control` section, underneath our `SearchPhotoList`
+    control, we add the control for the button as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE43]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Next, we need to add our `savePhoto` function after our previous function definitions:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE44]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We need two pieces to make this function work: the record from our details
+    panel and the Saved Photos store, so we can load `SavedPhotoList` once the record
+    is saved.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: We grabbed the record by using the `up` function on our button to look for our
+    `searchphotodetails` panel and then used `getRecord();`. We used `StoreManager`
+    to `lookup` the store by its unique ID.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Next, we used the model's `save()` function to save the model using the model's
+    proxy (not the store's proxy). We then used the callback function to load the
+    store and switch our view after the model had been saved successfully.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: You will notice that we also have an option `this` set on the end of the `save`
+    function. As part of the `save` function, we can set the scope of our `callback`
+    function, which you may remember from earlier in the book. By setting the scope
+    to `this`, when we reference `this` inside our function (`this.getMain()`), we
+    are talking about the controller and not the function itself.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now that you have our function set up, you should be able to reload the application
+    and save photos.We still need to be able to access the details for Saved Photos
+    and remove the ones we no longer want.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Updating the SavedPhotos controller
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Inside our `SavedPhotos` controller, we need to add some refs and controls just
+    like we did in the `SearchPhotos` controller.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Open the `SavedPhotos.js` file and modify the `refs` and `controls` sections
+    like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE45]'
+  prefs: []
+  type: TYPE_PRE
+- en: This gives us `refs` for our list and panel (we don't need one for `main`),
+    and `controls` for three functions that will work in pretty much the same way
+    as our `SearchPhotos` functions.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s start with the `showSavedPhotoDetails` function and add the following
+    after the `config` section:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE46]'
+  prefs: []
+  type: TYPE_PRE
+- en: Much like our previous `showSearchPhotosDetails` function, this creates a new
+    copy of our `SavedPhotoDetails` view, assigns a title and record, and then pushes
+    it onto our `SavedPanel`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Next, we have our `pageChange` function. You can copy and paste this one from
+    our `SearchPhotos.js` controller:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE47]'
+  prefs: []
+  type: TYPE_PRE
+- en: The only line we need to change in the preceding code snippet is the third line,
+    where we get `store` for our `SavedPhotoList`. Other than that, this function
+    accomplishes the same outcome as it did in our other controller; it detects the
+    swipe from the user and pages back and forth through the results.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The last piece we need is our `removePhoto` function. This one will be a bit
+    different. When we remove a photo from our list of saved photos, we need to `pop`
+    the details view off our `SavedPanel` navigation view instead of changing the
+    view:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE48]'
+  prefs: []
+  type: TYPE_PRE
+- en: For this function, we used the `erase()` method to remove the record from our
+    local storage. We then loaded the store as before and used the `pop()` function
+    to remove our details view. When this view is removed, our `SavedPanel` navigation
+    view will automatically switch back to `SavedPhotosList`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Polishing your application
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Now that we've finished our application, we will want to add some finishing
+    touches to really make our application shine and add a level of professionalism
+    to the completed product. The good news is that all of these are easily and quickly
+    implemented.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Adding application icons and startup screens
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: As mentioned back in [Chapter 1](ch01.html "Chapter 1. Let's Begin with Sencha
+    Touch"), *Let's Begin with Sencha Touch*, users can navigate to your web application,
+    and then choose to save it to the desktop of their mobile device.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Adding application icons and startup screens](img/0748OS_08_11.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: In our current application, when someone installs it in this fashion, the default
+    Sencha icon is displayed. However, you can modify the default icon that is displayed
+    on the home screen.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `references` folder contains all of the icons that your application will
+    use for various devices. It also contains a startup folder with images for the
+    startup screens used by the application on various devices.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Any of these images can be edited to customize your application's appearance.
+    Just make sure you save them in the same format, the same size, and with the same
+    name.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Improving the application
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'There''s still plenty of room for improvement in our application, but we will
+    leave this as extra credit for the reader. Some things you might want to try are
+    as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Allow the user to rename photos when they are saved
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Add an expert search, where you can set your location manually or widen the
+    search radius
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Change the theme and make XTemplates more appealing
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Add the ability to save locations as well as photos
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Try using the MVC organization techniques we have covered in this chapter to
+    expand the application and sharpen your skills.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this chapter, we gave you an introduction to the MVC design pattern. We talked
+    about setting up a more robust folder structure and created your main application
+    files. We started our application with an overview of Flickr API and explored
+    how to register our various model, view, and controller components. We then set
+    up our components for the `SearchPhotos` and `SavedPhotos` components. We wrapped
+    up the chapter with some hints for putting the finishing touches on your application
+    and talked about a few extra pieces you might want to add to the application.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the next chapter, we will cover a few advanced topics such as building your
+    own API's, creating offline applications using a manifest system, and compiling
+    applications with a program such as PhoneGap.
+  prefs: []
+  type: TYPE_NORMAL

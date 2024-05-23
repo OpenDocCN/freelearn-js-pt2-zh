@@ -1,0 +1,14 @@
+- en: Overview
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Instead of wandering through loads of theory, we have used practical examples
+    in this book. The examples in this book are compatible with almost every browser.
+    Instead of using the verbatim code, you can modify the code and see the change
+    in the output thereby understanding the subtle nuances of JavaScript.
+  prefs: []
+  type: TYPE_NORMAL
+- en: By the end of the book, with practice, you can achieve better things and get
+    more acquainted with JavaScript.
+  prefs: []
+  type: TYPE_NORMAL

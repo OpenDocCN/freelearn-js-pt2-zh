@@ -1,0 +1,591 @@
+- en: Chapter 3. The Promise Paradigm
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this chapter, we will focus on what the promises paradigm is, from where
+    it originated, how languages implement it, and what problems it can solve for
+    us.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We have briefly discussed the origin of the promise pattern in [Chapter 1](ch01.html
+    "Chapter 1. Promises.js"), *Promises.js*. In this chapter, we will explore this
+    subject in more detail, in a generic way, so that it would clear the logic and
+    theory behind the adoption of promise in different languages and in particular,
+    how it's helping us in today's modern programming.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Callback, revisited
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In previous chapters, you learned how the JavaScript mechanism works. The single-threaded
+    model of JavaScript has its limitation, which can be controlled through better
+    use of callbacks. However, the scenarios such as callback hell really pushed engineers
+    to find and implement a better way to control the callbacks and maximize the performance
+    of the program, while staying inside a single thread. A callback is a function
+    that can be passed as an argument to another function to be executed when it's
+    called.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There is absolutely no harm in using callbacks, but there are also a number
+    of other options available to handle asynchronous events. Promise is one such
+    way to handle asynchronous events and has more efficiency than many of other asynchronous
+    tools in its family.
+  prefs: []
+  type: TYPE_NORMAL
+- en: To understand more clearly why we needed to implement Promises.js in asynchronous
+    programming, we need to understand the concept behind the promise and deferred
+    objects.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Promise
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The beauty of working with JavaScript's asynchronous events is that the program
+    continues its execution, even when it doesn't have any value it needs to work
+    that is in progress. Such scenarios are named as yet known values from unfinished
+    work. This can make working with asynchronous events in JavaScript challenging.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Promises are a programming construct that represents a value that is still unknown.
+    Promises in JavaScript enable us to write asynchronous code in a parallel manner
+    to synchronous code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Deferred
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Deferred is an object that represents work that is not yet being done, and promise
+    is an object representing a value that is not yet known.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The objects provide a way to take care of registering multiple callbacks into
+    a self-managed callbacks queues, invoke callbacks queues, and relay the success
+    or failure state of any synchronous function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How do promise and deferred relate to each other?
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'So far, in [Chapter 2](ch02.html "Chapter 2. The JavaScript Asynchronous Model"),
+    *The JavaScript Asynchronous Model*, we discussed promises and how they work.
+    Let''s have a look at how promises and deferred work:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Every deferred object has a promise that serves as a proxy for the future result.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: A deferred object can be resolved or rejected by its caller, which separates
+    the promise from the resolver, while a promise is a value returned by an asynchronous
+    function.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: The promise can be given to a number of consumers and each will observe the
+    resolution incessantly, while the resolver/deferred can be given to any number
+    of users and the promise will be resolved by the one that first resolved it.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Standard behaviors of the Promise API
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: There are few standards as per a promise/proposal, which has to be fulfilled
+    for the true implementation of the concept. These standards are the keys to implement
+    promises, and any library/language must comply with it for true implementation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'A promise does the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: A promise returns an eventual value when a single completion of an operation
+    occurs.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'A promise has three states: unfulfilled (when a promise is waiting to be processed),
+    fulfilled (when a promise has been completed and the desired result has been obtained),
+    and finally, failed (when the result of a promise was obtained but not as anticipated).'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Promise has a `then` property, which must be a function and must return a promise.
+    In order to complete a promise, `fulfilledHandler`, `errorHandler`, and `progressHandler`
+    must be called in.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: With a promise, callback handlers return the fulfillment value from the returned
+    promise.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The promise value must be persistent. This should maintain a state, and within
+    that state, the value must be preserved.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: This API does not define how promises are created. It only provides a necessary
+    interface that promise provides to promise consumers to interact with it. Implementations
+    are free to define how promises are generated. Some promise may provide their
+    own function to fulfill the promise and other promises may be fulfilled by mechanisms
+    that are not visible to the promise consumer. Promises themselves may include
+    other additional convenient methods as well.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Interactive promises
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Interactive promises are extended promises that add more value to the paradigm
+    by adding two more functions to its arsenal, `get` and `call`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`get(propertyName)`: This function requests the given property from the target
+    of promise. This also returns a promise to provide the value of the stated property
+    from promise''s target.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`call(functionName, arg1, arg2…)`: This function requests to call the given
+    method/function on the target of promise. It also returns a promise to provide
+    the return value of the requested function call.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The states and return values of a promise
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: From [Chapter 1](ch01.html "Chapter 1. Promises.js"), *Promises.js*, we are
+    already aware that a promise is based on three states. Let's brush up our memory
+    on these states, in accordance with promises paradigm.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Promise has three states:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Unfulfilled promise
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Fulfilled promise
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Failed promise
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: A promise exists within these three states.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The beginning of a promise is from an unfulfilled state. This is due to the
+    fact that a promise is a proxy for an unknown value.
+  prefs: []
+  type: TYPE_NORMAL
+- en: When the promise is filled with the value it's waiting for, it's in the fulfilled
+    state. The promise will be labeled as failed if it returns an exception.
+  prefs: []
+  type: TYPE_NORMAL
+- en: A promise may move from an unfulfilled to a fulfilled or failed state. Observers
+    (or the objects/events waiting) are notified when the promise is either rejected
+    or fulfilled. Once the promise is rejected or resolved, its output (value or state)
+    cannot be modified.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The following code snippet will help you understand more easily than theory:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: Common sequencing patterns
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Promise and deferred enables us to represent simple tasks combined with complex
+    tasks to a fine-grained control over their sequences.
+  prefs: []
+  type: TYPE_NORMAL
+- en: As mentioned earlier, deferred is an object that represents work that is not
+    being done yet and promise is an object representing a value that is currently
+    unknown. This concept helps us write asynchronous JavaScript, similar to how we
+    write synchronous code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Promises make it comparatively easy to abstract small pieces of functionality
+    shared across multiple asynchronous tasks. Let''s take a look at the most common
+    sequencing patterns that promises makes easier:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Stacked
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Parallel
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Sequential
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Stacked
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Stacked binds multiple handlers anywhere in the application to the same promise
+    event. This helps us bind a number of handlers in a cleaner way so that it gives
+    control to sequence within our code. Here is a sample for stacked and bind handlers:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: Parallel
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Parallel simply asks multiple promises to return a single promise, which alerts
+    of their multiple completion.
+  prefs: []
+  type: TYPE_NORMAL
+- en: With the parallel sequence, you can write multiple promises to return a single
+    promise. In a parallel sequence, an array of asynchronous tasks are executed concurrently
+    and return a single promise when all the tasks have succeeded or rejected with
+    an error in case of failure.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'A general code snippet that shows how parallel sequence returns a single promise
+    is shown as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'For a more clear understanding, here is a sample function that processes the
+    parallel sequence:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: Sequential
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Actions need to be in sequence if the output of one action is an input to another.
+    HTTP requests are such a case where one action is an input to the other. Sequence
+    also enables you to transfer the control of one part of the code to the other.
+  prefs: []
+  type: TYPE_NORMAL
+- en: It executes tasks in a sequential order that is defined by the need of the application,
+    or the scope of the tasks that need to be queued in order to be served.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Here is a generic example in which one sequence processes and passes control
+    to the other as an input:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: Decoupling events and applications logic
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Promises provide an efficient way to decouple the events and application logic.
+    This makes the implementation of events and application logic easier to build
+    and maintenance also saleable.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Decoupling events and applications logic](img/5500OS_03_01.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: A simple way to show how promises decouple events and business logic
+  prefs: []
+  type: TYPE_NORMAL
+- en: The significance of durability in promises is that it's not an "EventEmitter",
+    but can be converted into one by intelligent implementation. But then again, it
+    would be a crippled one.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Promises as event emitters
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The problem in using promises as an event emitter is it's composition. It's
+    the progression events in promises that cannot compose very well with EventEmitter.
+    Promises chain and compose whereas events, on the other hand, are unable to do
+    so. An implementation of Q library is discarding the progression in favor of estimation
+    in v2\. This is why progression was never included in ECMAScript 6\. We will learn
+    a great deal about a few of these emerging technologies in [Chapter 9](ch09.html
+    "Chapter 9. JavaScript – The Future Is Now"), *JavaScript – The Future Is Now*.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Coming back to our topic of how promises is decoupling events and applications
+    logic, we can use events to trigger the resolution/failure of promises by passing
+    the value at the same time, which allows us to decouple. Here is the code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: The reference of the following code is available at [http://jsfiddle.net/cwebbdesign/NEssP/2](http://jsfiddle.net/cwebbdesign/NEssP/2).
+  prefs: []
+  type: TYPE_NORMAL
+- en: What promises prescribed not to do
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Promises clearly outline what not to do while implementing a promises paradigm.
+    We saw most of these rules in [Chapter 2](ch02.html "Chapter 2. The JavaScript
+    Asynchronous Model"), *The JavaScript Asynchronous Model*. Let's take a look at
+    these from the promises paradigm in order to refresh our memories.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The following two practices must be taken into account while implementing promises,
+    regardless of what implementation you are using:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Avoiding getting into a callback hell
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Avoiding use of unnamed promises
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Avoiding getting into callback hell
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We are already aware what callbacks are and how to handle them. Callbacks are
+    a great way to implement an asynchronous model, but they have their own cost.
+    They are unmanageable at some point, and that point comes in when you start your
+    descent in callbacks. The deeper you dive in, the more difficult it becomes to
+    handle, thus leading you into a callback hell scenario.
+  prefs: []
+  type: TYPE_NORMAL
+- en: All of the promises implementations have sorted this problem very simply and
+    wisely.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Avoiding getting into callback hell](img/5500OS_03_02.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: A handy way to tackle callback hell
+  prefs: []
+  type: TYPE_NORMAL
+- en: Avoiding the use of unnamed promises
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: As we saw from [Chapter 2](ch02.html "Chapter 2. The JavaScript Asynchronous
+    Model"), *The JavaScript Asynchronous Model*, the use of unnamed promises can
+    cause huge problems and will cost more time than the normal function of writing
+    and testing. In some instances, it's good and recommended that you do not give
+    the name of your function, but it's not good practice to leave your promise unnamed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If someone thinks anonymous functions are hard to deal with, then unreasonably
+    named functions are hard to understand and maintain. I recommend that you come
+    up with a proper, predecided naming convention, and it should be done well before
+    writing the actual code. I prefer to use CamelCase notation in Microsoft style,
+    in which the starting name of the function is in lowercase and the connecting
+    name is in uppercase.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Promises and exceptions
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Consider a function that throws exceptions within the promise paradigm. You
+    won't find any trace or log if you try to see what has happened to the exception-throwing
+    function. You will see no output on the screen or on console. Why? The reason
+    is hidden in the basics of promise.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Promises are designed to produce two types of output—a promise will either be
+    fulfilled or rejected. So naturally, it won't show up anywhere at the output streams
+    since promises are not designed to produce any other output except these two predefined
+    states. However, it's not promise that does not give any facility to handle exceptions.
+    In fact, it provides a robust way to show and handle such exceptions, by implementing
+    a proper handler to catch the exception and display the reason at any desirable
+    output stream.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In most of the promises paradigm, the exception is handled by `fail` and `then`.
+    The handlers differ from one library to another and from one language to another
+    language. In many advance high-level languages, error and exception handling are
+    managed automatically without adding much of code and explicitly telling compiler/
+    interpreter, but in those libraries and languages, in which it's not handled on
+    auto-basis, you have to write an explicit code to handle exception manually.
+  prefs: []
+  type: TYPE_NORMAL
+- en: At this point, it's significant to mention that we are using a bit of code from
+    Q, just to make you understand that exemption handling is also a part of promises
+    implementation and how to deal with an exception, if one occurs. In our next chapter,
+    we will focus more on how to implement promises in other libraries and languages.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Coming back to the topic, like many other implementations, Q has its own mechanism
+    of dealing with promises.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Consider that this code is about to throw an exception:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: Since it's not the right implementation of handling exception in promises using
+    Q, there will be no output at all, and if we want to handle it as per implementation
+    of the Promises paradigm in Q, we will want to add a rejection handler.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s take Q as an example, in order to see if we can add the same function
+    using its `fcall()` method:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: This method call is not meant to handle the exceptions, so it won't show anything.
+    To handle it, we need to add a rejection handler that will help us to track and
+    monitor the exception.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The fail method
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The simplest way to handle exception is using `fail`. Let''s restructure our
+    code to implement the `fail` method:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: The then method
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Normally, we would use `then` to handle chaining promise. This will take two
+    arguments and the return promise-based execution of one of these handlers:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: The first argument was a fulfill method and the second is rejection handler,
+    as shown in the preceding code. Using these simple techniques, Q implements exception
+    handling.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Best practices to handle exceptions in promise
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Promise provides an impressive way to handle exceptions. Exception handling
+    in promise is quite simple and easy to implement, and almost all libraries and
+    implementations support a generic way of implementation. Here are some of best
+    practices to deal with exceptions:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Make your exceptions meaningful
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: To maximize performance and maintainability, throw understandable errors. The
+    best practice is to reject a promise and reject it with an error instance. Make
+    it a habit not to reject an error object or primitive values.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Monitor, anticipate, and handle exception
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Keep an eye on the effects of errors on the flow of execution. The best practice
+    for doing this is to anticipate failures in your handlers. The better you are
+    at anticipation, the better will be your control over the flow of execution. Always
+    think whether your rejection handler should be invoked by failures in the resolution
+    handler, or if there should be a different behavior.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Keep it clean
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: When you are done dealing with exception, start CleanUp as soon as the error
+    occurs. When the chain of promises is processed and a result has been delivered
+    in either rejected or fulfilled state, terminate the chain and clean up the unused
+    thread. This will help in not only optimizing the throughput of code, but also
+    creating manageable outputs.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Mozilla has its own implementation for handling errors in promise, which can
+    be seen at [https://developer.mozilla.org/en-US/docs/Mozilla/JavaScript_code_modules/Promise.jsm/Promise](https://developer.mozilla.org/en-US/docs/Mozilla/JavaScript_code_modules/Promise.jsm/Promise).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Considerations while choosing a promise
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Before you start working with a promise library, there are a number of elements
+    you should keep in mind. Not all the implementations of a promise's implementation
+    are created equally. They are different from one another in terms of offered utilities
+    by API, performance, and sometimes, behavior too.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'A promise/proposal just outlines the proposed behavior of the promises and
+    not implementation specifications. This results in varying libraries offering
+    a different set of features. These are the ways that they differ from one another:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: All promises/compliments have `then()`; function and also have varying features
+    in their API. In addition to this, they're still able to exchange promises with
+    each other.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: In promise/compliant libraries, a thrown exception is translated into a rejection
+    and the `errorHandler()` method is called with the exception.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: As a result of the differing implementations, there are interoperability problems
+    when working with libraries that return or expect promise/compliant.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There may be trade-offs in choosing a promise library. Every library has its
+    own pros and cons, and it is purely up to you to decide what to use depending
+    on the particular use case and your project needs.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this chapter, we covered the paradigm of promise and the concept behind it.
+    We have covered the conceptual knowledge of promise, deferred, common sequences
+    of promise, and how promise helps in decoupling the business logic and application
+    logic. We have also covered the relation between promise and event emitters and
+    the idea behind it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Due to the virtue of this chapter, we are now able the select which promise
+    library we should use on the basis of our knowledge gained.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In our next chapter, we will be looking at the implementation of promise in
+    different programming languages and will examine the ease they are bringing for
+    the developers and end users.
+  prefs: []
+  type: TYPE_NORMAL

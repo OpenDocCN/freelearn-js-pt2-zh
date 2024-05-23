@@ -1,0 +1,1173 @@
+- en: Chapter 9. Advanced Topics
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'In this chapter, we will explore a few high-level topics designed to point
+    you in the right direction when building Sencha Touch applications, such as the
+    following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Talking to your own server
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Going offline
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Compiling your application
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Getting into the marketplace
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Talking to your own server
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Up to this point, we have used local storage as the way to create a database
+    directly on the device that is running our program. While this is very useful,
+    it can also be limiting in a few ways listed as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: If any data is stored in the device, you cannot view it from another device
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: If the device is stolen/broken/lost or otherwise unavailable, you also lose
+    its data
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Options for sharing are limited to transferring copies of the data
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Collaborative editing of the data is not possible
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Each of these concerns can be addressed by storing the data in an external database,
+    such as MySQL, PostgreSQL, or Oracle. These databases can run on the same server
+    as our application and handle multiple connections from different devices. Since
+    all of the devices contact a single central database, sharing data across devices
+    becomes much easier to accomplish.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Unfortunately, the Sencha Touch framework doesn't communicate directly with
+    these types of external databases. In order to use a Sencha Touch application
+    along with an external database, we need to use a third-party API or create our
+    own. On the plus side, this means we can use any database we want on which to
+    store our data. However, it also means that we will need to write a bit more code
+    in order to connect Sencha with an external database.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using your own API
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In the previous chapters, we have learned about using external APIs to work
+    with data from services such as Flickr and Google. External APIs make it possible
+    to grab data stored in the databases for these various services, but what about
+    when you need to get data in and out of your own database server?
+  prefs: []
+  type: TYPE_NORMAL
+- en: As it turns out, the best way to do this using Sencha Touch is to create your
+    very own API. In order to do this, we need to step back and talk a little bit
+    more about what an API is and what it does.
+  prefs: []
+  type: TYPE_NORMAL
+- en: At its most basic level, an API serves as a translator between the storage and
+    interface parts of the application. The frontend makes a request to the API for
+    data (say, a list of contacts) and the API pulls information from the database.
+    The API then translates that data into JSON or XML and sends it back to the frontend
+    for display.
+  prefs: []
+  type: TYPE_NORMAL
+- en: While this might seem an unnecessary separation for an application, it actually
+    has a number of benefits. Firstly, it allows the backend and the frontend to be
+    written in different programming languages. This is important to us because JavaScript,
+    while being a wonderful language for creating interfaces, is not a great tool
+    for talking to more robust database systems, such as MySQL, PostgreSQL, Microsoft
+    SQL Server, and Oracle. The code for an API can be created in a database-friendly
+    language, such as PHP, RUBY, or PERL.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: We will be using PHP for our examples, but the choice of API language is entirely
+    up to you. We are also going to be very general when covering the PHP side of
+    things. Our goal is to communicate the concept rather than provide specific PHP
+    code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The second benefit is that multiple applications can use the API to access the
+    data. This makes it much easier to share data between users and also makes it
+    possible to provide the same data set to completely different applications (as
+    the Flickr API does). We don't even have to care about which programming language
+    has been used to build the frontend as the API handles the translation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s re-examine our `FlickrFindr` store to explore how this works:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We directed this store to a particular URL ([http://api.flickr.com/services/rest/](http://api.flickr.com/services/rest/))
+    and now, in the listener portion of our controller, we also send our location,
+    radius, and accuracy settings:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: Each of these parameters is sent along as a set of `POST` variables to the Flickr
+    API URL. Flickr then performs the function `flickr.photos.search` using the variables
+    we've supplied in the previous code. The API then assembles the results in the
+    JSON format and passes them back to us. This is what is referred to as a REST
+    request.
+  prefs: []
+  type: TYPE_NORMAL
+- en: REST
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '**REST** stands for **Representational State Transfer**, which is an overly
+    complicated way to say that we want to use the standard methods already built
+    into HTTP in order to communicate. These methods allow HTTP to transmit data via
+    `POST`, `PUT`, `DELETE` and `GET`.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The Sencha Touch Version 2.1 proxy `Ext.data.proxy.Rest` is a strict REST implementation
+    that uses these four separate methods to handle CRUD functions:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`POST` handles the creation of new records'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`GET` handles the reading of records'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`PUT` handles the updating of existing records'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`DELETE` handles the deletion of records'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The `Ext.data.proxy.Ajax` proxy works similar to `Ext.data.proxy.Rest`, but
+    uses only `POST` and `GET`. If the API you're using requires stricter REST compliance,
+    be sure to use the REST proxy instead.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'If you have worked with forms on the Web, you are likely to be familiar with
+    `GET` and `POST`. Both are ways to pass extra variables to a web page for processing.
+    For example, `GET` uses a URL to pass its variables, such as the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: This sends `userID=5` and `access=admin` to the web page for processing.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`POST`, `PUT`, and `DELETE` variables are sent as part of the HTTP request
+    and do not appear in the URL. However, they transmit the same kind of data as
+    do key-value pairs.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Designing your API
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: It's a good idea before you start coding to think about how you would like your
+    API to work. APIs can get complex rather quickly, and spending some time figuring
+    out what yours will and won't do can help you greatly as you build your application.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Different programmers have different philosophies on how to build APIs, so what
+    we present here is just one possible approach.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Sencha Touch's models and proxies come with several methods, specifically the
+    **CRUD** functions (**Create**, **Read**, **Update**, and **Delete**), which map
+    quite well to API calls. This makes them a good place to start. First, make a
+    list of which models you think you will need. For each model, you will need the
+    Create, Read, Update, and Delete functions.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Then, you should take a careful look at the models to see which ones may need
+    additional API methods. A good example is a `user` model. You will definitely
+    need the basic CRUD methods, but probably also an authentication method to log
+    the user in, and perhaps an additional method for checking permissions.
+  prefs: []
+  type: TYPE_NORMAL
+- en: You may find as you go on that you need to add additional API methods to specific
+    models, but the standard CRUD functions should give you a good start when designing
+    your API.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Creating the model and store
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: For this example, we will use a variation of the `Bookmarks` model and the store
+    from our `FlickrFindr` application in the previous chapter.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Since our `Bookmarks` component would now be pulled from a database, we need
+    some extra options in the model. Instead of using the `SearchResults` model as
+    we''ve done before, we will use a new model, such as the following one:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here, we have added a `rest` proxy and `url` values to our model. This will
+    allow us to save, edit, and delete directly from the model.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'For example, to save a new bookmark, we can call the following code in Sencha
+    Touch:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: This code will perform an HTTP `POST` request to `/api/bookmarks.php` using
+    all of our `bookmark` variables as key-value pairs.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Similarly, we can take an existing bookmark, change some of its information,
+    and then call `bookmark.save()`. If we do this on an existing bookmark, the model
+    will send the variables as part of a `PUT` request to `/api/bookmarks.php`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: As you might expect, calling `bookmark.destroy()` will send our variables to
+    `/api/bookmarks.php` as part of a `DELETE` request.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We also have to modify our Saved Photos store in a similar fashion:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: Compared to the store discussed earlier in this chapter, the big difference
+    with this one is the proxy configuration. We are using the same `/api/bookmarks.php`
+    file to process our requests. In this case, the store will use the `GET` request
+    method when contacting the `/api/bookmarks.php` file.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Our `reader` has a root property called `children`. This denotes that the data
+    received should look something like the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: Our store will begin looking for records inside the `children` array and will
+    use the default variable `total` to get the total number of records.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Making a request
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Once our model and store understand how to make these requests, our PHP-based
+    API file has to decide what to do with them. This means that we have to set our
+    `bookmarks.php` file to process the requests. At a very high level, this means
+    executing something similar to the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: The `<?PHP` and `?>` tags simply denote the beginning and end of PHP code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `$action = $_SERVER['REQUEST_METHOD'];` line grabs the `request` method
+    and we then base our code decisions (`add`, `edit`, `read`, or `delete`) on that
+    result.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: We don't want to get too far into code-specific examples as code will vary greatly
+    depending on the language and database you want to use for your API. You will
+    need to consult a guide for your specific API programming language in order to
+    learn how to interact appropriately with your chosen database.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'One thing to note when performing `add`, `edit`, and `delete` functions is
+    that the data that comes to your functions will arrive as an array of records,
+    such as the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: This indicates that for any `add`, `edit`, and `delete` options, you will need
+    to loop through the values for each record and make database changes for each
+    one. While you could conceivably access the records directly using `records[0].id`,
+    looping through the values allows you to take advantage of the data store's ability
+    to sync multiple changes at once.
+  prefs: []
+  type: TYPE_NORMAL
+- en: When your API returns the results of the operation, Sencha Touch expects you
+    to return the full record (or records) that was sent to the API in the first place.
+    For example, if you create a new record, the API should, after a successful save,
+    return that record as part of the results. If you modify several records and save
+    them, the API should return all the modified records if they've been saved correctly.
+    The reason for this is that it's possible that your API will make additional changes
+    to the records, which should be reflected in your JavaScript code. Returning the
+    full records ensures that your JavaScript application stays up-to-date with any
+    changes made by your API.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'For example, we can add a number of bookmarks to the store instead of creating
+    them directly using the model as we did earlier in our code for bookmarks. When
+    we call the `sync()` function in the store, it will send the data to our API as
+    an array of bookmarks:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: This way, if we allow for looping in our API, we don't have to worry about whether
+    the request came from the model or the store. From a receiving standpoint, the
+    API only has to worry about whether the request is `POST` (`add`), `PUT` (`edit`),
+    `GET` (`read`), or `DELETE` (`delete`).
+  prefs: []
+  type: TYPE_NORMAL
+- en: However, there are also times when we need to communicate directly with the
+    API and, perhaps, get a more complete response. This is where an Ajax request
+    can come in handy.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Ajax requests in an API
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: While working with an external database, there are often times when we need
+    to make data changes to other models. We might also need to receive responses
+    that are more complex than those available to the data store in the current version
+    of Sencha Touch. In these cases, we can use an Ajax request object to send data
+    directly to our backend for processing.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'For example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: The previous code makes a direct `GET` request to `/api/bookmarks.php` and passes
+    an `id 6162337597` value as part of the request. The API can then use this information
+    to grab a specific bookmark and return it to the Ajax request in JSON format.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Success or failure is indicated by returning an appropriate HTTP status code.
+    If you''re returning a successful message, simply outputting JSON will return
+    an acceptable status code. To indicate failure, you would return an error code
+    in the 400 or 500 range; in PHP, it may look as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: You'll need to look up how to send HTTP response headers in the documentation
+    for your preferred API programming language.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: For a list of HTTP status codes, visit [http://restpatterns.org/HTTP_Status_Codes](http://restpatterns.org/HTTP_Status_Codes).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Going offline
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Inevitably, people using your application will find themselves without Internet
+    access. With traditional web applications, this typically means that the application
+    was inaccessible and unusable. But, with some careful planning, you can make your
+    mobile application available offline.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Syncing local and remote data
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The first thing to think about is your data: which data will your users need
+    even when they are offline? Let''s use a simple address book example. You would
+    probably have a model for the contacts and a store that queries your remote address
+    book server, along with perhaps a list view to display the contacts:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: This is a very simple example, and we've left out creating an `index.html` file
+    or adding the list to a viewport, even though both these actions would be necessary
+    to make this application actually work.
+  prefs: []
+  type: TYPE_NORMAL
+- en: You'll notice that our application uses a `jsonp` proxy, which is fine if we
+    only want to load its data from a remote server. If we want our application to
+    work offline, we will have to provide some local storage. Additionally, when the
+    user comes back online, we want them to be able to retrieve updated contact information
+    from the remote server.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This means we''ll need two stores: our current store, which uses a `jsonp`
+    proxy, and a new store to keep a copy of the data in local storage for when we
+    go offline. The new store looks as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Our next task is to make sure that the offline store has the most recent data
+    from the online store. We do this by adding a listener to the online store''s
+    `load` event. Each time the online store loads new data, we''ll update the offline
+    store. In the following way, the offline store works as a cache for the online
+    data:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: The `load` event is called whenever the online store successfully loads new
+    data. In our handler, we first retrieve the offline store and clear it (otherwise,
+    we would end up duplicating our data each time we load the online store). Then,
+    we use the online store's `.each()` function to iterate through every record,
+    adding that record's data to the offline store.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '**The .each() function**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`.each()` is a function provided by the store that allows you to call a function
+    for each record in that store. The function considers the individual record as
+    a single argument. This allows you to perform operations on all the records one
+    at a time rather than querying for them individually.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Now, every time the online store is updated, the offline store is updated too.
+    More importantly, though, when the online store is unable to be updated, the offline
+    store will still have data in it. Since the offline store will always have data
+    to display even when the online store doesn''t, we should use the offline store
+    as the store for our list so that we''re always displaying something to our users.
+    So, we change `ContactView` as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: Our online store will still autoload when our application starts, even though
+    it's not bound to our list anymore, and if the user is online, all the data in
+    both stores will be updated.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Of course, there are other ways in which you can accomplish the same goal. You
+    could use the `Ext.List` component's `bindStore` function to switch between the
+    two stores and the online store's `jsonp` proxy `exception` event to discover
+    when you'd gone offline. Or, you could look at the value of the `window.navigator.onLine`
+    variable to determine your online state and set up your stores accordingly. We'll
+    talk about both the `jsonp` proxy's `exception` event and the `window.navigator.onLine`
+    variable later in this chapter.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Manifests
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Now that we've ensured our data is available offline, we need to make sure that
+    the rest of our application is available as well. This includes all our JavaScript
+    code, HTML, styles, and images. If our user has gone offline, they won't be able
+    to load our application unless they've got a local copy to work from. That's where
+    the Application Cache comes in.
+  prefs: []
+  type: TYPE_NORMAL
+- en: HTML5 provides a mechanism for indicating to a web browser which parts of your
+    application it should store for offline use. This isn't a functionality provided
+    by Sencha Touch, but is something you should be familiar with nonetheless.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: If you are using Sencha Cmd to manage your application development process,
+    the `cache.manifest` file will be created for you automatically.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'A manifest is a way in which you specify which files to cache. Let''s create
+    one for our simple address book application. Open up an empty text file and add
+    the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: Then, save the file as `cache.manifest`. All lines starting with a hash (`#`)
+    are comments and are ignored.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the preceding code snippet, the first section following the term `CACHE:`
+    is a list of files that the mobile device should save for offline use. If you
+    have any images or other files that you use, those should be listed here as well.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `NETWORK:` section lists all the files that should only be available online.
+    The asterisk (`*`) indicates that everything not listed in the `CACHE:` section
+    should be available online only.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Most browsers limit offline storage to 5 MB. This includes both the files listed
+    in your manifest as well as any data in local storage stores. So, if you've got
+    an exceptionally big application, you may want to be selective about what you
+    allow your application to do offline.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In order to let browsers know about your manifest, you have to add a reference
+    to it in the `index.html` file. However, this isn''t done in the same way in which
+    we link to CSS or JavaScript files. Instead, we add an attribute to the opening
+    `html` tag as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Now, when you launch your browser, you should see your files listed in the
+    **Application Cache** in the developer console (click on the **Resources** tab
+    and then on **Application Cache**) as shown in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Manifests](img/0748OS_09_01.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Setting up your web server
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Initially, you may find that your manifest isn't working properly. Usually,
+    this means that your web server isn't configured to serve manifest files in the
+    way mobile browsers expect.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Web servers use **MIME Types** to tell browsers how to handle certain files.
+    MIME Types can get pretty complicated, but for manifests, all you have to do is
+    add the MIME Type to your server. You should consult the documentation for your
+    web server for instructions, but we will take the Apache web server as an example.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'For Apache, you should add the following MIME Type to your `httpd.conf` file:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: Then, restart your web server for the changes to take effect.
+  prefs: []
+  type: TYPE_NORMAL
+- en: For IIS, you will want to use the Administration UI to add the MIME Type.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Take a look at the following links for setting up your web server:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'For more on setting up Apache: [http://httpd.apache.org/docs/current/mod/mod_mime.html](http://httpd.apache.org/docs/current/mod/mod_mime.html).'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'For more on setting up IIS: [http://technet.microsoft.com/en-us/library/cc753281(WS.10).aspx](http://technet.microsoft.com/en-us/library/cc753281(WS.10).aspx).'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Updating your cached application
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Once your application has been cached locally, the mobile device will no longer
+    query your server to download your application files. This means that when you
+    release updates or new versions of your application, users who've already cached
+    your application won't get your updates.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The only way to force users to download the new version of your code is to
+    update the manifest file itself. That''s why we added the following lines at the
+    top of the previous code snippet:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Just update the version number and save the file as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs: []
+  type: TYPE_PRE
+- en: This changes the manifest file, which will force anyone with cached copies to
+    re-download all of the files in the `CACHE:` section of the manifest.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: If you want to learn more about the Application Cache and manifest files, check
+    out the *Beginner's Guide to Using the Application Cache* at [http://www.html5rocks.com/en/tutorials/appcache/beginner/](http://www.html5rocks.com/en/tutorials/appcache/beginner/).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Interface considerations
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: It's also important to let your users know when they're working in the offline
+    mode. Most devices have an online icon in a status bar, but even so, it's not
+    always apparent to the user when they've gone offline. You may want to let them
+    know when you put your application in the offline mode.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Alerting your users
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: In our address book example, we have an online store that updates a second offline
+    store. The offline store holds the data that the user sees displayed in the `Ext.List`
+    class. However, we never explicitly tell the user when they've gone offline. In
+    our first example, we don't keep track of the online or offline status ourselves
+    because the application will work in either mode.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'If we want to tell our users when the application has gone offline, the most
+    reliable method is by waiting for the online store''s request to time out. In
+    the proxy, let''s add a `timeout` component and a function to call when `timeout`
+    occurs:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE21]'
+  prefs: []
+  type: TYPE_PRE
+- en: The `exception` function will only be called after the timeout has elapsed.
+    Timeouts in Sencha Touch are listed in milliseconds, so in this case, `2000` means
+    two seconds. If the store doesn't get a response from the server in two seconds,
+    the user is shown an alert informing them that the application has gone offline.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This is a good place to add other offline logic:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: If you've set up polling in your store so that it automatically refreshes every
+    so often, you may wish to turn it off
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: If there are special offline UI elements, you can enable them here
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: If you have a lot of offline logic, you will probably want to put the code in
+    a separate function so that you don't have to go hunting for it in the proxy configuration
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: If you are using the MVC structure discussed in the previous chapter, the controller
+    would be a good place for this kind of logic.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: If you are compiling your app via Sencha Cmd or some other method rather than
+    running it as a web app, you may have access to the `onlinechange` event that
+    is fired by the `Ext.device.Connection` object. Check the API docs for more on
+    using the `Ext.device.Connection` object.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Updating your UI
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Another way to visually inform your users that they are in the offline mode
+    is to change the color or style of your application. While setting up an entirely
+    different theme for offline mode may be overkill, there is a handy way to specify
+    an offline stylesheet.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s create a file called `my-app-offline.css` and save it to our `css` folder.
+    In the file, place the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE22]'
+  prefs: []
+  type: TYPE_PRE
+- en: This will turn the `contact-list` text red. Now, we need to load it when we're
+    offline.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The Application Cache manifest file (`cache.manifest`) can have a section called
+    `FALLBACK:` that is used to substitute an alternate file when a particular file
+    is unreachable. Let''s add the following to the bottom of our `cache.manifest`
+    file:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE23]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'You should also change the `css/my-app.css` line from the `CACHE:` section
+    to reference `css/my-app-offline.css` instead as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE24]'
+  prefs: []
+  type: TYPE_PRE
+- en: In the `index.html` file, you should leave `css/my-app.css` in the `style` tag
+    as that will be the file that's loaded when we're online. When we're offline,
+    however, the manifest tells our mobile browser to implicitly use `css/my-app-offline.css`
+    instead.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Updating your UI](img/0748OS_09_02.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: As we can see in the preceding screenshot, now, when your application is offline,
+    it will automatically use `my-app-offline.css` instead of `my-app.css`. You could
+    also use this to provide an offline version of images or even JavaScript files
+    if you want to completely segregate online and offline functionality. It should
+    be noted that this method doesn't work if someone is online and then goes offline
+    while using your application; say, if they went through a tunnel and lost signal.
+    In that case, you would want to use the event listener method to switch your user
+    to the offline mode.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Alternate methods of detecting the offline mode
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'As mentioned earlier in the chapter, there are two alternate methods of detecting
+    the offline mode: the `navigator.onLine` and `online`/`offline` browser events.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The variable `navigator.onLine` will be `true` if the browser is online and
+    `false` if it is not. In the `exception` function we discussed earlier in the
+    chapter, we can add the following code to check it and change our message accordingly:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE25]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Alternately, we can set up listeners for the browser''s `online` and `offline`
+    events as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE26]'
+  prefs: []
+  type: TYPE_PRE
+- en: You'll notice that we did not use Sencha Touch's event management concept here.
+    This is because Sencha Touch does not provide custom events for `online` and `offline`
+    events, so we have to use the browser's event listener function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Not all desktop browsers support the `navigator.onLine` or `online`/`offline`
+    events, so if you are making your application available to desktop users as well,
+    you should use the timeout exception and manifest cache techniques instead.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting into the marketplace
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Sencha Touch applications offer developers a way to reach a wide audience using
+    existing web technologies. Users can access an application via the Web and even
+    save it to their devices for offline use. While this flexibility is extremely
+    valuable, you may also want to distribute your application through the various
+    application stores available for Apple and Android.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this section, we will take a look at some of the options available and the
+    potential hurdles for releasing a compiled application.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Compiling your application
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: A compiled application is one that runs natively on the device in question.
+    For Apple's iOS products, this means Objective C, and for Google's Android OS,
+    this means Java. Both iOS and Android use their own **Software Development Kits**
+    (**SDK**) to create these native applications.
+  prefs: []
+  type: TYPE_NORMAL
+- en: An SDK is similar in functionality to Sencha Touch's framework, but it is much
+    more complex and tied to a specific platform (iOS or Android). Since a native
+    application is the only type that can be sold in the various app stores for Android
+    and iOS, we need a way to translate our Sencha Touch JavaScript into one that
+    the SDK can use. Fortunately, Sencha Touch developers have a few options for translating
+    their JavaScript-based applications into either of these languages and creating
+    compiled applications. The two most popular translation programs are Sencha Cmd
+    and PhoneGap.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Both Sencha Cmd and PhoneGap use specialized command-line tools that allow you
+    to take your existing code and place it into the SDK for iOS or Android. Both
+    tools make extensive use of the Xcode and Android SDK libraries to translate your
+    code into compiled applications. We will look at obtaining these SDKs in the *Registering
+    for developer accounts* section.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In addition to translating your Sencha Touch application to a native application,
+    Sencha Cmd and PhoneGap also allow you to access some of the native features of
+    the device. These features include access to the filesystem, camera, and sound
+    and vibration options on the device.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let's take a look at the Sencha Cmd and PhoneGap translation programs.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Sencha Cmd
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'If you have been working alongside this book in Sencha Cmd, it is probably
+    your best bet for compiling applications. By compiling the application, you gain
+    access to more of the features in your iOS or Android device. These features include
+    the foillowing:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Camera**: This feature allows you to take photos with the camera or access
+    previously taken photos.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Connection**: This feature allows you to see whether or not the device is
+    online and what type of connection is being used.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Contacts**: This feature allows access to search, sort, and filter contacts
+    on the device.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Geolocation**: This feature allows access to the device''s geolocation API
+    (this is a more robust implementation of the browser''s geolocation functionality).'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Notification**: This feature shows simple notifications on the device. These
+    notifications appear at the OS level and not just at the application level.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Orientation**: This feature gathers feedback on the orientation of the device.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Push**: This feature sends push notifications to the device (iOS only).'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: These features are accessed using an object called `Ext.device`. For example,
+    the `Ext.device.Camera.capture(…)` method allows you to grab an image from the
+    camera or gallery and use it in your application.
+  prefs: []
+  type: TYPE_NORMAL
+- en: A step-by-step guide to native packaging can be found at [http://docs.sencha.com/cmd/3.1.2/#!/guide/native_packaging](http://docs.sencha.com/cmd/3.1.2/#!/guide/native_packaging).
+  prefs: []
+  type: TYPE_NORMAL
+- en: PhoneGap
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Much like Sencha Cmd, PhoneGap offers a wide range of native functions through
+    a global object called `navigator`. This object allows you to make JavaScript
+    calls using commands in your JavaScript, such as the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE27]'
+  prefs: []
+  type: TYPE_PRE
+- en: The first command opens the camera on the device and lets your application take
+    a picture. The picture is returned as a data string to your application, where
+    you can manipulate it in JavaScript.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The second function returns the orientation of the device in degrees. This can
+    be very useful in games where play can be driven by tilting the device.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'PhoneGap also offers access to the following features:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Accelerometer**: This feature gets information from the device''s motion
+    sensor'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Camera**: This feature takes a photo using the device''s camera'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Capture**: This feature captures audio and video'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Compass**: This feature identifies the direction to which the device is pointing'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Connection**: This feature checks the network status and gets cellular network
+    information'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Contacts**: This feature works with the onboard contact database'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Device**: This feature gathers device-specific information'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Events**: This feature listens to native events on the device'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**File**: This feature reads and writes to the native filesystem'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Geolocation**: This feature gathers more detailed location information'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Media**: This feature plays back audio files'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Notification**: This feature creates device notifications'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Storage**: This feature stores data directly on the device'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: PhoneGap also offers options for compiling your applications in the Blackberry,
+    WebOS, and Symbian platforms.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Take a look at the following link for more resources on PhoneGap:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[http://docs.phonegap.com/en/edge/](http://docs.phonegap.com/en/edge/)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Other options
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: PhoneGap has also launched a cloud-based service for compiling applications
+    called **PhoneGap Build** ([https://build.phonegap.com/](https://build.phonegap.com/)).
+    This unique service does away with the need to download the SDKs for each platform
+    you wish to compile for. Files are simply uploaded to the Build Service and the
+    system generates the application for the platforms that you specify.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Sencha Architect** is a graphical application builder for Sencha Touch and
+    ExtJS. Architect now has the ability to compile applications for both iOS and
+    Android built right into the application. More information can be found at [http://docs.sencha.com/architect/2/#!/guide/deploy](http://docs.sencha.com/architect/2/#!/guide/deploy).'
+  prefs: []
+  type: TYPE_NORMAL
+- en: As with any of these options, you will need to be a licensed developer for the
+    platform you want to compile for. This can be a bit of a lengthy process, so let's
+    take a look at what's involved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Registering for developer accounts
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In order to publish your application onto the Apple Store or onto Google Play,
+    you are going to have to sign up for their respective developer accounts. Both
+    stores charge you a fee to become a developer and require quite a bit of information
+    about you. They require this information for several reasons. Firstly, they have
+    to know who you are so that you can get paid for apps that you sell in their stores.
+    Secondly, they need to know how to contact you if there's a problem with your
+    application. And lastly, they need to be able to track you down if you try to
+    do something evil with your application. Not that you would, of course!
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Registering for developer accounts](img/0748OS_09_03.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: You will also need to download and install the appropriate SDK for that store
+    in order to be able to package your application appropriately.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Becoming an Apple developer
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: To become an Apple developer, first you must go to [http://developer.apple.com/programs/register/](http://developer.apple.com/programs/register/).
+  prefs: []
+  type: TYPE_NORMAL
+- en: You will need to either supply your existing Apple ID or sign up for a new one,
+    fill out some lengthy profile information, agree to some legal documents, and
+    then perform an e-mail verification. From there, you will have access to the Apple
+    Developer Center. The two points that are of utmost interest to us as mobile developers
+    are the **iOSDev Center** and the **iOS Provisioning Portal**.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The iOSDev Center is where you can download the iOS SDK (known as **Xcode**),
+    read documentation, see sample code and how-tos, and view some videos about iOS
+    development.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The iOS Provisioning Portal is where you add your application to the Apple Store
+    or publish test versions of your application.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: In order to use Xcode or publish your application onto the Apple Store, you
+    must have a computer running OS X. Windows and Linux computers cannot run Xcode
+    or publish onto the Apple Store.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Becoming an Android developer
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Signing up for the Android Market is a very similar process. First, go to [https://market.android.com/publish/signup](https://market.android.com/publish/signup).
+  prefs: []
+  type: TYPE_NORMAL
+- en: There, you will be asked to fill out more profile information and pay your developer
+    registration fee. You will also want to download the Android SDK at [http://developer.android.com/sdk/index.html](http://developer.android.com/sdk/index.html),
+    although, unlike Apple's SDK, the Android SDK will work on Windows, OS X, and
+    Linux.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The Android Developer Dashboard also has links to guides, reference material,
+    and instructional videos.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this chapter, we've covered a few advanced topics for the aspiring Sencha
+    Touch developer. We first talked about creating your own API to communicate with
+    a database server. We've covered the REST method of communication for sending
+    and receiving data from the server and discussed some options for building your
+    own API.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'More resources on creating an API are as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'How to create an API: [http://www.webresourcesdepot.com/how-to-create-an-api-10-tutorials/](http://www.webresourcesdepot.com/how-to-create-an-api-10-tutorials/)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Creating an API-centric web application: [http://net.tutsplus.com/tutorials/php/creating-an-api-centric-web-application/](http://net.tutsplus.com/tutorials/php/creating-an-api-centric-web-application/)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: We've then covered how to take your application offline using manifests and
+    the Application Cache. We've talked about best practices for alerting the user
+    that the application is offline and how you can detect the availability of an
+    Internet connection using Sencha Touch and the device's web browser.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'More resources on how to take your application offline are as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Taking Sencha Touch applications offline:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[http://www.sencha.com/learn/taking-sencha-touch-apps-offline/](http://www.sencha.com/learn/taking-sencha-touch-apps-offline/)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The HTML manifest attribute:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[http://www.w3schools.com/tags/att_html_manifest.asp](http://www.w3schools.com/tags/att_html_manifest.asp)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: We've closed the chapter with a look at getting into the application marketplace
+    by compiling your application with Sencha Cmd and PhoneGap. We've also talked
+    about the process for becoming an Apple or Android developer so you can sell your
+    application in the marketplace.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'More resources on building Sencha Touch applications:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Enhancing iOS Sencha Touch applications using Sencha Cmd:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[http://docs.sencha.com/cmd/3.1.2/](http://docs.sencha.com/cmd/3.1.2/)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Building a Sencha Touch application using PhoneGap:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[http://docs.phonegap.com/en/edge/](http://docs.phonegap.com/en/edge/)'
+  prefs: []
+  type: TYPE_NORMAL

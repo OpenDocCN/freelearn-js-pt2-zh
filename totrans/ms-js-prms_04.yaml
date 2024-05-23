@@ -1,0 +1,797 @@
+- en: Chapter 4. Implementing Promises
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In the last chapter, [Chapter 3](ch03.html "Chapter 3. The Promise Paradigm"),
+    *The Promise Paradigm*, we have seen how promise and its theories were fabricated
+    together to form a whole new amazing picture of the software engineering paradigm,
+    and especially in today's modern asynchronous application development life cycle.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this chapter, we will start experimenting on how this concept can take shape
+    by implementing promises in real time. Why do we need to see its implementation?
+    The answer to this question is quite simple; we need to see how the concept we
+    have developed so far is true and how much of this concept is really applicable.
+    Also, with these little implementations of promises, we will plot the base of
+    our foundation to use promise in other technologies in later chapters. So, let's
+    see how we will go about with this implementation phase.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to implement promises
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: So far, we have learned the concept of promise, its basic ingredients, and some
+    of the basic functions it has to offer in nearly all of its implementations, but
+    how are these implementations using it? Well, it's quite simple. Every implementation,
+    either in the language or in the form of a library, maps the basic concept of
+    promises. It then maps it to a compiler/interpreter or in code. This allows the
+    written code or functions to behave in the paradigm of promise, which ultimately
+    presents its implementations.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Promises are now part of the standard package for many languages. The obvious
+    thing is that they have implemented it in their own way as per the need. We will
+    be examining more on how these languages are implementing the concept of promise
+    in detail in this chapter.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Implementations in Java
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Java is among the world's favorite and most admired programming languages and
+    is used in millions of devices across the globe. There is no need to say anything
+    further about Java, except that it's the first choice of engineers when it comes
+    to creating application software that uses multithreaded and controlled asynchronous
+    patterns and behaviors. Java is one of the few languages that has implemented
+    asynchronous behavior by default in its compiler, which helps programmers to write
+    robust, scalable, and maintainable pieces of software.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The util package of Java
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Naturally, Java has more acceptability for the concept of promise and its implementation.
+    There are many implementations in the package of `java.util.concurrent`, regarding
+    promise and its implementations. We have handpicked some of the interfaces and
+    classes that are helping out in implementing promises or nearly matching the concept.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The mechanics of Java to implement a promise
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Within the `java.util.concurrent` package, there are a number of interfaces
+    and classes that will help us to write concurrent and asynchronous code, but there
+    are a few particular interfaces and libraries that are specific to this promise/future
+    implementation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `java.util.concurrent` package is home to concurrent programming (as the
+    name says) and is the home of few small standardized extensible frameworks. This
+    also helps in implementing some of the core classes, which in normal conditions,
+    are hard to work with.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The core components of java.util.concurrent
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'The `java.util.concurrent` package has many classes and components, but some
+    of the core components that make this particular package more adaptable to work
+    are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![The core components of java.util.concurrent](img/5500OS_04_01.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Core components of the Java util.concurrent package
+  prefs: []
+  type: TYPE_NORMAL
+- en: Executor
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: '`Executor` is a simple standardized interface, which is commonly used to define
+    custom threaded subsystems. These subsystems include the thread pools, asynchronous
+    I/O, and task-based lighter frameworks.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tasks created in the thread can either be executed in "the same task-execution
+    thread" or in a new thread; this may also be executed in the thread calling execute
+    sequentially or concurrently. Whichever thread the execute pattern task adopts
+    is purely based on the concrete `Executor` class used.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `ExecutiveService` interface provides a fully stacked asynchronous tasks
+    framework. This interface is for a number of tasks of the pool, which includes
+    the controlled shutdown of `Executor`, managing of different in-pool cues, and
+    scheduling of tasks. There are a few more associates that work with `ExecutiveService`
+    to add support to delay the periodic and periodic task executing. One such associate
+    is `ScheduledExecutorService`, a subinterface that works with the `ExecutiveService`
+    interface in managing the delayed and periodic tasks executing whenever called
+    upon.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There is another interface called the `ExecutorService` interface, which provides
+    methods to arrange the execution of any function that is expressed as callable.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Queues
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: When it comes to the queue, the only thought that first emerges is the pattern
+    of **First In First Out** (**FIFO**). Just as other languages apply this data
+    structure in their own ways, Java treats it as an efficient and scalable thread-safe,
+    nonblocking FIFO queue by employing the `ConcurrentLinkedQueue` class from its
+    `java.util.concurrent` package. In the same package, five implementations support
+    the `BlockingQueue` interface.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `BlockingQueue` interface is a queue, which has an advanced wait mechanism.
+    This holds the queue to further get into processing until all the previous processing
+    is done. This also waits for the space to make the queue available when storing
+    an element.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The five implementations of the `BlockingQueue` interface are listed as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`LinkedBlockingQueue`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`ArrayBlockingQueue`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`SynchronousQueue`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`PriorityBlockingQueue`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`DelayQueue`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: We will discuss some of these relevant implementations in the following section.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Timing
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Since `util` is the utilities package, it has controls in the form of classes
+    and interfaces that help engineers to make use of their daily routine stuff. One
+    such package is the timing of a method or interface. This is to perform certain
+    instructed operations, and eventually, they time out themselves once the operation
+    is done.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Most of us are already aware of the importance of session creation and session
+    timeout, especially those of us who are programmers for the Web. Session tracking
+    is a subject in its own and doesn't really link that much from the structure of
+    this chapter, so we will return our focus to the topic of timing.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This packing is like a timing belt of Java programs. In any engine, the role
+    of a timing belt is to make sure that certain mechanical operations are done within
+    a specified amount of time; it is the same as with this package. This controls
+    the in-time and out-time of functions and also the definite/indefinite waits.
+    The point to remember is that all these methods use the time out in every case.
+    This helps threads define the amount of time a method spends within a thread pool
+    and saves the actual program to perform with scalability.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Synchronizers
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Java provides a low-level thread creation and execution so that programmers
+    can easily handle and modify the thread-level control. In earlier versions, the
+    controlling of threads was considered the hardest topic to deal with, as there
+    was much of the manual control than automation of threads and their synchronization.
+    At this time, Java was much more advanced in controlling multiple threads than
+    its competing languages, but still playing with threads was a fairly hard task
+    for Java engineers.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the later versions of Java, this problem was considered as the most important
+    one to find a regulation, and finally, with the emergence of version 7, the compiler
+    has fixed most of the problems faced by engineers.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In the current version, which is version 8, five classes aid the purpose of
+    synchronization:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `Semaphore` class is a classic concurrency tool and has been around for
+    a very long time ([http://docs.oracle.com/javase/7/docs/api/java/util/concurrent/Semaphore.html](http://docs.oracle.com/javase/7/docs/api/java/util/concurrent/Semaphore.html))
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The `CountDownLatch` class is a very simple yet common utility for blocking
+    until a given number of signals, events, or operations being performed in other
+    thread are being taken care off ([http://docs.oracle.com/javase/7/docs/api/java/util/concurrent/CountDownLatch.html](http://docs.oracle.com/javase/7/docs/api/java/util/concurrent/CountDownLatch.html))
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The `CyclicBarrier` class is a resettable multiway synchronization point, which
+    is useful in some styles of parallel programming ([http://docs.oracle.com/javase/7/docs/api/java/util/concurrent/CyclicBarrier.html](http://docs.oracle.com/javase/7/docs/api/java/util/concurrent/CyclicBarrier.html))
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The `Phaser` class provides a more flexible form of barrier that may be used
+    to control phased computation among multiple threads ([http://docs.oracle.com/javase/7/docs/api/java/util/concurrent/Phaser.html](http://docs.oracle.com/javase/7/docs/api/java/util/concurrent/Phaser.html))
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The `Exchanger` class allows two threads to exchange objects at a rendezvous
+    point and is useful in several pipeline designs ([http://docs.oracle.com/javase/7/docs/api/java/util/concurrent/Exchanger.html](http://docs.oracle.com/javase/7/docs/api/java/util/concurrent/Exchanger.html))
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Concurrent collections
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The `Concurrent` packages provide the implementations for a multithreaded context
+    and has the following implementations.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Since it has more specific sync facilities, some of its classes use the prefix
+    `Concurrent` to highlight the additional facilitates it is providing. A few more
+    prominent ones are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`ConcurrentHashMap`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`ConcurrentSkipListMap`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`ConcurrentSkipListSet`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`CopyOnWriteArrayList`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`CopyOnWriteArraySet`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The virtue of concurrent collection is its safe thread, but not overlooked by
+    a single locking mechanism, in particular. Only in the case of `ConcurrentHashMap`,
+    it allows any sum of concurrent reads as well as concurrent writes. Why, then,
+    do we use synchronized classes? The answer is that they are very useful in preventing
+    all the access to a collection using a single lock, but it has a cost, and poorer
+    scalability.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In other cases where multiple threads are in line to access a common collection,
+    the current version of classes is more advisable, whereas unsynchronized locks
+    are used when either collections are unshared or they can be accessed when holding
+    other locks.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The implementation of promise by Java
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Java implements the paradigm of promise using its promising class and interfaces.
+    Although its asynchronous behavior is one of the core and flagship features of
+    Java, here are the ingredients of how promise is implemented in Java:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Interfaces:'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`CompletionService`'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`ExecutorService`'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`Future`'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Classes:'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`Delayed`'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`DelayQueue`'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`FutureTask`'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: CompletionService
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The `CompletionService` interface acts as a service to make a distinction between
+    new asynchronous tasks from the result of completed tasks. This follows a simple
+    process in which the producer adds the tasks for execution. For the consumers,
+    this interface takes completed tasks and processes their results in the order
+    that they were marked as completed. This service can be used for many concurrent
+    operations, such as managing an asynchronous I/O. The mechanism of an asynchronous
+    I/O is the tasks that are submitted in one part of the program or set of programs
+    or in a system, and then acted upon the different parts of the program. The submission
+    order may be different than the order they were requested initially.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The mechanism of an asynchronous I/O is that it reads tasks and stores it in
+    one part of the program, such as buffer.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This can be a single program (such as browser) or a set of programs (such as
+    an operating system thread pool). The thread handler decides which thread needs
+    to be executed first.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This interface relies on a separate executor or actually executes the tasks
+    due to which the `CompletionService` interface only manages an internal completion
+    queue. As interfaces implement, they need a class to do so, and the `ExecutorCompletionService`
+    class provides such a facility.
+  prefs: []
+  type: TYPE_NORMAL
+- en: ExecutorService
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The `ExecutorService` interface has two main roles to perform—one is to provide
+    methods to manage the termination of asynchronous tasks, and the other is to provide
+    the methods that can produce a future value for tracing. This tracking can be
+    done for either one or more asynchronous tasks.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The use of an `Executor` for `ExecutorService`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`ExecutorService` inherits `Executor`, which provides the methods to manage
+    termination and production of a future value to track the progress.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`ExecutorService` when shutdown rejects all the new tasks. They have been loaded
+    with two different methods:'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`shutdown()`'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`shutdownNow()`'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The `shutdown()` method allows the tasks in memory to conclude their states
+    and then terminate them. Also, it prevents the memory from entering and processing
+    it for any upcoming tasks. On the other hand, `shutdownnow()` doesn't give any
+    such liberty; it just terminates whatever is in the memory, then and there. This
+    also totally rejects the entry of new tasks in the memory by nullifying the existing
+    thread.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Both the methods have their own significance, but since both are related to
+    termination of existing tasks, they must be used with much care and with proper
+    understanding of the potential consequences.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The following code snippet is taken from the original Java docs, which is available
+    at [http://docs.oracle.com/javase/7/docs/api/java/util/concurrent/ExecutorService.html](http://docs.oracle.com/javase/7/docs/api/java/util/concurrent/ExecutorService.html):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The following method shuts down an `ExecutorService` interface in two phases:
+    first, by calling shutdown to reject incoming tasks, and then by calling `shutdownNow()`,
+    if necessary, to cancel any lingering tasks:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: Future
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: In Java, `future` represents the value of the result of an asynchronous computation.
+    Methods are provided to track the status of result. These methods indicate whether
+    the current state is waiting or not.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The catch is, you can only yield the result using `get` or when the computation
+    is done.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Cancellation can be done via the cancel method; this sounds very easy to remember.
+    Cancellation of a `Future` value can be done using the cancellation method.
+  prefs: []
+  type: TYPE_NORMAL
+- en: You can also check whether the task was completed normally or cancelled by virtue
+    of this method invocation. Once the computation is done, it cannot be cancelled;
+    this sounds so promising to us, just like the concept of promise.
+  prefs: []
+  type: TYPE_NORMAL
+- en: You can also use `Future` to cancel tasks. Although it's not a very good approach,
+    if you want to do it, then you can declare many types of `Future` objects and
+    ask the method to return null; that's it! You got your task cancelled once again.
+    This must be done before the final computation of the tasks.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Here is the code snippet:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The `FutureTask` class is an implementation of `Future` that implements `Runnable`,
+    and so may be executed by an `Executor`. For example, the previous construction
+    with submit can be replaced by the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: Delay and DelayedQueue
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '`Delay` is an interface that uses a marker to mark those objects that were
+    acted upon, after they were given a delay.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`DelayedQueue` is an unbounded queue that is used to collect all the objects
+    that were delayed/expired. Since it''s a queue, it must have a header element
+    whose delay has expired long ago.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Since it's a queue and is similar to a `queue` data structure, it has a starting
+    point called header and an ending point called footer. When it comes to future,
+    the queue we are referring to here has a value, which has already expired due
+    to the failed promise or unfulfilled promise.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If such an element was not found, will the poll return null when the expiration
+    occurs? Well, it occurs when the method `getDelay(TimeUnit.NANOSECONDS)` returns
+    the value as less than or equal to zero. The expired elements in this way cannot
+    be removed, so they are treated as normal ones.
+  prefs: []
+  type: TYPE_NORMAL
+- en: FutureTask
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '`FutureTask` is the cancellable asynchronous computation. This is the basic
+    provider of `Future` that is loaded with methods from start of a method to cancel
+    it. This also helps in the retrieving of the result of the computation, and since
+    it''s an implementation, the result can be extracted when the computation has
+    been completed. Needless to mention that once the result is computed, it cannot
+    be pulled back or changed as it''s a promise.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summing up Java and Promises.js
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: If we conclude the preceding discussion, it's clear that Java has a clearer
+    approach and implementation when it comes to Promises.js. It's a mature way of
+    handling asynchronous behavior, and especially, the way it handles multithreading
+    is far better than what other languages have to offer. However, as every implementation
+    has its own drawbacks, Java too has it, and it's quite acceptable since you cannot
+    just copy and paste the theory as it is with any compiler/interpreter. There are
+    few more supportive frameworks/libraries contributed by an open source community
+    to add the remainder of its implementation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Say hello to JDeferred
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Inspired by the implementation of promise in jQuery, few Java Engineers have
+    started to develop a library called `JDeferred`. This implements the concept of
+    promise as robustly as it should be by leaving the gaping holes of the `java.util.concurrent`
+    package. This was a brief of how `JDeferred` works. Let's dive deep into what
+    it is and its unique advantages, as compared to other implantations available
+    in the market.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Just like jQuery has a deferred object, `JDeferred` is designed in a similar
+    way to behave and contact with Java's compiler. `JDeferred` is not only similar
+    with jQuery's implementation of promise, but it also extends its support to the
+    Android Deferred Object. [Chapter 8](ch08.html "Chapter 8. Promises in jQuery"),
+    *Promises in jQuery* is the dedicated chapter on jQuery and its mechanism and
+    working on promise, so we can skip that part for now and see what the Android
+    Deferred Object is, and how it fits into the implementation of promise.
+  prefs: []
+  type: TYPE_NORMAL
+- en: A few words about Android Deferred Object
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: It would be unfair not to showcase the existence of Android Deferred Object
+    and its properties when we are discussing `JDeferred`. The Android Deferred Object
+    is a utility or more simply, it is a chainable utility object that can actually
+    do all the same stuff for the Android domain. It can register multiple callbacks
+    in a single callback queue; it can invoke callback queues and after processing.
+    It also can relay the state of success or failure to whichever function is waiting
+    for; it doesn't matter whether it's a synchronous function or an asynchronous
+    function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Its working is quite straightforward. You obtain a promise out of a function
+    that was executed asynchronously. As we can work around with promise, you can
+    attach callbacks to get notified about the success or failure. Whenever this piece
+    of program that was working asynchronously finishes off as expected, the promise
+    is called to be resolved in case of any error; it calls the `rejected` parameter.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Use case 1 – object success and failure callbacks for a task
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Say that you need an asynchronous HTTP request. A simple way of using Android
+    Deferred Object is to wrap the request in to `DeferredAsyncTask` and attach callbacks
+    to your action. Here is the code for such a scenario:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: The reference to preceding code is available at [https://github.com/CodeAndMagic/android-deferred-object](https://github.com/CodeAndMagic/android-deferred-object).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Use case 2 – merging several promises
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'This use case is best for when you need to add several executed promises into
+    a single one by merging them as a single promise. A convenient way is to call
+    the `DeferredObject.when` method:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: Mechanics of JDeferred
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Coming back to our core discussion of JDeferred, there is almost everything
+    that this implementation has adopted from promises and considered to be more promised
+    than any other library. We will look at what the features it's providing are,
+    and how they are implemented within.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Features of JDeferred
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The implementation of `JDeferred` provides all the methods needed to present
+    the promise paradigm in Java. This has features such as deferred objects and promise,
+    promise callbacks, multiple promises, callable and runnable methods, and Java's
+    generic support.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The following table summarizes the features, along with their available implementation:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '| Feature | Available implementation |'
+  prefs: []
+  type: TYPE_TB
+- en: '| --- | --- |'
+  prefs: []
+  type: TYPE_TB
+- en: '| Deferred object and promise | N/A |'
+  prefs: []
+  type: TYPE_TB
+- en: '| Promise callbacks | `.then(…)``.done(…)``.fail(…)``.progress(…)``.always(…)`
+    |'
+  prefs: []
+  type: TYPE_TB
+- en: '| Multiple promises | `.when(p1, p2, p3, …).then(…)` |'
+  prefs: []
+  type: TYPE_TB
+- en: '| Callable and runnable wrappers | `.when(new Runnable() {…})` |'
+  prefs: []
+  type: TYPE_TB
+- en: '| Java generic support | `Deferred<Integer, Exception, Double> deferred;``deferred.resolve(10);``deferred.reject(new
+    Exception());``deferred.progress(0.80);` |'
+  prefs: []
+  type: TYPE_TB
+- en: Playing with the code using JDeferred
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'We will now explore some of the common examples of this implementation, which
+    are used most often. We will be looking at the following topics:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Deferred object and promise
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Deferred Manager
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Runnable and callable
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`wait()` and `waitSafely()`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Filters
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Pipes
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Deferred object and promise
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'The following code will help you understand how `JDeferred` implements deferred
+    objects and promise. This code has comments for a better understanding:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: Deferred Manager
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Deferred Manager is a simple way to manage your deferred objects. Call the
+    default method of Deferred Manager, and then add the number of promises you want:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: Runnable and callable
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Runnable and callable, which is as good as promise, can be used as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'You can use `DeferredCallable` and `DeferredRunnable` if you want to do the
+    following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Be notified about the progress made by the callable or runnable
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: You want to make your `Deferred` object
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Here is an example code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Extending `DeferredRunnable`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: wait() and waitSafely()
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'The `wait()` and `waitSafely()` functions are the part of `JDeferred` that
+    wants to assume the control of all asynchronous tasks. This is not recommended,
+    but can be very useful in some cases:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The shortcut to the preceding code is as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: Filters
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Here is the code that we will use for the filtration of promise and deferred
+    objects:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: Pipes
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Pipes in `JDeferred` also act for the asynchronous computation of tasks within
+    the ordered manner:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: Ultimate JDeferred
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: As you have seen, it's a much more powerful implementation of Java using promise.
+    Java is very powerful when it comes to implementing the promise paradigm.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Actually, Java itself has many powerful features, but when it comes to proper
+    implementation, such frameworks help us out. Since they are community maintained,
+    they have a problem in terms of quality, as you may find nontested and unverified
+    code that can waste your time. However, `JDeferred` has almost identical implementation,
+    compared to jQuery.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Within this chapter of the book, we have actually started our journey towards
+    mastering the promise. This chapter covered why we are implementing promise and
+    why we chose Java as the core of this chapter. Java has richer features than any
+    other programming language and it's also tried very well to keep it more or less
+    similar to the automation of asynchronous behavior. We explored the core components
+    of Java's `util.concurrent` class in greater detail and by virtue of which we
+    have seen many live examples from Java docs online. Since Java cannot implement
+    the promise paradigm in whole due to the limitations that we have seen, an open
+    source library that acts exactly the same as the promise's paradigm has prescribed
+    it. `JDeferred` has cleared the rest of the doubts out of our minds by taking
+    full advantage of implementing the core values of promise, such as `future`, `deferred`,
+    and so on.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the next chapter, we will carry out a more practical work to develop our
+    understanding of promise with WinRT.
+  prefs: []
+  type: TYPE_NORMAL

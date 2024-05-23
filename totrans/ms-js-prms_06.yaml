@@ -1,0 +1,1189 @@
+- en: Chapter 6. Promises in Node.js
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In the previous chapter, we learned about promises in WinRT and how they are
+    implemented using the Microsoft platform. The promises concept has had wider coverage
+    than other languages. This is one of the fastest growing concepts in open source
+    technologies.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this chapter, we will discuss an implementation of JavaScript that is dramatically
+    changing the course of modern web development and enhancing our ways to real-time
+    web. This amazing piece of technology is called Node.js, a platform written in
+    JavaScript and based on the V8 Engine by Google. Promises in Node.js are far more
+    interesting, evolving, and productive than any other platform or implementation
+    can offer. Let's dive into the details and find out what promises in Node.js have
+    to offer for real-time web.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The V8 engine – the mechanics
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: A term that was only known to Formula One racers and sports car manufacturers
+    was brought into web browsers in 2008 when Google first launched its amazing web
+    browser, Google Chrome.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Like many real-life products and their mechanisms were being copied and depicted
+    in computing industry, the V8 engine is one the true examples of such modeling
+    in recent times. Since the scope of this book is focused on promises, let's take
+    a brief look at what the V8 engine is in reality.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The V8 engine is a nontraditional engine with eight cylinders mounted on a crankshaft
+    to produce extra horsepower. This engine is smoother than a V6 (another V-shaped
+    engine), and less expensive than a V12 engine.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The V8 engine in Google Chrome
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'An open source project that makes Google number one in the web browser race
+    is Google Chrome. Chrome is built on an exclusively designed JavaScript Engine
+    called the V8\. Based on V8, Chrome has gained popularity and attention from users
+    all around the world in a very short space of time. It was first rolled out on
+    September 2, 2008\. However, what does this V8 JavaScript engine do which makes
+    it faster and exceptional than any other program? It doesn''t go into compiling
+    the high-level language interpreter to machine code. It basically skips the middle
+    part of code interpreting and converts the high-level code to machine code then
+    and there. This is the reason why Chrome is much faster:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![The V8 engine in Google Chrome](img/5500OS_06_02.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: The evolution of Node.js
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: After the release of Google Chrome as an open source web browser, people started
+    to take interest in it. There were two main reasons for this rapid interest. From
+    a common user's perspective, it was much faster than any other web browser available,
+    and from a developer's perspective, it was something that had revolutionized the
+    browser technology by converting the high-level instructions into machine code
+    instantly, removing a complete layer of middleware of compiler or interpreter.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Many developers started exploring the code base to find the possibilities of
+    solutions they were involved in and to get the most out of this new amazing compilation
+    of codebase.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Ryan Dahl was among those developers who wanted to give a shot to V8 JavaScript
+    engine as he was busy trying to solve a problem while working at Joyent. The problem
+    was making a browser know how much time is left for an upload process. Inspired
+    by the recent release of V8 and Ruby's Mongrel web server, he drafted the codebase
+    that later evolved into Node.js.
+  prefs: []
+  type: TYPE_NORMAL
+- en: A brief introduction to Node.js
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: What Dahl had created was the first release of a brand new concept in the modern
+    web app development, Node.js.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In plain words, its server-side JavaScript is built on Google's V8 engine. Node.js
+    is an event-based and nonblocking I/O. It's lightweight, efficient, and best suited
+    for data-intensive real-time web apps that run on distributed devices.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Download and install Node.js
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: You can download Node.js from its official website at [http://nodejs.org/download](http://nodejs.org/download).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Node.js is available for a variety of platforms. Select your operating system
+    and the installer will guide you through the rest.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Node.js is also available on GitHub as an open source project at [https://github.com/joyent/node](https://github.com/joyent/node)
+    for developers around the world to contribute to its evolution and development.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The installation instructions are quite simple and easy to understand, just
+    follow the installers related to your operating systems. This is quite straightforward
+    and the process gets completed without much hassle. All you need to do is just
+    follow the onscreen instructions.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Node Package Manager – NPM
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: One of the best virtues of using Node.js is NPM or Node Package Manager. It's
+    an effective way for developers to collaborate on ideas by sharing codebase in
+    a much faster way. However, this is not it. The best use of NPM is to download
+    and install a different simple directory of code called the **package**. It can
+    be done easily by just typing in simple commands (such as `npm install express`)
+    that will download and install the entire package on your machine. With every
+    package, there is a `.json` file that has the metadata about the package. In Unix-based
+    environments, Node Package Managers not only help in downloading and setting up
+    other packages, but are also able to update Node.js itself.
+  prefs: []
+  type: TYPE_NORMAL
+- en: NPM is also another reason why Node.js is getting popular in the community of
+    JavaScript developers. Unlike other languages where uploading libraries and binaries
+    are very time-consuming and permission-oriented. With NPM, it's a much faster
+    and less-permission oriented model that fascinates developers to upload and share
+    their work throughout the community.
+  prefs: []
+  type: TYPE_NORMAL
+- en: For more information on NPM and to add your contributions, check out [https://www.npmjs.com/](https://www.npmjs.com/).
+  prefs: []
+  type: TYPE_NORMAL
+- en: In later sections, we will see how NPM will help us in installing and using
+    packages of our choice and how much faster and sleeker it is to work with NPM.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Choice of environment
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Node.js is platform independent in a way that it has all the installations,
+    setups, and libraries available for all the major operating systems currently
+    available. It's available for all Unix-based operating systems, as well as Mac
+    and Windows platforms. Since our prime focus here is to make you understand what
+    the link is between Node.js and promises, we will base our code examples on the
+    Windows 7 (any edition) platform since it's widely available and Node.js is also
+    available for Windows 7 in stable conditions. Plus, it's very simple and less
+    time-consuming.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Please remember that using Windows-based systems won't make any difference to
+    code and their outputs. This will remain the same for every operating system with
+    no change of any kind. You can easily use the same codebase on any other operating
+    system without any hesitation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Setting up the environment for Node.js
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Let's familiarize ourselves with the environment and how things are getting
+    done using Node.js. First things first, we must know how to set up things to compile
+    the code and run it over our machine.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If you are reading this section, it's assumed that you already have Node.js
+    installed on your machine with the latest release; otherwise, please refer to
+    the earlier section to download and install Node.js.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'After you have set up Node.js, check which version of Node.js and NPM is available
+    on your machine by typing in the following commands:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The output should be similar to the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Setting up the environment for Node.js](img/5500OS_06_03.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Checking versions of Node.js and NPM
+  prefs: []
+  type: TYPE_NORMAL
+- en: Please note that the current version of Node.js is 0.10.31 and the current version
+    of NPM is 1.4.23\. Our examples will be based on these versions, not lesser than
+    these versions.
+  prefs: []
+  type: TYPE_NORMAL
+- en: A simple node server
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Now, we have our environment ready to do some experiments, let's get the most
+    obvious activity done by trying a simple node server. For this, you only need
+    two pieces of software. One is your default text editor such as Notepad in Windows
+    or Nano for Ubuntu and a web browser. For the web browser, we prefer to use Google
+    Chrome as it's easily available for all platforms and is native to Node.js.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'So, type the following code in your favorite text editor:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Save the file by any name with the `.js` extension. For our example, we use
+    the name `server_example.js`. Save this file in a directory (such as `Promises_in_Node`)
+    and open your terminal program. For Windows, it will be Command Prompt. Navigate
+    to the directory where you have saved your file and type in the following command:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![A simple node server](img/5500OS_06_04.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'If the code has no errors, it will compile and show the following output on
+    the screen:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![A simple node server](img/5500OS_06_05.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'Now, open Chrome and type `http://127.0.0.1:1337/` in the address bar and hit
+    *Enter*. This screen will show you the successful output from the Node.js server:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![A simple node server](img/5500OS_06_06.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: That's it! You are now ready to take a deep dive in to promises in Node.js.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Things we learned so far
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Let's sum up what we have learned so far. We learned what V8 engine is and how
+    it's developed by Google Chrome as a JavaScript engine, what Node.js is and how
+    it was started as a problem-solving technique to a full-fledged application development
+    platform. We learned about the Node Package Manager and how it can be used in
+    the Node.js application development. We then learned about where to download Node.js,
+    how to install it, and what dependencies we have to take in consideration while
+    developing for Node.js, and finally, we learned to write a simple server using
+    Node.js and seen its output in a browser. This is a check point and if you are
+    still confused about Node.js, please read through again and then move on.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The following sections will let you understand more about Node.js and promises
+    and how promises are gaining so much respect from Node.js developers.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Node.js with the Q library
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In [Chapter 2](ch02.html "Chapter 2. The JavaScript Asynchronous Model"), *The
+    JavaScript Asynchronous Model*, we discussed what callback hell is and how we
+    are dealing with using promises. With every language, implementation also changes.
+    The same case is with Node.js. promises in Node.js are implemented in a different
+    way. In Node.js, promises are not only used for dealing with callback hell, instead
+    if a function cannot return a value or throw an exception, it can easily pass
+    on a promise. This is a little different from what we have seen in the previous
+    chapters. From the perspective of Node.js, a promise is an object that represents
+    the return value or that can throw an exception Furthermore, it can also be used
+    as a proxy for a remote object to improve latency.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s have a look at the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Messy, isn''t it? Not only is it messy, but also very confusing and hard to
+    maintain. Now, look at the following code using promise:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: Now, this code is less confusing, more productive, and it has one additional
+    quality, which is an implicit error propagation like we have `try`-`catch` and
+    `finally` blocks in Java that catch any unwanted exception and save the program
+    from crashing totally when encountered with an unexpected condition.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The callback approach is known as the inversion of control, a function that
+    is capable of accepting a callback rather than returning a value. Such a mechanism
+    can more easily be described as the phrase, *Don't call me, I will call you*.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Promises in Q have a very special tendency as it's clearly made independent
+    the input arguments from control flow arguments. One can only be able to see its
+    true benefits when using and creating APIs, particularly, variadic, rest, and
+    spread arguments.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Moving ahead with Q
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: After a brief introduction to Node.js and Q, let's see how we can develop applications.
+    First, we need to get the Q library to set up the modules for it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Using the Node Package Manager, install the Q library as shown in the following
+    screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Moving ahead with Q](img/5500OS_06_07.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: As you can see, the prompt says its `q` at version 1.2.0, which is stable and
+    also backward compatible. We will use this release for all our examples in this
+    chapter.
+  prefs: []
+  type: TYPE_NORMAL
+- en: With this installation and past upgrades in our environment, we are now able
+    to sample some of the common yet fruitful features that promises give us in Q.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Promises have a `then` method, which you can use to get the eventual return
+    value (fulfillment) or throw an exception (rejection). By now, we all know it,
+    after reading the previous chapters of this book.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Here is how the preceding line of code works:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: If `iPromiseSomething` returns a promise that gets fulfilled later with a return
+    value, the first function (the fulfillment handler) will be called
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: If the `iPromiseSomething` function gets rejected later by a thrown exception,
+    the second function (the rejection handler) will be called with the exception
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: As you can see, the resolution of a promise is always asynchronous, which means
+    the fulfillment or rejection handler will always be called in the next turn of
+    the event loop (that is, `process.nextTick` in Node.js). This mechanism ensures
+    that it will always return a value either before the fulfillment or rejection
+    handlers are executed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Propagation in Q
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The `then` method always returns a promise that will either be handled or rejected.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In our example code, we assign the output to the `reapPromise` variable, which
+    will hold the value:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: The `reapPromise` variable is the new promise for the return value of either
+    handler. Only one handler will ever be called and it will be responsible for resolving
+    `reapPromise` as a function, which can only either return a value (a future value)
+    or throw an exception.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Whatever is the case, there will be the following possible outcomes:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: If you return a value in a handler, `reapPromise` will get fulfilled
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: If an exception is thrown in a handler, `reapPromise` will get rejected
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: If a promise is returned in a handler, `reapPromise` will become that promise
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: As it will become a new promise, it will be useful for managing delays, combining
+    results, or recovering from errors.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'If the `getInputPromise()` promise gets rejected and you forget the rejection
+    handler, the error will go to `reapPromise`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'If the input promise gets fulfilled and you fail the fulfillment handler, the
+    value will go to `reapPromise`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'When you are only interested in handling the error, Q promises to provide a
+    fail shorthand:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: If you are writing JavaScript for modern engines only or using CoffeeScript,
+    you may use catch instead of fail.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Promises also provide a `fin` function that is like a `finally` clause. The
+    final handler gets called, with no arguments, when the promise returned by `getInputPromise()`
+    either returns a value or throws an error.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The value returned or error thrown by `getInputPromise()` passes directly to
+    `reapPromise` unless the final handler fails, and may be delayed if the final
+    handler returns a promise:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'In short:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: If the handler returns a value, the value is ignored
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: If the handler throws an error, the error passes to `reapPromise`
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: If the handler returns a promise, `reapPromise` gets postponed
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The eventual value or error has the same effect as an immediate return value
+    or thrown error; a value would be ignored, an error would be forwarded.
+  prefs: []
+  type: TYPE_NORMAL
+- en: So when we are looking for propagation, we need to keep in mind what we want
+    to see from our returning value. The `then`, `fail`, and `fin` functions are the
+    keys to remember while using propagations in Q.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: If you are writing JavaScript for modern engines, you may use `finally` instead
+    of `fin`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Chaining and nesting promises
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Remember chaining in promises in [Chapter 2](ch02.html "Chapter 2. The JavaScript
+    Asynchronous Model"), *The JavaScript Asynchronous Model*, where we learned all
+    the things about chaining and callback hell handling? This is just same for Node.js
+    using Q.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'There are two ways you can chain a promise in Node.js using Q: one is you can
+    chain a promise inside a handler and the other is outside of it.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s suppose we are doing multiple things at a time, we can set up the promise
+    chain like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: So, we can say that the `ANY_promise()` function can contain some behavior,
+    and this will return a promise object that leads to eventually return a result.
+    As soon as the real result is returned, it will set off the next function in the
+    chain.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This looks good now, what if you want to set off an asynchronous function and
+    wait until we get a result before executing the behavior of the next promise in
+    the chain?
+  prefs: []
+  type: TYPE_NORMAL
+- en: Q has a solution for this. Using `.defer()` and `deferred.resolve()`, you can
+    get it in a much more manageable and predictable manner.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Sequences in Q
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Like chaining, sequences is another way to stage your result in the way you
+    want. Sequence is the way you can use in a predefined manner to get the outcome
+    of the situation as desired. To hold it more tightly and to generate the result,
+    Q provides sequences in a unique way.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Suppose you have a number of promise-generating functions, all of them need
+    to be run in a sequence. You can do it manually like this example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: You have to make sure that every `then()` must be in a sequence with another
+    `then();` to maintain the sequence. Failing to do so will break the sequence,
+    and you will not be able to get another value later.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The other way is to instruct your sequence dynamically. This can be faster but
+    needs more attention while executing the code as unpredictable code may harm the
+    overall sequence.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Here is a snippet of how you can do it dynamically:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'If this looks like you are using too many lines of code, use `reduce`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: Combination in Q
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'With Q, you have a unique facility in Node.js to write cleaner and manageable
+    code if you want to combine a list of array of promises. This can help you to
+    write a more complex level of sequential data structure in a more manageable way.
+    How can we get there? Use `all`. Consider the following example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The `Q.all([func1(), func2()]);` function will be the generic form of the preceding
+    code. You can also use `spread` to replace `then`. Can we replace another new
+    thing with Q? Not really! The `spread` function spreads the values over the arguments
+    of the fulfillment handler. For the rejection handler, it will get the first signal
+    of failure. So, any of the promises destined to fail first will get it handled
+    by a rejection handler:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'When you call the function, it will return `allSettled`. Within this function,
+    a promise will be returned as an array that holds the value. When this promise
+    has been fulfilled, the array contains the fulfillment values of the original
+    promise within the same sequence as those promises. The beauty is, if any promise
+    is rejected, it will be rejected immediately, not waiting for the rest of others
+    to come and share their statuses:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The `any` function takes in an array of promises to return a promise that is
+    fulfilled by the first given promise to be fulfilled, or rejected, provided all
+    the given promises were rejected:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: How to handle errors in Q in Node.js
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: There are times when rejection occurs with the promises creating errors. These
+    errors are clever enough to dodge the handler assigned to take care of such errors.
+    So, we need to take care of them explicitly.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s have a look at the following snippet and see how it can be handled:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: Why is this case happening? Suppose the parallelism between promises and `try`/`catch`
+    and while we are trying to execute `scenario()`, the error handler represents
+    a `catch` for `scenario()`, while the fulfillment handler represents code that
+    happens after the `try`/`catch` block. Now, this code needs its own `try`/`catch`
+    block.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The `try`/`catch` block is not a new concept for all of you who have written
+    code for some major languages. Since Node.js is based on JavaScript and Q is handling
+    it at the moment, the syntax might be a bit different but the functionality is
+    more or less the same like the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs: []
+  type: TYPE_PRE
+- en: Simply put, in terms of promises, it means you are chaining your rejection handlers.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Making progress with promises
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Unlike other libraries, a promise has a unique communication ability. It can
+    update you on its progress if you want it to talk to you. Preferably, these are
+    notifications programmed by developers in a way that it can notify them on specified
+    intervals of time to tell them what is the progress. We can do it by using our
+    favorite `then()` function:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs: []
+  type: TYPE_PRE
+- en: There are more than enough advantages of using Q. For this specific topic, it
+    provides us a short call progress which minimizes our effort to only one line
+    using `*.progress();`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE21]'
+  prefs: []
+  type: TYPE_PRE
+- en: Getting to the end of a chain of promises
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: When we are talking about ending a promise chain, we have to make sure that
+    any error doesn't get handled before the end, as it will get rethrown and reported.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This is a temporary solution. We are exploring ways to make unhandled errors
+    visible without any explicit handling.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'So, returned like the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE22]'
+  prefs: []
+  type: TYPE_PRE
+- en: Why are we doing this? Why do we need to invoke the mechanism like this? The
+    answer is very simple, you have to end the chain or have to return it to another
+    promise. This is due to the fact that since handlers catch errors, it's an unfortunate
+    pattern that the exceptions can go unobserved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Every once in a while, you will need to create a promise from scratch. This
+    is quite normal; you can either create your own promise or get it from another
+    chain. Whatever the case is, consider that it''s a beginning. There are a number
+    of ways in which you can create a new promise using Q. Here are some of them:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE23]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Not only this, `fcall();` can also be used to get an exception-handled promise
+    that looks like the following snippet:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE24]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Since `fcall();` can call functions, or even promised functions, this uses
+    the `eventualAdd();` function to add two numbers:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE25]'
+  prefs: []
+  type: TYPE_PRE
+- en: Callback-based promises versus Q-based promises
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Say you have to interlink with callback-based instead of promise-based, what
+    would be your options? The answer is Q provides `Q.nfcall()` and `friends();`,
+    but most of the time, we have to rely on `deferred`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE26]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Normally, we can achieve it like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE27]'
+  prefs: []
+  type: TYPE_PRE
+- en: A few words on delay, timeout, and notify
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: There are situations when we want to make the output of our functions a bit
+    delayed or slower than normal. This is when we are waiting for a certain event
+    to occur such as checking the password's strength at the strength indicator.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'For all such needs, Q provides a collection of functions to give you this kind
+    of control. These functions are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`Q.delay()`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`Q.notify()`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`deferred.notify()`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The preceding functions are not only able to create delays when required but
+    also notify when the delay is likely to occur. If you want to defer the notification,
+    `deferred.notify()` will serve the purpose.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Q.delay()
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The following code is a simplified implementation of `Q.delay`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE28]'
+  prefs: []
+  type: TYPE_PRE
+- en: Q.timeout()
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'A simple way to work with `Q.timeout`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE29]'
+  prefs: []
+  type: TYPE_PRE
+- en: deferred.notify()
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Finally, you can send a progress notification to the promise with `deferred.notify()`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'There is a wrapper for XML HTTP requests in the browser:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE30]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Here is an example of how to use this `requestOkText` function:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE31]'
+  prefs: []
+  type: TYPE_PRE
+- en: Q.Promise() – another way to create promises
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: '`Q.Promise` is an alternative promise-creation API that has the same power
+    as the deferred concept, but without introducing another conceptual entity.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s rewrite the preceding `requestOkText` example using `Q.Promise`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE32]'
+  prefs: []
+  type: TYPE_PRE
+- en: If `requestOkText` were to throw an exception, the returned promise will be
+    rejected with this thrown exception as the reason for its rejection.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Static methods of Q
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Typecasting of promises objects is a must and you must have to convert promises
+    generated from different sources in Q type promises. This is because of the simple
+    fact that not all promise libraries have the same warranties as Q and certainly
+    don't provide all of the same methods.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE33]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Most libraries only provide a partially functional `then` method. Q, on the
+    other hand, is quite different to others:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE34]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'If there is any way that the promise you have got is not a Q promise as provided
+    by your library, you should wrap it using a Q function. You can even use `Q.invoke();`
+    as shorthand, as shown in the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE35]'
+  prefs: []
+  type: TYPE_PRE
+- en: Promise as a proxy
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: One marvelous thing about a promise that distinguishes it from the rest is that
+    it can act as a proxy for another object, not only for local objects but also
+    for a remote object. There are methods that let you confidently employ properties
+    or call functions. All of these exchanges return promises, so that they can be
+    chained.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Here is list of functions you can use as proxies of a promise:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '| Direct manipulation | Using a promise as a proxy |'
+  prefs: []
+  type: TYPE_TB
+- en: '| --- | --- |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `value.foo` | `promise.get("foo")` |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `value.foo = value` | `promise.put("foo", value)` |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `delete value.foo` | `promise.del("foo")` |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `value.foo(...args)` | `promise.post("foo", [args])` |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `value.foo(...args)` | `promise.invoke("foo", ...args)` |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `value(...args)` | `promise.fapply([args])` |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `value(...args)` | `promise.fcall(...args)` |'
+  prefs: []
+  type: TYPE_TB
+- en: You can trim round-trips by using these functions instead of `then()` if the
+    promise is a proxy for a remote object.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Even in the case of local objects, these methods can be used as shorthand for
+    particularly-simple gratification handlers. For example, you can replace:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE36]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'With the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE37]'
+  prefs: []
+  type: TYPE_PRE
+- en: Familiarizing Node.js – the Q way
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'When you''re working with functions that make use of the Node.js callback pattern,
+    where callbacks are in the form of *function(err, result)*, Q provides a few advantageous
+    service functions for adapting between them. The two most important functions
+    are: `Q.nfcall()` and `Q.nfapply()`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`Q.nfcall()`: The Node.js function call'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[PRE38]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: '`Q.nfapply()`: The Node.js function apply'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[PRE39]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: They are both used for calling functions with the same resemblance of Node.js
+    so that they can generate promises.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Unbinds and its solution
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'When you are working with methods, instead of simple functions, it''s highly
+    likely that you can easily run into the common problems where passing a method
+    to another function—such as `Q.nfcall`—unbinds the method from its owner. Q has
+    to offer its services here too so that you can avoid this, by adopting any of
+    these two ways:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Use `Function.prototype.bind()`
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Use these methods provided by Q:'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[PRE40]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'There is yet another way you can create reusable wrappers, using:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`Q.denodeify`:'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[PRE41]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: '`Q.nbind`:'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[PRE42]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Q support for tracing stacks
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Q also extends its optional support for long stack traces; this helps developers
+    to manage the stack property of an error by providing the entire reasons of errors
+    and rejection reason rather to simply halt without any meaningful or readable
+    error.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The following function is one such example where the error was not handled
+    in a meaningful manner and when someone tried to execute this snippet, he/she
+    experienced meaningless and untraceable errors:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE43]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This will gives us a raw-looking unhelpful stack trace looking similar to this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE44]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'However, if you turn this feature on by setting `Q.longStackSupport = true`,
+    then this will give us a nice-looking helpful stack trace looking similar to this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE45]'
+  prefs: []
+  type: TYPE_PRE
+- en: Unlike most of the time, in JavaScript, we use breakpoints or use `alert()`
+    to see where the error occurred, which is quite frustrating and time consuming.
+    Q has not only given us an elegant way to get to a point where the error is happening,
+    but also the entire trace can be read and analyzed to solve the problem.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'In Node.js, this feature can also be enabled through the `Q_DEBUG` environment
+    variable:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE46]'
+  prefs: []
+  type: TYPE_PRE
+- en: This will enable long stack support at every instance of Q.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Making promise-based actions
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Starting off with Q, perform actions that return promises. Let''s say, make
+    Node.js action `http.get` as the promised action:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE47]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Later, you can use: `httpGet(...).then(function (res) {...});` but you have
+    to make sure that functions return promises. The first `Q.defer()` returns a set
+    of an empty promise and operations for it. The `deferred.promise` is the empty
+    promise which fixes a certain value:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE48]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This prints `Hello World` to the console. In general, you can transform usual
+    callback actions:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE49]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'To promise actions:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE50]'
+  prefs: []
+  type: TYPE_PRE
+- en: Object handling promises
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'We learned a great deal about how promises help object handling whether these
+    are local objects or remote ones. As mentioned earlier, the `then` callback can
+    use the result in any way. Also, each handling is decomposed primitives of property
+    accesses or function calls, for example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE51]'
+  prefs: []
+  type: TYPE_PRE
+- en: Decomposition of primitive access
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Q can decompose continuous actions of each primitive access. Let''s have a
+    look at the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE52]'
+  prefs: []
+  type: TYPE_PRE
+- en: There is another good thing about promises of Q. They have a support method
+    of primitive access as a promise.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'By them, the decomposed actions also translate to:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE53]'
+  prefs: []
+  type: TYPE_PRE
+- en: View revisited
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'The `view()` method helps in mirroring all the values into Q-based promises
+    without any distinction, either it comes from a value or any other function. There
+    are two methods that can make this possible:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`promise.post(name)`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`promise.send(name)`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: This converts a method of the promise value to a promise of the method result.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'A result of `view()` has methods for all methods of the promise value. You
+    can use `view` in the `then` callback of `view()`, for example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE54]'
+  prefs: []
+  type: TYPE_PRE
+- en: Aborting a promise
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: We saw how `done();` is used earlier, but here it comes in with a total impression.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Using `done();`, we can conclude our promise and abort our program. I always
+    have a way to chain the promises:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE55]'
+  prefs: []
+  type: TYPE_PRE
+- en: If the promise is vetted (and did not catch the error before), the `done()`
+    function forcibly spawns an uncatchable error (for example, `setTimeout(function
+    () {throw ex;}, 0)`).
+  prefs: []
+  type: TYPE_NORMAL
+- en: On Node.js REPL, run `Q.reject("uncaught").done()`, then exit with an error.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If the error reached to the `done()` function, you can think of it just a programming
+    bug (not an exception state).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Q utilities for Node.js
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'In this chapter, we came to know that promises are getting more easy to use
+    within Node.js. The following is the set of all major utilities offered by Q for
+    using Node.js:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`Q.nfapply(fs.readFile, [filename, encoding]).then(console.log);`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`Q.nfcall(fs.readFile, filename, encoding).then(console.log);`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`Q.nfbind(fs.readFile)(filename, encoding).then(console.log);`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`Q.npost(fs, "readFile", [filename, encoding]).then(console.log);`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`Q.nsend(fs, "readFile", filename, encoding).then(console.log);`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Q has more to offer, but the preceding ones are the best and most used and sensible
+    use of these can help us write a more manageable, cleaner, and dynamically controlled
+    mechanism.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: This chapter was an amazing journey from start to finish, and it has taught
+    us from the very beginning about Node.js. We didn't opt for explaining stuff in
+    computer science terminology, instead we went to the mechanical part of the V8
+    engine, and from there we saw how real-world objects can be mapped into computing.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We learned what Node.js is, from where this most amazing library started, who
+    built it, and why and how it's helping us create real-time web apps.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Then we moved to Q, the best way to offer promises to Node.js. We saw how we
+    can install Q and then we saw different ways of using Q along with Node.js. We
+    have also achieved our purpose of using Q as a promises implementation of Node.js.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This chapter will encourage you to start working on Node.js, especially on how
+    to take advantage of Q as the library of promises for Node.js.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the next chapter, we will be looking in-depth in the world of Angular.js
+    and how it got promises implementation.
+  prefs: []
+  type: TYPE_NORMAL

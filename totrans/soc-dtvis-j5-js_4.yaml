@@ -1,0 +1,400 @@
+- en: Chapter 4. JavaScript for Visualization
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In [Chapter 2](ch02.html "Chapter 2. JavaScript and HTML5 for Visualizations"),
+    *JavaScript and HTML5 for Visualizations*, we looked at the advantages offered
+    by building our visualizations using scalable vector graphics. It should, however,
+    have been clear that building SVGs by manipulating the underlying XML is a frustrating
+    and time consuming exercise. Although there are countless XML manipulation tools,
+    it would be nice to take advantage of the power of an API which is specifically
+    designed for building SVGs instead of a more general language.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There are a number of JavaScript libraries that have been created for the manipulation
+    of SVGs. svg.js ([http://www.svgjs.com/](http://www.svgjs.com/)) and Raphaël ([http://raphaeljs.com/](http://raphaeljs.com/)),
+    both deserve mentions as being excellent tools for drawing. The demos on the Raphaël
+    website are particularly impressive. d3.js offers functionality designed specifically
+    for visualizations and we'll look at that too.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Raphaël
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'To draw a simple rectangle making use of**Raphaël** is much more comfortable
+    than building the same rectangle in XML. The library can be included either from
+    the disc or from a CDN such as CloudFlare, as shown in the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We can draw any shape in the following manner:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: This code finds the element with an ID of `visualization` and appends an SVG
+    to it with a dimension of 320 x 200 pixels. It then inserts a new rectangle at
+    `(50, 20),` with width `50` and height `150`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'If we wanted to create a simple column graph with Raphaël, it would not be
+    difficult. Let''s give it a shot. The first thing we''ll need is some data. We
+    can use a JavaScript array for now, but in the real world this information could
+    be retrieved from a web service in either JSON or XML form. In this example, we''ll
+    pick some months and the associated value, as shown in the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Now, let''s update the function we used above to draw rectangles to deal with
+    data values. First, we''ll change the method signature, as shown in the following
+    code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This function takes in SVG on which to draw, the current item, and a maximum
+    value that is used to calculate the appropriate height. In the body of the function,
+    we''ll start by calculating the bar height, as shown in the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We''ve hard coded the maximum height at 500 px, and each bar is simply a percentage
+    of that height equal to the item''s value as a percentage of the maximum. We''ll
+    use that value to draw the bar, as shown in the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: The rectangle is offset based on which column it is avoiding overlapping rectangles.
+    We set the color to be a function of the item value so that the color varies by
+    height.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The function is called by passing each one of our data elements into it sequentially:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Here, we first calculate the maximum value from the array. Then, call the `drawGraphColumn()`
+    function we defined above for each element. Looping over the data array is done
+    using jQuery''s `each` operator which applies the given function to each element
+    in the array. The resulting graph looks like the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Raphaël](img/6542OS_04_01.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Raphaël is a general purpose SVG library. This means that apart from being suited
+    to building visualizations, it can be used to create more generic drawings. In
+    the same way that we were looking for an API for manipulating SVGs, which was
+    better suited than manipulating XML by hand, it would be nice to have a library
+    which is targeted at building visualizations. d3.js is a library which is specifically
+    designed to make building visualizations using SVG easier.
+  prefs: []
+  type: TYPE_NORMAL
+- en: d3.js
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: '**d3.js** brings a number of functions and a coding style that makes creating
+    even simple graphs like the one above simpler. Let''s recreate the above graph
+    using d3 and see how it differs. The first thing to do is introduce an SVG element
+    to the page. With Raphaël, we did this using the constructor; in d3, we''ll append
+    an SVG element explicitly, as shown in the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: Immediately, you'll see that the style of the JavaScript used differs greatly
+    from Raphaël. d3 relies heavily on the use of method chaining. If you're new to
+    this concept, it is quick to pick up. Each call to a method performs some action,
+    then returns an object, and the next method call operates on this object. So,
+    in this case, the `select` method returns the `div` with the `ID` of `visualization`.
+    Calling `append` on the selected `div` adds an SVG element and then returns it.
+    Finally, the `attr` methods set a property inside the object and then return the
+    object.
+  prefs: []
+  type: TYPE_NORMAL
+- en: At first, method chaining may seem odd, but as we move on you'll see that it
+    is a very powerful technique, and cleans up the code considerably. Without method
+    chaining, we end up with a lot of temporary variables.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Next, we need to find the maximum element in the data array. In the previous
+    example, we used a jQuery `each` loop to find that element. d3 has built in array
+    functions which make this much cleaner, as shown in the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: There are similar functions for finding minimums and means. None of the functions
+    are anything you couldn't get by using a JavaScript utility library, such as underscore.js
+    or lodash. However, it is convenient to make use of the built-in versions.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The next pieces we make use of are d3''s scaling functions, as shown in the
+    following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Scaling functions serve to map from one dataset to another. In our case, we''re
+    mapping from the values in our data array to the coordinates in our SVG. We use
+    two different scales here: linear and ordinal. The linear scale is used to map
+    a continuous domain to a continuous range. The mapping will be done linearly,
+    so if our domain contained values between `0` and `10`, and our range value ranges
+    between `0` and `100`, then a value of `6` would map to `60`, `3` to `30,` and
+    so forth. It seems trivial, but with more complicated domains and ranges, scales
+    are very helpful. As well as linear scales, there are power and logarithmic scales
+    which may fit your data better.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In our example data, our `y` values are not continuous; they''re not even numeric.
+    For this case, we can make use of an ordinal scale, as shown in the following
+    code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: Ordinal scales map a discrete domain into a continuous range. Here, `domain`
+    is the list of months and the range the width of our SVG. You'll note that instead
+    of using `range` we use `rangeBands`. Range bands split the range up into chunks,
+    each to which each range item is assigned. So, if our domain was `{May, June}`
+    and the range `0` to `100`, then May onwards we would receive a band from `0`
+    to `49,` and June from `50` to `100` would be `june`. You'll also note that `rangeBands`
+    takes an additional parameter; in our case `0.1`. This is a padding value that
+    generates a sort of no man's land between each band. This is ideal for creating
+    a bar or column graph, as we may not want the columns touching. The padding parameter
+    can take a value between `0` and `1` as a decimal representation of how much of
+    the range should be reserved for padding. A value of `0.25` would reserve 25 percent
+    of the range for padding.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'There are also a family of built-in scales that deal with providing colors.
+    Selecting colors for your visualization can be challenging, as the colors have
+    to be far enough apart to be discernible. If you''re color challenged like me,
+    then the scales `category10`, `category20`, `category20b`, and `category20c` may
+    be for you. You can declare a color scale, as shown in the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: The previous code will assign a different color to each month out of a set of
+    10 pre-calculated possible colors.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Finally, we need to actually draw our graph, as shown in the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: We select all of the `.bar` elements inside the graph using `selectAll`. Hang
+    on! There aren't any elements inside the graph that match the `.bar` selector.
+    Typically, `selectAll` will return a collection of elements matching the selector
+    just as the `$` function does in jQuery. In this case, we're using `selectAll`
+    as a short hand method of creating an empty d3 collection which has a `data` method
+    and can be chained.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We next specify a set of data to union with the data from the existing selection
+    of elements. d3 operates on collection objects without using looping techniques.
+    This allows for a more declarative style of programming, but can be difficult
+    to grasp immediately. In effect, we're creating a union of two sets of data, the
+    currently existing data (found using `selectAll`), and the new data (provided
+    by the `data` function). This method of dealing with data allows for easy updates
+    to the data elements, should further elements be added or removed later.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'When new data elements are added you can select just those elements by using
+    `enter`(). This prevents repeating actions on existing data. You don''t need to
+    redraw the entire image, just the portions that have been updated with new data.
+    Equally, if there are elements in the new dataset which didn''t appear in the
+    old one, then they can be selected with `exit()`. Typically, you want to just
+    remove those elements which can be done by the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'When we create elements using the newly generated dataset, the data elements
+    will actually be attached to the newly created DOM elements. Creating the elements
+    involves calling `append`, as shown in the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The following diagram shows how `data()` works with new and existing dataset:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![d3.js](img/6542OS_04_02.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: You can see in the previous code how useful method chaining has become. It makes
+    the code much shorter and more readable than assigning a series of temporary variables,
+    or passing the results into standalone methods. The scales also come into their
+    own here. The x coordinate is found simply by scaling the month we have using
+    the ordinal scale. Because that scale takes into account the number of elements
+    as well as the padding, nothing more complicated is needed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'They coordinate is similarly found using previously defined `yScale`. Because
+    the origin in an SVG is in the top left, we have to take the inverse of the scale
+    to calculate the height. Again this is a place where we wouldn''t generally be
+    using a constant except for the brevity of our example. The width of the column
+    is found by asking the `xScale` for the width of the bands. Finally, we set the
+    color based on the color scale so it appears like the following graph:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![d3.js](img/6542OS_04_03.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: This d3 version of the graph is actually far more capable than the Raphaël version.
+    We eliminated a lot of the magic numbers that were present in the Raphaël through
+    the use of scales.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let's continue to enhance our graph and explore some of the other features of
+    d3.js.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Custom color scales
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The d3 graph we generated above is very colorful, since we made made use of
+    one of the built in color scales. However, most of the time you must have least
+    some thematic consistency in visualizations. You can achieve this consistency
+    across visualizations by leveraging custom scales.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s start with a simple example: alternating color scales. In order to make
+    our new color scale, a drop in replacement for the existing `category10` scale
+    we need to use a little bit of JavaScript fun to inject a new scale function into
+    d3\. We start with attaching the function to d3''s scale namespace, as shown in
+    the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'JavaScript allows for monkey patching of objects so this function will actually
+    show up as being part of d3\. We''ll start implementing the function by setting
+    up the domain and range. We define the `domain` and `range` functions which serve
+    as getters and setters for the domain and range:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Finally, we''ll set up the mapping function which is called when using the
+    scale, as shown in the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This scale is applied by the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This results in a graph which appears more consistent and is shown in the following
+    graph:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Custom color scales](img/6542OS_04_04.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'I picked the simplest condition on which to customize our scale, but more complicated
+    and informative scales can be used. A scale which uses a threshold is shown in
+    the following graph:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Custom color scales](img/6542OS_04_05.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: This is easily done by altering the `scale` function and passing the value instead
+    of the key (month) into the function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Labels and axes
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Up until now, we've build the graphs without much attention to what we're graphing.
+    It would be great to put some labels on the graph, so people can decode our data
+    with ease. Fortunately d3 provides an `axis()` function which makes adding the
+    axis a snap.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We''ll start with the x axis, as shown in the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs: []
+  type: TYPE_PRE
+- en: We start here by using the `axis` function to create an axis. We pass in our
+    `xScale` to give it a hint about where the ticks on the scale should be placed.
+    We next append a `g` element to our graph. `g` is an SVG element which acts as
+    a container to hold other elements. You can place any other shape inside the element
+    `g`, and then perform transformations on them as a whole. We do just that in the
+    next step. The axis is, by default, at the top of the graph, so we shift it down
+    and slightly to the right to better line up. The `text-anchor` property sets where
+    the x coordinate of the text should be anchored. By default it is left, but as
+    we have the middle of each bar we set `text-align:middle`. Finally, we pass in
+    the `xAxis`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The `yAxis` is added just as easily with the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The translation here is a bit more complex, and we''re just accounting for
+    the fact that we gave the scale the left orientation, which causes it to be drawn
+    left of the minimum scale value. As our minimum scale value is `0`, it is drawn
+    off screen, as shown in the following graph:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Labels and axes](img/6542OS_04_06.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: We've managed to add axis and labels in a matter of a few lines of code. With
+    a more general SVG library, this would take a significant amount of work. There
+    are a lot of configuration options for the axis function too. You can set the
+    number of ticks, the labels, and the format of the ticks.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: While we've looked at a great deal of d3, we've only just scratched the surface
+    of what d3.js can do. It is a large and powerful library. There are many books
+    written on the subject of d3, so we can't cover it all. A great resource for d3
+    is Swizec Teller's book *Data Visualization with d3.js, Packt Publishing*. There
+    are tons of additional functions that we'll uncover, as we develop some of the
+    visualizations in the rest of the book. We'll also visit some further applications
+    of the functions presented in this chapter.
+  prefs: []
+  type: TYPE_NORMAL

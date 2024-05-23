@@ -1,0 +1,1503 @@
+- en: Chapter 4. Components and Configurations
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this chapter, we are going to take a deeper look at the individual components
+    available in Sencha Touch. We will examine the layout configuration options and
+    how they affect each of the components.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Throughout the chapter, we will use the simple base components as a starting
+    point for learning about the more complex components. We'll also talk a bit about
+    how to access our components after they have been created.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Finally, we will wrap up with a look at how to use the Sencha Touch API documentation
+    to find detailed information on configurations, properties, methods, and events
+    for each component.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This chapter will cover the following topics:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The base component class
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Layouts revisited
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The TabPanel and Carousel components
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The FormPanel components
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: MessageBox and Sheet
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The Map component
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The List and NestedList components
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Where to find more information on components
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The base component class
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: When we talk about components in Sencha Touch, we are generally talking about
+    buttons, panels, sliders, toolbars, form fields, and other tangible items that
+    we can see on the screen. However, all of these components inherit their configuration
+    options, methods, properties, and events from a single base component with the
+    startlingly original name of `component`. This can obviously lead to a bit of
+    confusion, so we will refer to this as `Ext.Component` for the rest of this book.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'One of the most important things to understand is that you don''t always use
+    `Ext.Component` directly. It is more often used as a building block for all of
+    the other components in Sencha Touch. However, it is important to be familiar
+    with the base component class, because anything that it can do, all the other
+    components can do. Learning this one class can give you a huge head start on everything
+    else. Some of the most useful configuration options of `Ext.Component` are as
+    follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`border`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`cls`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`disabled`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`height`/`width`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`hidden`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`html`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`margin`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`padding`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`scroll`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`style`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`ui`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: As the other components, which we will cover later in this chapter, inherit
+    from the base component class, they will all have these same configuration options.
+    One of the most critical of these configurations is `layout`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Taking another look at layouts
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: When you start creating your own applications, you will need a firm understanding
+    of how the different layouts affect what you see on the screen. To this end, we
+    are going to start out with a demonstration application that shows how the different
+    layouts work.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'For the purposes of this demo application, we will create the different components,
+    one at a time, as individual variables. This is done for the sake of readability
+    and should not be considered the best programming style. Remember that any items
+    created in the following way will take up memory, even if the user never views
+    the component:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'It is always a much better practice to create your components, using the `xtype`
+    attributes, within your main container, as shown in the following code snippet:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: This allows Sencha Touch to render the components as they are needed, instead
+    of rendering them all at once when the page loads.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Creating a card layout
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'To begin with, we will create a simple app with a container that is configured
+    to use the `card` layout:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: This sets up a single container called `mainPanel` with a `card` layout. This
+    `mainPanel` container is where we will be adding the rest of our layout example
+    containers in this section.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `card` layout arranges its items so that it looks similar to a stack of
+    cards. Only one of these cards is active and displayed at a time. The `card` layout
+    keeps any additional cards in the background and only creates them when the panel
+    receives the `setActiveItem()` command.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Each item in the list can be activated by using `setActiveItem(n)`, where *n*
+    is the item number. This can be a bit confusing, as the numbering of the items
+    is zero-based, meaning that you start counting at 0 and not 1\. For example, if
+    you want to activate the fourth item in the list, you would use:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: In this case, we are starting out with only a single card/item called `hboxTest`.
+    We need to add this container to make our program run.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Creating an hbox layout
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'In the code in the preceding section, on top of the `var mainPanel =` `Ext.create(''Ext.Container'',
+    {` line, add the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: This gives us a container with an `hbox` layout and three child items.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '**Child and parent**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: In Sencha Touch, we often find ourselves dealing with very large arrays of items,
+    nested in containers that are in turn nested in other containers. It is often
+    helpful to refer to a container as a parent to any items it contains. These items
+    are then referred to as the children of the container.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The `hbox` layout stacks its items horizontally and uses the `width` and `flex`
+    values to determine how much horizontal space each of its child items will take
+    up. The `align: ''stretch''` configuration causes the items to stretch in order
+    to fill all of the available vertical space.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Creating an hbox layout](img/0748OS_04_01.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: You should try adjusting the `flex` and `width` values to see how they affect
+    the size of the child containers. You can also change the available configuration
+    options for `align` (`center`, `end`, `start`, and `stretch`), to see the different
+    options available. Once you are finished, let's move on and add some more items
+    to our card layout.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Creating a vbox layout
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'On top of our `var hboxTest = Ext.create`(''`Ext.Container`''`,{` line, add
+    the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This code is virtually identical to our previous `hbox` code, a container with
+    three child containers. However, this parent container uses `layout: vbox`, and
+    the third child container in the `items` list uses `height` instead of `width`.
+    This is because the `vbox` layout stacks its items vertically and uses the values
+    for `height` and `flex` to determine how much space the child items will take
+    up. In this layout, the `align: ''stretch''` configuration causes the items to
+    stretch to fill the horizontal space.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Now that we have our `vbox` container, we need to add it to the items in our
+    main `layoutContainer`. Change the `items` list in `layoutContainer` to say the
+    following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'If we run the code now, it''s going to look exactly the same as before. This
+    is because our card layout on `layoutContainer` can only have one active item.
+    You can set `layoutContainer` to show our new `vbox` by adding the following configuration
+    to our `layoutContainer`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Remember that our items are numbered starting with zero, so item `1` is the
+    second item in our list: `items: [hboxTest, vboxTest]`.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'You should now be able to see the `vbox` layout for our application:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Creating a vbox layout](img/0748OS_04_02.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: As with `hbox`, you should take a moment to adjust the `flex` and `width` values
+    and see how they affect the size of the containers. You can also change the available
+    configuration options for `align` (`center`, `end`, `start`, and `stretch`) in
+    order to see the different options available. Once you are finished, let's move
+    on and add some more items to our `card` layout.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Creating a fit layout
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The `fit` layout is the most basic layout, and it simply makes any child items
+    fill up the parent container. While this seems pretty basic, it can also have
+    some unintended consequences, as we will see in our example.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'On top of our preceding `var vboxTest = Ext.create(`''`Ext.Container'', {`
+    line, add the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This is a single container with a `fit` layout and a button. Now, all we need
+    to do is set the `activeItem` configuration on our main `layoutContainer` component
+    by changing `activeItem: 1` to `activeItem: 2`.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'If you reload the page now, you will see what we mean by unintended consequences:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Creating a fit layout](img/0748OS_04_03.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: As you can see, our button has expanded to fill the entire screen. We can change
+    this by declaring a specific height and width for the button (and any other items
+    we place in this container). However, fit layouts tend to work best for a single
+    item that is intended to take up the entire container. This makes them a pretty
+    good layout for child containers, where the parent container controls the overall
+    size and position.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let's see how this might work.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Adding complexity
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: For this example, we are going to create a nested container and add it to our
+    card stack. We will also add some buttons to make switching the card stack easier.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Our two new containers are variations on what we already have in our current
+    application. The first is a copy of our `hbox` layout with a few minor changes:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: You can copy and paste our old `vboxTest` code and change the first line to
+    say `complexTest` instead of `vboxTest`. You will also need to remove the second
+    container in our `items` list (parentheses and all) and replace it with `hboxTest2`.
+    This is where we will nest another container with its own layout.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Now, we need to define `hboxTest2` by copying our previous `hboxTest` code,
+    and make a few minor changes. You will need to paste this new code up on top of
+    where you placed the `complexTest` code; otherwise, you will get errors when we
+    try to use `hboxTest2` before we actually define it:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: After you paste in the code, you will need to change the variable name to `hboxTest2`,
+    and we will need to add a `flex` configuration to the main parent container. As
+    this container is nested within our `vbox` container, the `flex` configuration
+    is needed to define how much space `hboxTest2` will occupy.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Before we take a look at this new complex layout, let's make our lives a bit
+    easier by adding some buttons to switch between our various layout cards.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Locate `mainPanel`, and underneath it, where we define the list of `items`,
+    add the following code at the top of the list of `items`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: This code adds a toolbar to the top of our `mainPanel`, with a button for each
+    of our layout cards.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: In previous versions of Sencha Touch, the `toolbar` item was defined separately
+    from the rest of the items and used a configuration called `dock` to control its
+    position. In current versions, the `toolbar` component is defined inline with
+    other items, and the placement of the toolbar is controlled by the `docked` configuration.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Each button has a text configuration, which serves as the button''s title,
+    and a `handler` configuration. The `handler` configuration defines what happens
+    when the button is tapped. For each of our buttons, we use the `mainPanel` variable
+    we set earlier in the code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This lets us use any of the methods available to the container and its `card`
+    layout. In the code for each button, we set the active item (which tab is visible)
+    by using the following line of code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: The `x` value, in this case, would be replaced by the index of the item we want
+    to activate (remember that these go in order, starting with 0 and not 1).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Notice that we also leave the initial configuration option for `activeItem`
+    in our `mainPanel` component. This will control which item is displayed when our
+    application starts.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If you refresh the page, you should be able to click on the buttons and see
+    each of our layouts, including the new complex layout.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Adding complexity](img/0748OS_04_04.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: As you can see from this example, our `vbox` layout splits the window into three
+    rows. The `hbox` layout, in the second row, splits it into three columns. Using
+    these types of nested layouts makes it pretty easy to create traditional layouts,
+    such as those used in e-mails or social networking applications.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Adding complexity](img/0748OS_04_05.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'In this example, we have a typical layout for an e-mail application. This layout
+    can be conceptually broken down into the following pieces:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: An application container with a **Toolbar** menu and a single container called
+    **Main** with a fit layout.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The **Main** container will have an `hbox` layout and two child containers called
+    **Left** and **Right**.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The **Left** container will have a `flex` value of `1` and a `vbox` layout.
+    It will have two child containers called **Mailboxes** (with a `flex` of `3`)
+    and **Activity** (with a `flex` of `1`).
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The **Right** container will have a `flex` of `3` and a `vbox` layout. It will
+    also have two child containers called **Messages** (with a `flex` of `1`) and
+    **Message** (with a `flex` of `2`).
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Building container layouts such as these is a good practice. To see the example
+    code for this container layout, take a look at the `TouchStart2b.js` file in the
+    code bundle. It's also a good idea to create some base layouts such as these to
+    use as templates for getting a jumpstart on building your future applications.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now that we have a better understanding of layouts, let's take a look at some
+    of the components we can use inside the layouts.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The TabPanel and Carousel components
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In our last application, we used buttons and a `card` layout to create an application
+    that switched between different child items. While it is often desirable for your
+    application to do this programmatically (with your own buttons and code), you
+    can also choose to have Sencha Touch set this up automatically, using a `TabPanel`
+    or `Carousel`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Creating a TabPanel component
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: A `TabPanel` component is useful when you have a number of views the user needs
+    to switch between, such as contacts, tasks, and settings. The `TabPanel` component
+    auto-generates the navigation for the layout, which makes it very useful as the
+    main container for an application.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'One of our early example applications in [Chapter 2](ch02.html "Chapter 2. Creating
+    a Simple Application"), *Creating a Simple Application*, used a simple `TabPanel`
+    to form the basis of our application. The following is a similar code example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: In this code, `Ext.tab.Panel` automatically generates a card layout; you don't
+    have to declare a layout. You will probably want to declare a `tabBarPosition`
+    value for the component. This is where your tabs will automatically appear; the
+    default is the top of the screen.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This will generate a large square button for each child item in the `items`
+    list. The button will also use the `iconCls` value to assign an icon to the button.
+    The `title` configuration is used to name the button.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: See the previous chapter for more information of the available icons and styling
+    for the tab panel. It should also be noted that these icons are only used when
+    the `tabBarPosition` value is set to `bottom`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If you set the `tabBarPosition` value to the top (or leave it blank), it makes
+    the buttons small and round. It also eliminates the icons, even if you declare
+    a value for `iconCls`, in your child items.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Creating a TabPanel component](img/0748OS_04_06.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Creating a Carousel component
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The `Carousel` component is similar to `tabpanel`, but the navigation it generates
+    is more appropriate for things such as slide shows. It probably would not work
+    as well as a main interface for your application, but it does work well as a way
+    to display multiple items in a single swipeable container.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Similar to `tabpanel`, `Carousel` gathers its child items and automatically
+    arranges them in a `card` layout. In fact, we can actually make just some simple
+    modifications to our previous code to make it into a `Carousel` component:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: The first thing we did was use `Ext.create` to make a new `Ext.carousel.Carousel`
+    class instead of a new `Ext.tab.Panel` class. We also added a configuration for
+    `direction`, which can be either `horizontal` (scrolling from left to right) or
+    `vertical` (scrolling up or down).
+  prefs: []
+  type: TYPE_NORMAL
+- en: We removed the docked toolbar, because, as we will see, `Carousel` doesn't use
+    one. We also removed the icon's class and the title from each of our child items
+    for the same reason. Finally, we removed the `xtype` configuration, as the `Carousel`
+    component automatically creates an `Ext.Container` class for each of its items.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Creating a Carousel component](img/0748OS_04_07.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'Unlike `tabpanel`, `carousel` has no buttons, only a series of dots at the
+    bottom, with one dot for each child item. While it is possible to navigate using
+    the dots, the `carousel` component automatically sets itself up to respond to
+    a swipe on a touch screen. You can duplicate this gesture in the browser by clicking
+    and holding the pointer with the mouse, while moving it horizontally. If you declare
+    a `direction: vertical` configuration in your `carousel`, you can swipe vertically
+    to move between the child items.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Similar to the card layout in our example at the beginning of the chapter, both
+    the `tabpanel` and `carousel` components understand the `activeItem` configuration.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This lets you set which item appears when the application first loads. Additionally,
+    they all understand the `setActiveItem()` method that allows you to change the
+    selected child item after the application loads.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `Carousel` component also has methods for `next()` and `previous()`, which
+    allow you to step through the items in order.
+  prefs: []
+  type: TYPE_NORMAL
+- en: It should also be noted that as `tabpanel` and `carousel` both inherit from
+    `Ext.Container`, they also understand any methods and configurations that containers
+    understand.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Along with containers, `tabpanel` and `carousel` will serve as the main starting
+    point for most of your applications. However, there is another type of container
+    you will likely want to use at some point: the `FormPanel` component.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Creating a FormPanel component
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The `FormPanel` component is a very specialized version of the `Ext.Container`
+    component, and as the name implies, it is designed to handle form elements. Unlike
+    panels and containers, you don't need to specify the layout for `formpanel`. It
+    automatically uses its own special form layout.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'A basic example of creating a `formpanel` component is as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'For this example, we just create the panel and add items for each field in
+    the form. Our `xtype` tells the form what type of field to create. We can add
+    this to our `carousel` and replace our first container, as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: '![Creating a FormPanel component](img/0748OS_04_08.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'Anyone who has worked with forms in HTML should be familiar with all of the
+    standard field types, so the following `xtype` attribute names will make sense
+    to anyone who is used to standard HTML forms:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`checkboxfield`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`fieldset`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`hiddenfield`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`passwordfield`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`radiofield`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`selectfield`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`textfield`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`textareafield`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'These field types all match their HTML cousins for the most part. Sencha Touch
+    also offers a few specialized text fields that can assist with validating the
+    user''s input:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`emailfield`: This accepts only a valid e-mail address, and on iOS devices,
+    it will pull up an alternate e-mail address and URL-friendly keyboard'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`numberfield`: This accepts only numbers'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`urlfield`: This accepts only a valid web URL, and also brings up the special
+    keyboard'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: These special fields will only allow the submit operation if the input is valid.
+  prefs: []
+  type: TYPE_NORMAL
+- en: All of these basic form fields inherit properties from the main container class,
+    so they have all of the standard `height`, `width`, `cls`, `style`, and other
+    container configuration options.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'They also have a few field-specific options:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`label`: This is a text label to use with the field'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`labelAlign`: This is where the label appears; this can be top or left, and
+    defaults to left'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`labelWidth`: This tells us how wide the label should be'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`name`: This corresponds to the HTML name attribute, which is how the value
+    of the field will be submitted'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`maxLength`: This tells us how many characters can be used in the field'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`required`: This tells us if the field is required in order for the form to
+    be submitted'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '**Form field placement**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: While `FormPanel` is typically the container you will use while displaying form
+    elements, it has the advantage of understanding the `submit()` method that will
+    post the form values via an AJAX request or `POST`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If you include a form field in something that is not a `FormPanel` component,
+    you will need to get and set the values for the field using your own custom JavaScript
+    method.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In addition to the standard HTML fields, there are a few specialty fields available
+    in Sencha Touch. These include the `DatePicker`, `slider`, `spinner`, and `toggle`
+    fields.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Adding a DatePicker component
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The `datepickerfield` component (is this correct?) places a clickable field
+    in the form with a small triangle on the far-right side.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'You can add a date picker to our form by adding the following code after the
+    `emailfield` item:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: When the user clicks on the field, a `DatePicker` component will appear, allowing
+    the user to select a date by rotating the month, day, and year wheels, or by swiping
+    up or down.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Adding a DatePicker component](img/0748OS_04_09.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'The `datepickerfield` also has the option `configs` for the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`yearFrom`: The start year for the date picker.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`yearTo`: The end year for the date picker.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`slotOrder`: This uses an array of strings to set the slot order. It defaults
+    to `[''month'', ''day'', ''year'']`.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Adding sliders, spinners, and toggles
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Sliders allow for the selection of a single value from a specified numerical
+    range. The `sliderfield` value displays a bar with an indicator that can be slid
+    horizontally to select a value. This can be useful for setting volume, color values,
+    and other ranged options.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Like the slider, a spinner allows for the selection of a single value from a
+    specified numerical range. The `spinnerfield` value displays a form field with
+    a numerical value with **+** and **-** buttons on either side of the field.
+  prefs: []
+  type: TYPE_NORMAL
+- en: A toggle allows for a simple selection between one and zero (on and off) and
+    displays a toggle-style button on the form.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Add the following new components to the end of our list of items:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs: []
+  type: TYPE_PRE
+- en: '![Adding sliders, spinners, and toggles](img/0748OS_04_10.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Our `sliderfield` and `spinnerfield` have configuration options for `minValue`
+    and `maxValue`. We also added an `incrementValue` attribute to `spinnerfield`
+    that will cause it to move in increments of `2` whenever the **+** or **-** button
+    is clicked.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: We will cover sending and receiving data with forms later in [Chapter 6](ch06.html
+    "Chapter 6. Getting the Data In"), Getting the Data In.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The MessageBox and Sheet components
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: At some point, your application will probably need to give feedback to the user,
+    ask the user a question, or alert the user to an event. This is where the `MessageBox`
+    and `Sheet` components come into play.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Creating a MessageBox component
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The `MessageBox` component creates a window on the page, and can be used to
+    display alerts, gather information, or present options to the user. `MessageBox`
+    can be called in three different ways:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`Ext.Msg.alert` takes a title, some message text, and an optional callback
+    function to call when the **OK** button on the alert is clicked.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`Ext.Msg.prompt` takes a title, some message text, and a callback function
+    to call when the **OK** button is pressed. The `prompt` command creates a text
+    field and adds it to the window automatically. The function, in this case, is
+    passed the text of the field for processing.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`Ext.Msg.confirm` takes a title, some message text, and a callback function
+    to call when either one of the buttons is pressed.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '**The callback function**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: A callback function is a function that gets called automatically in response
+    to a particular action taken by the user or the code. This is basically the code's
+    way of saying "When you are finished with this, call me back and tell me what
+    you did". This callback allows the programmer to make additional decisions based
+    on what happened in the function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s try a few examples, starting with a simple message box:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs: []
+  type: TYPE_PRE
+- en: This code sets up a simple panel with a toolbar and a single button. The button
+    has a handler that uses `Ext.Msg.alert()` to show our message box.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '**Escaping quotes**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: In our previous example, we use the string `Don\'t Panic` as the title for our
+    message box. The `\` tells JavaScript that our second single quote is part of
+    the string and not the end of the string. You can see in the example that the
+    `\` disappears in our message box.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Creating a MessageBox component](img/0748OS_04_11.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'Now, let''s add a second button to our items in our `toolbar` component for
+    a `Ext.Msg.prompt` style message box:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE21]'
+  prefs: []
+  type: TYPE_PRE
+- en: This message box is a bit more complex. We create our `Ext.Msg.prompt` class
+    with a title, a message, and a function. The prompt will create our text field
+    automatically, but we need to use the function to determine what to do with the
+    text that the user types in the field.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The function is passed a value for the button and a value for the text. Our
+    function grabs the text and creates a new alert to respond, along with the name
+    the user typed into the field.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Creating a MessageBox component](img/0748OS_04_12.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: The `Ext.Msg.confirm` class of `MessageBox` is used for decisions the user needs
+    to make, or confirmation of a particular action the system is going to take.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s add the following component to our list of `items` in the `toolbar`
+    component:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE22]'
+  prefs: []
+  type: TYPE_PRE
+- en: Similar to the prompt function of the `Ext.Msg` component, the confirm version
+    takes a title, a message, and a callback function. The callback function is passed
+    the button that the user pressed (as the value `btn`), which can then be used
+    to determine what steps the system should take next.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this case, we just pop up an alert to display the choice the user has made.
+    You can also use an `if...then` statement to take different actions depending
+    on which button is clicked.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Creating a MessageBox component](img/0748OS_04_13.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Creating a Sheet component
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The `Sheet` component is similar to the `Ext.Msg` component, in that it is typically
+    used to pop up new information or options on the screen. It also presents this
+    new information by appearing over the top of the existing screen. As with `MessageBox`,
+    no further actions can be taken until `Sheet` is closed or responded to in some
+    fashion.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s add another button to our list of items in the `items` section of our
+    `toolbar` component. This button will pop up a new `Sheet` component:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE23]'
+  prefs: []
+  type: TYPE_PRE
+- en: There are a lot of new things here, but some should seem familiar. Our button
+    starts with the `text` value for the button to be displayed and then creates a
+    `handler` value that tells the button what to do when tapped.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We then create a new `Ext.Sheet` class. As `Sheet` inherits from the panel,
+    we have familiar configuration options, such as `height` and `layout`, but we
+    also have a few new options. The `stretchX` and `stretchY` configurations will
+    cause the `Sheet` component to expand to the full width (`stretchX`) or height
+    (`stretchY`) of the screen.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The values for `enter` and `exit` control how the `Sheet` component will slide
+    into place on the screen. You can use `top`, `bottom`, `left`, and `right`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Our sheet uses a `vbox` layout with two items, a `container` object for our
+    text and a `button` object to hide the `Sheet` component when the user has finished
+    reading it. The `button` component itself contains an interesting bit of code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE24]'
+  prefs: []
+  type: TYPE_PRE
+- en: When we refer to the `this` keyword, we are referring to the `button` object,
+    as the function occurs inside the `button` itself. However, we really need to
+    get to the `Sheet` that the button is contained by, in order to close it when
+    the button is clicked. In order to do this, we use a clever little method called
+    `up`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `up` method will basically crawl upwards through the structure of the code,
+    looking for the requested item. In this case, we are searching by `xtype` and
+    we have requested the first sheet encountered by the search. We can then hide
+    the sheet with the `hide()` method.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '**Ext.ComponentQuery**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'When you want to get one component, and you''ve given it an ID, you can use
+    `Ext.getCmp()`, as we discussed earlier. If, instead, you want to get multiple
+    components, or one component based on where it is in relation to another component,
+    you can use `query()`, `up()`, and `down()`. To hide a toolbar that''s inside
+    a panel, you can use the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE25]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Additionally, to get all toolbars in your application, you could use the following
+    command:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE26]'
+  prefs: []
+  type: TYPE_PRE
+- en: Once we hide the `Sheet` component, we still have a bit of a problem. The `Sheet`
+    component is now hidden, but it still exists in the page. If we go back and click
+    on the button again, without destroying the `Sheet`, we will just keep creating
+    more and more new sheets. That means more and more memory, which also means an
+    eventual death spiral for your application.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'What we need to do is make sure we clean up after ourselves, so that the sheets
+    don''t pile up. This brings us to the last part of our code and the `listeners`
+    configuration at the end:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE27]'
+  prefs: []
+  type: TYPE_PRE
+- en: A listener listens for a particular event, in this case, the `hide` event. When
+    the `hide` event occurs, the listener then runs the additional code listed in
+    the `fn` configuration. In this case, we destroy the `Sheet` component using `this.destroy();`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the next chapter, we will cover listeners and events in detail.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '**A word about the this variable**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: When we use the variable `this` in our programs, it always refers to the current
+    item. In the preceding case, we used this in two separate places, and it referred
+    to two separate objects. In our initial usage, we were inside the configuration
+    options for the button, and so this referred to the button. When we later used
+    this as part of our listener, we were inside the configuration for the sheet,
+    and this referred to the sheet.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If you find yourself getting confused, it can be very helpful to use `console.log(this);`
+    to make sure you are addressing the correct component.
+  prefs: []
+  type: TYPE_NORMAL
+- en: You should now be able to click on the **Sheet** button and view our new sheet.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Creating a Sheet component](img/0748OS_04_14.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Creating an ActionSheet component
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '`ActionSheet` is a variation of the standard sheet designed to display a series
+    of buttons. This is a good option when you only need a quick decision from the
+    user, with obvious choices that don''t require a lot of explanation. For example,
+    a delete confirmation screen would be a good use for an action sheet.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s add a new button to our layout that will pull up an `ActionSheet` component
+    for a delete confirmation:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE28]'
+  prefs: []
+  type: TYPE_PRE
+- en: The `ActionSheet` object is created in much the same fashion as our previous
+    sheet example. However, the action sheet assumes that all of its items are buttons,
+    unless you specify a different `xtype` value.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Our example has three simple buttons: **Delete**, **Save**, and **Cancel**.
+    The **Cancel** button will hide the `ActionSheet` component, and the other two
+    buttons are just for show.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: As with our previous example, we also want to destroy the `ActionSheet` component
+    when we hide it. This prevents copies of the `ActionSheet` component from stacking
+    up in the background and creating problems.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Clicking on the **ActionSheet** button in our application should now display
+    the action sheet we created:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Creating an ActionSheet component](img/0748OS_04_15.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Creating a Map component
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The `Map` component is a very specialized container designed to work with the
+    Google Maps API. The container can be used to display most of the information
+    that Google Maps display.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We are going to create a very basic example of the `Map` container for this
+    section, but we will come back to it in [Chapter 9](ch09.html "Chapter 9. Advanced
+    Topics"), *Advanced Topics*, and cover some of the more advanced tricks you can
+    use.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'For this example, let''s create a new JavaScript file:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE29]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'For this example, we are just creating a single `Container` component with
+    one item. The item is a map and has the configuration `useCurrentLocation: true`.
+    This means that the browser will attempt to use our current location as the center
+    of the map''s display. The user is always warned when this happens, and is given
+    an option to decline.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Before we can see how this works, we need to make one change to our standard
+    `index.html` file. Underneath the line where we include our other JavaScript files,
+    we need to include a new file from Google:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE30]'
+  prefs: []
+  type: TYPE_PRE
+- en: This will include all of the functions needed for us to use the Google Maps
+    API.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If you reload the page, you will be asked if you want to allow your current
+    location to be used by the application. Once you accept, you should see a new
+    map with your current location at the center.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Creating a Map component](img/0748OS_04_16.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: You can also use the `map` property and the `mapOptions` configuration option
+    to access the rest of the Google Maps functionality. We will explore some of these
+    options and go into much greater detail in [Chapter 9](ch09.html "Chapter 9. Advanced
+    Topics"), *Advanced Topics*.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '**Google Maps API** **documentation**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The full Google Maps API documentation can be found at [http://code.google.com/apis/maps/documentation/v3/reference.html](http://code.google.com/apis/maps/documentation/v3/reference.html).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Creating lists
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Sencha Touch offers few different kinds of `list` components. Each of these
+    `list` components consists of three basic parts:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**List panel**: This is in charge of gathering the other items as part of its
+    configuration options'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**XTemplate**: This determines how each line in the list is displayed'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Data store**: This contains all of the data that will be used in the list'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: It should also be noted that a store can (and typically will) have a model associated
+    with it to define the data records for the store. However, it is also possible
+    to simply define the fields as part of the store, which we will do in this example.
+    We will cover models and stores later in the chapters related to data in this
+    book.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In one of our first examples, we created a list object similar to this one:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE31]'
+  prefs: []
+  type: TYPE_PRE
+- en: We start by creating our application as before. We then created a single container
+    with a list item. The list item requires a data store, and the data store requires
+    a set of fields or a data model. In this case, we will use a set of fields for
+    simplicity.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE32]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This code gives us two potential values for each data record we will be using
+    in the list: `first` and `last`. It also tells us the `type` for each value; in
+    this case, both are `strings`. This lets the data store know how to handle sorting
+    the data and lets the XTemplate understand how the data can be used.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In this example, we have set `itemTpl: ''{last}, {first}''`. This `itemTpl`
+    value serves as a template or XTemplate in Sencha Touch terms. The XTemplate takes
+    the data from each record in the store and tells the list to display each data
+    record as: the last name, followed by a comma, and then the first name. We will
+    cover the XTemplates in greater detail in [Chapter 7](ch07.html "Chapter 7. Getting
+    the Data Out"), *Getting the Data Out*.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Creating lists](img/0748OS_04_17.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'Note that, right now, our list is not sorted alphabetically. We need to add
+    a sorter to the store underneath the configuration option for our model:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE33]'
+  prefs: []
+  type: TYPE_PRE
+- en: This will sort our list by the value `last` (the person's last name).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Adding grouped lists
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Grouped lists are also common to a number of applications. Typically, grouping
+    is used for lists of people or other alphabetical lists of items. Address books
+    or long lists of alphabetical data are great places for grouped lists. A grouped
+    list places an `indexBar` component on the screen, allowing the user to jump to
+    a specific point in the list.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To group our current list, we need to add two configuration settings to our
+    `list` component. Add the following code beneath where we declare `xtype: ''list''`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE34]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We also need to add a function to our store that will get the string used to
+    display our alphabetical `indexBar`. Add the following code in place of the `sorters`
+    configuration in the `store` component:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE35]'
+  prefs: []
+  type: TYPE_PRE
+- en: This code uses `record.get('last').substr(0,1)` to get the first letter of the
+    last name of our contact. This lets the list know where to scroll to when one
+    of the letters on the `indexBar` component is clicked.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Adding grouped lists](img/0748OS_04_18.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Adding nested lists
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The `NestedList` component automates the layout and navigation of a nested data
+    set. This can be very useful for situations where you have a list of items and
+    details for each item in the list. For example, let's assume we have a list of
+    offices where each office has a set of departments, and each department is made
+    up of a number of people.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We can initially represent this on screen as a list of offices. Clicking on
+    an office takes you to a list of departments within that office. Clicking on a
+    department takes you to a list of people in that department.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The first thing we need is a set of data to use with this list:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE36]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This is a rather large and ugly-looking array of data, but it can be broken
+    down into a few simple pieces:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: We have one main item called `Offices`
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`Offices` has a list of two items, `Atlanta Office` and `Athens Office`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The two items each have two departments
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Each department has two people
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Each of the people in this list has a special attribute called `leaf`. The `leaf`
+    attribute tells our program that it has reached the end of the nested data. Additionally,
+    every item in our list has an attribute called `text`. This `text` attribute is
+    part of the `fields` list in our `store`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We can then create our store and add our data to it:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE37]'
+  prefs: []
+  type: TYPE_PRE
+- en: For a `NestedList` component, we need to use a `TreeStore` class and set the
+    `root` configuration to point to the variable `data` array we defined earlier.
+    This will tell the store where to begin looking in the first set of items in our
+    data.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Finally, we need to create our `NestedList`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE38]'
+  prefs: []
+  type: TYPE_PRE
+- en: We set the `NestedList` component to `fullscreen`, and also set the `title`
+    value, tell it what field to display, and finally, we point it to our store so
+    it can grab the data we created.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Adding nested lists](img/0748OS_04_19.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: If you click on the nested list, you will notice that the click actions have
+    been added automatically. This is the same for the upper navigation and titles.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `NestedList` component provides a great starting point for displaying hierarchical
+    data quickly and efficiently on a small screen.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Finding more information with the Sencha Docs
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: We have covered quite a bit of information in this chapter, but it's only a
+    fraction of the information that is available to you in the Sencha Touch API documentation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Finding more information with the Sencha Docs](img/0748OS_04_20.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: At first, the API can seem a bit overwhelming, but if you understand the organization,
+    you can quickly find the information you need. Here are a couple of tips to get
+    you started.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Finding a component
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The left-hand side of the API contains five tabs, which are as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The home screen, which contains general marketing information for Sencha Touch
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The API Documentation with a list of every available component
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The **Guides** section, which contains more detailed articles about the various
+    components and their uses
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The **Videos** section, which has a number of video presentations covering topics
+    such as layout and MVC in greater detail
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The **Examples** section, which contains numerous examples of many of the Sencha
+    Touch components and their functionalities
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '![Finding a component](img/0748OS_04_21.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: If you click on the API tab, you can browse a list of components. You can also
+    use the search field in the upper-right corner of the documentation page to find
+    components quickly.
+  prefs: []
+  type: TYPE_NORMAL
+- en: As you click on the items in the API list, tabs will open the main part of the
+    screen with detailed information about the component.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Understanding the component page
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The information at the top of the individual component page provides a huge
+    jump-start in understanding how the component works.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Understanding the component page](img/0748OS_04_22.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: A quick scan of the component hierarchy, on the right, will tell you which other
+    items the component inherits from. If you understand the base components, such
+    as the container and panel, you can quickly use that knowledge to guide you through
+    using the new component.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The title at the top also lists the `xtype` value for the component right next
+    to it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Underneath the title, there are a series of menus that include:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Config**: The initial options that are used when the component is created'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Properties**: The information you can gather from the component after it
+    is created'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Methods**: The things the component knows how to do, once it''s created'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Events**: The things the component pays attention to, once it''s created'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**CSS Vars**: A list of any available CSS variables you can use in styling
+    the component (only on certain components)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**CSS Mixins**: A list of any available mixins for the component (only on certain
+    components)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: There is also a textbox for filtering the class members, a menu for controlling
+    what types of class members appear in the list, and a button for expanding all
+    of the items on the page.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Most of the common components include examples at the top of the page. When
+    viewed in a WebKit browser (Safari or Chrome), these examples include a **Live
+    Preview** / **Code Editor** option that can be toggled back and forth. This will
+    display either the component, as the user would see it, or the actual code to
+    create the component.
+  prefs: []
+  type: TYPE_NORMAL
+- en: As the name implies, the **Code Editor** option can actually be edited to test
+    different configuration options. There is also a **Select Code** option, which
+    will let you copy the code and paste it into your own applications.
+  prefs: []
+  type: TYPE_NORMAL
+- en: These bits of information should provide you with a starting point for learning
+    any component in the API.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this chapter, we started with a look at the base component called `Ext.Component`.
+    We also looked at how components are created. We then explored the layout for
+    containers in more detail, showing how it affects the child items inside the container.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The chapter also described a number of the more common and useful components
+    in Sencha Touch, including: Containers, Panels, TabPanel, Carousel, FormPanel,
+    FormItem, MessageBox, Sheet, List, and NestedList. We ended the chapter with a
+    bit of advice on using the Sencha Touch API.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the next chapter, we will cover the use of events in Sencha Touch.
+  prefs: []
+  type: TYPE_NORMAL

@@ -1,0 +1,1214 @@
+- en: Chapter 1. Let's Begin with Sencha Touch
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'With the growing popularity of mobile devices, cell phones, and tablet computers,
+    consumers have quickly moved on to embrace touch-based operating systems and applications.
+    This popularity has given developers a wide variety of platforms to choose from:
+    Apple''s iOS (including the iPhone, iPod Touch, and iPad), Google''s Android,
+    Windows 7 Mobile, and many more. Unfortunately, this rich variety of platforms
+    brings with it an equally rich variety of programming languages to choose from.
+    Picking any single language often locks you into using a specific platform or
+    device.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Sencha Touch removes this obstacle by providing a framework based on JavaScript,
+    HTML5, and CSS. These standards have gained strong support across most modern
+    browsers and mobile devices. Using a framework based on these standards, you can
+    deploy applications to multiple platforms without having to completely rewrite
+    your code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This book will help familiarize you with Sencha Touch, from the basic setup
+    to building complex applications. We will also cover some of the basics of frameworks
+    and touch-based applications in general, as well as provide tips on how to set
+    up your development environment and deploy your applications in a number of different
+    ways.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In this chapter, we will cover the following topics:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Frameworks
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Mobile application frameworks
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Designing applications for Sencha Touch
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Getting started with Sencha Touch
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Setting up your development environment
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Additional tools for developing applications using Sencha Touch
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Frameworks
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: A framework is a reusable set of code that provides a collection of objects
+    and functions you can use to get a head start on building your application. The
+    main goal of a framework is to keep you from re-inventing the wheel each time
+    you build an application.
+  prefs: []
+  type: TYPE_NORMAL
+- en: A well-written framework also helps by providing some measure of consistency
+    and gently nudging you to follow standard practices. This consistency also makes
+    the framework easier to learn. The keys to reusability and ease of learning are
+    two coding concepts called **objects** and **inheritance**.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Most frameworks such as Sencha Touch are built around an **Object-oriented Programming**
+    style (also called **OOP**). The idea behind OOP is that the code is designed
+    around simple base objects. A base object will have certain properties and functions
+    that it can perform.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'For example, let''s say we have an object called `wheeledVehicle`. Our `wheeledVehicle`
+    object has a few properties that are listed as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: One or more wheels
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: One or more seats
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: A steering device
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'It also has a few functions that are listed as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`moveForward`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`moveBackward`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`moveLeft`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`moveRight`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`stop`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: This is our base object. Once this base object is created, we can extend it
+    to add more functionalities and properties. This allows us to create more complex
+    objects, such as bicycles, motorcycles, cars, trucks, buses, and more. Each of
+    these complex objects does a lot more than our basic wheeled object, but they
+    also inherit the properties and abilities of the original object.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We can even override the original functions, such as making our `moveForward`
+    function run quicker for the car than our bicycle, if needed. This means we can
+    build lots of different `wheeledVehicles` instances without having to recreate
+    our original work. We can even build more complex objects. For example, once we
+    have a generic car, we can build everything from a Volkswagen to a Ferrari just
+    by adding in the new properties and functions for the specific model.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Sencha Touch is also built upon the **OOP** concept. Let's take an example from
+    Sencha Touch. In Sencha Touch, we have a simple object called `container`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The `container` object is one of the basic building blocks of Sencha Touch
+    and, as the name implies, it is used to contain other items in the visual areas
+    of the application. Other visual classes, such as panel, toolbar, and form panel,
+    extend the `container` class. The component class has many configurations that
+    control simple things, such as the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`height`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`width`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`padding`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`margin`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`border`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Configuration options also define more complex behaviors, such as the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`layout`: This determines how items in the container will be positioned'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`listeners`: This determines which events the container should pay attention
+    to and what to do when the container hears the event'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'The `component` object has a certain number of methods that control its behavior
+    and configurations. Examples of some simple methods are as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`show`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`hide`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`enable`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`disable`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`setHeight`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`setWidth`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'It also supports more complex methods, such as the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`query`: This performs a search for specific items within the container'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`update`: This takes HTML or data and updates the contents of the container'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'The container has a certain number of properties that you can use and events
+    that you can listen for. For example, you can listen for the following events:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`show`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`hide`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`initialize`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`resize`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'The basic `container` object is used as a building block in Sencha Touch to
+    create other visual objects, such as panels, tabs, toolbars, form panels, and
+    form fields. These sub objects, or **child** objects, inherit all of the abilities
+    and attributes of the container object (the **parent** object). Each will include
+    the same configuration options for height, width, and so on, and they will know
+    how to do all the things a container can: show, hide, and so on.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Each of these child objects will also have additional, unique configurations
+    and methods of their own. For example, buttons have an additional `text` property
+    that sets their title and buttons are notified when a user taps on them. By extending
+    the original object, the person creating the button only has to write code for
+    these extra configurations and methods.
+  prefs: []
+  type: TYPE_NORMAL
+- en: From a coding perspective, objects and inheritance make it so that we can re
+    use a lot of our work. It also means that when we encounter a new framework such
+    as Sencha Touch, we can use what we learned about the basic code objects to quickly
+    understand the more complex objects.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Building from a foundation
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In addition to providing reusability, frameworks also provide you with a collection
+    of core objects and functions, commonly used to build applications. This keeps
+    you from starting from scratch each time you begin a new application.
+  prefs: []
+  type: TYPE_NORMAL
+- en: These code objects typically handle most of the ways a user will input, manipulate,
+    or view data. They also cover the common tasks that occur behind the scenes in
+    an application, such as managing data, handling sessions, dealing with different
+    file formats, and formatting or converting different kinds of data.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The goal of a framework is to anticipate common tasks and provide the coder
+    with pre-constructed functions to handle those tasks. Once you are familiar with
+    the wide range of objects and functions provided by a framework such as Sencha
+    Touch, you can develop your applications quickly and more efficiently.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Building from a foundation](img/0748OS_01_01.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Building with a plan
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: One of the key things to look for in any framework is the documentation. A framework
+    with no documentation or, worse yet, one with bad documentation is simply an exercise
+    in frustration. Good documentation provides low-level information about every
+    object, property, method, and event in the framework. It should also provide more
+    generalized information, such as examples of how the code is used in various situations.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Providing good documentation and examples are the two places in which Sencha
+    Touch excels as a framework. Extensive information is available on the main Sencha
+    website, [http://docs.sencha.com](http://docs.sencha.com), under **Sencha Documentation
+    Resources** | **Touch**. There is documentation for every version of Sencha Touch
+    since Version 1.1.0\. In this book, we use Version 2.2.1, so clicking on the **Touch
+    2.2.1** link will take you to the relevant documentation. You can also download
+    the documentation as a ZIP file.
+  prefs: []
+  type: TYPE_NORMAL
+- en: A well-designed framework also maintains a set of standards and practices. These
+    can be simple things such as using camel case for variable names (for example,
+    `myVariable`) or more complex practices for commenting on and documenting the
+    code. The key to these standards and practices is consistency.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Consistency allows you to quickly learn the language and understand intuitively
+    where to find the answers to your questions. It's a little like having a plan
+    for a building; you understand quickly how things are laid out and how to get
+    where you need to go.
+  prefs: []
+  type: TYPE_NORMAL
+- en: A framework will also help you understand how to structure your own applications
+    by providing examples for both structure and consistency in coding.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this regard, Sencha has made every effort to encourage consistency, observe
+    standards, and provide extensive documentation for the Sencha Touch framework.
+    This makes Sencha-Touch a very effective first language for beginners.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Building with a community
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Frameworks seldom exist in isolation. Groups of developers tend to collect around
+    specific frameworks and form communities. These communities are fantastic places
+    to ask questions and learn about a new language.
+  prefs: []
+  type: TYPE_NORMAL
+- en: As with all communities, there are a number of unwritten rules and customs.
+    Always take the time to read through the forum before posting a question, just
+    in case the question has already been asked and answered.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Sencha Touch has an active developer community with a forum that can be accessed
+    from the main Sencha website at [http://www.sencha.com/forum](http://www.sencha.com/forum)
+    (scroll down on the website to find the Sencha Touch**-**specific forums).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Mobile application frameworks
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Mobile application frameworks need to address different functionalities from
+    a standard framework. Unlike a traditional desktop application, mobile devices
+    deal with touches and swipes instead of mouse clicks. The keyboard is part of
+    the screen, which can make traditional keyboard navigation commands difficult,
+    if not impossible. Also, there are various screen sizes and resolutions to choose
+    from in mobile devices. So, the framework has to adjust itself in accordance with
+    the screen and type of device. Mobile devices do not have as much computing power
+    as desktops or as many resources, so mobile frameworks should consider these limitations.
+    In order to understand these constraints, we can begin by looking at different
+    types of mobile frameworks and how they work.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Native application versus web application
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'There are two basic types of mobile application framework: one that builds
+    **native applications** and another that builds **web-based applications**, such
+    as Sencha Touch.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: A native application is one that is installed directly on the device. It typically
+    has more access to the device's hardware (camera, GPS, positioning hardware, and
+    so on) and other programs on the device, such as the address book and photo album.
+    Updates to a native application typically require each user to download a new
+    copy of the program being updated.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Web-based applications, as the name implies, require a public web server that
+    your users will need to access to use the application. Users will navigate to
+    your application's website using the browser on their mobile device. Since the
+    application runs inside the web browser, it has less access to the local filesystem
+    and hardware, but it also doesn't require the user to walk through a complex download
+    and installation process. Updates to a web-based application can be accomplished
+    by making a single update to the public web server. The program is then updated
+    automatically for anyone who accesses the site.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Web-based applications can also be modified to behave more like native applications
+    or even be compiled by a separate program to become a full native application.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Most mobile browsers allow users to save the application to the desktop of a
+    mobile device. This will create an icon on the mobile device's home screen. From
+    there, the application can be launched and will behave much like a native application.
+    The browser's navigation will be invisible when the application is launched from
+    the home screen icon. Web applications can also use mobile devices' built-in storage
+    capacity, such as using **HTML5 local storage** to store data on a device and
+    making the application work offline without network connectivity.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Native application versus web application](img/0748OS_01_02.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: If you find that you need the full functionality of a native application, you
+    can use the Sencha Cmd command-line utility or an external compiler such as PhoneGap
+    ([http://www.phonegap.com/](http://www.phonegap.com/)) to take your web-based
+    application and compile it into a full native application that you can upload
+    and sell on Apple's App Store or the Google Play store. We will talk more about
+    these options a bit later in the book.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Web-based mobile frameworks
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: A web-based mobile framework depends on the web browser running the application.
+    This is a critical piece of information for a couple of reasons.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The first consideration for a web-based application is that the web browser
+    has to be consistent across mobile platforms. If you have previously done any
+    website development, you are familiar with the painful issue of browser compatibility.
+    A website can look completely different depending on the browser. A JavaScript
+    that works in one browser may not work in another. People also tend to hold on
+    to older browsers without updating them. Fortunately, these problems are less
+    of an issue with most mobile devices and no problem at all for iOS and Android.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The web browser for both Apple's iOS and Google's Android is based on the **WebKit**
+    engine. WebKit is an open source engine that basically controls how the browser
+    displays pages, handles JavaScript, and implements web standards. What this means
+    for you is that your application should work in the same way on both platforms.
+  prefs: []
+  type: TYPE_NORMAL
+- en: However, mobile devices that do not use WebKit (such as Windows Mobile) will
+    be unable to use your application. The good news is that as more browsers adopt
+    HTML5 standards, this problem may also begin to disappear.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The second consideration for a web-based application is where it lives. A native
+    application gets installed on the user's device. A web-based application needs
+    to be installed on a public server. Users should be able to enter a URL into their
+    web browsers and navigate to your application. If the application exists only
+    on your computer, you are the only one who can use it. This is great for testing,
+    but if you want to have other people using your application, you will need to
+    have it hosted on a public server.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The third consideration is connectivity. If a user cannot connect to the Internet,
+    they won't be able to use your application. However, Sencha Touch can be configured
+    to store your application and all of its data locally. At first glance, this ability
+    seems to negate the problem of connectivity altogether, but it actually causes
+    problems when users connect to your application with more than one device.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Web-based mobile frameworks](img/0748OS_01_03.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: A web-based application resides on the Internet, so it can be accessed from
+    any device that has a browser and a network connection. The same application can
+    simultaneously be used on a cell phone, personal computer, and mobile device.
+    This is the biggest advantage for an information-rich application if its data
+    is stored on a central server. This means that data entered into one device can
+    be accessed on another device.
+  prefs: []
+  type: TYPE_NORMAL
+- en: But, if an application stores data locally, this would not be possible, as data
+    entered into a mobile device is not accessible on a personal computer. If the
+    user is using a personal computer to view the site, the application will create
+    another set of local data.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Fortunately, Sencha Touch can be set up to synchronize data between the server
+    and various other devices. When your application is connected to the Internet,
+    it will synchronize any existing offline data and use the remote server to store
+    any data while online. This makes sure that your data is accessible to you across
+    all of your devices while allowing you to work offline as needed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Web frameworks and touch technology
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Standard web application frameworks have been designed to work with the mouse-and-keyboard
+    environment, but, mobile frameworks should work with touch technology for both
+    navigation and data entry.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Web frameworks and touch technology](img/0748OS_01_04.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'The following are the common touch gestures:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Tap**: A single touch on the screen'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Double tap**: Two quick touches on the screen'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Tap Hold**: Tapping once on the device and holding the finger down'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Swipe**: Moving a single finger across the screen from left to right or top
+    to bottom'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Pinch or spread**: Touching the screen with two fingers and bringing them
+    together in a pinching motion or spreading them apart to reverse the action'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Rotate**: Placing two fingers on the screen and twisting them clockwise or
+    counterclockwise, typically to rotate an object on the screen'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Initially, these interactions were only supported in native applications, but
+    Sencha Touch has made them available in web applications.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Designing applications for mobile devices and touch technology
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Mobile applications require some change in thinking. The biggest consideration
+    is that of scale.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'If you are used to designing an application on a 21 inch monitor, dealing with
+    a 3.5 inch phone screen can be a painful experience. Phones and mobile devices
+    use a variety of screen resolutions; some examples are as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**iPhone 5 retina display**: 1136 x 640'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**iPhone 5**: 960 x 640'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**iPhone 4** and **iPod Touch 4**: 960 x 640'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**iPhone 4** and **iPod Touch 3**: 480 x 320'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Android 4 Phones**: These support four general sizes:'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Xlarge screens are at least 960 x 720
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Large screens are at least 640 x 480
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Normal screens are at least 470 x 320
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Small screens are at least 426 x 320
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**HTC Phones**: 800 x 480'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Samsung Galaxy S3**: 1280 x 720'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**iPad**: 1024 x 768'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**iPad retina**: 2048 x 1536'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Additionally, Android tablets come in a wide variety of resolutions and sizes.
+    Designing applications for these various screen sizes can take a bit of extra
+    effort.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'When designing a mobile application, it''s usually a good idea to mock up the
+    design to get a better idea of scale and where your various application elements
+    will go. There are a number of good layout programs available to help you with
+    this, listed as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Omni Graffle for the Mac ([http://www.omnigroup.com/products/omnigraffle/](http://www.omnigroup.com/products/omnigraffle/))
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Balsamiq Mockups for Mac, Windows, and Linux ([http://balsamiq.com/](http://balsamiq.com/))
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: DroidDraw for Mac, Windows, and Linux ([http://www.droiddraw.org/](http://www.droiddraw.org/)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: iMockups for the iPad ([http://www.endloop.ca/imockups/](http://www.endloop.ca/imockups/))
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Touch applications also have certain considerations for you to keep in mind.
+    If you are coming from a typical web development background, you might be used
+    to using events such as hover.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Hover is typically used in web applications to alert the user that an action
+    can be performed or to provide tool tips; for example, showing that an image or
+    text can be clicked on by causing its color to change when the user hovers the
+    mouse cursor over it. Since touch applications require the user to be in contact
+    with the screen, there really is no concept of hovering. Objects the user can
+    activate or interact with should be obvious and icons should be clearly labeled.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Unlike mouse-driven applications, touch applications are also typically designed
+    to mimic real-world interactions. For example, turning the pages of a book in
+    a touch application is usually accomplished by swiping your finger across the
+    page horizontally in much the same way you would in the real world. This encourages
+    exploration of the application, but it also means that coders must take special
+    care with any potentially destructive actions, such as deleting an entry.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Why touch?
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Before the advent of touch screens, applications were generally limited to input
+    from external keyboards and the mouse. Neither of these is very desirable on a
+    mobile platform. Even when full internal keyboards are used in non-touch-based
+    devices, they can take up a tremendous amount of space on the device, which in
+    turn limits the available screen size. By contrast, a touch-based keyboard disappears
+    when it isn't needed, leaving a larger screen area available for display.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Slide-out keyboards on mobile devices do not adversely affect the screen size,
+    but they can cramp space and be uncomfortable to use. Additionally, a touch-screen
+    keyboard allows for application-specific keyboards and keys, such as the *.com*
+    key when using a web browser.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Keyboards and mouse devices can also present a mental disconnect for some users.
+    Using a mouse on your desk to control a tiny pointer on a separate screen often
+    leads to a sense that you are not entirely in control of the activity, whereas
+    directly touching an object on the screen and moving it places you at the center
+    of the activity. Because we interact with the physical world by touching and moving
+    objects by hand, a touch-based application often provides a more intuitive **User**
+    **Interface** (**UI**).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Touch technology is also beginning to make big inroads into the desktop computer
+    arena with the advent of Windows 8\. As this technology becomes cheaper and more
+    common, the need for touch-based applications will continue to grow.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting started with Sencha Touch
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: When getting started with any new programming framework, it's a good idea to
+    understand all of the resources available to you. Buying this book is a great
+    start, but there are additional resources that will prove invaluable to you as
+    you explore the Sencha Touch framework.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Fortunately for us, the Sencha website provides a wealth of information to assist
+    you at every stage of your development.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The API
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The Sencha Touch **Application** **Programming Interface** (**API**) documentation
+    provides detailed information about every single object class available to you
+    with Sencha Touch. Every class in the API includes detailed documentation for
+    every configuration option, property, method, and event for that particular class.
+    The API often also includes a short example for each class with a live preview
+    and code editor.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The API documentation is available on the Sencha website, [http://docs.sencha.com/touch/2.2.1/](http://docs.sencha.com/touch/2.2.1/).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'A copy, as shown in the following screenshot, is also included as part of the
+    Sencha Touch framework which you will download to create your applications:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![The API](img/0748OS_01_05.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Examples
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The Sencha website also includes a number of example applications for you to
+    look at. By far the most helpful of these is the Kitchen Sink application. The
+    following screenshot shows how a Kitchen Sink application looks:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Examples](img/0748OS_01_06.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: The Kitchen Sink application
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'The Kitchen Sink application provides examples for the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: User interface items, such as buttons, forms, toolbars, lists, and more
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Animations for actions, such as flipping pages or sliding in a form
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Touch events, such as tap, swipe, and pinch
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Data handling for JSON, YQL, and AJAX
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Media handling for audio and video
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Themes to change the look of your application
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Each example has a **Source** button in the upper-right corner that will display
+    the code for the Kitchen Sink example.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The Kitchen Sink application also provides **Event Recorder** and **Event Simulator**.
+    These will allow you to record, store, and play back any touch events executed
+    by the device's screen.
+  prefs: []
+  type: TYPE_NORMAL
+- en: These simulators demonstrate how to record actions in your own application for
+    playback as a live demonstration or tutorial. They can also be used for easily
+    repeatable testing of functionality.
+  prefs: []
+  type: TYPE_NORMAL
+- en: You can play around with the Kitchen Sink application on any mobile device or
+    on a regular computer using Apple's Safari web browser. The Kitchen Sink application
+    is available on the Sencha website, [http://docs.sencha.com/touch/2.2.1/touch-build/examples/kitchensink/](http://docs.sencha.com/touch/2.2.1/touch-build/examples/kitchensink/).
+  prefs: []
+  type: TYPE_NORMAL
+- en: A copy of the Kitchen Sink application is also included as part of the Sencha
+    Touch framework that you will download to create your applications.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Learn
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Sencha also has a section of the site devoted to more detailed discussions of
+    particular aspects of the Sencha Touch framework. The section is appropriately
+    titled **Learn**. It contains a number of tutorials, screencasts, and guides available
+    for you to use. Each subsection is labeled as **Easy**, **Medium**, or **Hard**
+    so that you have some idea about what you are getting into.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The **Learn** section is available on the Sencha Website at [http://www.sencha.com/learn/touch/](http://www.sencha.com/learn/touch/).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Forums
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The Sencha forums are worth mentioning again. These community discussions provide
+    general knowledge, bug reporting, question-and-answer sessions, examples, contests,
+    and more. The forums are a great place to find solutions from people who use the
+    framework on a daily basis.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Setting up your development environment
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Now that you've familiarized yourself with the available Sencha Touch resources,
+    the next step is to set up your development environment and install the Sencha
+    Touch libraries.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In order to start developing applications using Sencha Touch, it is highly recommended
+    that you have a working web server on which you can host your application. While
+    it's possible to develop Sencha Touch applications by viewing local folders using
+    your web browser, without a web server, you won't be able to test your application
+    using any mobile devices.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Setting up web sharing on Mac OS X
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'If you are using Mac OS X, you already have a web server installed. To enable
+    it, launch your system preferences, choose **Sharing**, and enable **Web Sharing**.
+    If you haven''t done so already, click on **Create Personal Website Folder** to
+    set up a web folder in your home directory. By default, this folder is named `Sites,`
+    and this is where we will be building our application:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Setting up web sharing on Mac OS X](img/0748OS_01_07.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: The **Sharing** panel will tell you your web server URL. Remember this for later.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Installing a web server on Microsoft Windows
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'If you''re running Microsoft Windows, you may be running Microsoft''s **Internet
+    Information Server** (**IIS**). You can find out by going into your **Control
+    Panel** and choosing either of the following options:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Program Features** | **Turn Windows features on or off** (in Vista or Windows
+    7). Detailed instructions are at [http://www.howtogeek.com/howto/windows-vista/how-to-install-iis-on-windows-vista/](http://www.howtogeek.com/howto/windows-vista/how-to-install-iis-on-windows-vista/).'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Add/Remove Programs** | **Add/Remove Windows Components** (in Windows XP).
+    Detailed instructions are at [http://www.webwiz.co.uk/kb/asp-tutorials/installing-iis-winXP-pro.htm](http://www.webwiz.co.uk/kb/asp-tutorials/installing-iis-winXP-pro.htm).'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: If you do not have IIS installed or are unfamiliar with its operation, it is
+    recommended to install the Apache server for use with this book. This will allow
+    us to provide consistent instructions for both Mac and PC in our examples.
+  prefs: []
+  type: TYPE_NORMAL
+- en: One of the easiest ways to install Apache is to download and install the XAMPP
+    software package ([http://www.apachefriends.org/en/xampp-windows.html](http://www.apachefriends.org/en/xampp-windows.html)).
+    This package includes Apache as well as PHP and MySQL. These additional programs
+    can be helpful as your skills grow, allowing you to create more complex programs
+    and data storage options.
+  prefs: []
+  type: TYPE_NORMAL
+- en: After you've downloaded and run XAMPP, you'll be prompted to run the XAMPP control
+    panel. You can also run the XAMPP control panel from the Windows **Start** menu.
+    You should click on **Start** on the **Apache** line of the control panel to start
+    your web server. If you receive a notice from your firewall software, you should
+    choose the option which will allow Apache to connect to the Internet.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Installing a web server on Microsoft Windows](img/0748OS_01_08.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Inside the folder in which you've installed XAMPP, is a subdirectory called
+    `htdocs`. This is the web folder where we will be setting up Sencha Touch. The
+    full path is usually `C:\xampp\htdocs`. Your web server URL will be `http://localhost/`;
+    you'll want to remember this for the next step.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Download and install the Sencha Touch framework
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In your web browser, go to [http://www.sencha.com/products/touch/](http://www.sencha.com/products/touch/)
+    and click on the **Download** button. Save the ZIP file to a temporary directory.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Note that all examples in this book were written using Sencha Touch Version
+    2.1.1.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Unzipping the file you've downloaded will create a directory called `sencha-touch-version`
+    (in our case, it was `sencha-touch-2.1.1`). Copy this directory to your web folder
+    and rename it, dropping the version number and leaving just `sencha-touch`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Now, open up your web browser and enter your web URL, adding `sencha-touch/examples`
+    at its end. You should see the following Sencha Touch demo page:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Download and install the Sencha Touch framework](img/0748OS_01_09.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Congratulations! You've successfully installed Sencha Touch.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This demo page contains examples for applications as well as simple examples
+    of components.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Additional tools for developing with Sencha Touch
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In addition to configuring a web server and installing the Sencha Touch libraries,
+    there are some development tools that you may want to take a look at before diving
+    into your first Sencha Touch application. Sencha also has several other products
+    you may find useful to use in your Sencha Touch app, and there are quite a few
+    third-party tools that can help you develop and deploy your app. We're not going
+    to go into a lot of detail about how to set them up and use them, but these tools
+    are definitely worth looking into.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Safari and Chrome Developer Tools
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: When writing code, it is often very helpful to be able to see what is going
+    on behind the scenes. The most critical tools for working with Sencha Touch are
+    the Safari and Chrome Developer Tools. These tools will help you debug your code
+    in a number of different ways, and we will cover them in a bit more detail as
+    we move further through the book. For now, let's take a quick look at the four
+    basic tools, explained in the following sections.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: For Safari users, you can enable the Safari developer menu by going to **Edit**
+    | **Preferences** | **Advanced**. Check the **Show Develop** checkbox in the menu
+    bar. Once this menu is enabled, you can see all of the available developer tools.
+    For Chrome users, these tools can be accessed from the **View** | **Developer**
+    | **Developer Tools** menu.
+  prefs: []
+  type: TYPE_NORMAL
+- en: JavaScript Console
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The JavaScript Console displays errors and console logs, which provide you with
+    an indication when things go wrong.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![JavaScript Console](img/0748OS_01_10.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'Notice that we get two pieces of information here: the error and the file where
+    the error occurred. You can click on the filename to see the exact line where
+    the error occurred. You should take some time to familiarize yourself with the
+    consoles under either Chrome or Safari. You will likely be spending a lot of time
+    here.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The Network tab
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The second helpful tool is the **Network** tab. This tab shows you all the files
+    that are loaded in the web browser, including an error for any file the browser
+    attempted to load but could not find.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![The Network tab](img/0748OS_01_11.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Missing files are shown in red. Clicking on a file will show more details, including
+    any data that was passed to the file and any data that was returned.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The web inspector
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'The web inspector allows you to examine the underlying HTML and CSS for any
+    element displayed on the page. The following screenshot shows the web inspector:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![The web inspector](img/0748OS_01_12.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: The web inspector can be particularly helpful when trying to hunt down display
+    and positioning errors in your application. You can click on the magnifying glass
+    in Chrome or the pointer in Safari to select any element on the page and see the
+    display logic.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The Resources tab
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'The **Resources** tab shows information that the browser is storing for our
+    application. This includes information about any data we are storing locally and
+    any cookies we might have created for this application as shown in the following
+    screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![The Resources tab](img/0748OS_01_13.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: From this tab, you can double-click on an item to edit it or right-click on
+    it to delete it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We will take a closer look at these tools as we proceed through the book and
+    show you some additional uses and tips.
+  prefs: []
+  type: TYPE_NORMAL
+- en: A full discussion of the Safari Developers Tools can be found at [https://developer.apple.com/technologies/safari/developer-tools.html](https://developer.apple.com/technologies/safari/developer-tools.html).
+  prefs: []
+  type: TYPE_NORMAL
+- en: The Chrome Developers Tools are covered at [https://developers.google.com/chrome-developer-tools/](https://developers.google.com/chrome-developer-tools/).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Other Sencha products
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Sencha offers several products that can speed up code development and even expand
+    the capabilities of Sencha Touch.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Sencha Cmd
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Sencha Cmd is a command-line tool that allows you to generate the basic Sencha
+    Touch files from the command-line prompt. It also lets you compile applications
+    for the Web and as a binary file that you can sell on the various app stores.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We will be using Sencha Cmd in several instances in this book. You can download
+    it from the following website:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[http://www.sencha.com/products/sencha-cmd/download](http://www.sencha.com/products/sencha-cmd/download)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Sencha Architect
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Sencha Architect is the **Integrated Development Environment** (**IDE**) for
+    Sencha Touch and ExtJS applications. Sencha Architect allows you to build your
+    application in a graphical environment, dragging and dropping controls on the
+    screen. You can arrange and manipulate these components in a number of ways and
+    Sencha Architect will write the underlying code for you. You can download it from
+    the following website:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[http://www.sencha.com/products/architect](http://www.sencha.com/products/architect)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Sencha Animator
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Sencha Touch comes with a few built-in animations; but, for more intensive
+    animations, a more robust application is needed. With the Sencha Animator desktop
+    application, you can create professional animations that rival Flash-based animations.
+    However, unlike Flash-based animations, Sencha Animator animations run on most
+    mobile browsers, making them perfect for adding extra flair to your Sencha Touch
+    application. You can download Sencha Animator at the following website:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[http://www.sencha.com/products/animator/](http://www.sencha.com/products/animator/)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Third-party developer tools
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: You can also choose from a variety of developer tools that you may find useful
+    in developing your Sencha Touch apps.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Notepad++
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Notepad++ is a code editor and is very useful for writing JavaScript code. It
+    has certain useful features, such as syntax highlighting, syntax folding, multiview
+    and multilanguage environments, and multiple documents. This is a free and open
+    source tool available at [http://notepad-plus-plus.org/features.html](http://notepad-plus-plus.org/features.html).
+    This is available only for Windows and Linux operating systems.
+  prefs: []
+  type: TYPE_NORMAL
+- en: WebStorm
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'WebStorm is an IDE (a code editor) for developing web applications in languages
+    such as JavaScript and many more. WebStorm is available for Windows, OS X, and
+    Linux. Webstorm is available as a 30-day free trial with licensing options for
+    commercial, personal, and educational usage. You can find it at the following
+    website:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[http://www.jetbrains.com/webstorm/](http://www.jetbrains.com/webstorm/)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Xcode 5
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '**Xcode 5** is Apple''s complete development environment, designed for people
+    writing for any Apple platform—OS X, iPhone, or iPad. As such, it comes with a
+    lot of stuff that is not really necessary for writing Sencha Touch applications.
+    However, one thing that is included with Xcode 5 that can be very handy for Sencha
+    Touch developers is the iOS Simulator. With the iOS Simulator, you can test your
+    application on various iOS devices without having to actually own them.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Most of the uses of Xcode 5 require membership to the Apple Developer program
+    (for things like selling applications on the app store). However, the iOS Simulator
+    can be used by anyone. You can download Xcode 5 from the following website:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[http://developer.apple.com/xcode/](http://developer.apple.com/xcode/)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Android Emulator
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Android Emulator is the Android counterpart to the iOS Simulator that comes
+    with Xcode 5\. Android Emulator is part of the free Android SDK download at [http://developer.android.com/guide/developing/devices/emulator.html](http://developer.android.com/guide/developing/devices/emulator.html).
+    Android Emulator can be configured to mimic many specific Android mobile devices,
+    allowing you to test your application across a broad range of devices.
+  prefs: []
+  type: TYPE_NORMAL
+- en: YUI test
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'A common part of any kind of programming is testing. A YUI test, part of Yahoo''s
+    YUI JavaScript library, allows you to create and automate unit tests, just as
+    JUnit does for Java. Unit tests set up test cases for specific segments of code.
+    Then, if in the future that code changes, the unit tests can be re-run to determine
+    whether or not the code still succeeds. This is very useful, not only for finding
+    errors in code, but also for ensuring code quality before a release. YUI tests
+    can be found at the following website:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[http://yuilibrary.com/yui/docs/test/](http://yuilibrary.com/yui/docs/test/)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Jasmine
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Jasmine is a testing framework similar to YUI tests, except it''s based on
+    **Behavioral Driven Design** (**BDD**). In BDD testing, you start with specifications—stories
+    about what your application should do in certain scenarios—and then write code
+    that fits those specifications. Both YUI tests and Jasmine accomplish the same
+    goals of testing your code, they just do it in different ways. You can download
+    Jasmine at the following website:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[http://pivotal.github.com/jasmine/](http://pivotal.github.com/jasmine/)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: JSLint
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Possibly the most useful JavaScript tool on this list, **JSLint** will examine
+    your code for syntax errors and code quality. Written by Douglas Crockford, one
+    of the fathers of JavaScript, JSLint will examine your code in great detail, which
+    is great for finding errors before you deploy your code. You can find more information
+    at the following website:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[http://www.jslint.com/lint.html](http://www.jslint.com/lint.html)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'In this chapter, we''ve covered the fundamentals of web application frameworks
+    and why you should use Sencha Touch. We''ve walked through setting up a development
+    environment and installing the Sencha Touch libraries. We also took a brief look
+    at what the limitations of mobile devices are and how you can overcome them. We
+    also took a brief look at what the things are that we should keep in mind while
+    developing mobile applications. We''ve also explored the additional tools that
+    are useful for mobile application development:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Sencha Touch Learning Center ([http://www.sencha.com/learn/touch/](http://www.sencha.com/learn/touch/))
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Apple's iOS Human Interface Guidelines ([http://developer.apple.com/library/ios/#documentation/UserExperience/Conceptual/MobileHIG/Introduction/Introduction.html](http://developer.apple.com/library/ios/#documentation/UserExperience/Conceptual/MobileHIG/Introduction/Introduction.html))—an
+    in depth guide to developing user interfaces for iOS devices.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Android Interface guidelines ([http://developer.android.com/guide/practices/ui_guidelines/index.html](http://developer.android.com/guide/practices/ui_guidelines/index.html))
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: In the next chapter, we'll create our first Sencha Touch application and, in
+    the process, learn the basics of using Sencha Touch development and the MVC framework.
+  prefs: []
+  type: TYPE_NORMAL

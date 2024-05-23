@@ -1,0 +1,1191 @@
+- en: Chapter 7. Getting the Data Out
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In the previous chapter, we looked at how you can get data into a Sencha Touch
+    data store. Once we have the data, the next step is figuring out how to get it
+    out of the store and use it in our application. Fortunately for us, Sencha Touch
+    has a number of built-in ways to help us accomplish this task. Here we will explore
+    how to use individual data records as well as the complete contents of the data
+    store to display information in our application.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In this chapter, we will look at:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using data stores for display
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Binding, sorting, filtering, paging, and loading data stores
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Working with XTemplates
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Looping through data in an XTemplate
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Conditional display and inline functions in XTemplates
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Inline JavaScript and member functions in XTemplates
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using Sencha Touch Charts to display store data
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using data stores for display
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Being able to store data in your application is only half the battle. You need
+    to be able to easily get the data back out and present it in a meaningful way
+    to the user. Lists, panels and other data-capable components in Sencha Touch offer
+    three configuration options to help you accomplish this task: `store`, `data`,
+    and `tpl`.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Directly binding a store
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Data views, lists, nested lists, form select fields, and index bars are all
+    designed to display multiple data records. Each of these components can be configured
+    with a data store from where to pull these records. We introduced this practice
+    earlier in the book:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: The store configuration takes the `model` and `autoLoad` properties as part
+    of its setup. This will grab all of the store's data (using the proxy on the `model`
+    parameter) and pull it into the list for display. We are pretty familiar with
+    this now, but what if we only want some of the data, or if we need the data in
+    a specific order?
+  prefs: []
+  type: TYPE_NORMAL
+- en: As it turns out, Sencha Touch stores can be sorted and filtered both when they
+    are first created and later if we need to change the filtering or sorting in response
+    to the user.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Sorters and filters
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Sorters and filters can be used in a number of ways. The first way is to set
+    up a default configuration on the store as part of its creation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: Our `sorters` component is set as an array of property and direction values.
+    These are executed in order, so our example sorts first by `lastLogin` (most recent
+    first). Within `lastLogin`, we sort by name (alphabetically ascending).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Our filters are listed as `property` and `value` pairs. In our example, we want
+    the store to show us only `admin`. The store might actually contain non-admins
+    as well, but here we are requesting that those be filtered out initially.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Sorters and filters can also be modified after the initial load-in by using
+    one of the following methods:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`clearFilter`: This method clears all filters on the store, giving you the
+    full content of the store.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`filter`: This method takes a filter object, just like the one in our earlier
+    configuration example, and uses it to limit the data as requested.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`filterBy`: This method allows you to declare a function that is run on each
+    item in the store. If your function returns `true`, the item is included. If it
+    returns `false`, then the item is filtered out.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`sort`: This method takes a `sort` object just like the ones in our configuration
+    example and uses it to sort the data as requested.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'If we use our earlier store example, changing the `sort` order would look like
+    this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Filtering has to take into account any previous filters on the store. In our
+    current store example, we are set to filter out anyone without an `admin` value
+    of `true`. If we try the following code, we will not get back anything in the
+    list because we have effectively told the store to filter by both the new (`admin`
+    = `false`) and previous (`admin` = `true`) filters:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'As `admin` is a Boolean value, we get back nothing. We have to clear out the
+    old filter first:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: This example will clear the old `'admin'` filter from the store and return a
+    list of everyone who is not an admin.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Sorting and filtering provides a powerful tool for manipulating data inside
+    the data store. However, there are a few other situations we should also take
+    a look at. What do you do when you have too much data, and what do you do when
+    you need to reload the data store?
+  prefs: []
+  type: TYPE_NORMAL
+- en: Paging a data store
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In some cases, you will end up with more data than your application can comfortably
+    manage in a single bite. For example, if you have an application with 300 contacts,
+    the initial load-in time might be more than you really want. One way to handle
+    this is by paging the data store. Paging allows us to grab the data in chunks
+    and send the next or previous chunk of data as the user needs it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We can set up paging using the `pageSize` configuration:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We can then move through the data using the paging functions:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: This code moves forward one page, moves back one page, and then jumps to page
+    five.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: It should be noted that page indexes are 1 based (that is, numbered 1, 2, 3,
+    and so on) rather than 0 based (that is, numbered 0, 1, 2, 3, and so on, like
+    arrays).
+  prefs: []
+  type: TYPE_NORMAL
+- en: If we jump to page five and it doesn't exist, things will probably go poorly
+    for our application (that is, it will go kaboom!), which means that we need a
+    good way to figure out how many pages we actually have. For this we need to know
+    the total number of records in our data store.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We could try using the `getCount()` method for the data store, but this only
+    returns the number of currently cached records in the store. Since we are paging
+    through the data, it means that we are not loading everything available. If we
+    have a maximum page count of 40, but there are 60 records in our database, the
+    `getCount()` method will return `40` for the first page and `20` when we load
+    the second page.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Also, if you filter your store's data, the number returned by `getCount()` will
+    be the number of records that matched the filter, not the total number of records
+    in the store. We need to set up our store's reader to get an actual total back
+    from our system. We also need to tell the store where these records will be when
+    the data comes back to it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We can set a configuration on the `reader` for `totalProperty` and `rootProperty`,
+    such as the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This tells our reader to look for two extra properties, called `totalContacts`
+    and `rootProperty`, in the data that it collects. The data that we pull into the
+    store will also have to be set up to include this new property as part of the
+    data string. How this is done will be determined largely by how your data is created
+    and stored, but in a JSON data array, the format will look something like the
+    following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: The `totalContacts` property tells us how many contacts we have, and the `rootProperty`
+    tells the reader where to start looking for those contacts.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Once our data is set up in this fashion, we can grab the total contacts, as
+    follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We can then divide by `myStore.getPageSize()`, to determine the total number
+    of pages in our data. We can also grab the current page with `myStore.currentPage`.
+    These two pieces of information will allow us to display the user''s current location
+    in the pages (for instance, **Page: 5 of 8**). Now, we need to account for what
+    happens when the data behind our store changes.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Loading changes in a store
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: When we use a data store to pull information from an external source, such as
+    a file, a website, or a database, there is always the chance that the data will
+    change at the external source. This will leave us with stale data in the store.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Fortunately there is an easy way to deal with this using the `load()` function
+    on the store. The `load()` function works as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: The `scope` and `callback` functions are both optional. However, `callback`
+    offers us an opportunity to do a number of interesting things, such as compare
+    our old and new records or alert the user visually once the new records are loaded.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: You can also set up a listener on the store for the `load` event. This will
+    make the store use this callback at any point in time when the basic `store.load()`
+    function is called. Additionally, there is an event called `beforeLoad` that,
+    as the name implies, fires off each time before the store is loaded. If the `beforeLoad`
+    event returns `false`, the `load` event is not fired.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Another consideration while loading data stores is whether to automatically
+    load (`autoLoad`) the store as part of its creation or load it later. A good rule
+    of thumb is to only autoload the data stores that you know will be displayed initially.
+    Any subsequent stores can be set to load when the component that they are bound
+    to is shown.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'For example, let''s say we have a list of system users that will only be accessed
+    occasionally within the program. We can add a listener to the component list itself
+    in the following manner:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: This code will load the store only if the `list` component is actually shown.
+    Loading stores in this fashion saves us time while launching our application,
+    and also saves memory. However, it should be noted that the code will also load
+    the store every time this component is shown. This is desirable if you expect
+    the data behind the store to be updated frequently; otherwise, it is better to
+    load the store manually.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We can also save time and memory by using the store to feed multiple components,
+    such as a list of data and a details panel. As with the preceding example, there
+    are some caveats to this tactic. If a filter, sort, or data load is applied to
+    the store by one component, it will also affect any of the other components that
+    this store is bound to.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Data stores and panels
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Unlike lists, where a number of records can be displayed, a panel typically
+    displays a single record. However, we can still grab this information from our
+    data store in the same way that we do for a list.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let's start with a variation of our contacts example from the beginning of the
+    chapter; we will build a list of names using `first` and `last`, and then add
+    a details panel that shows the full name, e-mail address, and phone number for
+    the selected name.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We start with our model and store first:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: This gives us our `first` and `last` values, which we will use for our initial
+    list, and the `email`, `birthday`, and `address` information, which we will use
+    for the details.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Sharp-eyed readers will also notice that we have changed our model to use Ajax
+    as the proxy for an `api/contacts.json` URL (remember, our store will automatically
+    use this proxy as well). This means that when the store loads, it will look for
+    a local file in the `api` folder called `contacts.json`. This file is available
+    as part of the downloadable code files for this book, and it contains some test
+    data that we have thrown together. If you want to create your own file instead
+    of downloading it, the format of the file looks like the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: By setting this store to look at a local text file, we can add data quickly
+    for testing by adding new `children` to the text file.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '**Test data is your friend**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Whenever you put together an application and test it, you will probably need
+    some data in order to make sure things are working correctly. It's often very
+    tedious to enter this information into a text file manually or to enter it in
+    data forms over and over again. Fortunately, [http://www.generatedata.com/](http://www.generatedata.com/)
+    is a website that generates random data in a number of formats. Just provide the
+    field names and types, and then tell the website how many records you need. Click
+    on the button, and you get back random data, ready for testing. Best of all, it's
+    free!
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Data stores and panels](img/0748OS_07_01.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'Our `list` component basically stays the same as before. As `list` uses the
+    template `itemTpl: ''{last}, {first}''` for each item in the list, it simply ignores
+    the values for `address`, `city`, `state`, `zip`, `email`, and `birthday`. However,
+    as these values are still part of the overall data record, we can still grab them
+    and use them in our panel to display details.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Before we can add our details panel, we need to create our `main` panel and
+    set it to use a `card` layout. This will let us switch between the list and the
+    details with a single tap:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: We have set the `main` panel to use a `card` layout, with the `activeItem` component
+    as `0`. In this case, item `0` is our `list`, which is built into the `main` panel.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Make sure that all the components are wrapped inside an application launch
+    function like our examples from the previous chapters:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: At the bottom, within the `launch` function, we add the `main` panel to the
+    `Viewport`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Once you have your data and the `main` panel set up, load the page to make sure
+    that things are working correctly with what we have so far.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Data stores and panels](img/0748OS_07_02.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'Now, we need to add in our `detailsPanel` component. We will start simple with
+    this first part and add a new `panel` item after our list:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: The first thing we add is a simple template. We include some HTML line breaks
+    to lay out the data in a better way. We also split the template into multiple
+    lines for readability and used the `+` operator to concatenate the strings together.
+    Then we add a `Back` button that will bring us back to our main list.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Since we already defined `main` as a variable in our code, we can use it inside
+    our `handler` function. Since the `main` panel is also the first panel inside
+    our viewport, we can grab it like this: `console.log(this.up(''viewport'').down(''panel''));`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Once our `detailsPanel` is defined, we need to add a `listeners` section to
+    our list to load the data into the panel:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The good thing about this is that we don''t really need to load anything new.
+    The list already has access to all of the extra data that is present in the data
+    store. We also receive the record as part of the `itemTap` event. We can take
+    this record and set it on the panel using the `setRecord()` function. Finally,
+    we set the active item to our `detailsPanel` component. When we tap on an item
+    in the list, the result looks as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Data stores and panels](img/0748OS_07_03.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: The `detailsPanel` component includes not only the first and last name from
+    our list, but the address, e-mail, and birthday data as well. All of this data
+    comes from the same data store; we simply use the templates to choose which data
+    to display.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Speaking of templates, ours looks a little dull, and the `birthday` value is
+    a bit more specific than we really need. There must be something we can do to
+    dress this up a bit.
+  prefs: []
+  type: TYPE_NORMAL
+- en: XTemplates
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: As we have seen from a number of previous examples, **XTemplate** is a structure
+    that contains HTML layout information and placeholders for our data.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'So far we have only created very basic templates for our list and panel using
+    the data values and a bit of HTML. In our first example, we learned how to use
+    the `+` operator to allow us to take a very long string and break it up into smaller
+    strings for readability. Another way to do this is to set these templates up as
+    separate components:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: This will create a template that looks exactly like what we had before. This
+    is the way most examples on the Sencha Touch website are written, so it is good
+    to be aware of both methods.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Once we have our component template, we can then add it to our panel along
+    with `tpl: myTemplate`.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The following two methods provide better readability for your code while working
+    with complex templates:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'or:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs: []
+  type: TYPE_PRE
+- en: Both methods provide the same result.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![XTemplates](img/0748OS_07_04.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'We can also use the same types of XTemplates with our main list to give it
+    a bit more style. For example, adding the following code as the `itemTpl` component
+    for our list will place an adorable kitten picture next to each name in the list:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE21]'
+  prefs: []
+  type: TYPE_PRE
+- en: For this example, we just added an HTML component to lay out each line of data
+    and then used a random image-generation service (in this case, [placekitten.com](http://placekitten.com))
+    to place any 36x36 kitten picture, which will line up next to our names on the
+    left (you can also use this to display the contact's picture).
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![XTemplates](img/0748OS_07_05.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: At this point, we are still playing with basic HTML; however, XTemplates are
+    much more powerful than that.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Manipulating data
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: XTemplates also allow us to directly manipulate the data within the template
+    in a number of ways. The first thing we can do is clean up that ugly birthday
+    value!
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Since the `birthday` value is listed in our model as being a `date` object,
+    we can treat it like one in the template. We can replace the current birthday
+    line of our template with the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE22]'
+  prefs: []
+  type: TYPE_PRE
+- en: This will use our value of `birthday`, and the format function `date`. `date`
+    uses the string `"n/j/Y"` to convert `birthday` into a more readable format. These
+    format strings can be found on the date page of the Sencha Touch API.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Manipulating data](img/0748OS_07_06.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'Sencha Touch includes a number of formatting functions that can be used in
+    this fashion. Some of the functions include:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`date`: This function formats a `date` object using the specified formatting
+    string (the format strings can be found on the date page of the Sencha Touch API).'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`ellipsis`: This function truncates the string to a specified length and adds
+    `…` to the end (note that `…` is considered to be part of the total length).'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`htmlEncode` and `htmlDecode`: These functions convert HTML characters (`&`,
+    `<`, `>`, and `''`) to and from HTML.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`leftPad`: This function pads the left side of the string with a specified
+    character (good for padding numbers with leading zeros).'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`toggle`: This utility function switches between two alternating values.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`trim`: This function removes any white space from the beginning and end of
+    the string. It leaves spaces with the string intact.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The basic functions can be used inside the HTML of our XTemplate to format our
+    data. However, XTemplate has a few additional tricks up its sleeve.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Looping through data
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'In a list view, the XTemplate for the `itemTpl` component is automatically
+    applied to each item in the list. However, you can also loop through your data
+    manually using the following syntax:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE23]'
+  prefs: []
+  type: TYPE_PRE
+- en: When you use the `<tpl>` tag, it tells XTemplate that we are exiting the realm
+    of HTML and making some decisions within the template. In this case, `<tpl for=".">`
+    tells the code to start a loop and use the root node of our data. The closing
+    `</tpl>` tag tells the loop to stop.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Since we can have complex nested data with both XML and JSON, it can also be
+    helpful to loop the data in other places besides the root node. For example, let''s
+    say we have an array of states and each state contains an array of cities. We
+    can loop through this data as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE24]'
+  prefs: []
+  type: TYPE_PRE
+- en: Our first `<tpl>` tag begins looping through our states, printing the name.
+    After the name is printed, it looks for a child array within the individual state
+    called `cities`. This time, when we use the variable `{name}`, it's inside our
+    child loop so it prints the name of each city in the state before moving onto
+    the next state in the loop.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Notice that when we use a field name inside our `<tpl>` tags, we do not use
+    the curly braces like this: `{cities}`. Since we are outside the HTML section
+    of our template, Sencha Touch assumes `"cities"` is a variable.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We can even access an array nested in each city, for example, `postal codes`,
+    by adding another loop:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE25]'
+  prefs: []
+  type: TYPE_PRE
+- en: In this case, we have used `<tpl for="cities.postal">` to indicate that we will
+    loop through the `postal codes` data array within the `cities` data array. Our
+    other array loops execute as before.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Numbering within the loop
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'When you are working inside a loop, it''s often helpful to be able to count
+    the cycles in the loop. You can do this by using `{#}` in your XTemplate:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE26]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This will print the current loop number next to each name in the loop. This
+    will work in a similar fashion for nested data:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE27]'
+  prefs: []
+  type: TYPE_PRE
+- en: The first `{#}` will display where we are in the main loop, and the second `{#}`
+    will display where we are in the `cities` loop.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Parent data in the loop
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'In cases where we have nested data, it can also be helpful to be able to get
+    to the parent properties from within the child loop. You can do this by using
+    the `parent` object. Using our nested example with states, cities, and countries,
+    this would look as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE28]'
+  prefs: []
+  type: TYPE_PRE
+- en: When inside our `cities` loop, `{parent.name}` would display the state name
+    for that city. When we are inside our `cities.postal` loop, `{parent.name}` would
+    display the city name associated with that postal code. Using this `{parent.fieldname}`
+    syntax, we can access any of the parent's values from within the current child
+    item.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Conditional display
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'In addition to looping, XTemplates offer some limited conditional logic for
+    use in your template. With the 2.x Version of Sencha Touch, we now have access
+    to the full `if...then...else...` functionality. For example, we can use the `if`
+    statement in our states and cities to only display cities with a population above
+    2,000:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE29]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'If we want to color code our cities based on more than one population target,
+    then we can use `if...then...else` like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE30]'
+  prefs: []
+  type: TYPE_PRE
+- en: '![Conditional display](img/0748OS_07_07.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'Now, you probably are already asking yourself why we are using `&gt;` and `&lt;`
+    instead of `>` and `<`. The reason is that anything in our conditional statement
+    needs to be HTML encoded for XTemplate to parse it correctly. This can be a bit
+    confusing at first, but the key things to remember are as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Use `&gt;` instead of `>`.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Use `&lt;` instead of `<`.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Use equals as normal `==`. However, if you are comparing a string value, you
+    have to escape the single quotes such as this: `''<tpl if="state == \''PA\''">''`.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: You will need to encode `"` if it is part of your conditional statement. So
+    if you are searching for the word `"spam"` including the quotes, you would have
+    to encode it as `&quot;spam&quot;`.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Arithmetic functionality
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'In addition to conditional logic, XTemplates also support basic math functionality
+    for the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Addition (`+`)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Subtraction (`-`)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Multiplication (`*`)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Division (`/`)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Modulus—the remainder of one number divided by another (`%`)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'For example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE31]'
+  prefs: []
+  type: TYPE_PRE
+- en: This gives us our initial population value followed by a projected population
+    of 1.15 times the current population. The math functions are included within the
+    curly braces around our variable.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Inline JavaScript
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'We can also execute arbitrary inline code as part of our XTemplate by placing
+    the code within a combination of brackets and curly braces: `{[…]}`. There are
+    also a few special attributes we can access within this code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`values`: This attribute holds the values in the current scope'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`parent`: This attribute holds the values of the current parent object'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`xindex`: This attribute holds the current index of the loop you are on'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`xcount`: This attribute holds the total number of items in the current loop'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Let''s take an example to elaborate on these attributes. We can make sure that
+    our state and city names are in uppercase and the colors alternate on our list
+    of cities by using the following XTemplate:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE32]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'In this case, we use `{[values.name.toUpperCase()]}` to force the name of the
+    state and the city to be in uppercase. We also use `{[xindex % 2 === 0 ? "even"
+    : "odd"]}` to alternate our row colors based on the remainder of the current count
+    divided by `2` (the modulus operator).'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Even with the ability to write inline JavaScript, there are a number of cases
+    where you might require something a bit more robust. This is where the XTemplate
+    member functions come into play.
+  prefs: []
+  type: TYPE_NORMAL
+- en: XTemplate member functions
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: An XTemplate member function allows you to attach a JavaScript function to your
+    XTemplate and then execute it inside the template by calling `this.function_name`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The functions are added to the end of the template, and a template can include
+    multiple member functions. These member functions are wrapped in a set of curly
+    braces in a fashion similar to that for listeners:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE33]'
+  prefs: []
+  type: TYPE_PRE
+- en: We can use these member functions to return additional data to our template.
+    Let's use our earlier states and cities example, and see how we can place a special
+    icon next to larger cities based on multiple amounts of our data.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE34]'
+  prefs: []
+  type: TYPE_PRE
+- en: For this example, we have created a member function called `isLargeCity`, within
+    which we pass our data. Since our function can execute any JavaScript we desire,
+    we can use the result to control the template. We can then call the function inside
+    our template with `{[this.isLargeCity(values)]}` that will print our `bigCity.png`
+    image based on the values in the data record.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![XTemplate member functions](img/0748OS_07_08.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'We can also use our member functions to help us test for the presence or absence
+    of data. This comes in very handy for controlling our template. For example, let''s
+    start with a contacts template that contains a name, address, and e-mail, similar
+    to the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE35]'
+  prefs: []
+  type: TYPE_PRE
+- en: If we have no data for `address`, `city`, and `state`, we will end up with some
+    empty lines and a stray comma. Since our `zip` variable is an `integer` according
+    to our model, it will show up as **0** if we don't have a value stored for it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![XTemplate member functions](img/0748OS_07_09.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: We need a way to check and see if we have data for these items before we print
+    them onto the screen.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The isEmpty function
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'As it turns out, native JavaScript is very problematic when it comes to detecting
+    an empty value. Depending on the function, JavaScript might return the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Null'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Undefined
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: An empty array
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: An empty string
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: For most of us, these are pretty much the same thing; we didn't get back anything.
+    However, to JavaScript, these return values are very different. If we try to test
+    for data with `if(myVar == '')` and we get back `null`, `undefined`, or an empty
+    array, JavaScript will return `false`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Fortunately, Sencha Touch has a handy little function called `isEmpty()`. This
+    function will test for null, undefined, empty arrays, and empty strings, all in
+    one function. However, Sencha Touch does not have an opposite function for `has
+    data`, which is what we really want to test for. Thanks to template member functions,
+    we can write our own.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE36]'
+  prefs: []
+  type: TYPE_PRE
+- en: We don't even need a member function for this data check. We can add `<tpl if="!Ext.isEmpty(address)">`
+    to our template and check for the address in line with our template. The `Ext.isEmpty`
+    function class takes the address data and determines whether it is empty or contains
+    data, returning `true` or `false` respectively. If `address` is not empty, we
+    print the address and if it is empty, we do nothing.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Changing a panel's content with XTemplate.overwrite
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In our previous examples, we have declared XTemplate as part of our panel or
+    list, using `tpl` or `itemtpl`. However, it can also be helpful to overwrite a
+    template programmatically after the list or panel is displayed. You can do this
+    by declaring a new template and then using the panel's or list's `overwrite` command
+    to combine the template and data, and overwrite the content area of your panel
+    or list.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE37]'
+  prefs: []
+  type: TYPE_PRE
+- en: Our `overwrite` function takes an element (`Ext` or `HTML`) as the first argument.
+    So instead of just using panel, we need to use the body element of the panel as
+    `panel.body`. We can then supply a record from a data store or an array of values
+    as our second argument for the new template to use.
+  prefs: []
+  type: TYPE_NORMAL
+- en: While XTemplates are extremely powerful for displaying our data, they are still
+    very text heavy. What if we want to display data in a more colorful way? Let's
+    take a look at Sencha Touch Charts to learn how we can do this.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Sencha Touch Charts
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: So far, we have only looked at data stores and records as a way to display text
+    data, but with the release of Sencha Touch Charts, we are now able to display
+    complex graphical data as part of our applications.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Sencha Touch Charts](img/0748OS_07_10.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'These new components use data stores to display a wide range of chart and graph
+    types, including the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Pie Chart
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Bar
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Line
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Scatter
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Candlestick
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: OHLC (Open High Low Close)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Bubble
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: While a full exploration of the chart components would be worthy of a book by
+    itself, we will provide an overview of how these components interact with the
+    data store and, hopefully, boost your curiosity.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Installing Sencha Touch Charts
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: As of Version 2.1, Sencha Touch Charts are built in to Sencha Touch and no longer
+    require a separate download. At the time of writing, the Charts package license
+    was available as part of the open source GPLv3 license or as a part of Sencha
+    Complete or Sencha Touch Bundle.
+  prefs: []
+  type: TYPE_NORMAL
+- en: A simple pie chart
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Let''s start with a simple JavaScript file for our charts example, beginning
+    with a data store:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE38]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Our store declares two field types, `month` and `sales`, and our data array
+    holds five sets of `month` and `sales` values. This will feed into a polar chart,
+    in this case, a pie chart. After the store definition, we add the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE39]'
+  prefs: []
+  type: TYPE_PRE
+- en: Much like our other panel components, an `Ext.chart.PolarChart` class takes
+    standard configurations such as `height`, `width`, and `fullscreen`. It also has
+    a few special configurations, such as `innerPadding`, which is the padding between
+    the axis and the series, and `background`, which is the background color behind
+    the chart. The `chart` component also takes a `store` configuration option that
+    we will set to our previously created `mystore` component.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The `interactions` section allows us to specify some visual tools that allow
+    theuser to interact with the chart. Each type of chart has its own set of interactions.
+    The current interactions include:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`panzoom`: This interaction allows us to pan and zoom across the axes'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`itemhighlight`: This interaction allows us to highlight series data points'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`iteminfo`: This interaction allows us to display the details of a data point
+    in a pop-up panel'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`rotate`: This interaction allows the rotation of the pie chart and radar series'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Next we have a configuration for our chart's `legend`. This provides a color-coded
+    reference for all our chart values. We can use a position configuration to designate
+    how the legend should appear in portrait and landscape modes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The final piece is our `series` configuration. In our example, we have set:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The **type** of chart we will see
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Which **xfield** the chart will use to determine the size of the pie slices
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The value of **labelField** to use for the slices
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The **size** of the donut hole at the center of our pie chart
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The overall **style** of the chart
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'When we load it all up, our chart looks as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![A simple pie chart](img/0748OS_07_11.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: If you click on any of the months on the legend, you can turn them on or off
+    in the chart. This functionality happens automatically without any additional
+    code. Our interaction setting also lets us click-and-drag to rotate the chart.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This kind of pie chart works well for very simple single-series data, but what
+    happens if we have data for several years? Let's see how a bar chart might work
+    to display this kind of data.
+  prefs: []
+  type: TYPE_NORMAL
+- en: A bar chart
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'For our bar chart, let''s replace our chart data store with the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE40]'
+  prefs: []
+  type: TYPE_PRE
+- en: This data set has multiple series of data that we need to display (five months,
+    with three years for each month). An effective bar chart will need to display
+    a row for each month and separate bars within the month for each of the years.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Next, we need to change our `PolarChart` to `CartesianChart` like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE41]'
+  prefs: []
+  type: TYPE_PRE
+- en: Like our pie chart, the bar chart component takes configuration options for
+    `background`, `fullscreen`, a data `store`, and the `panzoom` interaction. This
+    option us allows to pan and zoom across our axes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We then have our legend as before, followed by a new configuration option called
+    `axes`. Since a bar chart operates along the x and y axes, we need to specify
+    what type of data is being fed into each axis (in this case, the `bottom` and
+    `left` axes).
+  prefs: []
+  type: TYPE_NORMAL
+- en: First up is our sales data for each year. The data is numeric, positioned at
+    the bottom and given the title of `sales`. We also specify what our minimum value
+    should be (this is the number that will appear on the far-left corner of our bar
+    chart and will usually be `0`).
+  prefs: []
+  type: TYPE_NORMAL
+- en: The next axis is our category data (which will also be used for our legend).
+    In this case, our `position` is `left`, and our `title` is `Month of the Year`.
+    With this we complete our `axes` configuration.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Finally, we have our `series` configuration, which sets this up as a bar graph.
+    Unlike our previous pie chart example, which only tracked sales data for a single
+    point, the bar chart tracks sales data for two separate points (`month` and `year`),
+    so we need to assign our `xField` and `yField` variables and declare an axis location.
+    This location should match the axis where you are displaying numerical data (in
+    our case, the data is on the y axis, which is at the bottom). We close out by
+    using `showInLegend` to display our legend.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The final chart should look as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![A bar chart](img/0748OS_07_12.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Charts are an incredibly robust way to use stores to display data. We don't
+    really have time to go through them all here, but you can explore all of the capabilities
+    of Sencha Touch Charts at [http://docs.sencha.com/touch/2.2.0/#!/guide/drawing_and_charting](http://docs.sencha.com/touch/2.2.0/#!/guide/drawing_and_charting).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this chapter, we have explored the way data stores can be used to display
+    both simple and complex data. We talked about binding, sorting, paging, and loading
+    data stores. We then walked through using data stores with both lists and panels.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We also covered how to lay out your application by using XTemplates to control
+    how the data from stores and records will appear. We explored how to manipulate
+    and loop through our data inside an XTemplate, as well as how to use conditional
+    logic, arithmetic, and inline JavaScript. We finished up our conversation on XTemplates
+    by discussing member functions and some of their uses. We concluded our chapter
+    with a look at using the Sencha Touch Charts package to display our store data
+    graphically.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In our next chapter, we will explore how to put all of the information from
+    our previous chapters together into a full-scale application.
+  prefs: []
+  type: TYPE_NORMAL

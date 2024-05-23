@@ -1,0 +1,276 @@
+- en: Preface
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this book, we will explore the concept and implementation of promises in
+    JavaScript. This book has an evolving context that will lead you from a beginner's
+    level to the master level of promises. Every chapter of this book will give you
+    an outline to achieve a specific goal that will help you realize and quantify
+    the amount of knowledge you absorb in every chapter.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The entire stack of chapters is designed in a way such that the book will evolve
+    as you go through it. Every chapter in this book is designed in two parts: one
+    is the concept building part and the other is the experimenting part, where you
+    will be able to sample snippets of concepts, sometime in code, sometimes in best
+    practices, and sometimes in images.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The first four chapters are more or less like theoretical knowledge to provide
+    you with a solid foundation on JavaScript and promises. So, if you're a novice
+    and don't know anything about JavaScript or promises, you will learn a great deal
+    with these chapters. The rest of the chapters are more technology-oriented and
+    you will learn implementation of promises in WinRT, Angular.js, jQuery, and Node.js.
+    So, if you are a professional and already have some idea of promises, you may
+    jump right into [Chapter 5](ch05.html "Chapter 5. Promises in WinRT"), *Promises
+    in WinRT*, but I'd prefer it if you read through all the chapters for a better
+    understanding of this book.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We will start with the introduction to JavaScript and how it has seen ups and
+    downs from the late 90s up to the first decade of the twenty first century. We
+    will focus on what asynchronous programing is and how JavaScript is using it.
+    Moving on, I will introduce promises and its impact and how it's implemented.
+    To make the book interesting and impart more knowledge to you, I will show you
+    how promises has made its place in the heart of Java, one of the most mature object-oriented
+    programming languages. This add-on content will act as a detour and clarify concepts
+    in a more efficient way.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The flow of book will then lead you to the implementation of promises in some
+    of the most used JavaScript libraries. We will see a sample code on how the mechanism
+    of these libraries work. Finally, we will wrap up the book with our last chapter
+    that will show you what is coming next in JavaScript, why it has gained so much
+    attention over the past few years and what would be the possible future of JavaScript.
+  prefs: []
+  type: TYPE_NORMAL
+- en: What this book covers
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: '[Chapter 1](ch01.html "Chapter 1. Promises.js"), *Promises.js*, covers the
+    history of JavaScript and how it shaped into one of the leading technologies in
+    modern application development. We will discuss why there was a need of JavaScript
+    in the early 90s and how this language has seen ups and downs throughout its existence.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[Chapter 2](ch02.html "Chapter 2. The JavaScript Asynchronous Model"), *The
+    JavaScript Asynchronous Model*, explains what a programming model is and how they
+    are implemented in different languages, starting from a simple programming model
+    to the synchronous model to the asynchronous model. We will also see how tasks
+    are organized in memory and how they will serve according to their turns and priorities
+    and how programming models decide what task is to be served.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[Chapter 3](ch03.html "Chapter 3. The Promise Paradigm"), *The Promise Paradigm*,
+    covers the paradigm of promise and the concept behind it. We will learn the conceptual
+    knowledge of promise, deferred, common sequence of promise, and how promise helps
+    in decoupling the business logic and application logic. We will also learn about
+    the relationship between promises and event emitters and the concept behind the
+    relation between promises and event emitters.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[Chapter 4](ch04.html "Chapter 4. Implementing Promises"), *Implementing Promises*,
+    discusses why we are implementing promises and why we chose Java as the core subject
+    of this chapter. Java has richer features than any other programming language,
+    and it also has better mechanism for asynchronous behavior. This chapter is the
+    point where we start our journey to master promises.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[Chapter 5](ch05.html "Chapter 5. Promises in WinRT"), *Promises in WinRT*,
+    explains how promises can be implemented in WinRT. We will see how promises evolved
+    on the Windows platform and how it''s contributing to different Windows-based
+    devices.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[Chapter 6](ch06.html "Chapter 6. Promises in Node.js"), *Promises in Node.js*,
+    covers what Node.js is, from where this most amazing library has evolved, who
+    built it, and why and how it''s helping us to create real-time web apps. We will
+    see Q, the best way to offer promises to Node.js. We will see how we can work
+    with Q, and then we will see different ways of using Q along with Node.js.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[Chapter 7](ch07.html "Chapter 7. Promises in Angular.js"), *Promises in Angular.js*,
+    explains how promises will be implemented in Angular.js, how it evolved and how
+    promises will help in achieving applications composed for real-time web apps.
+    We will also see the functionality of the Q library and the Angular.js implementation
+    of promises using code and learn how to use them in our next application.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[Chapter 8](ch08.html "Chapter 8. Promises in jQuery"), *Promises in jQuery*,
+    discusses how jQuery started taking shape and how it became a fundamental element
+    of the modern-day web development. We will learn how to build basic jQuery documents
+    and how to call the functions embedded into HTML files. We will learn why we started
+    using deferred and promise in jQuery and how they are helping us to create cutting
+    edge applications on both web-based platform and portable devices.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[Chapter 9](ch09.html "Chapter 9. JavaScript – The Future Is Now"), *JavaScript
+    – The Future Is Now*, covers how JavaScript is a game changer and how it has a
+    bright future ahead. We will also explore why JavaScript has great tendency and
+    adoptability, which will lead it to the next level of usage in almost every domain
+    of computer science.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: What you need for this book
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: If you are a software engineer who wants to learn more interesting facts about
+    JavaScript to make your life easier, this book is for you. A simple and engaging
+    language with narrations and code examples makes this book easy to understand
+    and apply its practices. This book starts with an introduction to JavaScript promises
+    and how it evolved over time. You will then learn the JavaScript asynchronous
+    model and how JavaScript handles asynchronous programming. Next, you will learn
+    about the promises paradigm and its advantages. Finally, this book will show you
+    how to implement promises on platforms such as WinRT, jQuery, and Node.js, which
+    are used in project development.
+  prefs: []
+  type: TYPE_NORMAL
+- en: To get the best out of this book, you should know the basic programming concepts,
+    the basic syntax of JavaScript, and possess a good understanding of HTML.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Who this book is for
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: This book is for all the software/web engineers who want to apply the promises
+    paradigm in their next project and get the best outcome from it. This book has
+    all the basic as well as advanced concepts of promises in JavaScript. This book
+    can also act as a reference for the engineers who are already using promises in
+    their projects and want to improve their current knowledge of this concept.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This book is a great resource for frontend engineers, but also serves as a learning
+    guide for backend engineers who want to make sure their code collaborates seamlessly
+    within the project.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Conventions
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this book, you will find a number of text styles that distinguish between
+    different kinds of information. Here are some examples of these styles and an
+    explanation of their meaning.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Code words in text, database table names, folder names, filenames, file extensions,
+    pathnames, dummy URLs, user input, and Twitter handles are shown as follows: "The
+    `click` function will call (or execute) the callback function we passed to it."'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'A block of code is set as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Any command-line input or output is written as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: '**New terms** and **important words** are shown in bold. Words that you see
+    on the screen, for example, in menus or dialog boxes, appear in the text like
+    this: " It should turn into green and display the **Success** message."'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Warnings or important notes appear in a box like this.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Tips and tricks appear like this.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Reader feedback
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Feedback from our readers is always welcome. Let us know what you think about
+    this book—what you liked or disliked. Reader feedback is important for us as it
+    helps us develop titles that you will really get the most out of.
+  prefs: []
+  type: TYPE_NORMAL
+- en: To send us general feedback, simply e-mail `<[feedback@packtpub.com](mailto:feedback@packtpub.com)>`,
+    and mention the book's title in the subject of your message.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If there is a topic that you have expertise in and you are interested in either
+    writing or contributing to a book, see our author guide at [www.packtpub.com/authors](http://www.packtpub.com/authors).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Customer support
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Now that you are the proud owner of a Packt book, we have a number of things
+    to help you to get the most from your purchase.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Downloading the example code
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: You can download the example code files from your account at [http://www.packtpub.com](http://www.packtpub.com)
+    for all the Packt Publishing books you have purchased. If you purchased this book
+    elsewhere, you can visit [http://www.packtpub.com/support](http://www.packtpub.com/support)
+    and register to have the files e-mailed directly to you.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Errata
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Although we have taken every care to ensure the accuracy of our content, mistakes
+    do happen. If you find a mistake in one of our books—maybe a mistake in the text
+    or the code—we would be grateful if you could report this to us. By doing so,
+    you can save other readers from frustration and help us improve subsequent versions
+    of this book. If you find any errata, please report them by visiting [http://www.packtpub.com/submit-errata](http://www.packtpub.com/submit-errata),
+    selecting your book, clicking on the **Errata** **Submission** **Form** link,
+    and entering the details of your errata. Once your errata are verified, your submission
+    will be accepted and the errata will be uploaded to our website or added to any
+    list of existing errata under the Errata section of that title.
+  prefs: []
+  type: TYPE_NORMAL
+- en: To view the previously submitted errata, go to [https://www.packtpub.com/books/content/support](https://www.packtpub.com/books/content/support)
+    and enter the name of the book in the search field. The required information will
+    appear under the **Errata** section.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Piracy
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Piracy of copyrighted material on the Internet is an ongoing problem across
+    all media. At Packt, we take the protection of our copyright and licenses very
+    seriously. If you come across any illegal copies of our works in any form on the
+    Internet, please provide us with the location address or website name immediately
+    so that we can pursue a remedy.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Please contact us at `<[copyright@packtpub.com](mailto:copyright@packtpub.com)>`
+    with a link to the suspected pirated material.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We appreciate your help in protecting our authors and our ability to bring you
+    valuable content.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Questions
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: If you have a problem with any aspect of this book, you can contact us at `<[questions@packtpub.com](mailto:questions@packtpub.com)>`,
+    and we will do our best to address the problem.
+  prefs: []
+  type: TYPE_NORMAL

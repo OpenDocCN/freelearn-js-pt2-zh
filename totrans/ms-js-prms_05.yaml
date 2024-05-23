@@ -1,0 +1,480 @@
+- en: Chapter 5. Promises in WinRT
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In last four chapters, we spent time making our concept strong and our foundation
+    of thoughts aligned to promise. From this chapter onwards, we will explore promise
+    in different technologies. We will see how these technologies adopted the concept,
+    the reasons why thy adopted it, and how long promise has been associated with
+    these technologies. We will sample some of the code bases of related technologies
+    in order to get firsthand knowledge on how to actually implement promise in real
+    time.
+  prefs: []
+  type: TYPE_NORMAL
+- en: An introduction to WinRT
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Our first lookout for the technology is WinRT. What is WinRT? It is the short
+    form for Windows Runtime. This is a platform provided by Microsoft to build applications
+    for Windows 8+ operating system. It supports application development in C++/ICX,
+    C# (C sharp), VB.NET, TypeScript, and JavaScript.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Microsoft adopted JavaScript as one of its prime and first-class tools to develop
+    cross-browser apps and for the development on other related devices. We are now
+    fully aware of what the pros and cons of using JavaScript are, which has brought
+    us here to implement the use of promise.
+  prefs: []
+  type: TYPE_NORMAL
+- en: You guessed it right! In this chapter, we will focus on how promise is implemented
+    on WinRT, which was the need of implementation, and how it's implemented. We will
+    also sample some code wherever needed to see how well promise is helping in this
+    platform, and how one can actually use it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The evolution of WinRT
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: With the announcement of Windows 8, Microsoft has released a complete new architecture
+    of its famous and most used operating system, Windows. This architecture is for
+    all the devices and platforms, including mobile phones, tablets, wearable, and
+    so on. Due to this singleton approach, a unified approach for application development
+    was very much needed, so Microsoft included a few more tools and languages in
+    its platform, and from there JavaScript for Windows, or Win, came on to the scene.
+  prefs: []
+  type: TYPE_NORMAL
+- en: You may ask why have they adopted JavaScript and why not some other language
+    for their expanding arsenal of web programming? The answer lies in the architecture
+    of JavaScript. In the previous chapters, we learned how JavaScript is considered
+    to be the best tool for web-based programming and how it's useful in many scenarios.
+    Microsoft has adopted this power and embedded it into its WinRT platform. By adding
+    this, Microsoft has an edge over many of its competitors, as it now has access
+    to a wider range of programmers who know that JavaScript can also program for
+    Microsoft and show their work to a large number of users.
+  prefs: []
+  type: TYPE_NORMAL
+- en: A little detail about WinJS
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: WinJS was released as an open source JavaScript library, which was released
+    by Microsoft under the Apache License. It was initially aimed to be used for building
+    the software for Windows app store, but later, it became widely accepted to port
+    on all browsers. Now, it is used in combination with HTML5 to build apps for both
+    brewers-based and for windows app store.
+  prefs: []
+  type: TYPE_NORMAL
+- en: It was first announced on April 4, 2014, at the Microsoft Build conference 2014,
+    and since then it has seen an evolution from version 1.0 to 3.0 with loads of
+    functions and implementations within its SDK.
+  prefs: []
+  type: TYPE_NORMAL
+- en: WinJS – its purpose and a distribution history
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'WinJS 1.0 was first released with Windows 8.0\. Here are its notable distributions
+    up until now. The distribution history is as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '| The distribution name | Purpose/focused area |'
+  prefs: []
+  type: TYPE_TB
+- en: '| --- | --- |'
+  prefs: []
+  type: TYPE_TB
+- en: '| WinJS 1.0 | This was released as the JavaScript library for Windows 8.0.
+    |'
+  prefs: []
+  type: TYPE_TB
+- en: '| WinJS 2.0 for Windows 8.1 | This is an updated version and released under
+    Apache License at GitHub. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| WinJS Xbox 1.0 for Windows | This was an exclusive release for Xbox one for
+    Windows. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| WinJS Phone 2.1 for Windows Phone 8.1 | This was released for Windows phone
+    development platform. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| WinJS 3.0 | This was released in September 2014 for improved cross-platform
+    functionality, JavaScript modularization, and improvements in a universal control
+    design. |'
+  prefs: []
+  type: TYPE_TB
+- en: WinJS on GitHub
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Since WinJS is an open source software, it's hosted on GitHub as MSTF, Microsoft
+    Open Technologies. I presume that you are aware of what GitHub is and what it's
+    used for; if not, check out [https://github.com/](https://github.com/).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The online repository of WinJS has three basic divisions:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: WinJS, which is written in TypeScript and can be found at [https://github.com/winjs/winjs](https://github.com/winjs/winjs)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: WinJS modules that are written in JS and can be seen at [https://github.com/winjs/winjs-modules](https://github.com/winjs/winjs-modules)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The WinJS bower, which is also written in JS and be found at [https://github.com/winjs/winjs-bower](https://github.com/winjs/winjs-bower)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Code in these repository is constantly updated and bug fixes are committed by
+    programmers around the globe 24 x 7, which is the sole beauty of open source projects.
+    The base repository is located at [https://github.com/winjs](https://github.com/winjs).
+  prefs: []
+  type: TYPE_NORMAL
+- en: With online emulators, you can try WinJS at [http://try.buildwinjs.com](http://try.buildwinjs.com).
+  prefs: []
+  type: TYPE_NORMAL
+- en: HTML5, CSS3, and JavaScript
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'HTML5, CSS3, and JS are a de facto model for web app development, for one strong
+    reason. They all are more than technologies: they are standards. There were times
+    when companies were in the habit of introducing their own platform, and with many
+    bounties, they offered to programmers to use their platforms. Back in those days,
+    keeping a standard for the application on all browsers was a nightmare for developers,
+    and hence a lot of time was consumed on projects for their compatibility rather
+    than their actual feature development. This frustration was addressed by W3C and
+    other standard maintaining bodies and started to work on standardsthat would be
+    acceptable for all the major game players of the industry. They will use these
+    as their base, rather than developing their own standard for every tiny need.
+    This caused the evolution of HTML5 and CSS3\. Since JavaScript was around already
+    and was considered to be the language of the browser, it was combined with the
+    remaining two to become a default technology bundle for both proprietary and open
+    source projects.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now, with every platform, these can be used but with a very little difference
+    in syntax. This came as a relief to the programmers and engineers as they could
+    now focus on solving business problems rather than compatibility.
+  prefs: []
+  type: TYPE_NORMAL
+- en: WT with HTML5, CSS3, and JavaScript
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: JavaScript in WT allows programmers to build apps using HTML and CSS. A lot
+    of WT apps using JavaScript are as same as writing markups for the website. In
+    addition to this, JavaScript on WT provides some additional features and introduces
+    some different ways that you can use it under this platform. Since the implementation
+    of JavaScript varies from platform to platform in WT, it's more or less in the
+    Microsoft style where, with default JS properties available, WT adds some extra
+    features for JavaScript. This provides the enhanced support of touch, more control
+    over the look and feel of the UI (user interface). This also provides controls
+    such as `DatePicker`, `TimePicker`, and `ListView`, and an exclusive access to
+    WinJS.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The need for integrating promise with WT
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: JS is one of the primary languages on the WT platform. Besides the benefits
+    of JS, there are some drawbacks too. We all know from our discussion in the previous
+    chapter that callback hell was the core reason why there was a need to add promise
+    into it, and the same goes here. WT also faced the same problem, but was quick
+    enough to solve it by implementing promise into it. Promise in JS for WT is the
+    game changer when it comes to writing robust, scalable, and maintainable apps
+    for the Windows platform. Although WT was not the first one that implemented promise,
+    but it is one of the quicker adopters of the concept and implementer.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In fact, JavaScript programmers started using WT JS for Windows, and due to
+    the fact that it's highly adoptable, many more professionals are joining that
+    community.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Problems when using asynchronous programming
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Just to refresh your memory, in [Chapter 2](ch02.html "Chapter 2. The JavaScript
+    Asynchronous Model"), *The JavaScript Asynchronous Model*, we learned a great
+    deal on asynchronous programming, what it is, and how JS implements it. We all
+    know that the problem in using JS is the level of complexity it has developed,
+    as it's heavily dependent on the callbacks for most of its operations. In the
+    *Handling callback hell* section of [Chapter 2](ch02.html "Chapter 2. The JavaScript
+    Asynchronous Model"), *The JavaScript Asynchronous Model*, we saw that it's nearly
+    impossible to debug the code if callbacks were getting out of control. The promise
+    paradigm was then called in to solve this problem. The same occurrences are with
+    JS when applied at WT.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Jumpstarting promises
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Asynchronous APIs in the Windows library for JS are represented as promises,
+    as defined by common JS promises/proposals. One can make his/her code more robust
+    by including an error handler, and this is considered to be the most important
+    aspect of debugging, and because of this many more JavaScript developers are preferring
+    to use promises.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There is a prerequisite for this jumpstart.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Writing a function that returns a promise
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'The following is a sample code using which you can develop a good understanding
+    on how to implement the promises in WT effectively. Follow these steps:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Create a blank Windows Runtime app named `IamPromise`.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Add an `input` element.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Add a `div` element that displays the result for the URL.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Add styling instructions to `default.css` to add some presentation in the app.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Add a change handler for the `input` element.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: In the change handler, call `xhr`.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Build and debug the app, and then enter a URL.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Create a WT app in JS in VS2013.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Add an `input` element.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Within HTML, create an `input` element using the following code:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Adding a change handler for input elements
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Use the following code to understand the `WinJS.Utilitties.Ready` function,
+    which is called immediately after the event of DOM content being loaded. This
+    is initiated after the page has been parsed, but before all the resources are
+    loaded:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: In the change handler, call `xhr`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Call `xhr` in the change handler by passing it in the URL that the user entered.
+    Afterwards, update the `div` element with the result. The `xhr` function is the
+    function that returns a promise. We can also use the `then` or `done` function
+    of the promise to update the UI (user interface), but there is a difference between
+    the usage of `then()` and `done()` within WT specification. The `then()` function
+    is executed as soon as the `xhr` function has either returned as a success or
+    an error has been made by `XmlHttpRequest`. On the contrary, the `done()` function
+    is the same except that it is guaranteed to throw any error that is not handled
+    inside the function:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: And finally, it is time to test your code. Build and debug the app and then
+    enter a URL. If the URL is valid, the resultant `div` element, in our case `ResultDiv`,
+    should turn green and display the **Success** message. The code won't do anything
+    if a wrong URL is entered.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: One thing to keep in mind here is that after you enter the URL, a click may
+    be needed outside the input control for the change event to happen. This mostly
+    is not the case, but just for a tip, it is a simpler way to get the future value
+    of promise.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now, the second best part comes in—handling errors.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Error handling
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The best part of using promise is that the error handling and debugging becomes
+    simpler. By simply adding a few functions, you can not only pin point the location
+    of an error in your code, but also get the relevant error log either on the console
+    or on the browser. You don't have to add `alert()` all the time to investigate
+    the nature and location of the error.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The same goes for our previous code, in which we can add an error function
+    inside `then()`. Remember in the previous code where when an error occurred, no
+    error was shown? However, not this time. We will add an error handler, which will
+    change the background color of success to red if any error was found:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: Build and debug the app and enter the URL. If the URL was correct, success will
+    be displayed, otherwise the button will turn red and display an error message.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Note that in the preceding function, `error(e)`, we concatenated the `e` parameter
+    with a message. Use this practice to convert the error into a string, as it will
+    show more understandable messages that will help you to debug and remove errors.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Chaining promises using the then() and done() functions
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: As with the specifications, you can not only use `then` and `done` functions
+    to achieve a single task, but also for making a chain out of it. In such a way,
+    you can also create your own conditions within the code that will make your code
+    more powerful, optimized, and logical. There are certain limitations though and
+    these are also logical. You can add multiple `then()` such as `then().then().then()`,
+    but you cannot do something like `then().done().then()`. You may be wondering
+    about the logic behind this. With every `then()`, it returns a promise, which
+    you can input to the next `then()` function, but when you add `done()`, it returns
+    `undefined`, which breaks the logic of a promise, yet you will get nothing out
+    of such a chain.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'So, in a nutshell, you can do this: `then().then().done()`.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'However, you cannot do this: `then().done().then()`.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'A generic example of doing such operations can look like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: Also, keep in mind that if you didn't add an error handler to `done()` and the
+    operation has an error, it will throw an exception, which will cost the entire
+    event loop. You won't be able to catch such an exception in a `try catch` block,
+    even if it's written inside the block, and the only way to get it is via `window.onerror()`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: However, this won't be the case when you don't add an error handler with `then()`.
+    It won't throw an exception as it's not designed in this way, instead it will
+    only return a promise in an error state, which can do more harm for the next inline
+    chain or processed output. So add error handlers, whether it's `then()` or `done()`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Example 1A – downloading a web page to a file using two asynchronous functions
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Using this example, we will be able to download a web page to a file. There
+    are several ways to do this. The simplest one is to ask the browser to save the
+    file for you, but that will be the browser's ability to act upon our instructions
+    and not our code's ability to do so. Also, you can imagine how this simple operation
+    can easily explain how to do it by using two asynchronous methods.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Now, have a look at the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: Again, we will now explain which line is doing what.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'There are three main methods to emphasize on: `createFileAsync`, `startAsync`,
+    and `then`.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The first `then` function gets the result. This then passes the result to the
+    handler function. A `BackgroundDownloader` method creates the download operation
+    and `startAsync` creates the routine to initiate the downloads. You can see here
+    that `startAsync` is the one that returns a promise, and we chain it with the
+    second `then()` by returning the value of `startAsync()` in the first completion.
+    The second `then()` is responsible for a completion handler whose parameter contains
+    the download operation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Example 1B – downloading a web page to a file using startAsync
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Another ability to chain the `then()` and `done()` functions is to track the
+    progress of an asynchronous operation by writing a progress function. Due to this,
+    we can not only track the progress but can also obtain a great deal about the
+    error conditions by adding an error function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In our next example, we will see how to download a web page asynchronously
+    to a file, using the `startAsync` function and with the error handler. The output
+    of this example will be the same as the previous one, but the mechanism will be
+    a bit different:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: The only difference in this code is the proper error handler addition, which
+    makes the error handling easy and readable.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this chapter, we learned how promises can be implemented in WinRT. We saw
+    how promises evolved in the Windows platform and how it's contributing to different
+    Windows-based devices. We also saw how it helps Windows-based gaming consoles
+    and in the creation of Windows-based apps for Windows Store.
+  prefs: []
+  type: TYPE_NORMAL
+- en: It's the adaptability of promises that has led to it finding its place in all
+    the major leading technologies. Even technology giants such as Microsoft couldn't
+    neglect its existence and are able to give full attention and scope in its present
+    and upcoming technologies.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the next chapter, we will learn how promises are being implemented in one
+    of the fastest growing server-side JavaScript, the Node.js.
+  prefs: []
+  type: TYPE_NORMAL

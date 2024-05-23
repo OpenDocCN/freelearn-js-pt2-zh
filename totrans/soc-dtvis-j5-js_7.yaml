@@ -1,0 +1,223 @@
+- en: Chapter 7. Facebook
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Facebook is the 900 lbs (408.233 kg) gorilla of the social media world. Literally
+    created in a university dorm, Facebook has grown to have 1.1 billion active users.
+    That's one out of every seven people on the planet. It has impressive sway to
+    say the least. No book about using social media APIs could be complete without
+    an investigation of how to use Facebook's API.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Creating an app
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: As you might expect for such a large site, there are numerous APIs available
+    for building applications related to Facebook. The simplest involve integrating
+    "post to Facebook" buttons in websites or mobile apps, and the most complicated
+    allow you to actually run the code on Facebook's servers as an app. We're going
+    to make use of the Graph API.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The Graph API provides an HTTP-based method of accessing information, what Facebook
+    calls the social graph. The graph is really just the relationship between various
+    users and their data. It is a graph and a collection of nodes and edges as opposed
+    to the bar graph-style of chart.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To get started, we''ll register an application with Facebook, much as we did
+    with Twitter and would have to do with Stack Overflow if we wanted to make use
+    of authentication. To do this we''ll head over to [http://developers.facebook.com](http://developers.facebook.com)
+    and click on the **Apps** link in the top menu bar. From there, click on **Create
+    New App**. You''ll be presented with the **Create New App** dialog box as shown
+    in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Creating an app](img/6542OS_07_01.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: The app name can be anything you like, the app namespace is used to give your
+    app a location on Facebook such as [apps.facebook.com/NiftyVisualization](http://apps.facebook.com/NiftyVisualization).
+    It is largely unnecessary for our purposes. The app category is wholly up to you
+    and should be determined based on what it is that you're visualizing. **Heroku**
+    is a cloud-based hosting provider partnered with Facebook to provide hosting space
+    for Facebook applications. If you don't have hosting already, Heroku is a reasonable
+    alternative and does support node.js; however, using it is outside the scope of
+    this book.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Once you''ve filled out the details of your application, you''ll be asked to
+    confirm that you''re a human by solving a CAPTCHA puzzle. You''ll now be taken
+    to the edit page where you can fill in the last few details before testing out
+    your access to the API. It looks like the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Creating an app](img/6542OS_07_02.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Here, you'll need to fill in at least one app domain. This value is checked
+    by the API when you sign in to ensure that your app is being used from an authorized
+    domain. Unfortunately, you can't access Facebook's Graph API from a file that
+    isn't served from a domain. This means that just going to `file://c:/code/visualization.html`
+    won't allow you to access Facebook's API. Fortunately not all is lost, using `localhost`
+    is permitted, but that does mean we have to run an HTTP server. We can make use
+    of the same `Node.js` installation which we used in previous chapters.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The site URL in the website with the Facebook login should be set to be the
+    return URL for your OAuth key exchange. We can actually set this to anything because
+    we're going to use AJAX to do the authentication, and our users won't ever actually
+    move away from our initial page.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using the API
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'It is perfectly possible to manually perform OAuth to authenticate and authorize
+    your visualization with Facebook. However, Facebook has been kind enough to provide
+    a very usable JavaScript SDK. The API abstracts away the process of logging into
+    a function call. To make use of the API, we first need to include it in our visualization.
+    To do this, simply include the following script inside one of your `script` tags:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This code will create a new `script` tag in your document and set its source
+    to a file on the Facebook site. Adding a `script` tag like this will cause the
+    browser to load the contents of that script file and execute it. Because we''re
+    loading the script in an asynchronous fashion, we''ll need to wait for it to be
+    loaded before we make use of it. The SDK calls a hook, `fbAsyncInit`, once it
+    is initialized. We just need to tie a function to that hook, as shown in the following
+    code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: This will provide the SDK with the App ID available from the developer's webpage.
+    Also, here I've provided `channelUrl` that is used to solve some cross-domain
+    issues that appear on some browsers. Setting the status will have the `init` method
+    fetch the value of `status`. `cookie` will enable cookie support. Finally `xfbml`
+    enables Facebook markup language. What's that? It is a collection of specially
+    formatted HTML elements that are controlled by the Facebook SDK.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'For instance, if we would like to show a login button (how convenient that
+    we do want to show a login button) then we can simply add the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: When an unauthenticated user opens the page, then a login button will show.
+    When an authenticated user reaches the page, they will be shown their own login
+    information. You'll note the `scope` attribute; this is used to give Facebook
+    a list of permissions you're requesting. Here we've asked for the logged in user's
+    birthday, e-mail ID, and their friends' birthdays. When signing in, the user will
+    be prompted by Facebook to allow your visualization access to that permission.
+    There are about three dozen different permissions which can be requested from
+    Facebook that govern everything from retrieving information about the logged in
+    user, to their friends, events, and RSVPs. It is well worth poking around in here
+    to discover interesting aspects to visualize.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The final piece in the authentication puzzle is to provide a function for the
+    login button to call once it has logged the user in:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: This event is triggered whenever there is a change in the authorization response,
+    such as when we get authentication back from the login button.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Retrieving data
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Before we go about retrieving data we should probably decide what data we wish
+    to visualize. The amount of data which is available about the logged in user is
+    not all that great (at least it isn''t for me but I hardly use Facebook). That
+    leaves us with looking at our friends. I found devices my friends use to access
+    Facebook to be quite interesting. Are they more Android users or iOS? This information
+    is available as part of the friends'' collection. To retrieve this information
+    we can use the `FB.api()` method:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Into the `api()` method we pass a URL to be retrieved. In this case, we request
+    the special URL `/me` which refers to the currently logged in users. We also provide
+    a filter so that only the friends'' collection is retrieved and, in fact, only
+    the device''s collections are retrieved for each friend. In the callback, we''re
+    just counting up the number of Android versus iOS devices. iPads and iPhones are
+    separate devices to Facebook, but we don''t want to count iOS as an access method
+    twice, so we ignore any iPads. Once this code executes, we end up with a collection
+    of device counts. For my friends I got the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: Visualizing
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: One of the more effective visualization techniques is to show the relative strengths
+    of different categories by showing a scaled image. We saw this technique applied
+    in the Twitter chapter using bubbles. We can take that to the next step by using
+    images instead of just circles.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The first step is to locate logos for Android and iOS that are already SVGs.
+    As it turns out, Wikipedia is a great source for this and their images are all
+    licensed under creative commons, meaning we can use them in our visualizations.
+    One of the really great features of SVG is that you can easily merge two images
+    together through the use of definitions. If you open up an SVG like the Android
+    logo at [http://upload.wikimedia.org/wikipedia/commons/e/e1/Android_dance.svg](http://upload.wikimedia.org/wikipedia/commons/e/e1/Android_dance.svg),
+    you can copy all the markup under a `<defs>` tag in another image. I took the
+    Android and Apple logos and moved them into my raw markup. If I wanted to display
+    them, I could use the `<use>` tag and reference the definitions by ID. It looks
+    like the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This will create an Apple logo next to an Android logo in our SVG. Knowing
+    that we can leverage `d3` to build and scale the logos as appropriate, we''re
+    lucky, in that both of the SVGs we have are 256 px square, so they look to be
+    approximately the same size before we''ve translated them. The `d3` is relatively
+    simple, as shown in the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We start by selecting the SVG then instead of appending shapes, we append using
+    statements. The `xlink:href` attribute takes the value of the definition to include.
+    Next, we scale and translate the logos so they are next to each other and the
+    appropriate size. We set the first logo to be the baseline size, and every subsequent
+    logo is drawn as a percentage of that. This only works because our numbers are
+    quite close. With highly divergent numbers, a more robust strategy would be needed.
+    With some additional text elements appended, the result is the following figure:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Visualizing](img/6542OS_07_03.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: You should now have a grasp of how to make use of the Facebook API to retrieve
+    data. This data can then be visualized using any technique. In the next chapter
+    we'll take a look at the upstart Google+ social network and see how we can leverage
+    the data present there for visualizations.
+  prefs: []
+  type: TYPE_NORMAL

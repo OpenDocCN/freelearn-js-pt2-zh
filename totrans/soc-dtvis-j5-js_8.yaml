@@ -1,0 +1,181 @@
+- en: Chapter 8. Google+
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Of the major social networking sites, Google+ is the newest entrant. Although
+    an upstart, it does have a large user base claiming to have more than 350 million
+    active accounts ([http://ca.ign.com/articles/2013/05/02/report-google-bigger-than-twitter-with-359-million-active-users](http://ca.ign.com/articles/2013/05/02/report-google-bigger-than-twitter-with-359-million-active-users)).
+    This is not Google's first attempt at breaking into the billion-dollar social
+    media market. They have, in the past, created Google Buzz, Google Friend Connect,
+    and Orkut in an attempt to gain a large user base. All but Orkut have since been
+    mothballed and its user base is almost entirely located in Brazil. Google has
+    purposefully avoided creating a write API in the hope that it eliminates automatically-posted
+    spam. Google+ provides a read-only API that we can leverage to create visualizations;
+    however, the API is very limited in comparison to other such APIs—while this book
+    is being written you cannot even list the members of a circle.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Creating an app
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Google+ is another OAuth 2.0 site so we, of course, need to get an application
+    key as the first step to creating any visualization. This also means that we will
+    need a return URL, so again we'll need to set up an HTTP server to run the visualization.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The first step is to log into [https://code.google.com/apis/console](https://code.google.com/apis/console)
+    using your Google account. Should you not have such an account, you can also create
+    one from that page. Once on the site, you'll be presented with a giant button
+    allowing you to create an application project. This console actually governs the
+    access to all of Google's APIs, and there are quite a few.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Next, you'll be presented with a huge list of the various APIs. If you scroll
+    way down, you'll eventually find Google+ (use the search, it will save hours of
+    scrolling). Toggle the switch to the "on" position. You may need to agree to a
+    couple of user agreements. Be sure to read the entire agreement as you always
+    do.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The next step is to request a new key, as shown in the following screenshot.
+    This can be done from the **API Access** tab in which you should click on **Create
+    an OAuth 2.0 client ID…**. In the dialog that opens, you''ll need to fill in an
+    application name and a URL. This is not the URL for the OAuth exchange; that comes
+    in the next tab. On this tab, enter a URL from which the OAuth request may originate
+    and to which it should return. For our purposes, `http://localhost:8080` will
+    be the domain:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Creating an app](img/6542OS_08_01.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: We'll then receive a couple of keys ready for use in our application. The client
+    ID is the field you want to use in your scripts.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Retrieving data
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'As with Facebook, we could do manual authentication against the OAuth 2.0 endpoint,
+    but let''s make use of Google''s provided API. Hooking it up is very simple:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: This runs once the document is ready and loads the API script from Google's
+    servers by placing a new `script` tag on the page just before the tag including
+    jQuery. The loaded document contains a number of JavaScript functions that can
+    be used to interact with Google APIs but not specifically Google+ APIs—that happens
+    after login.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To add a login button, we add the following HTML code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This will generate the login button. The various `data-` properties attached
+    to this button are processed by the script that we loaded from Google. The login
+    is scoped to Google+ instead of one of the other Google APIs. The Client ID should
+    be set to the one that was retrieved when creating the app. Most importantly,
+    a callback function is assigned that will be activated when the request to log
+    in succeeds. The callback will dynamically load the Google+ API:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Once the API for Google+ is loaded, we can make use of it, as we are doing
+    in the highlighted line. This function also hides the sign in button, so users
+    don''t attempt to sign in more than once. `retreiveFriends` is simple and will
+    just send off a request to retrieve a list of friends:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: Now that we have a list of friends, we can set about building a simple visualization
+    using them.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Visualization
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: '`d3` purposefully steers away from providing concrete visualizations. There
+    is no single function you can call to get a bar chart or a scatter plot. Instead,
+    it provides tools around creating the visualizations; these tools in turn provide
+    a high degree of flexibility and empowers the creation of unique visualizations.
+    One of the more powerful tools is the layout mechanism. Layouts provide some of
+    the boilerplate code that would have to be written to achieve a certain sort of
+    visualization.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: We're going to make use of the **Force-directed graph** layout. Force-directed
+    graphs provide a way of visualizing data that is interconnected. The strength
+    of the bonds between nodes is frequently a function of how closely related the
+    nodes are.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Our first step is to transform our data into a list of nodes and edges. As
+    the API returns such limited data, we''ll only be able to establish relationships
+    between you and your friends. Those relationships will make up the edges or links,
+    and the friends, the nodes:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Now that we have the nodes and links, we can create a force layout using them:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The `charge` and `linkDistance` functions govern how widely the nodes disperse
+    themselves. For the links, we draw a simple line to represent them:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The nodes are a bit more complicated, because for each one we need to set a
+    picture taken from the Google+ data, the initial location, as well as the dimensions.
+    We also need to attach an event handler to the nodes so that when dragged, the
+    `force.drag` action is fired:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Finally, we need to instruct `d3` what action should be taken on each tick
+    when animating the graph:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This will result in a graphic that shows my links to friends on Google+, as
+    shown in the following screenshot. If you click and drag a node, it will move
+    and all the nodes will rebalance themselves to account for the movement:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Visualization](img/6542OS_08_02.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The `limited` API of Google+ does limit some of the visualizations we can create.
+    There has been a rumor for years that Google will surface additional functionality
+    in Google+, but I have seen no real action so far. You should now be able to authenticate
+    against Google+ and retrieve data from it. You should also be able to make use
+    of the graphically pleasing force-directed layout from `d3` as well as any of
+    the other available layouts.
+  prefs: []
+  type: TYPE_NORMAL

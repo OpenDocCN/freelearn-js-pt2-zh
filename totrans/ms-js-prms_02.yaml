@@ -1,0 +1,1012 @@
+- en: Chapter 2. The JavaScript Asynchronous Model
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this chapter, we will look at the model behind asynchronous programming,
+    why it was needed, and how it is implemented in JavaScript.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We will also learn what a programming model is and its significance, starting
+    from a simple programming model to a synchronous model to an asynchronous model.
+    Since our prime focus is on JavaScript, which employs an asynchronous programming
+    model, we will discuss it in more detail than the rest of the models.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let's start with what models are and their significance.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Models are basically templates upon which the logics are designed and fabricated
+    within a compiler/interpreter of a programming language so that software engineers
+    can use these logics in writing their software logically. Every programming language
+    we use is designed on a particular programming model. Since software engineers
+    are asked to solve a particular problem or to automate any particular service,
+    they adopt programming languages as per the need.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There is no set rule that assigns a particular language to create products.
+    Engineers adopt any language based on the need.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Programming models
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Ideally, we will focus on three major programming models, which are as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The first one is a single-threaded synchronous model
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The second one a is multithreaded model
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The third one is an asynchronous programming model
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Since JavaScript employs an asynchronous model, we will discuss it in greater
+    detail. However, let's start by explaining what these programming models are and
+    how they facilitate their end users.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The single-threaded synchronous model
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The single-threaded synchronous model is a simple programming model or single-threaded
+    synchronous programming model, in which one task follows the other. If there is
+    a queue of tasks, the first task is given first priority, and so on and so forth.
+    It''s the simplest way of getting things done, as shown in the following diagram:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![The single-threaded synchronous model](img/5500OS_02_01.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: The single-threaded synchronous programming model is one of the best examples
+    of a `Queue` data structure, which follows the **First In First Out** (**FIFO**)
+    rule. This model assumes that if **Task 2** is being executed at the moment, it
+    must have been done after **Task 1** was finished without errors with all the
+    output available as predicted or needed. This programming model is still supported
+    for writing down simple programs for simple devices.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The multithreaded synchronous model
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Unlike single-thread programming, in multi-thread programming, every task is
+    performed in a separate thread, so multiple tasks need multiple threads. The threads
+    are managed by the operating system, and may run concurrently on a system with
+    multiple process or multiple cores.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'It seems quite simple that multiple threads are managed by the OS or the program
+    in which it''s being executed; it''s a complex and time-consuming task that requires
+    multiple level of communications between the threads in order to conclude the
+    task without any deadlock and errors, as can be seen from the following diagram:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![The multithreaded synchronous model](img/5500OS_02_02.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Some programs implement parallelism using multiple processes instead of multiple
+    threads, although the programming details are different.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The asynchronous programming model
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Within the asynchronous programming model, tasks are interleaved with one another
+    in a single thread of control.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This single thread may have multiple embedded threads and each thread may contain
+    several tasks linked up one after another. This model is simpler in comparison
+    to the threaded case, as the programmers always know the priority of the task
+    executing at a given slot of time in memory.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Consider a task in which an OS (or an application within OS) uses some sort
+    of a scenario to decide how much time is to be allotted to a task, before giving
+    the same chance to others. The behavior of the OS of taking control from one task
+    and passing it on to another task is called **preempting**.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The multithreaded sync model is also referred to as **preemptive multitasking**.
+    When it's asynchronous, it's called **cooperative multitasking**.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![The asynchronous programming model](img/5500OS_02_03.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: With threaded systems, the priority to suspend one thread and put another on
+    the exaction is not in the programmer's hand; it's the base program that controls
+    it. In general, it's controlled by the operating system itself, but this is not
+    the case with an asynchronous system.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In asynchronous systems, the control of execution and suspension of a thread
+    is in complete discretion of the programmer and the thread won't change its state
+    until it's explicitly asked to do so.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Densities with an asynchronous programming model
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: With all these qualities of an asynchronous programming model, it has its densities
+    to deal with.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Since the control of execution and priority assignment is in a programmer's
+    hand, he/she will have to organize each task as a sequence of smaller steps that
+    are executed immediately. If one task uses the output of the other, the dependent
+    task must be engineered so that it can accept its input as a sequence of bits
+    not together; this is how programmers fabricate their tasks on and set their priorities.
+    The soul of an asynchronous system that can outperform synchronous systems almost
+    dramatically is when the tasks are forced to wait or are blocked.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Why do we need to block the task?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: A more common reason why a task is forcefully blocked is that it is waiting
+    to perform an I/O or transfer data to and from an external device. A normal CPU
+    can handle data transfer faster than any network link is capable of, which in
+    result makes a synchronous program blocked that is spending so much time on I/O.
+    Such programs are also referred as **blocking programs** for this reason.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The whole idea behind an asynchronous model is avoid wasting CPU time and avoid
+    blocking bits. When an asynchronous program encounters a task that will normally
+    get blocked in a synchronous program, it will instead execute some other tasks
+    that can still make progress. Because of this, asynchronous programs are also
+    called **non-blocking program**.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Since the asynchronous program spends less time waiting and roughly giving an
+    equal amount of time to every task, it supersedes synchronous programs.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Compared to the synchronous model, the asynchronous model performs best in
+    the following scenarios:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: There are a large number of tasks, so it's likely that there is always at least
+    one task that can make progress
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The tasks perform lots of I/O, causing a synchronous program to waste lots of
+    time blocking, when other tasks are running
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The tasks are largely independent from one another, so there is little need
+    for intertask communication (and thus for one task to wait for another)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Keeping all the preceding points in mind, it will almost perfectly highlight
+    a typical busy network, say a web server in a client-server environment, where
+    each task represents a client requesting some information from the server. In
+    such cases, an asynchronous model will not only increase the overall response
+    time, but also add value to the performance by serving more clients (requests)
+    at a time.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Why not use some more threads?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: At this point, you may ask why not add another thread by not relying on a single
+    thread. Well, the answer is quite simple. The more the threads, the more memory
+    it will consume, which in turn will create low performance and a higher turnaround
+    time. Using more threads doesn't only come with a cost of memory, but also with
+    effects on performance. With each thread, a certain overhead is linked to maintain
+    the state of that particular thread, but multiple threads will be used when there
+    is an absolute need of them, not for each and every other thing.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Learning the JavaScript asynchronous model
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Keeping this knowledge in mind, if we see what the JavaScript asynchronous model
+    is, we can now clearly relate to an asynchronous model in JavaScript and understand
+    how it's implemented.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In non-web languages, most of the code we write is synchronous, that is, blocking.
+    JavaScript does its stuff in a different way.
+  prefs: []
+  type: TYPE_NORMAL
+- en: JavaScript is a single-threaded language. We already know what single threaded
+    actually means for the sake of simplicity—two bits of the same script cannot run
+    at the same time. In browsers, JavaScript shares a thread with loads of other
+    processes inline. These "inline processes" can be different from one browser to
+    another, but typically, **JavaScript** (**JS**) is in the same queue as painting,
+    updating styles, and handling user actions (an activity in one of these processes
+    delays the others).
+  prefs: []
+  type: TYPE_NORMAL
+- en: As in the image beneath, whenever the asynchronous (non-blocking) script executes
+    in a browser, it goes from top to bottom in an execution pattern. Starting from
+    the page load, the script goes to a document object where the JavaScript object
+    is created. The script then goes into the parsing phase where all the nodes and
+    HTML tags are added. After the completion of parsing, the whole script will be
+    loaded in the memory as an asynchronous (non-blocking) script.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Learning the JavaScript asynchronous model](img/5500OS_02_04.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: How JavaScript implements an asynchronous model
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: JavaScript uses an loop event and its cycle is called a "tick" (as in a clock),
+    since it runs within the time slot bound by the CPU. An interpreter is responsible
+    for checking whether every tick is an asynchronous callback to be executed. All
+    other synchronous operations take place within the same tick. The time value passed
+    is not guaranteed—there's no way of knowing how long it will take until the next
+    tick, so we usually say the callbacks will run "as soon as possible"; although,
+    some calls may even be dropped.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Within JavaScript, there are four core ways on how an asynchronous model is
+    implemented in it. These four methods help not only for better performance of
+    your program, but also in easier maintainability of code. These four methods are
+    as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: A callback function
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The event listener
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The publisher/subscriber
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The promises object
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Callbacks in JavaScript
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'In JavaScript, functions are first class citizens, which means they can be
+    treated as objects and because of the fact that they really are objects themselves.
+    They can do what a regular object is capable of, such as these:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Stored in variables
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Passed as augments to other functions
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Created within functions
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Returned from functions after a payload of some processed data mechanism
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: A callback function, also known as a higher-order function, is a function that
+    is passed to another function (let's call this other function as `otherFunction`)
+    as a parameter, and the callback function is called (executed) inside `otherFunction`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: A callback function is essentially a pattern (an established solution to a common
+    problem), and therefore the use of a callback function is also known as a callback
+    pattern. Because functions are first class objects, we can use callback functions
+    in JavaScript.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Since functions are first class objects, we can use callback functions in JavaScript,
+    but what are callback functions? The idea behind callback functions is derived
+    from functional programming, which uses functions as arguments as implementing
+    callback functions is as easy as passing regular variables as arguments to functions.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'A common use of a callback function can be seen in the following lines of code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The code explains itself as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: We pass a function as a parameter to the `click` function
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The `click` function will call (or execute) the callback function we passed
+    to it
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: This is a typical use of callback functions in JavaScript, and indeed, it is
+    widely used in jQuery. We will examine promise with respect to jQuery in more
+    details in [Chapter 8](ch08.html "Chapter 8. Promises in jQuery"), *Promises in
+    jQuery*.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Blocking functions
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: While we are discussing what a blocking function in JavaScript is and how one
+    should implement it, many of us really don't clearly understand what we mean by
+    a blocking function in JavaScript.
+  prefs: []
+  type: TYPE_NORMAL
+- en: As humans, we have a mind that is designed in such a way that it can do many
+    tasks at a time, such as while reading this book, you are aware of the surroundings
+    around you, you can think and type simultaneously, and you can talk to someone
+    while you are driving.
+  prefs: []
+  type: TYPE_NORMAL
+- en: These examples are for multithreaded models, but is there any blocking function
+    in our human body? The answer is yes. We have a blocking function because of which
+    we all have other activities in our mind and within our body; it stops for a tiny
+    pinch of a nanosecond. This blocking function is called sneezing. When any human
+    sneezes, all the functions related to mind and body became blocked for a tiny
+    fraction of nanosecond. This is rarely noticed by people. The same goes with the
+    blocking function of JavaScript.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The mechanism of a callback function in JavaScript
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The question here is, how on earth does a callback function work?
+  prefs: []
+  type: TYPE_NORMAL
+- en: As we know that functions are like first class objects in JS, we can pass them
+    around in a similar way to variables and return them as functions and use them
+    in other functions.
+  prefs: []
+  type: TYPE_NORMAL
+- en: When we pass a callback function as arguments to another function, we are only
+    passing the function definition. We aren't executing functions in parameters.
+    We are also not passing the function with the trailing pair of executing parenthesis
+    `()`, as we would when we are executing a function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Since the containing function has the callback function in its parameter as
+    a function definition, it can execute the callback at any time.
+  prefs: []
+  type: TYPE_NORMAL
+- en: It is important to note that the callback function is not executed immediately.
+    It is "called back" and can still be accessed later via the arguments object by
+    the containing function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Basic rules to implement callbacks
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: There are some basic rules that you need to keep in mind while you are implementing
+    the callbacks.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Callbacks are normally simple, but you should be familiar with the rule if
+    you are crafting your own callback functions. Here are some key pointers that
+    you must take into account while you are working on your callback functions:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Use named or anonymous functions as callbacks
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Pass parameters to callback functions
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Make sure callback is a function before executing it
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Handling callback hell
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: As JavaScript uses callback functions to handle asynchronous control flow, working
+    with nesting of callbacks can become messy and most of the time, out of control.
+  prefs: []
+  type: TYPE_NORMAL
+- en: One needs to be very careful while writing callbacks or using it from any other
+    library.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Here is what happens if the callbacks are not handled properly:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: The preceding situation is commonly referred to as **callback hell**. This is
+    quite common in JavaScript, which makes the lives of engineers miserable. This
+    also makes the code hard for other team members to understand and hard to maintain
+    for further use. The most drastic of all is that it confuses an engineer, making
+    it hard for him/her to remember where to pass on the control.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Here are the quick reminders for callback hell:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Never let your function be unnamed. Give your function an understandable and
+    meaningful name. The name must show it's a callback function that is performing
+    certain operations instead of defining an anonymous function in the parameter
+    of the main function.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Make your code less scary to look at and easier to edit, refactor, and hack
+    on later. Most of the engineers write code in a flow of thought with less focus
+    on beautification of code, which makes it difficult to maintain the code later.
+    Use online tools such as [http://www.jspretty.com](http://www.jspretty.com) to
+    add readability to your code.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Separate your code into modules; don't write all your logic in a single module.
+    Instead, write short meaningful modules so that you can export a section of code
+    that does a particular job. You can then import that module into your larger application.
+    This approach can also help you reuse the code in similar applications, thus making
+    a whole library of your modules.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '**Downloading the example code**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: You can download the example code files from your account at [http://www.packtpub.com](http://www.packtpub.com)
+    for all the Packt Publishing books you have purchased. If you purchased this book
+    elsewhere, you can visit [http://www.packtpub.com/support](http://www.packtpub.com/support)
+    and register to have the files e-mailed directly to you.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The events
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Events are signals that are generated when a specific action takes place. JavaScript
+    is aware of such signals and responds accordingly.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Events are messages fired in a constant stream as the user works along. Events
+    are normally based on user actions, and if programmed well, they act upon as directed.
+    Any event is useless if it doesn't have a handler that works to handle events.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Since JavaScript provides a handsome control to programmers/engineers, it's
+    their ability to handle events, monitor, and respond to them. The more capable
+    you are at handling events, the more interactive your application will be.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The mechanism of event handling
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: There are two conventional ways to implement events in JavaScript. The first
+    one is via HTML using attributes and second is via script.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To make your application respond to a user''s action, you need to do the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Decide which event should be monitored.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Set up event handlers that trigger functions when an event occurs.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Write the functions that provide the appropriate responses to the events.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: The event handler is always the name of the event perceived by on, for example,
+    click event handled by a event handler, `onClick()`. This event handler causes
+    a function to run, and the function provides the response to the event.
+  prefs: []
+  type: TYPE_NORMAL
+- en: DOM – event capture and event bubbling
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '**Document Object Model** (**DOM**) makes it much easier to detect the events
+    and assign related event handlers to react to them. This uses two concepts of
+    event capture and event bubbling for this purpose. Let''s take a look at how each
+    can help in detecting and assigning the right handler for the right event.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Capturing an event is referred to as the process of an event as it commutes
+    to its destination document. Also, it has the ability to capture or intercept
+    this event.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This makes the whole round trip go incrementally downwards to its containing
+    elements of the tree until it reaches to itself.
+  prefs: []
+  type: TYPE_NORMAL
+- en: On the contrary, event bubbling is the inverse of event capture. With bubbling,
+    the event is first captured and handled by the innermost element and then propagated
+    to the outer elements.
+  prefs: []
+  type: TYPE_NORMAL
+- en: A list of the most common events handlers
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: There is an entire array of event handlers to be put to use for different needs
+    and situations, but let's add a few more common and regular events handlers.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Please bear in mind that some event handlers may vary from one browser to another,
+    and this specification becomes more limited when it comes to Microsoft's Internet
+    Explorer or Mac's Safari.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The following list is quite handy and self-explanatory. To use this list more
+    effectively, I recommend developers/engineers to make a handy note of it for reference.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '| Event category | When will the event be triggered | Event handler |'
+  prefs: []
+  type: TYPE_TB
+- en: '| --- | --- | --- |'
+  prefs: []
+  type: TYPE_TB
+- en: '| Browser events | A page completes loading | `Onload` |'
+  prefs: []
+  type: TYPE_TB
+- en: '|   | The page is removed from the browser window | `Onunload` |'
+  prefs: []
+  type: TYPE_TB
+- en: '|   | JavaScript throws an error | `Onerror` |'
+  prefs: []
+  type: TYPE_TB
+- en: '| Mouse events | The user clicks over an element | `onclick` |'
+  prefs: []
+  type: TYPE_TB
+- en: '|   | The user double-clicks over an element | `ondblclick` |'
+  prefs: []
+  type: TYPE_TB
+- en: '|   | The mouse button is pressed down over an element | `onmousedown` |'
+  prefs: []
+  type: TYPE_TB
+- en: '|   | The mouse button is released over an element | `onmouseup` |'
+  prefs: []
+  type: TYPE_TB
+- en: '|   | The mouse pointer moves onto an element | `onmouseover` |'
+  prefs: []
+  type: TYPE_TB
+- en: '|   | The mouse pointer leaves an element | `Onmouseout` |'
+  prefs: []
+  type: TYPE_TB
+- en: '| Keyboard events | A key is pressed | `onkeydown` |'
+  prefs: []
+  type: TYPE_TB
+- en: '|   | A key is released | `onkeyup` |'
+  prefs: []
+  type: TYPE_TB
+- en: '|   | A key is pressed and released | `Onkeypress` |'
+  prefs: []
+  type: TYPE_TB
+- en: '| Form events | The element receives focus from a pointer or by tabbing navigation
+    | `onfocus` |'
+  prefs: []
+  type: TYPE_TB
+- en: '|   | The element loses focus | `onblur` |'
+  prefs: []
+  type: TYPE_TB
+- en: '|   | The user selects the type in text or text area field | `onselect` |'
+  prefs: []
+  type: TYPE_TB
+- en: '|   | The user submits a form | `onsubmit` |'
+  prefs: []
+  type: TYPE_TB
+- en: '|   | The user resets a form | `onreset` |'
+  prefs: []
+  type: TYPE_TB
+- en: '|   | The field loses focus and the content has changed since receiving focus
+    | `onchange` |'
+  prefs: []
+  type: TYPE_TB
+- en: As mentioned earlier, these are the most common list of event handlers. There
+    is a separate list of specifications for Microsoft's Internet explorer that can
+    be found at [http://msdn.microsoft.com/en-us/library/ie/ms533051(v=vs.85).aspx](http://msdn.microsoft.com/en-us/library/ie/ms533051(v=vs.85).aspx).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'A complete list of the event''s compatibility can be seen at:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[http://www.quirksmode.org/dom/events/index.html](http://www.quirksmode.org/dom/events/index.html)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Triggering functions in response to events
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'JavaScript events need triggering in order to get a response. An event handler
+    is responsible for responding to such events, but there are four commonly used
+    ways to trigger events in a proper manner:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The JavaScript pseudo protocol
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The inline event handler
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The handler as an object property
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Event listeners
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Types of events in JavaScript
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'There are many different types of events in JavaScript, some listed as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Interface events
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Mouse events
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Form events
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: W3C events
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Microsoft events
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Mozilla events
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Interface events
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The interface events occur due to the user's action. When the user clicks on
+    any element, he/she always causes a click event. When clicking on the element
+    has specific purpose, an additional interface event is caused.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Mouse events
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: When the user moves the mouse into the link area, the mouseover event fires.
+    When he/she clicks on it, the click event fires.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Form events
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Forms recognize submit and reset events, which predictably, fire when the user
+    submits or resets a form. The submit event is the key of any form of a validation
+    script.
+  prefs: []
+  type: TYPE_NORMAL
+- en: W3C events
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: W3C events fire when the DOM structure of a document is changed. The most general
+    one is the `DOMSubtreeModified` event that is fired when the DOM tree below the
+    HTML element is triggered.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The DOM 2 event specification can be seen at [http://www.w3.org/TR/2000/REC-DOM-Level-2-Events-20001113/events.html#Events-eventgroupings-mutationevents](http://www.w3.org/TR/2000/REC-DOM-Level-2-Events-20001113/events.html#Events-eventgroupings-mutationevents).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Microsoft events
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Microsoft has created a number of its own event's handler specification, which
+    (of course) can only run on its platform. This can be seen at [http://msdn.microsoft.com/en-us/library/ie/ms533051(v=vs.85).aspx](http://msdn.microsoft.com/en-us/library/ie/ms533051(v=vs.85).aspx).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Mozilla events
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Mozilla has its own specification, and it be seen at [https://developer.mozilla.org/en/docs/Web/API/Event](https://developer.mozilla.org/en/docs/Web/API/Event).
+  prefs: []
+  type: TYPE_NORMAL
+- en: The publisher/subscriber
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Events are yet another solution to communicate when asynchronous callbacks finish
+    execution. An object can become emitter and publish events that other objects
+    can listen to. This is one of the finest examples of the observer pattern.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The nature of this method is similar to "event listener", but much better than
+    the latter because we can view the "message center" in order to find out how much
+    signal is present and the number of subscribers for each signal, which runs the
+    monitoring program.
+  prefs: []
+  type: TYPE_NORMAL
+- en: A brief account of the observer pattern
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The observer provides very loose coupling between objects. This provides the
+    ability to broadcast changes to those who are listening to it. This broadcast
+    may be for the single observer or a group of observers who are waiting to listen.
+    The subject maintains a list of observers to whom it has to broadcast the updates.
+    The subject also provides an interface for objects to register themselves. If
+    they are not in the list, the subject doesn't care who or what is listening to
+    it. This is the way how the subject is decoupled from the observers, allowing
+    easy replacement of one observer for another observer or even one subject, as
+    long as it maintains the same series of events.
+  prefs: []
+  type: TYPE_NORMAL
+- en: A formal definition of observer
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'The following is the definition of observer:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '|   | *Define a one-to-many dependency between objects so that when one object
+    changes state, all its dependents are notified and updated automatically.* |  
+    |'
+  prefs: []
+  type: TYPE_TB
+- en: '|   | --*Gang of Four* |'
+  prefs: []
+  type: TYPE_TB
+- en: 'The source of this definition is page 20 of *Design Patterns: Elements of Reusable
+    Object-Oriented Software*, *Addison-Wesley Professional*.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The push and pull model
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: When you create a subject/observer relationship, you would want to send information
+    to the subject; sometimes, this information can be brief, or sometimes, it can
+    be additional information. This can also happen that your observer sends a little
+    chunk of information, and in return, your subject queries more information in
+    response.
+  prefs: []
+  type: TYPE_NORMAL
+- en: When you're sending a lot of information, it's referred to as the **push** model,
+    and when the observers query for more information, it's referred to as the **pull**
+    model.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '|   | *The pull model emphasizes the subject''s ignorance of its observers,
+    whereas the push model assumes subjects know something about their observers''
+    needs. The push model might make observers less reusable because Subject classes
+    make assumptions about Observer classes that might not always be true. On the
+    other hand, the pull model may be inefficient because Observer classes must ascertain
+    what changed without help from the Subject.* |   |'
+  prefs: []
+  type: TYPE_TB
+- en: '|   | --*Gang of Four* |'
+  prefs: []
+  type: TYPE_TB
+- en: 'The source of this definition is page 320, *Design Patterns: Elements of Reusable
+    Object-Oriented Software*, *Addison-Wesley Professional*.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The advent of observer/push-pub
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: 'This observer/push-pub pattern provides a way of thinking on how to maintain
+    relationship between different parts of an application. This also gives us an
+    idea of what part of our application should be replaced with observers and subjects
+    in order to achieve maximum performance and maintainability. Here are some points
+    to bear in mind when using this pattern in JavaScript in particular, and for other
+    languages in general:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using this pattern, it can break down an application into smaller, more loosely
+    coupled blocks to improve code management and potential for reuse
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The observer pattern is best when there is a need to maintain consistency between
+    related objects, without making classes tightly coupled
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Due to the dynamic relationship that exists between observers and subjects,
+    it provides great flexibility, which may not be as easy to implement when disparate
+    parts of our application are tightly coupled
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The drawbacks of observer/push-pub
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: Since every pattern has its own price, it is the same with this pattern. The
+    most common one is due to its loosely coupled nature, it's sometimes hard to maintain
+    the states of objects and track the path of information flow, resulting in getting
+    irrelevant information to subjects by those who have not subscribed for this information.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The more common drawbacks are as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: By decoupling publishers from subscribers, it can sometimes become difficult
+    to obtain guarantees that particular parts of our application are functioning
+    as we may expect
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Another drawback of this pattern is that subscribers are unaware of the existence
+    of each other and are blind to the cost of switching between publishers
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Due to the dynamic relationship between subscribers and publishers, the update
+    dependency can be difficult to track
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The promises object
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The promises object is the last of the major concepts of asynchronous programming
+    model implemented. We will be looking at promise as a design pattern.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Promise is a relatively new concept in JavaScript, but it's been around for
+    a long time and has been implemented in other languages.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Promise is an abstraction that contains two main properties, which make them
+    easier to work with:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: You can attach more than one callback with a single promise
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Values and states (errors) get passed along
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Due to these properties, a promise makes common asynchronous patterns using
+    callback easy
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'A promise can be defined as:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*A promise is an observable token given from one object to another. Promises
+    wrap an operation and notify their observers when the operation either succeeds
+    or fails.*'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: 'The source of this definition is *Design Patterns: Elements of Reusable Object-Oriented
+    Software*, *Addison-Wesley Professional*.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Since the scope of this book revolves around the promise and how it is implemented,
+    we will discuss it in greater detail in [Chapter 3](ch03.html "Chapter 3. The
+    Promise Paradigm"), *The Promise Paradigm*.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summing up – the asynchronous programing model
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: So far, we have seen how the asynchronous model is implemented in JavaScript.
+    This is one core aspect of understanding that JavaScript has its own implementation
+    for the asynchronous programming model, and it has employed much of the core concepts
+    in the asynchronous programming model.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The asynchronous mode is very important. In the browser, a very time-consuming
+    operation should be performed asynchronously, avoiding the browser unresponsive
+    time; the best example is the Ajax operations.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: On the server side, the asynchronous mode of execution since the environment
+    is single threaded. So, if you allow synchronization to perform all http requests,
+    server performance will decline sharply and will soon lose responsiveness.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: These are simple reasons why implementation on JavaScript is widely accepted
+    in modern applications on all ends of needs. Databases such as MongoDB, Node.js
+    as Server Side JavaScript, Angular.js, and Express.js as frontend, and logic building
+    tools are examples of how heavily JavaScript is implemented throughout the industry.
+    Their stack is commonly refer red to as the MEAN stack (MongoDB, Angular.js, Express.js,
+    and Node.js)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this chapter, we learned what a programming model is and how they are implemented
+    in different languages, starting from a simple programming model to the synchronous
+    model to the asynchronous model.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We also saw how tasks were organized in the memory and how they were served
+    according to their turns and priorities, and how programming models decide what
+    task is to be served.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We have also seen how the asynchronous programming model works in JavaScript,
+    and why it's necessary to learn the dynamics of the asynchronous model to write
+    better, maintainable, and robust code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This chapter also explained how the major concepts of JavaScript are implemented
+    and their roles from different angles in an application development.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We have also seen how callbacks, events, and observer were applied within JavaScript
+    and how these core concepts are driving today's application development scenes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the next chapter, [Chapter 3](ch03.html "Chapter 3. The Promise Paradigm"),
+    *The Promise Paradigm*, we will learn a great deal about promise and how it's
+    helping in making applications more robust and scalable.
+  prefs: []
+  type: TYPE_NORMAL

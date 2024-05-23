@@ -1,0 +1,750 @@
+- en: Chapter 7. Promises in Angular.js
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In the last chapter, we learned about Node.js and its implementations. We also
+    saw how Node.js can be used to amplify the real-time web and how promises can
+    be used to deliver more efficient apps.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this chapter, we examine another side of promises implementation, promises
+    in Angular.js.
+  prefs: []
+  type: TYPE_NORMAL
+- en: As we go along, we will learn what is Angular.js, why it was created, what benefits
+    it will give us, and lastly, how promises get implemented in Angular.js.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let's get started with the introduction of Angular.js and how to set it up.
+    Some sample code and working examples will be provided. We will then move to promises
+    in Angular.js.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The evolution of Angular.js
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Since the birth of single-page web applications, there have been a number of
+    ways one can write code for such apps. The usage of single-page web apps has been
+    increasing rapidly due to the fact that they are faster, platform independent,
+    and lightweight for all types of devices and auto-adjust to all screen sizes.
+    This is the main reason why engineers want to develop single-page web apps and
+    are more interested in using libraries and frameworks that ease their routine
+    work.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The inception of Angular.js was on the same concept. The core of Angular.js
+    is that it employs the declarative programming concept that states user interfaces
+    should be used to connect software services, while we can use imperative programming
+    to define business logic.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Angular.js's framework extends classical HTML (HTML5) to couple the content
+    together. It uses a two-way data binding technique that is helpful in the automatic
+    synchronization of both model and views. With all these features, Angular.js is
+    independent of DOM, which helps in increased performance and security standards
+    of coupled modules.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The most notable nonfunctional property of Angular.js is the brain that maintains
+    it—Google.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Google is the force behind the development, maintaining, and releasing of different
+    versions of Angular.js.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Angular.js was first released in the year 2009 with the aim of providing client-side
+    **MVC** (**model view controller**) implementation that can ease both development
+    and testing of applications. Also, it provides a toolset embedded for creating
+    rich Internet applications and tools for modern real-time web applications.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![The evolution of Angular.js](img/5500OS_07_01.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: The structure of the Angular.js document
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Angular.js uses the HTML file at the base document for its implementation. Its
+    syntax is very simple and easy to remember. The structure of the page is a simple
+    HTML file with `ng` at its start. This is called the Angular.js directive and
+    it can be used with HTML or can be linked as a individual document.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To start using Angular.js, you need to add a few lines and it will be up and
+    running. For using Angular.js, perform the following steps:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Add the `ng` directive; you only need to add this simple code to start using
+    the Angular.js:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Add the library to the file:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Now, define the variable within the HTML tag like this:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Finally, you can use it by calling out the variable:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Getting started with Angular.js
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'To download Angular.js, go to [https://angularjs.org/](https://angularjs.org/)
+    and hit the **Download** button. The following dialog box will appear:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Getting started with Angular.js](img/5500OS_07_02.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Select the stable and minified build and click on **Download**. This file is
+    a compact one with all the whitespaces removed so that it loads faster. You need
+    to save this file to your working directory as you will need it in the following
+    sections of this chapter.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Creating your first Angular.js file
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: We will use the downloaded file to include it in our HTML. From there, it will
+    show its magic on how Angular.js is a two-way banded framework and show the results
+    in real time.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Step 1 – create the HTML 5 doc
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Create a file like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: Step 2 – add the JavaScript file to it
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Create a JavaScript file with the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Add the Angular.js directive in the preceding code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: That's it; you now have a working Angular.js file for further use.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to use Angular.js on your local machine
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: There are several ways you can sample Angular.js on your local machine. One
+    way is to use your locally installed server. The XAMPP or Node.js server can be
+    the best option to use for executing the Angular.js code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: You can download the XAMPP server from [https://www.apachefriends.org/download.html](https://www.apachefriends.org/download.html)
+    and install it over your PC. Once you are done with installation, you can just
+    drop your Angular.js files/folders in the `htdocs` folder and access these files
+    by simply visiting `http://localhost/source/`, where `source` should be the folder
+    name inside `htdocs`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Using Node.js, simply paste the following code to a text file and save it as
+    `app.js`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: Save this file to any folder on your drive. Now, open Command Prompt by typing
+    `cmd` in the **Run** utility of your Windows machine and go to the folder where
+    `app.js` is located.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Once you reach there, please type in the following lines and hit **Enter**:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'You will see the response on screen like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Once you get this response, your server is ready to use. Drop your Angular.js
+    files in the same folder where the `app.js` file is located and access it using
+    a browser like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`http://127.0.0.1:1337/source/`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Here, `source` is the folder where `app.js` is located.
+  prefs: []
+  type: TYPE_NORMAL
+- en: What would be your preference for the server?
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: You can use any of these servers as they both are open source and both have
+    great adoptability for the Angular.js. It's completely up to you which one you
+    can use. To make things more understandable for you, I chose Node.js as it's very
+    handy and easy to maintain with more performance output.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Key elements of Angular.js
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Before we get into how promises are implemented in Angular.js, we will first
+    look at the key elements of Angular.js and how they work for us.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Within this section, you will learn the key elements of Angular.js. The skills
+    acquired will be used in the forthcoming sections of this chapter. You will then
+    be able to apply the concepts of promises in Angular.js and write your own custom-made
+    promises in Angular.js as per your need.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The most common elements we will discuss are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Supplying scope data
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Filtering output
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Controlling scopes
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Routing views
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Supplying scope data
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'We will play around with the frontend HTML, CSS, and JavaScript to display
+    the results in the browser. We will also get bootstrap from [http://getbootstrap.com/getting-started/#download](http://getbootstrap.com/getting-started/#download)
+    to give cosmetic touches in the code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The folder structure must be as defined in the following image. To demonstrate
+    how code works, we will be using the Node.js server. The folder name public needs
+    to deploy at the folder where `app.js` is located. Once the server has started,
+    navigate to `http://127.0.0.1:3000` and you will see the app running there.![Supplying
+    scope data](img/5500OS_07_03.jpg)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: We will create an app for available services at a subway station. Let's call
+    this station Stratford from where we will be looking at which subway service is
+    available.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Create a file in the `js/controller` folder and name it `app.js`. Here is how
+    this file will look like:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Now, at the root of the public folder create an HTML file, name it as `index.html`,
+    and add the following code:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Now, when you hit refresh at the browser, it will show you which services are
+    away from Stratford station. However, how can this be made possible?
+  prefs: []
+  type: TYPE_NORMAL
+- en: At the top of the HTML doc, there is an `ng` directive that will create the
+    Angular.js app, and then we can include the JavaScript files; one from Angular.js's
+    minified file and the other is our created JavaScript file that supplies scope
+    to let HTML display it. This all happened due to one variable declaration, `$scope`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`$scope` is responsible for binding data and providing output within the supplied
+    scope. This helps Angular.js to maintain its uniqueness to perform the computation
+    in an isolated or defined area of influence, that''s all!'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Filtering data
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Sometimes, we need to have a specific format of data to display data from our
+    app. Within Angular.js, it's as easy as simply supplying some operators to the
+    element where we want to filter it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The operator used for this purpose is the pipe, `|`. As soon as we add a pipe
+    sign, Angular.js knows that we want to filter out something. Let''s take a look
+    at two of the most important filters of all:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To convert text in to uppercase at the page output, consider the following
+    code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: The most helpful feature of filtering out data is to get an entire object as
+    JSON. This will not only help in the debugging mode, but it's also used to validate
+    the supplied data to see if the format is correct.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Consider the following code which will not only filter out data as a JSON object,
+    but also validate it before displaying the output:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: This will return the entire JavaScript object as JSON. You can now validate
+    data or get into the debugging mode by getting your hands dirty, digging the JavaScript
+    code and adding `alert()`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Controlling scopes
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'We can also supply an entire function to a particular stream instead of a single
+    variable; this will help us interlink the different parts of any app without much
+    hassle. Consider the following JavaScript code which is displaying how we are
+    supplying an entire function to a particular stream:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'In the last three lines, we added a function that will be fully passed on to
+    the calling `ng` directive at the HTML output. The code of HTML will look like
+    this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: Notice that we are writing very neat code with very few updates. We can achieve
+    many changes as desired in the last lines before the `body` tag is completed;
+    you will notice how we have passed an entire function using Angular.js.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Routing views
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Conventional websites were made up of many pages linked together via an `href`
+    tag. Their content was hard to read and required more maintenance than ever. With
+    the emergence of single page web apps, the information appeared on the browser
+    instantly as the views can be routed from one link to another without hitting
+    the server repeatedly, or without having to wait for the page to load.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Routing views](img/5500OS_07_04.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'From our examples, we will add another file as a module and place it under
+    the root of the JS folder. The code will look like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: This will generate views dynamically on the fly at the browser without hitting
+    the server. We need a couple of more files to add more dynamicity. We will add
+    the partials folder in which we placed two more files named `services` and `destination`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The `destination.html` file will look like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The `services.html` file will look like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'After editing the `index.html` file at the root of the public folder, the view
+    will look like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs: []
+  type: TYPE_PRE
+- en: Implementing promises in Angular.js
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Promise is all about how async behavior can be applied on a certain part of
+    an application or on the whole. There is a list of many other JavaScript libraries
+    where the concept of promises exists but in Angular.js, it's present in a much
+    more efficient way than any other client-side applications.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Promises comes in two flavors in Angular.js, one is `$q` and the other is Q.
+    What is the difference between them? We will explore it in detail in the following
+    sections. For now, we will look at what promise means to Angular.js.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There are many possible ways to implement promises in Angular.js. The most common
+    one is to use the `$q` parameter, which is inspired by Chris Kowal's Q library.
+    Mainly, Angular.js uses this to provide asynchronous methods' implementations.
+  prefs: []
+  type: TYPE_NORMAL
+- en: With Angular.js, the sequence of services is top to bottom starting with `$q`,
+    which is considered as the top class; within it, many other subclasses are embedded,
+    for example, `$q.reject()` or `$q.resolve()`. Everything that is related to promises
+    in Angular.js must follow the `$q` parameters.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Starting with the `$q.when()` method, it seems like it creates a method immediately
+    rather it only normalizes the value that may or may not create the promise object.
+    The usage of `$q.when()` is based on the value supplied to it. If the value provided
+    is a promise, `$q.when()` will do its job and if it's not, a promise value, `$q.when()`
+    will create it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The schematics of using promises in Angular.js
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Since Chris Kowal''s Q library is the global provider and inspiration of promises
+    callback returns, Angular.js also uses it for its promise implementations. Many
+    of Angular.js services are by nature promise oriented in return type by default.
+    This includes `$interval`, `$http`, and `$timeout`. However, there is a proper
+    mechanism of using promises in Angular.js. Look at the following code and see
+    how promises maps itself within Angular.js:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs: []
+  type: TYPE_PRE
+- en: All of the mentioned services in Angular.js return a single object of promise.
+    They might be different in taking parameters in, but in return all of them respond
+    back in a single promise object with multiple keys. For example, `$http.get` returns
+    a single object when you supply four parameters named `data`, `status`, `header`,
+    and `config`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE21]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'If we employ the promises concept here, the same code will be rewritten as:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE22]'
+  prefs: []
+  type: TYPE_PRE
+- en: The preceding code is more concise and easier to maintain than the one before
+    this, which makes the usage of Angular.js more adaptable to the engineers using
+    it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Promise as a handle for callback
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'The implementation of promise in Angular.js defines your use of promise as
+    a callback handle. The implementations not only define how to use promise for
+    Angular.js, but also what steps one should take to make the services as "promise-return".
+    This states that you do something asynchronously, and once your said job is completed,
+    you have to trigger the `then()` service to either conclude your task or to pass
+    it to another `then()` method: `/asynchronous _task.then().then().done()`.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In simpler form, you can do this to achieve the concept of promise as a handle
+    for call backs:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE23]'
+  prefs: []
+  type: TYPE_PRE
+- en: Blindly passing arguments and nested promises
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Whatever service of promise you use, you must be very sure of what you are passing
+    and how this can affect the overall working of your promise function. Blindly
+    passing arguments can cause confusion for the controller as it has to deal with
+    its own results too while handling other requests. Say we are dealing with the
+    `$http.get` service and you blindly pass too much of load to it. Since it has
+    to deal with its own results too in parallel, it might get confused, which may
+    result in callback hell. However, if you want to post-process the result instead,
+    you have to deal with an additional parameter called `$http.error`. In this way,
+    the controller doesn't have to deal with its own result, and calls such as 404
+    and redirects will be saved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'You can also redo the preceding scenario by building your own promise and bringing
+    back the result of your choice with the payload that you want with the following
+    code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE24]'
+  prefs: []
+  type: TYPE_PRE
+- en: By building a custom promise, you have many advents. You can control inputs
+    and output calls, log the error messages, transform the inputs into desired outputs,
+    and share the status by using the `deferred.notify(mesg)` method.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Deferred objects or composed promises
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Since custom promise in Angular.js can be hard to handle sometimes and can
+    fall into malfunction in the worse case, the promise provides another way to implement
+    itself. It asks you to transform your response within a `then` method and returns
+    a transformed result to the calling method in an autonomous way. Considering the
+    same code we used in the previous section:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE25]'
+  prefs: []
+  type: TYPE_PRE
+- en: The output we yield from the preceding method will be a chained, promised, and
+    transformed. You can again reuse the output for another output, chain it to another
+    promise, or simply display the result.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The controller can then be transformed into the following lines of code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE26]'
+  prefs: []
+  type: TYPE_PRE
+- en: This has significantly reduced the lines of code. Also, this helps us in maintaining
+    the service level since the automechanism of failsafe in `then()` will help it
+    to be transformed into failed promise and will keep the rest of the code intact.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Dealing with the nested calls
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'While using internal return values in the `success` function, promise code
+    can sense that you are missing one most obvious thing: the error controller. The
+    missing error can cause your code to stand still or get into a catastrophe from
+    which it might not recover. If you want to overcome this, simply throw the errors.
+    How? See the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE27]'
+  prefs: []
+  type: TYPE_PRE
+- en: Now, whenever the code enters into an error-like situation, it will return a
+    single string, not a bunch of `$http` statutes or config details. This can also
+    save your entire code from going into a standstill mode and help you in debugging.
+    Also, if you attached log services, you can pinpoint the location that causes
+    the error.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Concurrency in Angular.js
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: We all want to achieve maximum output at a single slot of time by asking multiple
+    services to invoke and get results from them. Angular.js provides this functionality
+    via its `$q.all` service; you can invoke many services at a time and if you want
+    to join all/any of them, you just need `then()` to get them together in the sequence
+    you want.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s get the payload of the array first:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE28]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'And now this array will be used by the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE29]'
+  prefs: []
+  type: TYPE_PRE
+- en: A promise is created by executing `$http.get` for each URL and is added to an
+    array. The `$q.all` function takes the input of an array of promises, which will
+    then process all results into a single promise containing an object with each
+    answer. This will get converted in JSON and passed on to the caller function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The result might be like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE30]'
+  prefs: []
+  type: TYPE_PRE
+- en: The combination of success and error
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The `$http` returns a promise; you can define its success or error depending
+    on this promise. Many think that these functions are a standard part of promise—but
+    in reality, they are not as they seem to be.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using promise means you are calling `then()`. It takes two parameters—a callback
+    function for success and a callback function for failure.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Imagine this code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE31]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This can be rewritten as:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE32]'
+  prefs: []
+  type: TYPE_PRE
+- en: One can use either the `success` or `error` function depending on the choice
+    of a situation, but there is a benefit in using `$http`—it's convenient. The `error`
+    function provides response and status, and the `success` function provides the
+    response data.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This is not considered as a standard part of a promise. Anyone can add their
+    own versions of these functions to promises, as shown in the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE33]'
+  prefs: []
+  type: TYPE_PRE
+- en: The safe approach
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: So the real matter of discussion is what to use with `$http`? Success or error?
+    Keep in mind that there is no standard way of writing promise; we have to look
+    at many possibilities.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If you change your code so that your promise is not returned from `$http`, when
+    we load data from a cache, your code will break if you expect success or error
+    to be there.
+  prefs: []
+  type: TYPE_NORMAL
+- en: So, the best way is to use `then` whenever possible. This will not only generalize
+    the overall approach of writing promise, but also reduce the prediction element
+    from your code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Route your promise
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Angular.js has the best feature to route your promise. This feature is helpful
+    when you are dealing with more than one promise at a time. Here is how you can
+    achieve routing through the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE34]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'As you can observe, we have two routes: the `api` route takes us to the index
+    page, with `IndexController`, and the video route takes us to the movie''s page.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE35]'
+  prefs: []
+  type: TYPE_PRE
+- en: There is a problem, until the `MovieService` class gets the name from the backend,
+    the name is `null`. This means if our view binds to the name, first it's empty,
+    then its set.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This is where router comes in. Router resolves the problem of setting the name
+    as `null`. Here''s how we can do it:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE36]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'After adding the resolve, we can revisit our code for a controller:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE37]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'You can also define multiple resolves for the route of your promises to get
+    the best possible output:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE38]'
+  prefs: []
+  type: TYPE_PRE
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this chapter, we learned how promise is implemented in Angular.js, how it
+    evolved, and how promises help in creating applications composed for real-time
+    web apps. We also saw the functionality of the Q library and Angular.js implementation
+    of promises using code and learned how to use them in our next application.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The specification of promise in Angular.js is very close to the proposed specification
+    by ECMAScript 6, but there might be a change when Angular.js fully adopts promises
+    as its own specification. It will define its own set of rules to use promise,
+    which might not be the same as the specification itself.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the next chapter, we will look at how promises are implemented in jQuery,
+    what will be the mechanism, and what benefits it will bring.
+  prefs: []
+  type: TYPE_NORMAL

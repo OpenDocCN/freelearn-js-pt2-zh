@@ -1,0 +1,1042 @@
+- en: Chapter 2. Creating a Simple Application
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'In this chapter, we will go through the basics of creating a simple application
+    in Sencha Touch. We will cover the basic elements that are used in most Sencha
+    Touch applications and take a look at the more common components you might use
+    in your own applications: containers, panels, lists, toolbars, and buttons.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In this chapter, we will cover the following topics:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Creating a basic application with Sencha Cmd
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Understanding the application's files and folders
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Modifying the application
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Controlling the application's layout
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Testing and debugging the application
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Updating the application for production
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Let's learn how to set up a basic Sencha Touch application.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Setting up the application
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Before we get started, you need to be sure that you've set up your development
+    environment properly as per the outline in the previous chapter.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '**The root folder**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: As noted in the previous chapter, you will need to have files and folders for
+    your application located in the correct folder on your local machine in order
+    to allow the web server to locate them.
+  prefs: []
+  type: TYPE_NORMAL
+- en: On a Mac machine, this will be the `Sites` folder under your home folder if
+    you are using web sharing. If you are using MAMP, the location is `/Applications/MAMP/htdocs`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: On Windows, this will be `C:\xampp\htdocs` (assuming you installed XAMPP as
+    described in the previous chapter).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Through out the rest of this book, we will refer to this folder as the root
+    folder.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In previous versions of Sencha Touch, you had to set up your directory structure
+    manually. In an effort to make this a bit easier and more consistent, Sencha now
+    recommends the use of Sencha Cmd to create the initial application structure.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting started with Sencha Cmd
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: As mentioned in the previous chapter, Sencha Cmd is a command-line tool that
+    allows you to generate a number of basic Sencha Touch files from the command line.
+  prefs: []
+  type: TYPE_NORMAL
+- en: You will first need to download a copy of Sencha Cmd from:[http://www.sencha.com/products/sencha-cmd/download](http://www.sencha.com/products/sencha-cmd/download)
+  prefs: []
+  type: TYPE_NORMAL
+- en: On Windows or Mac, you can run the installer after it downloads and then follow
+    the prompts for installing Sencha Cmd.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Once you have installed Sencha Cmd, you can open the command-line prompt on
+    your computer in the following manner:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: On Mac OS X, go to `Applications/Utilities` and launch **Terminal**
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: On Windows, go to **Start** | **Run** and type `cmd`
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Once the command line is available, type `sencha` and you should see something
+    similar to this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Getting started with Sencha Cmd](img/0748OS_02_01.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'This tells you that the command was successful and provides you with some of
+    the basic `help` options for Sencha Cmd. In fact, we will be using the first command
+    listed in this Help section to generate our new application:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'There are seven pieces to this command, so let''s take a look at them one by
+    one:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`sencha`: This tells the command line the name of the application that will
+    process the command; in this case, `Sencha Cmd,` or just `sencha` for short.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`-sdk`: This tells Sencha Cmd that we will specify the path to our Sencha Touch
+    libraries. We can also just change the directory to the folder where we downloaded
+    these libraries and eliminate the `–sdk` part and the path information that follows.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`/path/to/sdk`: This will be replaced with the actual path to the Sencha Touch
+    library files we downloaded (not Sencha Cmd, but the actual Sencha Touch library).'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`generate`: This indicates what we are going to do.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`app`: Since we are generating something, what will we be generating? This
+    part of the command answers this question. In this case, we will be generating
+    an application.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`MyApp`: This will be the name of your application. It will also be used for
+    the JavaScript namespace, which we will cover a bit later. This is arbitrary,
+    but it must be a single word with no spaces.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '/`path/to/myapp`: This will be the path to your new application. This path
+    should be in a new folder in the root folder we talked about earlier.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'For this chapter, we are going to create an application called `TouchStart`.
+    Your path information will need to reflect your own personal setup, but the command
+    should look something similar to this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Adjust your paths to match the location of your Sencha Touch libraries and
+    your root folder. Once the command is executed, you will see a number of messages
+    appearing in your terminal in the following manner:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Getting started with Sencha Cmd](img/0748OS_02_02.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Sencha Cmd copies the files that it needs and sets up your application. Once
+    the command has been executed, you should have a new folder in your root folder
+    called `TouchStart`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Open that folder and you will see the following files and directories:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Getting started with Sencha Cmd](img/0748OS_02_03.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'We will be working almost exclusively with the files in the `app` folder, but
+    it''s worth covering a little bit about each of these files and directories:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`app`: This is where all of our application files reside; we will cover this
+    in detail throughout this chapter.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`app.js`: This is the JavaScript file that sets up our application and handles
+    the initial launch of the application. We will take a closer look at this in the
+    next section.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`build.xml`: This is a configuration file for building compiled applications.
+    You may not need to change this file.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`index.html`: This file is much like the `index.html` file for any website.
+    It is the first file that is loaded by the web browser. However, unlike traditional
+    websites, the `index.html` file of our application only loads our initial JavaScript
+    and doesn''t do anything else. You shouldn''t need to change this file.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`packager.json`: This is a configuration file that tells our application how
+    the files are set up and where they are located. For the most part, you may not
+    need to change this file.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`packages`: The `packages` directory is a placeholder where you can install
+    additional packages for your application. It is largely unused at this juncture.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`resources`: The `resources` directory contains our CSS files and start up
+    screens and icons. We will learn more about this directory in the next chapter
+    on styling.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`touch`: This directory contains a copy of the Sencha Touch library files.
+    It should never be modified.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: We can also view our new application in a web browser by going to our web directory.
+    This would be `http://localhost/TouchStart` for Windows and MAMP or `http://localhost/~username/TouchStart`
+    for Mac users with web sharing enabled.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Getting started with Sencha Cmd](img/0748OS_02_04(new).jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'It is also worth noting that Sencha Cmd itself has a built-in web server that
+    you can use to view your Sencha Touch applications. You can start the Sencha Cmd
+    web server using the following command:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: You can then open your web browser by going to `http://localhost:8000.`
+  prefs: []
+  type: TYPE_NORMAL
+- en: For more information on using the Sencha Cmd web server, visit [http://docs.sencha.com/cmd/3.1.2/#!/guide/command.](http://docs.sencha.com/cmd/3.1.2/#!/guide/command.)
+  prefs: []
+  type: TYPE_NORMAL
+- en: As we can see from the basic application that has been created, we are looking
+    at the contents of a file called `Main.js` located at `app/view`. We can make
+    changes to this file and see the results when we reload the page.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Before we start tinkering around with the `Main.js` file, we need to take a
+    look at the file that loads everything up for us, namely `app.js`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Creating the app.js file
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The `app.js` file is responsible for setting up our application, and though
+    we don't need to modify it very often, it's a good idea to get a feel of what
+    it does and why.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Open your `app.js` file in your code editor; at the top, you will see a long
+    block of comments (which you should read and familiarize yourself with). Underneath
+    the comments, the code begins with:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: This tells the application where our Sencha Touch library files are located.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Next, we define our application with the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: Now that is quite a bit of code for one big bite, so let's understand one piece
+    at a time.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The first part, `Ext.Application({…});`, creates a new application for Sencha
+    Touch. Everything listed between the curly braces is a configuration option for
+    this new application. While there are a number of configuration options for an
+    application, most consist of at least the application's name and launch function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '**Namespaces**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: One of the biggest problems with using someone else's code is the issue of naming.
+    For example, if the framework you are using has an object called `Application`,
+    and if you create your own object called `Application`, the two functions will
+    conflict. Sencha Touch uses the concept of namespaces to keep these conflicts
+    from happening.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this case, Sencha Touch uses the namespace `Ext`. You will see this namespace
+    being used throughout the code in this book. It is simply a way to eliminate potential
+    conflicts between the frameworks' objects and code and your own objects and code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Sencha will automatically set up a namespace for your own code as part of the
+    new `Ext.Application` object. In this case, it will be `TouchStart`, which we
+    used to generate our application.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`Ext` is also part of the name of Sencha''s web application framework called
+    `ExtJS`. Sencha Touch uses the same namespace convention to allow developers to
+    familiarize with one library and easily understand the other.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'When we create a new application, we need to pass it some configuration options.
+    This will tell the application how to look and what to do. These configuration
+    options are contained within curly braces `{}` and separated by commas. The first
+    option is:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: This sets the name of our application to whatever is between the quotes. The
+    `name` value should not contain spaces as Sencha also uses this value to create
+    a namespace for your own code objects. In this case, we have called the application
+    `TouchStart`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'After the `name` option, we have a `requires` option:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: This is where we list any files that are required as soon as the application
+    launches. Since we actually use the `Ext.Msg.confirm` function towards the bottom
+    of this file, we have to include the `Ext.MessageBox` class here.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Next, we have the `views` section:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: This section serves as a reference to our `Main.js` file in the `app/view` folder.
+    We can also have listings for `controllers`, `stores`, or `models` here, but right
+    now, the `Main.js` view file is the only one we have as part of this skeleton
+    app. We will learn more about controllers, models, stores, and views in later
+    chapters.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `icon` and `startupImage` sections provide links to the image files used
+    for the application's icon and startup screens. The various sizes listed ensure
+    that the application's images display correctly across multiple devices.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The next option is where things start to get interesting:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: The `launch` function executes once the required JavaScript files (as well as
+    any views, models, stores, and controllers that are listed) have been loaded.
+    This function first destroys our loading indicator (since we are done loading
+    files). It then creates our main view and adds it to the viewport. This viewport
+    is where we will add things that we want to display to the user.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In this case, `TouchStart.view.Main` refers to our `Main.js` file in the `app/view`
+    folder. This is how Sencha Touch knows how to find files:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`TouchStart` is our application'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`view` is the `views` folder'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`Main` is our `Main.js` file'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Let's take a closer look at this `Main.js` file and see how it creates all of
+    the visual pieces we currently see in our skeleton application.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Creating the Main.js file
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The `Main.js` file is located in the `app/view` folder. The `view` files are
+    the visual components of our application. Let's open this file and see how a simple
+    tab panel is created.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: We've removed the contents of the `items` section from our code example to make
+    this a bit easier to read through.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The first two lines of the preceding code are common to pretty much every component
+    you will create in Sencha Touch.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The first line defines the full name of your component in the form:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: App name (namespace)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Folder name
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Filename (no extension)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Next, we list the component we are extending; in this case, a tab panel. You
+    will see this define/extend pattern throughout this book.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'You will also notice that the tab panel is called `Ext.tab.Panel`. This lets
+    Sencha Touch know that the component is a native component (`Ext`) located in
+    a folder named `tab` in a file called `Panel.js`. This pattern allows Sencha Touch
+    to load the correct file and extend it using our new configuration options:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: The first thing we do is set an `xtype` value for our new component. The `xtype`
+    part is a short name that allows us to easily reference and create copies of our
+    component without having to use the full name. You will see some examples of this
+    later on in this book.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Our skeleton application uses a `TitleBar` and a `Video` component, so we need
+    these two files.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Next, we set up a `config` section. This is where we set any custom settings
+    for our new component. In this case, we position our tab bar at the bottom.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now we want to take a look at the `items` section that we removed from our code
+    example and see what effect this section has on our tab panel.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Exploring the tab panel
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The `Ext.tab.Panel` is designed to do a few things for us automatically. The
+    most important thing is that for every panel we add in the `items` section, a
+    corresponding tab is created for us in the tab panel. By default, only the first
+    panel is actually shown. However, the tab panel also switches these panels for
+    us automatically when the panel's tab is tapped.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'If you look back at our app in the browser, you will also see that each tab
+    has a title and an icon. These two `config` options are set as part of the individual
+    items that currently look similar to this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: Notice that our `items` list is enclosed in brackets and the individual components
+    within the item list are contained in curly braces. This nested component structure
+    is a key part of Sencha Touch, and you will see it in use throughout this book.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The `title` and the `iconCls` properties control how the tabs appear for each
+    item. Our titles are currently set to `Welcome` and `Getting Started`. Our `iconCls`
+    configuration determines the icon that will be used in the tab. In this case,
+    we are using two of the default icons: `home` and `action`.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Our panel is the `Welcome` panel and it has config options that allow us to
+    use styled HTML content and make it scrollable (if the content is larger than
+    the screen size). The text inside the `html` config option is what we see as the
+    content of our first panel.
+  prefs: []
+  type: TYPE_NORMAL
+- en: You will also notice that our panel has items of its own. In this case, there's
+    a `titlebar` that will be `docked` at the `top` of our panel by `title Welcome
+    to Sencha Touch 2`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Our second `Get Started` panel has two `items` in it: a `titlebar` like our
+    first panel and a `video` component which lists a URL for the video and a separate
+    `posterUrl` for the image that will appear before the user plays the video.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: As the text in our first panel notes, we can change the content of this file
+    and see the results when we reload the page. Let's give that a try and see how
+    it works.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Adding a panel
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'The first thing we want to do is delete everything between the `items` brackets
+    `[ ]` for our tab panel. Next, we will add in a new panel similar to this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'If we reload the browser now, we see this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Adding a panel](img/0748OS_02_05.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Since we only have one panel now, we only get one tab. We also got rid of the
+    title bar, so we don't have anything at the top of the page.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Sharp-eyed readers will also notice that we explicitly set an `xtype` value
+    for `panel` in this example. The tab panel automatically assumes that if you don't
+    specify an `xtype` value for one of its items, it's a panel. However, it's a good
+    idea to get in the habit of setting the `xtype` value for any components you use.
+    We'll talk more about xtypes in [Chapter 4](ch04.html "Chapter 4. Components and
+    Configurations"), *Components and Configurations*.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Right now, our panel is very simple and only contains one line of text. In the
+    real world, applications are rarely this simple. We need a way to arrange different
+    elements inside our panel so we can create modern, complex layouts. Fortunately
+    for us, Sencha Touch has a built-in configuration called `layout`, which will
+    help us with this.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Controlling the look with layouts
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Layouts give you a number of options for arranging content inside containers.
+    Sencha Touch offers five basic layouts for containers:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`fit`: This is a single item layout that automatically expands to take up the
+    whole container'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`hbox`: This arranges items horizontally in the container'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`vbox`: This arranges items vertically in the container'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`card`: This arranges items like a stack of cards, where only the active card
+    is initially visible'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`docked`: This places an item at the top or bottom or to the left or right
+    of the display'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: In our previous example, we did not declare a layout. In general, you will always
+    want to declare a layout for any container. If you don't, the components inside
+    the container may not size themselves appropriately when they appear.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We have seen the last two layouts already. The tab panel uses a `card` layout
+    to switch between the different panels in its `items` list.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The title bars in our original `Main.js` file had a `docked` property as part
+    of their configuration. This configuration docks them to a particular part of
+    the screen. You can even dock multiple items to one of the four sides of a panel.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'For example, if we add an `items` section to our current panel with the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The two bars will stack one on top of the other in the following manner:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Controlling the look with layouts](img/0748OS_02_06.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Using a fit layout
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Let''s add a second panel to understand what we did earlier. After the closing
+    curly brace from our first panel, add a comma and then the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'For this panel, we have added a `config` option, `layout: ''fit''`, and an
+    `items` section with a single button.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Using a fit layout](img/0748OS_02_07.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: As you can see from the preceding screenshot, this gives us a second tab, which
+    contains our new button. Since the layout is set to fit, the button expands to
+    take up all the available space. While this is useful when you want a component
+    to take up all the available space, it doesn't work very well if you want to nest
+    multiple components.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using a vbox layout
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The `vbox` layout arranges components in a stack from top to bottom. In this
+    case, multiple components will fill up the available screen space. Let''s add
+    another panel to see what this looks like. As before, after the closing curly
+    brace from our last panel, add a comma and then the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'As you can see, this panel has a configuration of `layout: ''vbox''` and a
+    list of three `items`. The items are a collection of `container` components we
+    want to include inside our `panel`.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `container` component is a simplified version of the `panel`, which has
+    no options for elements such as toolbars or title bars.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Our first two containers have a configuration called `flex`. The `flex` configuration
+    is unique to `vbox` and `hbox` layouts (we''ll get to `hbox` right after this).
+    The `flex configuration` controls how much space the component will take up proportionally
+    in the overall layout. You may also have noticed that the last container does
+    not have a `flex` configuration. Instead, it has `height: 50`. The `vbox` layout
+    will interpret these values to layout the container as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Since we have a component with a height of `50`, the `vbox` layout will leave
+    that component's height to 50 pixels.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: The `vbox` layout will then use the `flex` values of the other two components
+    as a ratio. In this case, 2:1.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: The end result is a 50-pixel high container at the bottom of the screen. The
+    other two containers will take up the rest of the available space. The top container
+    will also be twice as tall as the middle container.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'In order to make these sizes clearer, we have also added a style to each container
+    to color the background and make it stand out a bit. The result is as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Using a vbox layout](img/0748OS_02_08.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: This layout will also shrink and expand when the window is resized, making it
+    a very effective layout for various device sizes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using an hbox layout
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The `hbox` layout works almost in the same way as the `vbox` layout, except
+    that the containers are arranged from left to right in the `hbox` layout.
+  prefs: []
+  type: TYPE_NORMAL
+- en: You can add a panel with an `hbox` layout by copying our previous `vbox` example
+    and pasting it after the last panel in our `items` list (don't forget the comma
+    between the items).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Next we need to modify a few configurations in our new panel:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Set `title: ''VBox''` to `title: ''HBox''`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Set `layout: ''vbox''` to `layout: ''hbox''`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'In the last `container,` set `height: 50` to `width: 50`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'When you reload the page, you should be able to click on the **HBox** tab and
+    see something similar to the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Using an hbox layout](img/0748OS_02_09.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: You can nest these basic layouts to arrange your components in any number of
+    ways. We will also cover some ways to style components in [Chapter 3](ch03.html
+    "Chapter 3. Styling the User Interface"), *Styling the User Interface*.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Testing and debugging the application
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The first place to start while testing an application is the error console.
+    In Safari, from the **Develop** menu, select **Show Error Console**. In Chrome,
+    from the **View** menu, choose **Developer** and then **JavaScript Console**.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Testing and debugging the application](img/0748OS_02_10.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Parse errors
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The error console in the previous screenshot tells us two very important things.
+    The first is that we have **SyntaxError: Parse error**. This means that somewhere
+    in the code, we did something that the browser didn''t understand. Typically,
+    this can be something such as:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Forgetting to close a parenthesis, bracket, or brace, or adding an extra one
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Not having a comma between the configuration options or adding an extra comma
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Leaving out a semicolon at the end of one of the variable declarations
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Not closing quotes or double quotes (also not escaping quotes where necessary)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'The second important bit of information is **/app/TouchStart-4.js: 39**. It
+    tells us that:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**/app/TouchStart-4.js** is the file where the error occurred'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**39** is the line where the error occurred'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using this information, we should be able to track down the error quickly and
+    fix it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Case sensitivity
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'JavaScript is a case-sensitive language. This means that if you type `xtype:
+    ''Panel''`, you will get the following in the Error Console:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Attempting to create a component with an xtype that has not been registered:
+    Panel**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: This is because Sencha Touch is expecting `panel` and not `Panel`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Missing files
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Another common problem is missing files. If you don''t point your `index.html`
+    file at your `sencha-touch-debug.js` file correctly, you will get two separate
+    errors:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Failed to load resource: the server responded with a status of 404 (Not Found)**'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**ReferenceError: Can''t find variable: Ext**'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The first error is the critical bit of information; the browser could not find
+    one of the files you tried to include. The second error is caused by the missing
+    file and simply complains that the `Ext` variable cannot be found. In this case,
+    it's because the missing file is `sencha-touch-debug.js`, which sets up the `Ext`
+    variable in the first place.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The web inspector console
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Another feature of the Safari web inspector that is incredibly useful for debugging
+    applications is the console. In your `app.js` file, add the following command:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Add it just before this `Ext.Application` line:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'You should see the text **Creating Application** in your web inspector''s console
+    tab. You can also send variables to the console where you can view their contents:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs: []
+  type: TYPE_PRE
+- en: If you place this console log after the line `Ext.Viewport.add(Ext.create('TouchStart.view.Main'));`
+    in `app.js`, the console will display the full viewport and all of its nested
+    child components. This is useful if, for some reason, you have a component that
+    is not displaying properly. Sending an object to the console allows you to see
+    the object as JavaScript sees it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: For more information about the Chrome Developer Tools, go to [https://developers.google.com/chrome-developer-tools/](https://developers.google.com/chrome-developer-tools/).
+  prefs: []
+  type: TYPE_NORMAL
+- en: If you'd like to learn more about using the Safari web inspector for debugging
+    your application, visit Apple's *Debugging your website* page at [http://developer.apple.com/library/safari/#documentation/AppleApplications/Conceptual/Safari_Developer_Guide/DebuggingYourWebsite/DebuggingYourWebsite.html](http://
+    http://developer.apple.com/library/safari/#documentation/AppleApplications/Conceptual/Safari_Developer_Guide/DebuggingYourWebsite/DebuggingYourWebsite.html).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Updating the application for production
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: When an application is ready for production, there are typically a number of
+    steps to get your code ready and optimized. This process involves compressing
+    the JavaScript to load faster, optimizing images, and getting rid of any parts
+    of the code library that are not actually required by your application. This can
+    be a pretty tedious process, but Sencha Cmd will actually do this for you with
+    a single command.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'When you are ready to update your application for production, you can open
+    your command line and move into your code''s root directory using the `cd` command:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Once you are in the directory, you can type the following command:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE21]'
+  prefs: []
+  type: TYPE_PRE
+- en: This command will create a `build` directory with an optimized version of your
+    application inside it. You can test this optimized version for any errors. If
+    you need to make changes to the application, you can make them to the unoptimized
+    code and then run the `build` command again.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Once you are satisfied with the code building, put the application into production.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Putting the application into production
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Now that you've written and tested your application and prepared it for production,
+    we need to figure out where our code is going to live. Since the method for putting
+    an application into production will vary based on your setup, we will be covering
+    this task in very general terms.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The first thing to do is to familiarize yourself with three basic pieces of
+    the puzzle for putting your application into production:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Web hosting
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: File transfer
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Folder structure
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: While it is fine to develop your application on a local web server, if you want
+    anyone else to see it, you will need a publicly accessible web server with a constant
+    connection to the Internet. There are a number of web hosting providers, such
+    as GoDaddy, HostGator, Blue Host, HostMonster, and RackSpace.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Since our application is pure HTML/JavaScript/CSS, you don't need any fancy
+    add-ons, such as databases or server-side programming languages (PHP or Java),
+    for your web hosting account. Any account that can serve up HTML pages is good
+    enough. The key to this decision should be customer support. Make sure to check
+    the reviews before choosing a provider.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The hosting provider will also supply information on setting up your domain
+    and uploading your files to the web server. Be sure to keep good track of your
+    username and password for future reference.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In order to copy your application to your web hosting account, you'll probably
+    have to familiarize yourself with an **FTP** (**File Transfer Protocol**) program
+    such as **FileZilla**. As with hosting providers, there is a huge selection of
+    FTP programs. Most of them follow a few basic conventions.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To begin with, you will need to connect to the web server with the FTP program.
+    For this, you will need the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: A name or IP address for the web server
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Your web hosting username and password
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: A connection port for the web server
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Your web hosting provider should provide you with this information when you
+    sign up.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Putting the application into production](img/0748OS_02_11.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Once you are connected to the server, you will see a list of files on your local
+    machine as well as files on your remote web server. You need to drag the **TouchStart**
+    files on to the remote server to upload them. Your hosting provider will also
+    provide you with the name of a specific folder where these files need to go. The
+    folder is typically called `httpd`, `htdocs`, `html`, or `public_html`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This brings us to our last consideration for uploading files: the folder path.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The folder path affects how the application locates its files and resources.
+    When you upload the application to the remote web server, it can affect how your
+    folder is seen within the application. If you have any files referenced from an
+    absolute path, such as `http://127.0.0.1/~12ftguru/TouchStart/myfile.js`, then
+    the file will not work when you move things over to the web server.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Even relative URLs can become problematic when you transfer files to the remote
+    server. For example, if you have a file which uses the path `/TouchStart/myFile.js`
+    and you upload the contents of the `TouchStart` folder instead of uploading the
+    folder itself, the file path will be incorrect.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This is something to keep in mind if you find yourself facing a missing images
+    error or other errors.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Again, your web hosting provider is your best resource for information. Be sure
+    to look for the *Getting Started* document and don't be afraid to seek help from
+    any user forums that your hosting provider may have.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this chapter, we created our first simple application with Sencha Cmd. We
+    learnt some of the basics of Sencha Touch components including configuration and
+    nesting components within one another. We introduced you to the `TabPanel`, `Panel`,
+    and `Container` components. In addition, we explained some basic debugging methodology
+    and prepared our application for production.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the next chapter, we will create a custom theme for our application by using
+    SASS and the Sencha Touch library's styling tools.
+  prefs: []
+  type: TYPE_NORMAL
