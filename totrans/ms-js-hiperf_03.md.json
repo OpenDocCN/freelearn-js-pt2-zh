@@ -1,1 +1,0 @@
-["```js\ncd [~/path/to/project_dir]\n\n```", "```js\nsudo npm install --global gulp\n\n```", "```js\nsudo npm install --save-dev gulp\n\n```", "```js\nsudo npm install -g gulp-jslint\n\n```", "```js\nsudo npm install -save-dev gulp-jslint\n\n```", "```js\nsudo npm install --save-dev gulp-uglify\n\n```"]

@@ -1,1 +1,0 @@
-["```js\n// Get the group key that an item belongs to.\n  function getGroupKey(dataItem) {\n  return dataItem.name.toUpperCase().charAt(0);   \n}\n\n// Get a title for a group\n  function getGroupData(dataItem) {\n  return {\n    title: dataItem.name.toUpperCase().charAt(0);\n  }; \n}\n```"]

@@ -1,1 +1,0 @@
-["```js\nvar nestedList = Ext.create('Ext.NestedList', {\n    fullscreen: true,\n    title: 'Minions',\n    displayField: 'text',\n    store: store\n});\n```", "```js\n<img src=\"img/my-big-image.jpg\">\n```", "```js\nC:\\Ruby192>ruby -v\nruby 1.9.2p180 (2011-02-18) [i386-mingw32]\n\n```"]

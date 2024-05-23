@@ -1,1 +1,0 @@
-["```js\n<head>\n  <title>My Meteor Blog</title>\n</head>\n<body>\n  Hello World\n</body>\n```", "```js\n<div class=\"footer\">\n  <time datetime=\"{{formatTime timeCreated \"iso\"}}\">Posted {{formatTime timeCreated \"fromNow\"}} by {{author}}</time>\n</div>\n```", "```js\n$ cd my/developer/folder\n$ meteor create my-meteor-blog\n\n```"]

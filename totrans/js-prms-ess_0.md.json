@@ -1,1 +1,0 @@
-["```js\nvar testDiv = document.getElementById(\"testDiv\");\ntestDiv.addEventListener(\"click\", function(){\n  // so the testDiv object has been clicked on, now we can do things\n    alert(\"I'm here!\");\n});\n```"]
