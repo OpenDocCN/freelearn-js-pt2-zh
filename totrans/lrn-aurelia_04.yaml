@@ -1246,6 +1246,7 @@
   id: totrans-195
   prefs: []
   type: TYPE_NORMAL
+  zh: 这个视图模型期望在其构造函数中注入`ContactGateway`的一个实例和`Router`的一个实例。在其`activate`方法中，它然后使用其`id`参数加载一个`Contact`实例，并使用`contact`的`fullName`初始化文档标题。这与`contact-edition`视图模型非常相似。
 - en: The `save` method is a little different however. It first checks if a file has
     been selected; if not, it does nothing for now. Otherwise, it calls the `updatePhoto`
     method of the `ContactGateway` method, passing the contact's `id` and the selected
@@ -1253,20 +1254,24 @@
   id: totrans-196
   prefs: []
   type: TYPE_NORMAL
+  zh: '`save`方法有一点不同。它首先检查是否已经选择了文件；如果没有，现在什么也不做。否则，它调用`ContactGateway`的`updatePhoto`方法，将联系人的`id`和选定的文件传递给它，并在`Promise`解决时返回到联系人的详细信息。'
 - en: Uploading files with fetch
   id: totrans-197
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 使用fetch上传文件
 - en: 'The last step in getting our photo upload feature working is the `uploadPhoto`
     method in the `ContactGateway` class:'
   id: totrans-198
   prefs: []
   type: TYPE_NORMAL
+  zh: 使我们的照片上传功能正常工作的最后一步是在`ContactGateway`类中的`uploadPhoto`方法：
 - en: '`src/contact-gateway.js`'
   id: totrans-199
   prefs: []
   type: TYPE_NORMAL
+  zh: '`src/contact-gateway.js`'
 - en: '[PRE39]'
   id: totrans-200
   prefs: []
@@ -1280,27 +1285,32 @@
   id: totrans-201
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们HTTP后端的`contacts/{id}/photo`端点期望一个PUT请求，带有正确的`Content-Type`头和图像二进制作为其主体。这正是这里`fetch`调用的作用：它使用`file`参数，这被期望是一个`File`类的实例，并使用它的`type`属性设置`Content-Type`头，然后将`file`本身作为请求体发送。
 - en: As mentioned earlier, the `File` class is part of the HTML5 File API. The Mozilla
     Developer Network has extensive documentation about this API. Details about the
     `File` class can be found at [https://developer.mozilla.org/en-US/docs/Web/API/File](https://developer.mozilla.org/en-US/docs/Web/API/File).
   id: totrans-202
   prefs: []
   type: TYPE_NORMAL
+  zh: 如早先所述，`File`类是HTML5文件API的一部分。Mozilla开发者网络提供了关于这个API的详尽文档。关于`File`类的细节可以在[https://developer.mozilla.org/en-US/docs/Web/API/File](https://developer.mozilla.org/en-US/docs/Web/API/File)找到。
 - en: As usual, the `updatePhoto` method returns the `Promise` resolved by the HTTP
     request, so the caller can act when the operation is completed.
   id: totrans-203
   prefs: []
   type: TYPE_NORMAL
+  zh: 像往常一样，`updatePhoto`方法返回由HTTP请求解决的`Promise`，所以调用者可以在操作完成时采取行动。
 - en: At this point, you should be able to run the application and update the photo
     of a contact by uploading a new image file.
   id: totrans-204
   prefs: []
   type: TYPE_NORMAL
+  zh: 至此，你应该能够运行应用程序并通过上传新图像文件来更新联系人的照片。
 - en: Deleting a contact
   id: totrans-205
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 删除联系人
 - en: 'At this point, our application allows us to create, read, and update contacts.
     Obviously, one of the letters from **create, read, update, delete** (**CRUD**)
     is missing here: we can''t delete a contact yet. Let''s quickly implement this
@@ -1308,14 +1318,17 @@
   id: totrans-206
   prefs: []
   type: TYPE_NORMAL
+  zh: 至此，我们的应用程序允许我们创建、读取和更新联系人。显然，**创建、读取、更新、删除**（**CRUD**）这四个字母中有一个缺失了：我们还不能删除一个联系人。让我们快速实现这个功能。
 - en: 'First, let''s add a **Delete** button to the contact''s `details` component:'
   id: totrans-207
   prefs: []
   type: TYPE_NORMAL
+  zh: 首先，让我们在联系人的`details`组件中添加一个**删除**按钮：
 - en: '`src/contact-details.html`'
   id: totrans-208
   prefs: []
   type: TYPE_NORMAL
+  zh: '`src/contact-details.html`'
 - en: '[PRE40]'
   id: totrans-209
   prefs: []
@@ -1325,10 +1338,12 @@
   id: totrans-210
   prefs: []
   type: TYPE_NORMAL
+  zh: 新的**删除**按钮将在点击时调用`tryDelete`方法：
 - en: '`src/contact-details.js`'
   id: totrans-211
   prefs: []
   type: TYPE_NORMAL
+  zh: '`src/contact-details.js`'
 - en: '[PRE41]'
   id: totrans-212
   prefs: []
@@ -1340,15 +1355,18 @@
   id: totrans-213
   prefs: []
   type: TYPE_NORMAL
+  zh: '`tryDelete`方法首先要求用户进行**确认**删除，然后使用联系人的`id`调用网关的`delete`方法。当返回的`Promise`解决时，它返回到联系人列表。'
 - en: 'Lastly, the `ContactGateway` class'' `delete` method just performs a Fetch
     call to the backend''s proper path, using the `DELETE` HTTP method:'
   id: totrans-214
   prefs: []
   type: TYPE_NORMAL
+  zh: 最后，`ContactGateway`类的`delete`方法只是执行一个到后端适当路径的Fetch调用，使用`DELETE`HTTP方法：
 - en: '`src/contact-gateway.js`'
   id: totrans-215
   prefs: []
   type: TYPE_NORMAL
+  zh: '`src/contact-gateway.js`'
 - en: '[PRE42]'
   id: totrans-216
   prefs: []
@@ -1360,11 +1378,13 @@
   id: totrans-217
   prefs: []
   type: TYPE_NORMAL
+  zh: 至此，如果你点击一个联系人的**删除**按钮并批准确认对话框，你应该会被重定向到联系人列表，并且联系人应该消失了。
 - en: Validation
   id: totrans-218
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 验证
 - en: If you try to save a contact with either an invalid birthday, or an empty phone
     number, address, email, or social profile username, while your browser's debug
     console is open, you will see that the HTTP endpoint rejects the request with
@@ -2212,6 +2232,7 @@
   id: totrans-349
   prefs: []
   type: TYPE_NORMAL
+  zh: 此规则期望一个`maximum`参数。使用此类规则时，传递给`satisfiesRule`流畅方法的任何参数都将传递给底层的条件函数，以便它使用它来评估条件。然而，为了对消息模板可用，规则参数必须在单个对象中聚合。因此，`customRule`可以传递第四个参数，预期是一个函数，它将规则参数聚合到单个对象中。此对象随后作为`$config`对消息模板可用。
 - en: 'This is what we see in our `maxFileSize` rule; it expects to be called with
     a parameter, here named `maximum`, which is the maximum file size in bytes. This
     parameter is expected to be passed to the `satisfiesRule` method when adding the
@@ -2219,6 +2240,7 @@
   id: totrans-350
   prefs: []
   type: TYPE_NORMAL
+  zh: 这就是我们在`maxFileSize`规则中所看到的；它期望以一个名为`maximum`的参数被调用，这是以字节为单位的最大文件大小。当向属性添加规则时，此参数预期传递给`satisfiesRule`方法：
 - en: '[PRE65]'
   id: totrans-351
   prefs: []
@@ -2232,26 +2254,31 @@
   id: totrans-352
   prefs: []
   type: TYPE_NORMAL
+  zh: 此参数随后传递给条件函数，以便可以验证`FileList`实例中所有文件的大小。它还传递给聚合函数，该函数返回一个包含`maximum`属性的对象。此对象随后作为`$config`对消息模板可用，因此模板可以在错误消息中显示`maximum`。
 - en: Here, our custom rule has only one parameter, but a rule can have as many parameters
     as you need. They will all be passed to the condition function and to the aggregation
     function in the same order in which they are passed to `satisfiesRule`.
   id: totrans-353
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这里，我们的自定义规则只有一个参数，但一个规则可以有尽可能多的参数。它们都将以相同的顺序传递给条件函数和聚合函数，顺序与传递给`satisfiesRule`的顺序相同。
 - en: Validating file extensions
   id: totrans-354
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 验证文件扩展名
 - en: 'Lastly, let''s create a rule to ensure that all files in a `FileList` instance
     have an extension that is inside a specific set of values:'
   id: totrans-355
   prefs: []
   type: TYPE_NORMAL
+  zh: 最后，让我们创建一个规则，以确保`FileList`实例中的所有文件扩展名都在特定的一组值中：
 - en: '`src/validation/rules.js`'
   id: totrans-356
   prefs: []
   type: TYPE_NORMAL
+  zh: '`src/validation/rules.js`'
 - en: '[PRE66]'
   id: totrans-357
   prefs: []
@@ -2264,53 +2291,63 @@
   id: totrans-358
   prefs: []
   type: TYPE_NORMAL
+  zh: 此规则名为`fileExtension`，期望一个文件扩展名数组作为参数，并确保`FileList`中的所有文件名以扩展名之一结尾。与`maxFileSize`一样，仅当验证的值是一个不为空的`FileList`实例时，它才适用。
 - en: Validating the contact photo selector
   id: totrans-359
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 验证联系照片选择器
 - en: 'Now that we have defined all the rules we need to validate the contact photo
     component, let''s set the view-model up, just like we did with the `contact-edition`
     component:'
   id: totrans-360
   prefs: []
   type: TYPE_NORMAL
+  zh: 既然我们已经定义了验证联系照片组件所需的所有规则，让我们像对`contact-edition`组件一样设置视图模型：
 - en: Inject a `NewInstance` of `ValidationController` in the `ContactPhoto` view-model
   id: totrans-361
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 在`ContactPhoto`视图模型中注入`ValidationController`的`NewInstance`
 - en: Explicitly call the `validate` method in `save`, and omit calling `updatePhoto`
     if there are any validation errors
   id: totrans-362
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 在`save`中显式调用`validate`方法，如果有任何验证错误，则省略调用`updatePhoto`
 - en: Add the `validation-renderer="bootstrap-form"` attribute to the `form` element
     in the `contact-photo.html` template
   id: totrans-363
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 在`contact-photo.html`模板中的`form`元素添加`validation-renderer="bootstrap-form"`属性
 - en: Add the `validate` binding behavior to the binding of the `files` property on
     the `file input`
   id: totrans-364
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 将`validate`绑定行为添加到`file input`上`files`属性的绑定
 - en: Those tasks being identical to what we have already done for the `contact-edition`
     component, I'll leave them as an exercise to the reader.
   id: totrans-365
   prefs: []
   type: TYPE_NORMAL
+  zh: 这些任务与我们对`contact-edition`组件已经完成的任务相同，我将留给读者作为练习。
 - en: 'Next, we need to add validation rules to the `photo` property of the view-model:'
   id: totrans-366
   prefs: []
   type: TYPE_NORMAL
+  zh: 接下来，我们需要向视图模型的`photo`属性添加验证规则：
 - en: '`src/contact-photo.js`'
   id: totrans-367
   prefs: []
   type: TYPE_NORMAL
+  zh: '`src/contact-photo.js`'
 - en: '[PRE67]'
   id: totrans-368
   prefs: []
@@ -2323,6 +2360,7 @@
   id: totrans-369
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这里，我们告诉验证控制器`photo`必须至少包含一个文件，这个文件必须是JPEG或PNG，并且最大不超过2 MB。我们还使用`withMessage`方法定制当没有选择文件时显示的消息。
 - en: 'If you test this, it should work properly. However, the fact that the validation
     is triggered when the `file input` loses focus makes usability a bit strange.
     In order to have the form validated right when the user closes the browser''s
@@ -2331,10 +2369,12 @@
   id: totrans-370
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果您测试这个，它应该能正常工作。然而，验证在`file input`失去焦点时触发，使得可用性有些奇怪。为了在用户关闭浏览器的文件选择对话框时立即验证表单，从而立即显示可能的错误消息，让我们将验证控制器的`validateTrigger`更改为`change`：
 - en: '`src/contact-photo.js`'
   id: totrans-371
   prefs: []
   type: TYPE_NORMAL
+  zh: '`src/contact-photo.js`'
 - en: '[PRE68]'
   id: totrans-372
   prefs: []
@@ -2346,11 +2386,13 @@
   id: totrans-373
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果您在做出此更改后进行测试，您应该发现可用性得到了很大改善，因为文件在用户关闭文件选择对话框时就会进行验证。
 - en: Editing complex structures
   id: totrans-374
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 编辑复杂结构
 - en: In the previous sections, we created a form to edit, among others, lists of
     items, using a strategy that is referred to as inline edition. The form includes
     input elements for every list item. This strategy reduces to a minimum the number
@@ -2359,6 +2401,7 @@
   id: totrans-375
   prefs: []
   type: TYPE_NORMAL
+  zh: 在前几节中，我们创建了一个表单，用于编辑项目列表（如电话号码、电子邮件地址、地址和社会资料等），这种策略称为内联编辑。表单包括每个列表项的输入元素。这种策略将用户编辑或添加新列表项所需的点击次数降到最低，因为用户可以直接在表单中编辑所有列表项的所有字段。
 - en: However, when a form needs to manage lists of more complex items, one solution
     is to display only the most relevant information in the list as read-only, and
     to use a modal dialog to create or edit items. A dialog leaves much more room
@@ -2366,6 +2409,7 @@
   id: totrans-376
   prefs: []
   type: TYPE_NORMAL
+  zh: 然而，当表单需要管理更复杂项目的列表时，一个解决方案是只显示列表中最具相关性的信息作为只读，并使用模态对话框创建或编辑项目。对话框为单个项目显示复杂表单提供了更多的空间。
 - en: The `aurelia-dialog` plugin exposes a dialog functionality, which we can leverage
     to create modal editors. To illustrate this, we will fork our contact management
     application and change the `contact-edition` component so it uses dialog edition
@@ -2373,20 +2417,24 @@
   id: totrans-377
   prefs: []
   type: TYPE_NORMAL
+  zh: '`aurelia-dialog`插件暴露了一个对话框功能，我们可以利用它来创建模态编辑器。为了说明这一点，我们将克隆我们的联系人管理应用程序，并更改`contact-edition`组件，使其使用对话框编辑而不是列表项的内联编辑。'
 - en: The following code snippets are excerpts of `chapter-4/samples/list-edition-models`.
   id: totrans-378
   prefs: []
   type: TYPE_NORMAL
+  zh: 以下代码片段是`chapter-4/samples/list-edition-models`的摘录。
 - en: Installing the dialog plugin
   id: totrans-379
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 安装对话框插件
 - en: 'To install the `aurelia-dialog` plugin, simply fire up a console in the project
     directory and run the following command:'
   id: totrans-380
   prefs: []
   type: TYPE_NORMAL
+  zh: 要安装`aurelia-dialog`插件，只需在项目目录中打开一个控制台，并运行以下命令：
 - en: '[PRE69]'
   id: totrans-381
   prefs: []
@@ -2399,6 +2447,7 @@
   id: totrans-382
   prefs: []
   type: TYPE_NORMAL
+  zh: 安装完成后，我们还需要将插件添加到供应商包配置中。为此，请打开`aurelia_project/aurelia.json`，然后在`build`下的`bundles`中，在名为`vendor-bundle.js`的包的`dependencies`数组中添加以下条目：
 - en: '[PRE70]'
   id: totrans-383
   prefs: []
@@ -2408,10 +2457,12 @@
   id: totrans-384
   prefs: []
   type: TYPE_NORMAL
+  zh: 最后，我们需要在我们的主`configure`函数中加载插件：
 - en: '`src/main.js`'
   id: totrans-385
   prefs: []
   type: TYPE_NORMAL
+  zh: '`src/main.js`'
 - en: '[PRE71]'
   id: totrans-386
   prefs: []
@@ -2422,27 +2473,32 @@
   id: totrans-387
   prefs: []
   type: TYPE_NORMAL
+  zh: 此时，`aurelia-dialog`暴露的服务和组件已准备好在我们的应用程序中使用。
 - en: Creating the edition dialogs
   id: totrans-388
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 创建编辑对话框
 - en: The dialog plugin uses composition to display a component as a dialog. This
     means that the next step is to create the components that will be used to edit
     a new or an existing item.
   id: totrans-389
   prefs: []
   type: TYPE_NORMAL
+  zh: 对话框插件使用组合来将组件作为对话框显示。这意味着下一步是创建将用于编辑新或现有项目的组件。
 - en: 'Since the behavior behind dialog edition will be the same whatever the type
     of the item being edited, we will create a single view-model, which we will reuse
     for phone numbers, email addresses, addresses, and social profiles:'
   id: totrans-390
   prefs: []
   type: TYPE_NORMAL
+  zh: 由于无论编辑的项目类型如何，对话框编辑的背后的行为都将相同，我们将创建一个单一的视图模型，我们将在电话号码、电子邮件地址、地址和社会资料等项目中重复使用：
 - en: '`src/dialogs/edition-dialog.js`'
   id: totrans-391
   prefs: []
   type: TYPE_NORMAL
+  zh: '`src/dialogs/edition-dialog.js`'
 - en: '[PRE72]'
   id: totrans-392
   prefs: []
@@ -2458,6 +2514,8 @@
   id: totrans-393
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这里，我们创建了一个组件，在该组件中注入了`DialogController`和`ValidationController`类的`NewInstance`。接下来，我们定义了一个接收`model`的`activate`方法，该`model`将是需要编辑的项目
+    - 电话号码、电子邮件地址、地址或社会资料。我们还定义了一个`ok`方法，该方法验证表单，如果没有错误，则使用更新后的`model`作为对话框的输出调用`DialogController`的`ok`方法。最后，我们定义了一个`cancel`方法，它简单地将调用委托给`DialogController`的`cancel`方法。
 - en: A `DialogController`, when injected in a component displayed as a dialog, is
     used to control the dialog into which the component is displayed. Its `ok` and
     `cancel` methods can be used to close the dialog and to return a response to the
@@ -2466,16 +2524,19 @@
   id: totrans-394
   prefs: []
   type: TYPE_NORMAL
+  zh: 当`DialogController`被注入到一个作为对话框显示的组件中时，它被用来控制显示组件的对话框。它的`ok`和`cancel`方法可以用来关闭对话框，并向调用者返回一个响应。这个响应随后可以被调用者用来确定对话框是否被取消以及检索其输出（如果有）。
 - en: 'Even though we will reuse the same view-model class for all item types, the
     templates must be different for each item type. Let''s start with the dialog edition
     for phone numbers:'
   id: totrans-395
   prefs: []
   type: TYPE_NORMAL
+  zh: 尽管我们将为所有项目类型重用相同的视图模型类，但每个项目类型的模板必须是不同的。让我们从电话号码的对话框编辑开始：
 - en: '`src/dialogs/phone-number-dialog.html`'
   id: totrans-396
   prefs: []
   type: TYPE_NORMAL
+  zh: '`src/dialogs/phone-number-dialog.html`'
 - en: '[PRE73]'
   id: totrans-397
   prefs: []
@@ -2490,12 +2551,14 @@
   id: totrans-398
   prefs: []
   type: TYPE_NORMAL
+  zh: 这里值得注意的是`ai-dialog`、`ai-dialog-body`和`ai-dialog-footer`元素，它们是Aurelia对话框的容器。此外，`select`元素上的`attach-focus="true"`属性确保当对话框显示时这个元素获得焦点。最后，`form`的`submit`事件委托给`ok`方法，而点击取消按钮则委托给`cancel`方法。
 - en: The rest of the template should be familiar. The user input elements are bound
     to the properties of `model`, and those bindings are decorated with the `validate`
     binding behavior so the properties are properly validated.
   id: totrans-399
   prefs: []
   type: TYPE_NORMAL
+  zh: 模板的其余部分应该很熟悉。用户输入元素绑定到`model`的属性，这些绑定被`validate`绑定行为装饰，以便属性得到适当验证。
 - en: 'We also need to create the templates for the other item types: `src/dialogs/email-address-dialog.html`,
     `src/dialogs/address-dialog.html`, and `src/dialogs/social-profile-dialog.html`.
     At this point, those templates should be easy to create. I''ll leave it as an
@@ -2504,20 +2567,24 @@
   id: totrans-400
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们还需要为其他项目类型创建模板：`src/dialogs/email-address-dialog.html`、`src/dialogs/address-dialog.html`和`src/dialogs/social-profile-dialog.html`。此时，这些模板应该很容易创建。我将留给读者一个练习来编写它们；`list-edition-models`示例可以作为参考。
 - en: Using edition dialogs
   id: totrans-401
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 使用编辑对话框
 - en: 'The last step to leverage our new view-model and templates is to change the
     behavior of the `contact-edition` component:'
   id: totrans-402
   prefs: []
   type: TYPE_NORMAL
+  zh: 利用我们新的视图模型和模板的最后一步是改变`contact-edition`组件的行为：
 - en: '`src/contact-edition.js`'
   id: totrans-403
   prefs: []
   type: TYPE_NORMAL
+  zh: '`src/contact-edition.js`'
 - en: '[PRE74]'
   id: totrans-404
   prefs: []
@@ -2529,6 +2596,7 @@
   id: totrans-405
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这里，我们通过在构造函数中注入`DialogService`来向我们的`ContactEdition`视图模型添加一个新的依赖。接下来，我们定义了一个`_openEditDialog`方法，它定义了打开编辑对话框的通用行为。
 - en: This method calls the `open` method of `DialogService` to open a dialog, using
     the `edition-dialog` view-model and a given item type's template, composed as
     a single component. A given `model` is also passed to it, which will be injected
@@ -2538,6 +2606,8 @@
   id: totrans-406
   prefs: []
   type: TYPE_NORMAL
+  zh: 此方法调用`DialogService`的`open`方法来打开一个对话框，使用`edition-dialog`视图模型和给定项目类型的模板，组合成一个单一组件。还传递了一个`model`，它将在`edition-dialog`的`activate`方法中注入。如果你阅读了[第3章](ch03.html
+    "Chapter 3. Displaying Data")*显示数据*中的组合部分，这应该会很熟悉。
 - en: Additionally, the method returns a `Promise`, which will be resolved when the
     user clicks **Ok**, but rejected when he clicks **Cancel**. This way, when using
     this method, the resulting Promise will be resolve only when the user confirms
@@ -2545,6 +2615,8 @@
   id: totrans-407
   prefs: []
   type: TYPE_NORMAL
+  zh: 此外，该方法返回一个 `Promise`，当用户点击 **确定** 时解析，但当用户点击 **取消** 时拒绝。这样，在使用这个方法时，只有当用户通过点击
+    **确定** 来确认其修改时，结果的 `Promise` 才会被解析，否则会被拒绝。
 - en: The `editPhoneNumber` method uses the `_openEditDialog` method to display the
     phone number edition dialog. A copy of the `phoneNumber` to edit is passed as
     the `model` because, if we pass the original `phoneNumber` object, it will be
@@ -2554,21 +2626,28 @@
   id: totrans-408
   prefs: []
   type: TYPE_NORMAL
+  zh: '`editPhoneNumber` 方法使用 `_openEditDialog` 方法来显示电话号码编辑对话框。要编辑的 `phoneNumber`
+    的副本作为 `model` 传递，因为如果我们传递原始 `phoneNumber` 对象，即使用户取消其修改，它也会被修改。当用户确认其修改时，`Promise`
+    解析，这时更新后的 `model` 属性会被回赋给原始的 `phoneNumber`。'
 - en: Similarly, the `addPhoneNumber` method uses the `_openEditDialog` method, but
     passes a new `PhoneNumber` instance as the model. Additionally, when the `Promise`
     resolves, the new phone number is added to the `phoneNumbers` array of `contact`.
   id: totrans-409
   prefs: []
   type: TYPE_NORMAL
+  zh: 同样地，`addPhoneNumber` 方法使用了 `_openEditDialog` 方法，但传递了一个新的 `PhoneNumber` 实例作为模型。另外，当
+    `Promise` 解析时，新的电话号码会被添加到 `contact` 的 `phoneNumbers` 数组中。
 - en: 'Lastly, the template must be changed, so the list of phone numbers is displayed
     as read-only, and a new **Edit** button must be added for each phone number:'
   id: totrans-410
   prefs: []
   type: TYPE_NORMAL
+  zh: 最后，模板必须更改，以便电话号码列表以只读方式显示，并为每个电话号码添加一个新的 **编辑** 按钮：
 - en: '`src/contact-edition.html`'
   id: totrans-411
   prefs: []
   type: TYPE_NORMAL
+  zh: '`src/contact-edition.html`'
 - en: '[PRE75]'
   id: totrans-412
   prefs: []
@@ -2582,6 +2661,9 @@
   id: totrans-413
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这里，我们移除了 `select` 和 `input` 元素，并用字符串插值指令来显示 `phoneNumber` 的 `type` 和 `number`
+    属性。我们还添加了一个 **编辑** 按钮，当点击时，调用新的 `editPhoneNumber` 方法。最后，我们更改了 **添加** 按钮，使其调用新的
+    `addPhoneNumber` 方法。
 - en: Of course, the same changes must be applied to both the view-model and the template
     of the `contact-edition` component for the other item types. However, changing
     the inline edition strategy for the email addresses, the addresses, and the social
@@ -2590,11 +2672,13 @@
   id: totrans-414
   prefs: []
   type: TYPE_NORMAL
+  zh: 当然，对于 `contact-edition` 组件的视图模型和模板，以及其他项目类型的更改也必须应用相同的更改。然而，对于电子邮件地址、地址和社会资料的内联编辑策略的更改，现在对您来说应该是很直接的；我将把这个留给读者作为一个练习。
 - en: Summary
   id: totrans-415
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 总结
 - en: Creating forms is simple with Aurelia, it is mostly a matter of leveraging two-way
     binding. Validating forms is also easy, thanks to the validation plugin. Additionally,
     the abstraction layer in the validation plugin allows us to use the validation
@@ -2603,6 +2687,7 @@
   id: totrans-416
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用 Aurelia 创建表单很简单，主要是利用双向绑定。验证表单也很容易，得益于验证插件。此外，验证插件的抽象层允许我们使用我们想要的验证库，尽管插件提供的默认实现已经相当强大。
 - en: The power of Aurelia will really start to become clear in the next chapter.
     By leveraging what we saw up to now, and adding custom attributes, custom elements,
     and content projection to the mix, we will be able to create extremely powerful,
@@ -2614,3 +2699,4 @@
   id: totrans-417
   prefs: []
   type: TYPE_NORMAL
+  zh: 在下一章中，Aurelia 的力量将真正开始变得清晰。通过利用我们迄今为止看到的内容，并添加自定义属性、自定义元素和内容投射到混合中，我们将能够创建极其强大、可重用和可扩展的组件，将它们组合成模块化和可测试的应用程序。当然，在覆盖这些主题的同时，我们将对我们的联系人管理应用程序进行大量重构，以提取组件和可重用行为，同时添加在没有自定义元素和属性时无法实现的特性。
