@@ -1,4 +1,5 @@
 - en: Chapter 11. Developing Apps with XAML
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
@@ -12,9 +13,11 @@
     HTML5 and JavaScript. But in this chapter, we will learn about other platforms
     and programming languages available for developers. We will also cover the basics
     of creating an app with XAML/C#.
+  id: totrans-1
   prefs: []
   type: TYPE_NORMAL
 - en: Creating apps with different platforms
+  id: totrans-2
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
@@ -23,6 +26,7 @@
     developers. Moreover, developers can build on and leverage their existing programming
     skills and knowledge to create Windows Store apps, and will not necessarily have
     to acquire a completely new set of skills.
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
 - en: Web developers will be able to utilize their HTML5, CSS3, and JavaScript skills
@@ -34,6 +38,7 @@
     Direct2D and Direct3D apps. In summary, we have the XAML markup with C#, VB.NET,
     and C++, and to top it, Visual Studio 2012 provides project templates and Intellisense
     support for all these programming languages.
+  id: totrans-4
   prefs: []
   type: TYPE_NORMAL
 - en: The same app can be built with either XAML or HTML5, and when deployed and run,
@@ -49,9 +54,11 @@
     with WPF and Silverlight, but will have to learn about developing for the Windows
     Store design and functionality. However, as I mentioned, the learning curve is
     minimal when you are commencing Windows Store development with a familiar territory.
+  id: totrans-5
   prefs: []
   type: TYPE_NORMAL
 - en: Introducing XAML apps
+  id: totrans-6
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
@@ -59,6 +66,7 @@
     apps using JavaScript, beginning with tools and acquiring a developer license
     through the design guidelines to planning the app and finishing with packaging
     and publishing the app to the Store.
+  id: totrans-7
   prefs: []
   type: TYPE_NORMAL
 - en: 'Let''s create a basic Windows Store app using XAML and compare it with an app
@@ -70,19 +78,23 @@
     C#** for this demonstration; feel free to go with **Visual Basic** or **Visual
     C++**. Finally, click on **OK** to create the project: The following screenshot
     shows the entire process as discussed:'
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
 - en: '![Introducing XAML apps](img/7102EN_11_01.jpg)'
+  id: totrans-9
   prefs: []
   type: TYPE_IMG
 - en: 'The preceding screenshot shows the following Windows Store app templates provided
     with XAML: **Blank App (XAML)**, **Grid App (XAML)**, and **Split App (XAML)**.'
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
 - en: '**Blank App (XAML)**: This template provides an empty Windows Store app that
     will compile and run, but contains no user interface controls or data. When it
     runs an app based on this template, it will only show a black screen that contains
     a placeholder text.'
+  id: totrans-11
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
@@ -96,14 +108,17 @@
     turn displays a list of items that the group contains on the right-hand side.
     Consequently, when the user selects a single item on either the home page or the
     group details page, the app will open a page that shows the item details.'
+  id: totrans-12
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: 'The following screenshot shows a sample home page of **Grid App (XAML)**:'
+  id: totrans-13
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
 - en: '![Introducing XAML apps](img/7102EN_11_08.jpg)'
+  id: totrans-14
   prefs:
   - PREF_IND
   type: TYPE_IMG
@@ -116,12 +131,14 @@
     a landing home page that shows a list of groups. When the user selects a group,
     the app will open a split-view page. The following screenshot shows a sample split-view
     page:![Introducing XAML apps](img/7102EN_11_09.jpg)'
+  id: totrans-15
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: These three project templates are similar to the ones provided in a Windows
     Store JavaScript project, but the latter provides two additional templates, the
     **Fixed Layout App** and the **Navigation App**.
+  id: totrans-16
   prefs: []
   type: TYPE_NORMAL
 - en: We'll start with the **Blank App (XAML)** template, which contains the minimal
@@ -130,44 +147,54 @@
     run. Once the blank app has been created, navigate to **Solution Explorer** on
     the right-hand side of Visual Studio and expand the list of project files to see
     the default files that are created with this template.
+  id: totrans-17
   prefs: []
   type: TYPE_NORMAL
 - en: 'The following screenshot shows the contents of **Solution Explorer** to the
     right and the `MainPage.xaml` file, when opened in the XAML text editor, to the
     left:'
+  id: totrans-18
   prefs: []
   type: TYPE_NORMAL
 - en: '![Introducing XAML apps](img/7102EN_11_02.jpg)'
+  id: totrans-19
   prefs: []
   type: TYPE_IMG
 - en: 'The project we just created contains the following folders and files, which
     are indispensable to all Windows Store apps using C# or Visual Basic:'
+  id: totrans-20
   prefs: []
   type: TYPE_NORMAL
 - en: '`Properties`: This folder contains the app assembly information.'
+  id: totrans-21
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '`References`: This folder contains the project references files and by default,
     has the following two SDK references: **.NET for Windows Store apps** and **Windows**.'
+  id: totrans-22
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '`Assets`: This folder contains the following images:'
+  id: totrans-23
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Large and small logo images of sizes 150 x 150 px and 30 x 30 px, respectively.
+  id: totrans-24
   prefs:
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
 - en: The **SplashScreen** image.
+  id: totrans-25
   prefs:
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
 - en: The **StoreLogo** image of size 50 x 50 px.
+  id: totrans-26
   prefs:
   - PREF_IND
   - PREF_UL
@@ -176,10 +203,12 @@
     as the `StandardStyles.xaml` file, which provides a set of default styles that
     gives the app its Windows 8 look and feel. In addition, this folder will contain
     the files for the utility and helper classes.'
+  id: totrans-27
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: 'This template also includes the following `.xaml` page files:'
+  id: totrans-28
   prefs: []
   type: TYPE_NORMAL
 - en: '`App.xaml`: This is the main app file that is required to display the user
@@ -187,6 +216,7 @@
     that are shared across the app, such as styles, and provides the markup for the
     content host. This page is similar to what the `default.html` page represents
     in apps using JavaScript.'
+  id: totrans-29
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
@@ -194,24 +224,29 @@
     code that handles the global app-specific behavior and events, such as app launching
     and suspending. This file is similar to what the `default.js` file represents
     in apps using JavaScript.'
+  id: totrans-30
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '`MainPage.xaml`: This is the default startup page of the app and contains the
     minimal XAML markup and code to instantiate a page.'
+  id: totrans-31
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '`MainPage.xaml.cs`: This is the code-behind file corresponding to the `MainPage.xaml`
     file.'
+  id: totrans-32
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Finally, there is the manifest file, `Package.appxmanifest`, which contains
     the app description and settings identical to the one in JavaScript templates.
+  id: totrans-33
   prefs: []
   type: TYPE_NORMAL
 - en: Note
+  id: totrans-34
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
@@ -219,6 +254,7 @@
     can neither be renamed nor modified because this results in a build error. If
     there is a necessity to modify these files, you can create a copy of the original
     file and then modify the copy instead.
+  id: totrans-35
   prefs: []
   type: TYPE_NORMAL
 - en: Those who haven't heard of XAML before might be lost by now and wondering about
@@ -235,21 +271,26 @@
     If you are new to XAML, don't worry much about the syntax because Visual Studio
     helps you write a valid markup by providing autocompletion hints and suggestion
     lists, and you will learn the syntax along the way.
+  id: totrans-36
   prefs: []
   type: TYPE_NORMAL
 - en: 'Using XAML markup, we can create UI elements just like we do using HTML but
     with a different syntax. Let''s add the following UI elements inside the `Grid`
     element in the `MainPage.xaml` file with the following syntax:'
+  id: totrans-37
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE0]'
+  id: totrans-38
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: 'The preceding code listing shows the following properties: `x:Name`, which
     specifies the name assigned to the `TextBlock` element; `Text`, which specifies
     the data as text that will be filled in this element; and `Content`, which is
     similar to `Text` but specifies the data as text that will show next to a `CheckBox`
     element.'
+  id: totrans-39
   prefs: []
   type: TYPE_NORMAL
 - en: The first line in the code listing declares a basic `TextBlock` element, which
@@ -259,13 +300,16 @@
     can either write the syntax manually or choose a control from those listed in
     the **Toolbox** pane and drag it directly to the XAML text editor or the design
     surface, which are both visible in a split view.
+  id: totrans-40
   prefs: []
   type: TYPE_NORMAL
 - en: 'In the designer window, you can manipulate these UI controls and arrange their
     positioning on the window as shown in the following screenshot:'
+  id: totrans-41
   prefs: []
   type: TYPE_NORMAL
 - en: '![Introducing XAML apps](img/7102EN_11_03.jpg)'
+  id: totrans-42
   prefs: []
   type: TYPE_IMG
 - en: You will notice that manipulating the controls in the **Design** pane reflects
@@ -273,6 +317,7 @@
     the elements and existing ones are being changed. If you run the app now, you
     will see a black screen containing the three elements we just added to the `MainPage.xaml`
     file.
+  id: totrans-43
   prefs: []
   type: TYPE_NORMAL
 - en: 'The `MainPage.xaml` file contains the minimum markup and code needed to run
@@ -289,9 +334,11 @@
     C#** (or Visual Basic if you chose a different template at the start of the example).
     Next, select **Basic Page** and give it the name `MainPage.xaml`, otherwise the
     project will not build correctly. The following screenshot illustrates the procedure:'
+  id: totrans-44
   prefs: []
   type: TYPE_NORMAL
 - en: '![Introducing XAML apps](img/7102EN_11_04.jpg)'
+  id: totrans-45
   prefs: []
   type: TYPE_IMG
 - en: Then, click on **Add**. If this is the first time you have added a new page
@@ -305,13 +352,16 @@
     will not show up in the designer until you build the project/solution, so it compiles
     the helper classes the page depends on. Let's see how the app looks like after
     this change; press *F5* to build and run the app in debugging mode.
+  id: totrans-46
   prefs: []
   type: TYPE_NORMAL
 - en: 'Once it''s run, the app will appear as a black screen containing the title
     **My Application**, as shown in the following screenshot:'
+  id: totrans-47
   prefs: []
   type: TYPE_NORMAL
 - en: '![Introducing XAML apps](img/7102EN_11_05.jpg)'
+  id: totrans-48
   prefs: []
   type: TYPE_IMG
 - en: The important thing to note here is that this page is consistent with the design
@@ -319,22 +369,27 @@
     As you can see, the title appears to be of the same font size and is positioned
     with the exact margins specified in the *Windows 8 UX Guidelines for Windows Store
     apps* page ([http://www.microsoft.com/en-in/download/details.aspx?id=30704](http://www.microsoft.com/en-in/download/details.aspx?id=30704)).
+  id: totrans-49
   prefs: []
   type: TYPE_NORMAL
 - en: Adding a title, theme color, and content
+  id: totrans-50
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: Let's modify this minimal app by adding a title and changing its theme color.
     Then, we'll add a simple text and write some code to handle a basic button-click
     event.
+  id: totrans-51
   prefs: []
   type: TYPE_NORMAL
 - en: 'To change the title of this app, perform the following steps:'
+  id: totrans-52
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: Open the `MainPage.xaml` file.
+  id: totrans-53
   prefs:
   - PREF_IND
   - PREF_OL
@@ -344,6 +399,7 @@
     found in the **Properties** window under `Common`. If it is not shown by default,
     the **Property** window should be located on the left-hand side of Visual Studio
     below the **Solution Explorer** panel.
+  id: totrans-54
   prefs:
   - PREF_IND
   - PREF_OL
@@ -354,16 +410,19 @@
     `ui-dark.css` and `ui-light.css`, referenced in the `default.html` page. In apps
     using XAML, switching between the two themes is done in the `App.xaml` file as
     follows:'
+  id: totrans-55
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: Open the `App.xaml` file.
+  id: totrans-56
   prefs:
   - PREF_IND
   - PREF_OL
   type: TYPE_NORMAL
 - en: Go to the `<Application>` tag and add the `RequestedTheme` property before the
     closing of the tag.
+  id: totrans-57
   prefs:
   - PREF_IND
   - PREF_OL
@@ -371,16 +430,20 @@
 - en: 'Click within the quotes of the tag, and Visual Studio''s Intellisense will
     prompt you with two property values: **Light** and **Dark**. Choose **Light**
     and the `<Application>` tag will look as follows:'
+  id: totrans-58
   prefs:
   - PREF_IND
   - PREF_OL
   type: TYPE_NORMAL
 - en: '[PRE1]'
+  id: totrans-59
   prefs:
   - PREF_IND
   - PREF_IND
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: Run the app to see the difference.
+  id: totrans-60
   prefs:
   - PREF_IND
   - PREF_OL
@@ -388,13 +451,16 @@
 - en: 'Now to add some UI content, open the `MainPage.xaml` file and locate the root
     `Grid` element and the `<VisualStateManager.VisualStateGroups>` tag inside it.
     Add the following XAML code snippet just before this tag:'
+  id: totrans-61
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: '[PRE2]'
+  id: totrans-62
   prefs:
   - PREF_IND
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: 'The preceding XAML code declares a `StackPanel` control that holds UI controls
     inside it (think of it as a `div` element). Inside this, we add a `TextBlock`
     element and assign its `Text` property a value, and then we nest a `StackPanel`
@@ -403,83 +469,103 @@
     that we assign for its `width` and `HorizontalAlignment` properties, and a `Button`
     control to which we assign a value for its `Content` property. Finally, add another
     empty `TextBlock` element outside the inner `StackPanel` element.'
+  id: totrans-63
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
 - en: 'Run the app and it will look like the following screenshot:'
+  id: totrans-64
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
 - en: '![Adding a title, theme color, and content](img/7102EN_11_06.jpg)'
+  id: totrans-65
   prefs:
   - PREF_IND
   type: TYPE_IMG
 - en: 'Lastly, let''s add some functionality with an event handler for the button
     we declared in the markup, as enlisted in the following steps:'
+  id: totrans-66
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: Click on the **Post My Answer** button in either the XAML designer or the text
     editor, and it will show in the **Properties** window.
+  id: totrans-67
   prefs:
   - PREF_IND
   - PREF_OL
   type: TYPE_NORMAL
 - en: In the **Properties** window, locate and click on the **Events** button on the
     top-left area.
+  id: totrans-68
   prefs:
   - PREF_IND
   - PREF_OL
   type: TYPE_NORMAL
 - en: Locate the **Click** event at the top of the list and double-click or press
     *Enter* in the textbox provided.
+  id: totrans-69
   prefs:
   - PREF_IND
   - PREF_OL
   type: TYPE_NORMAL
 - en: This will create the event handler method. Display it in the code editor of
     the file `MainPage.xaml.cs`.
+  id: totrans-70
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
 - en: 'The following screenshot shows the process:'
+  id: totrans-71
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
 - en: '![Adding a title, theme color, and content](img/7102EN_11_07.jpg)'
+  id: totrans-72
   prefs:
   - PREF_IND
   type: TYPE_IMG
 - en: 'The autogenerated event handler comes up with the name `Button_Click` (if the
     button had a value for its `name` property, the event handler would have looked
     something like `ButtonName_Click`). The method will look as follows:'
+  id: totrans-73
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
 - en: '[PRE3]'
+  id: totrans-74
   prefs:
   - PREF_IND
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: 'Let''s add simple code that gets the text entered in the input textbox and
     displays it in the empty `TextBlock` named `myAnswer`. The code will look as follows:'
+  id: totrans-75
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
 - en: '[PRE4]'
+  id: totrans-76
   prefs:
   - PREF_IND
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: 'If we go back to the XAML editor, we''ll see that the `Click` event handler
     was added to the `Button` element like this:'
+  id: totrans-77
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
 - en: '[PRE5]'
+  id: totrans-78
   prefs:
   - PREF_IND
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: Run the app now, enter some text in the textbox, and test the button. Once clicked,
     it will output whatever is inside the textbox to the screen.
+  id: totrans-79
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
@@ -488,6 +574,7 @@
     XAML is not that hard once we become familiar with it; as with any other programming
     language, we will need practice. However, the choice between XAML and HTML5 is
     completely yours.
+  id: totrans-80
   prefs: []
   type: TYPE_NORMAL
 - en: One of the advantages of developing Windows Store apps with XAML is the ability
@@ -495,26 +582,37 @@
     to help you make the conversion. Likewise, Microsoft provides a guide to help
     you port an existing Silverlight or WPF/XAML code to a Windows Store app using
     XAML. Both these guides are available on the *Windows Phone Dev Center* page ([http://developer.windowsphone.com/en-us](http://developer.windowsphone.com/en-us)).
+  id: totrans-81
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用XAML开发Windows Store应用的一个优点是，您可以使用微软提供的指南将**Windows Phone 7**应用迁移到Windows 8。同样，微软也提供了一个指南，帮助您将现有的Silverlight或WPF/XAML代码通过XAML转换为Windows
+    Store应用。这两个指南都可以在*Windows Phone Dev Center*页面找到([http://developer.windowsphone.com/en-us](http://developer.windowsphone.com/en-us))。
 - en: Summary
+  id: totrans-82
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 总结
 - en: In this chapter, we have learned about different choices offered by Windows
     8 for developers. Additionally, we were introduced to the XAML language and syntax
     in Windows Store apps.
+  id: totrans-83
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本章中，我们了解到了Windows 8为开发者提供的不同选择。此外，我们还介绍了Windows Store应用中的XAML语言和语法。
 - en: We also covered how to start developing Windows Store apps using XAML and how
     it differs from developing using JavaScript, which gave us a heads-up on what
     to expect when we want to develop with either languages.
+  id: totrans-84
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们还介绍了如何使用XAML开始开发Windows Store应用，以及它与使用JavaScript开发的不同之处，这让我们对使用任一语言开发有了预期。
 - en: Finally, we created a minimal app and added to it some basic UI content and
     functionality using the XAML markup.
+  id: totrans-85
   prefs: []
   type: TYPE_NORMAL
+  zh: 最后，我们创建了一个最小的应用，并向其添加了一些基本的UI内容和功能，使用了XAML标记语言。
 - en: In this book, we introduced new features in HTML5 and CSS3 and then learned
     how these features are being implemented in a Windows Store app. We also covered
     the JavaScript controls' functionalities, which are specific to the Windows Store
@@ -530,5 +628,10 @@
     in a Windows Store app and how to add buttons to it. Finally, we got introduced
     to the Windows Store and learned all about packaging and publishing the app to
     the store.
+  id: totrans-86
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这本书中，我们介绍了HTML5和CSS3的新特性，并学习了这些特性如何在Windows Store应用中实现。我们还介绍了专为Windows Store应用设计的JavaScript控件功能。之后，我们学习了如何创建一个基本的JavaScript应用，以及如何使用JavaScript快速开始开发Windows
+    Store应用。进一步地，我们了解了一些应用的重要特性以及如何实现这些特性。我们首先通过WinJS控件检索和显示数据。然后，我们介绍了应用的视图状态以及如何使应用响应这些视图状态的变化。之后，我们了解了Windows
+    8中的磁贴，并学习了如何添加动态磁贴并向应用发送通知。此外，我们还学习了如何将应用与Windows Live服务集成，以使用户能够使用他们的电子邮件账户进行认证和登录。我们还学习了Windows
+    Store应用中的应用栏以及如何向其添加按钮。最后，我们介绍了Windows Store，并学习了有关将应用打包并发布到商店的所有内容。
