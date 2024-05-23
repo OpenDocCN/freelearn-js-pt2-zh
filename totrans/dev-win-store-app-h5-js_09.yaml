@@ -1,0 +1,258 @@
+- en: Chapter 9. Adding Menus and Commands
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this chapter we will learn about the app bar and understand how it works
+    and where it is found on the app. Moreover, we will cover how to declare an app
+    bar and add controls to it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Understanding the app bar
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: When you run a Windows Store app, all you see is a full screen app that allows
+    you to be immersed in the content of the app; however, then you ask yourself where
+    all the buttons and controls are. They are all contained and hidden in the app
+    bar—hidden till you need them, of course—to avoid distractions and make use of
+    every pixel on the screen for the content of the app.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The app bar can be found at the bottom of the screen and appears when triggered
+    by the user. This can be done with a touch gesture (by tapping or swiping upward
+    from the bottom edge or downward from the top edge), using the mouse (by right-clicking),
+    or using the keyboard (via the shortcut Windows + *Z*). The app bar typically
+    holds the controls that are relevant to the current screen. By default, the controls
+    are equally split between the left-hand and right-hand side of the screen. The
+    left-hand side contains the commands that are specific to the content that is
+    currently being shown in the app and the right-hand side holds the commands that
+    are global to the app and apply to all the pages. The app bar can also contain
+    commands that are specific to a single element in the app.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s have a look at a sample app bar. The following screenshot shows the
+    app bar of the Microsoft Bing app that contains four commands, namely **Copy Link**,
+    **Copy**, **Save As**, and **Set As Lock Screen**:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Understanding the app bar](img/7102EN_09_01.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: The app bar's hiding mechanism allows users to focus and get immersed in the
+    content and minimizes distractions. It provides the user with consistent and easy
+    access to the commands when they need them, and they can easily see or hide the
+    app bar.
+  prefs: []
+  type: TYPE_NORMAL
+- en: When we try to show the app bar using the mouse, touch, or keyboard, another
+    bar will appear simultaneously located at the top of the screen. This is the navigation
+    bar and though it may look similar, it is not an app bar. The navigation bar is
+    used to show controls that help us navigate between different sections of an application.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The app bar, if it exists, should always be available to the user and thus adapt
+    to changes in the layout between snapped and portrait views. For example, if you
+    can't fit all the commands in a snapped view, you can try to group them into menus
+    and provide tooltips for the commands, even though Windows will automatically
+    hide the labels and adjust the padding accordingly.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: It is strongly recommended that you do not change the size or the padding of
+    buttons that are applied by the default layout provided by `WinJS`, since it is
+    designed to fit 10 commands on all supported screen sizes; more importantly, it
+    is designed to support touch gestures. Hence, making changes to the layout may
+    disrupt this behavior.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The app bar is made available by the `WinJS` library using the object `WinJS.UI.AppBar`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'It is very trivial to declare an app bar in the markup. We start by creating
+    an app bar from a simple `div` element by simply specifying a `WinJS.UI.AppBar`
+    control in the `data-win-control` attribute. The syntax will be as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: The preceding syntax will create an empty app bar that will be displayed when
+    triggered either by a mouse or an upward swipe.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The app bar is made to contain command buttons, so let''s add a command button
+    inside the app bar. In order to create an app bar command button, we will use
+    a `button` element and specify its `data-win-control` attribute to be `AppBarCommand`,
+    as shown in the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The preceding syntax will show the app with an empty command button inside.
+    We can add life to this command button by specifying some options in the `data-win-options`
+    attribute. These options are as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`type`: This option indicates the type of command from the following values
+    – `button`, `toggle`, `separator`, and `flyout`.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`Id`: This option specifies an ID for the command.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`label`: This option specifies the text to be displayed on the app bar.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`Icon`: This option specifies an icon to be displayed for the command either
+    by choosing a value from the `AppBarIcon` list provided by Windows, such as `pin`,
+    `unpin`, `accept`, `cancel`, and `delete`, or by specifying the path to a custom
+    PNG image file.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`section`: This option indicates the section to which the command belongs,
+    either `selection` or `global`. The `selection` section will place the command
+    to the left of the app bar, which is reserved for contextual or page-specific
+    commands, while the `global` section will place the command to the right, which
+    is reserved for global or app-level commands.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`tooltip`: This option specifies an info tooltip (hint) to be displayed when
+    the user hovers over the command.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'The following code shows what the syntax will look like after adding these
+    options for the command button that we declared in the previous example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Run the app and you will see an app bar.as shown in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Understanding the app bar](img/7102EN_09_02.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: As you can see in the preceding screenshot, the app bar contains a button that
+    has the placeholder icon, labeled as **Test Command**; when hovered over, it will
+    display the tooltip **Command Tooltip**.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Adding functionality to the commands
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The app bar we just created doesn't really do anything yet, so let's add another
+    command and check the other types. But before that, we need a separator between
+    the two commands; it can be created using an `hr` element that the app bar contains
+    by default in addition to the command buttons.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The `hr` element will also need to have the `data-win-control="WinJS.UI.AppBarCommand"`
+    attribute set on it. The syntax for creating a separator will look like the following
+    code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'After the separator, we''ll add a new button command but this time we will
+    choose the pin icon; the syntax will look as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Run the app now and you should see two command buttons, one with a pin icon
+    and the other with a placeholder icon, and a separator between these two that
+    looks like an `hr` element. The following is the screenshot of the resulting app
+    bar when the user hovers over the command labeled **Pin to start**:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Adding functionality to the commands](img/7102EN_09_03.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: These commands look nice on the app bar but still do nothing when clicked on,
+    so let's add some functionality to the **Pin to start** command button and start
+    the app pin.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To add some functionality to the command buttons, we need to retrieve them
+    from the app bar and add to it a `click` event handler. The following code gets
+    the app bar and sets it to a variable. Then, it gets the specific command in that
+    app bar using its `Id` attribute and attaches a function to its click event:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: Run the app now and click on the **Pin to start** command button; a pop-up message
+    dialog will appear on the screen.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The app bar is by default located at the bottom of the app and can be changed
+    to be at the top of the screen; however, it should contain navigational elements
+    that move the user to a different page. The top app bar, according to the Windows
+    8 UX guidelines, is a navigational bar. Getting back to the code, we can change
+    the location of the app bar from the bottom to the top by simply setting the value
+    of the `placement` property of the `data-win-options` attribute in the app bar
+    control, as shown in the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: But again, the default and recommended behavior by the UX guidelines is to place
+    the app bar at the bottom, since the top bar is reserved for navigational commands.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In the previous examples, we have added the app bar to the main page, `default.html`,
+    but in fact the page we should choose to include our app bar in is not arbitrary
+    and depends on its scope, as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Add the app bar to the `default.html` page if it contains commands that are
+    global and should be available to all the pages
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Add the app bar to a specific page (a `PageControl` object) if it contains commands
+    that are specific to one page and will differ between a page and another
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Alternatively, we can define a default app bar in the main `default.html` file
+    and then do the required modifications on the app bar on the load event of that
+    particular page, which requires different commands from the default.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this chapter, we saw what app bars are and where we can place the commands
+    and controls for the app. We also learned about the difference between an app
+    bar and a navigational bar. We saw what app bar commands are and the different
+    options they can hold. Then we saw how to create a simple app bar containing commands
+    and separators.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Finally, we saw how to add basic functionality to any command type on the app
+    bar.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the next chapter we will reach the final destination of a Windows Store app;
+    that is, submitting to the Store itself, and we will learn how to publish the
+    app to the Store from Visual Studio and handle the app configuration on the dashboard.
+  prefs: []
+  type: TYPE_NORMAL

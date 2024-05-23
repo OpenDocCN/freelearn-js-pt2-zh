@@ -1,0 +1,481 @@
+- en: Chapter 6. Keeping States with Sessions
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: We already used Meteor's session object when we implemented our lazy load technique
+    in an earlier chapter. In this chapter, we want to take a deeper look at it and
+    learn how it can be used to create template-specific reactive functions.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In this chapter, we will cover the following topics:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: What sessions are
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How hot code pushes affect sessions
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Rerunning template helpers using sessions
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Rerunning functions
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Creating template-specific reactive functions
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_IND
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: If you've jumped right into the chapter and want to follow the examples, download
+    the previous chapter's code examples from either the book's web page at [https://www.packtpub.com/books/content/support/17713](https://www.packtpub.com/books/content/support/17713)
+    or from the GitHub repository at [https://github.com/frozeman/book-building-single-page-web-apps-with-meteor/tree/chapter5](https://github.com/frozeman/book-building-single-page-web-apps-with-meteor/tree/chapter5).
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: These code examples will also contain all the style files, so we don't have
+    to worry about adding CSS code along the way.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Meteor's session object
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The `Session` object provided by Meteor is a reactive data source and serves
+    mainly to preserve global states throughout hot code reloads, though it won't
+    preserve its data when the page is manually reloaded, making it different from
+    PHP sessions.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: A hot code reload happens when we upload new code and the server pushes those
+    updates to all clients.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `Session` object is a reactive data source. This means wherever this session
+    variable is used in a reactive function, it will rerun that function when its
+    value changes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: One use of the session variable can be to maintain global states of our app,
+    for example, to check whether the user has their sidebar visible or not.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The session object is not useful for simple data communication between templates
+    and other parts of the app, as maintaining this would quickly become a nightmare
+    and naming collisions could occur.
+  prefs: []
+  type: TYPE_NORMAL
+- en: A better way for simple reactivity
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: If we wanted to use something for intra-app communication, it's better to use
+    Meteors `reactive-var` package, which comes with a `Session` like `ReactiveVar`
+    object.
+  prefs: []
+  type: TYPE_NORMAL
+- en: To use it, we can simply add it using `$ meteor add reactive-var`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This object then needs to be instantiated and comes with a reactive `get()`
+    and `set()` function like the `session` object:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: For more custom reactivity, we can build our own custom reactive object using
+    Meteor's `Tracker` package. To read more about this, refer to [Chapter 9](part0081_split_000.html#page
+    "Chapter 9. Advanced Reactivity"), *Advanced Reactivity*.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: For reactive variables that are tied to a specific template instance, check
+    out my `frozeman:template-var` package at [https://atmospherejs.com/frozeman/template-var](https://atmospherejs.com/frozeman/template-var).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using sessions in template helpers
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: As all template helper functions are reactive functions, a good place to use
+    a session object is inside such a helper.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Reactive means that when we use a reactive object inside this function, that
+    function will rerun when the reactive object changes, additionally rerendering
+    this part of the template.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Template helpers are not the only reactive functions; we can also create our
+    own using `Tracker.autorun(function(){…})`, as we saw in earlier chapters.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To demonstrate the usage of sessions in a template helper, perform the following
+    steps:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s open our `my-meteor-blog/client/templates/home.js` file and add the
+    following helper code anywhere in the file:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: This creates the `sessionExample` helper, which returns the value of the `mySessionExample`
+    session variable.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Next, we need to add this helper to our `home` template itself by opening the
+    `my-metepr-blog/client/templates/home.html` file and adding the helper above our
+    `{{#each postsList}}` block helper:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Now, let''s open up our browser at `http://localhost:3000`. We will see the
+    static text we add appearing in our blog''s home page. Yet, to see Meteor''s reactive
+    session at work, we need to open up the browser''s console and type the following
+    line of code:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'This is illustrated in the following screenshot:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '![Using sessions in template helpers](img/00017.jpeg)'
+  prefs:
+  - PREF_IND
+  type: TYPE_IMG
+- en: Immediately after we pressed *Enter*, we saw the text added to our template.
+    This is because when we call `Session.set('mySessionExample', ...)`, Meteor will
+    rerun every reactive function wherein we called `Session.get('mySessionExample')`
+    before. For template helpers, this will rerun only this specific template helper,
+    rerendering only this part of the template.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We can try this by setting different values for the `mySessionExample` session
+    variable so that we can see how the text will change at all times.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Session and hot code pushes
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: A hot code push is when we change files and the Meteor server pushes these changes
+    to the clients. Meteor is smart enough to reload the page, without losing the
+    values of HTML forms or sessions. Therefore, sessions can be used to keep user
+    states consistent over hot code pushes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In order to see this, we set the value of `mySessionExample` to anything we
+    want and see the website updating to this value.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'When we now go to our `home.html` file and make a minor change, for example,
+    removing `<strong>` around the `{{sessionExample}}` helper and saving the file,
+    we see that our sessions state is kept, even though the page reloads with the
+    new changed template. This is demonstrated in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Session and hot code pushes](img/00018.jpeg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: If we manually reload the page using the browser's refresh button, the session
+    will not be able to persist the change and the text will disappear.
+  prefs: []
+  type: TYPE_NORMAL
+- en: To overcome this limitation, there are many packages in Meteor's package repository
+    that reactively store data in the browser's local storage to persist across page
+    reloads. One of them is called `persistent-session` and can be found at [http://atmospherejs.com/package/persistent-session](http://atmospherejs.com/package/persistent-session).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Rerunning functions reactively
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: To rerun functions based on session changes, Meteor provides the `Tracker.autorun()`
+    function, which we used before to change the lazy load subscription.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `Tracker.autorun()` function will make every function we pass to it reactive.
+    To see a simple example, we will create a function that will alert a text every
+    time the function reruns.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The `Tracker` package is what the session uses under the hood to make the reactivity
+    work. In [Chapter 9](part0081_split_000.html#page "Chapter 9. Advanced Reactivity"),
+    *Advanced Reactivity*, we will take a deeper look at this package.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Perform the following steps to rerun functions reactively:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s create a new file called `main.js`, but this time in the root of the
+    `my-meteor-blog` folder, with the following content:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Note
+  prefs:
+  - PREF_IND
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: We will need the `main.js` file in later chapters. Therefore, we created it
+    in the root folder, making it accessible on the client and the server.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: However, as Meteor's session object is only available on the client, we will
+    use the `if(Meteor.isClient)` condition in order to execute the code only on the
+    client.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: When we now check out our browser, we will see an alert that displays `undefined`.
+    This is because the function passed to `Tracker.autorun()` will also run when
+    the code is executed, at a time when we haven't set our session.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: To set a session variable's default value, we can use `Session.setDefault('mySessionExample',
+    'My Text')`. This will set the session without running any reactive functions,
+    when the value of the session is undefined. If the value of the session variable
+    was already set, `setDefault` won't change the variables at all.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'In our example, we probably don''t want an alert window to appear when the
+    page is loaded. To prevent this first run, we can use the `Tracker.Computation`
+    object, which is passed as the first argument to our function and which provides
+    us with a property called `firstRun`. This property will be set to `true` at the
+    first run of the function. When we use this, we can prevent the display of the
+    alert at the start:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Now let''s go to the browser''s console and set the session to any value to
+    see the alert appear:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'The output of this code is demonstrated in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Rerunning functions reactively](img/00019.jpeg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: When we run the same command again, we will not see the alert window show up,
+    as Meteor is smart enough to prevent reruns when the session's value doesn't change.
+    If we set it to another value, the alert will appear again.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Stopping reactive functions
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The `Tracker.Computation` object, passed as the first argument, also gives
+    us a way to stop the function from being reactive at all. To try this, we will
+    change the function so that it stops its reactivity when we pass the `stop` string
+    to the session:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: Now, when we go to our browser's console and run `Session.set('mySessionExample',
+    'stop')`, the reactive function will stop being reactive. To test this, we can
+    try to run `Session.set('mySessionExample', 'Another text')` and we will see that
+    the alert window won't appear.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: If we make a code change and a hot code reload happens, the reactive function
+    will become reactive again, as the code was executed again.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The preceding example also uses a function called `Session.equals()`. This function
+    can compare two scalar values while preventing unnecessary recomputations, compared
+    to using `Session.get('mySessionExample) === 'stop'`. Using `Session.equals()`
+    would only rerun this function when the session variable changes *to* or *from*
+    that value.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: In our example, however, this function doesn't make a difference, as we called
+    `Session.get()` before as well.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using autorun in a template
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Although it could be useful to use `Tracker.autorun()` globally in our app in
+    some cases, it can become quickly hard to maintain those global reactive functions
+    as our app grows.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Therefore, it is good practice to bind reactive functions to the templates for
+    which they perform actions.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Luckily, Meteor offers a special version of `Tracker.autorun()` that is tied
+    to a template instance and stops automatically when the template gets destroyed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: To make use of this, we can start the reactive function in the `created()` or
+    rendered callback. To start, let's comment out our previous example from the `main.js`
+    file so that we won't get two alert windows.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Open our `home.js` file and add the following lines of code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This will create the reactive function when the home template is created. When
+    we go to the browser''s console and set the `mySessionExample` session to a new
+    value, we will see the alert window appear, as shown in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Using autorun in a template](img/00020.jpeg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Now, when we switch the templates by clicking on the **About** link in the menu
+    and we set the `mySessionExample` session variable again to another value using
+    the browsers console, we won't see the alert window appear as the reactive `this.autorun()`
+    was stopped when the template was destroyed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Note that all `Tracker.autorun()` functions return a `Tracker.Computation`
+    object, which can be used to stop the reactivity of the autorun at any time using
+    `Tracker.Computation.stop()`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: The reactive session object
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: We've seen that the session object can rerun a function when its value is changed.
+    This is the same behavior as that of the `find()` and `findOne()` functions of
+    collections, which will rerun functions when the underlying data in the collection
+    changes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We can use sessions to keep user states across hot code pushes, such as states
+    of drop-down menus or pop-ups. However, keep in mind that without a clear naming
+    convention, these session variables can soon become hard to maintain.
+  prefs: []
+  type: TYPE_NORMAL
+- en: For more specific reactive behavior, it is good to build a custom reactive object
+    using Meteor's `Tracker` core package, which we will cover in [Chapter 9](part0081_split_000.html#page
+    "Chapter 9. Advanced Reactivity"), *Advanced Reactivity*.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this chapter, we learned what we can do with Meteor's reactive session object.
+    We used it to rerun template helpers and our own custom functions, and we made
+    a reactive function template specific using the `created()` and `destroyed()`
+    callbacks.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To dig deeper, take a look at Meteor''s documentation about sessions and reactivity
+    at the following resources:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[https://docs.meteor.com/#/full/reactivity](https://docs.meteor.com/#/full/reactivity)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[https://docs.meteor.com/#/full/session](https://docs.meteor.com/#/full/session)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[https://docs.meteor.com/#/full/reactivevar_pkg](https://docs.meteor.com/#/full/reactivevar_pkg)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[https://www.meteor.com/tracker](https://www.meteor.com/tracker)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: You can find this chapter's code examples at [https://www.packtpub.com/books/content/support/17713](https://www.packtpub.com/books/content/support/17713)
+    or on GitHub at [https://github.com/frozeman/book-building-single-page-web-apps-with-meteor/tree/chapter6](https://github.com/frozeman/book-building-single-page-web-apps-with-meteor/tree/chapter6).
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the next chapter, we will create the admin user and backend for our blog,
+    laying down the foundation to create and edit posts.
+  prefs: []
+  type: TYPE_NORMAL

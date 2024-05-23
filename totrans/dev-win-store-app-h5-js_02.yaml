@@ -1,0 +1,955 @@
+- en: Chapter 2. Styling with CSS3
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: HTML defines the document/page structure and lists the elements it contains.
+    But the job of defining the layout, the positioning, and the styling of those
+    elements is the sole responsibility of CSS. **A cascading style sheet (CSS)**,
+    as the name suggests, is basically a sheet that contains a list of style rules.
+    Each CSS style rule links a **selector**, which defines what is going to be styled,
+    to a declaration block, which includes a single or a set of styles, which in turn
+    define the effect(s) you want applied to that associated selector. The syntax
+    of a basic style rule would look like this
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Throughout this chapter, we will go over the following topics: CSS3 selectors,
+    Grid and Flexbox, Animation and Transforms, and Media Queries. These topics cover
+    some of the CSS3 features that are frequently used when developing a Windows Store
+    app with JavaScript.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The power of CSS3 selectors
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: CSS selectors are very powerful and come in handy when formatting an HTML document.
+    Using selectors is sometimes tricky, as selecting exactly what you want, and then
+    ensuring that the style rules applied are affecting just the elements that you
+    intended, is a tedious mission. But when done properly with the right selectors,
+    the outcome is very rewarding. Mastering the use of selectors will result in a
+    less complex CSS, minimizing the probability of having redundant styles and over-defining
+    the HTML with classes and IDs, thus ensuring a better performance. The selector
+    can simply be an HTML element, a class, an element ID, or it can even be the element's
+    position in the DOM.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The following is a list of CSS selectors; we will start with the basics and
+    get to the new selectors introduced in CSS3:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**The asterisk (*) symbol**: This is the `catch-all` selector, called the universal
+    type selector, and is used to target every element in the document. It is often
+    used with CSS Reset to reset all the default styles.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: '**The HTML element**: It is called the type selector and is used to select
+    all the elements in the document according to their type. For example, the following
+    selector will target every `<p>` element in the DOM, change the color of the text
+    to red, and underline it.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Tip
+  prefs:
+  - PREF_IND
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Using the `<body>` element as a selector will target the document's body, thereby
+    selecting every element as if you are using the asterisk (*).
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '**The ID selector**: It is specified by the value in the id attribute of the
+    element prefixed with the hash (`#`) symbol. The ID should be the element''s name
+    and, more importantly, it must be unique. The name should be a clear reference
+    to the element. For instance, it would be quite clear to have an `id` value of
+    `mainMenu` for a `nav` element. For example:'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Moreover, being unique means that logically there should be no other element
+    with an `id` value of `mainMenu` on the page. Since the `id` should always be
+    unique, the selector will target only one element in the HTML document. For example,
+    if you have a `<div>` element with an `id` value of `logo` as follows:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Then the corresponding selector will be:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: '**The class selector**: It is specified by the name of a class prefixed with
+    a period (`.`) and targets all the elements with the matching class name. The
+    basic syntax for this selector is as follows:'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Any element with this class name will have bold text in a yellow background
+    color. Classes should be applied when you want to style more than one element,
+    specifically, a set of elements that have something in common. Bear in mind that
+    contrary to the `id` property, the class name can never be used to uniquely identify
+    an element. Moreover, the `class` property may have more than a single value;
+    similarly, the same class may apply to more than one element. Although the use
+    of class selectors may seem general, you can use it in a more specific manner
+    by prefixing it with a type selector. For example, the following code snippet
+    will target only the `<div>` elements that have the class **highlighted**:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: Also, you can chain class selectors to target all the elements that have all
+    of the specified classes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Attribute selectors
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The attribute selector is used to select elements based on their attributes.
+    It checks whether an attribute is present; if yes, it checks the value of the
+    attribute. The attribute should be enclosed within square braces. If the square
+    braces contain only the name of the attribute, it will check if the attribute
+    exists on the element. That''s why it''s also called the existence selector. In
+    the following code snippet, the selector will target only the anchor elements
+    having the `title` attribute:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The preceding syntax is helpful when checking for attributes that do not hold
+    a value. If you remember, in the previous chapter we mentioned that some attributes
+    do not need a value, such as the `required` attribute with the `<input>` elements,
+    or the `loop` attribute with the audio and video elements. The following selector
+    will look for all the audio elements that have the `loop` attribute and hide it:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'To target the element(s) that exactly matches the specified attribute value,
+    we will use the equality attribute marked with an equal symbol (`=`) and the value
+    wrapped within quotes. So, if we want to target all input elements that have the
+    value `email` in their `type` attribute, the syntax will look like the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Also, under the attribute selector category, we have the **prefix** or the
+    "starts with" attribute selector, which is used to check if an attribute has a
+    value that starts with some value. The following syntax will match all the images
+    that have an `id` value starting with `home`. For example, if you want to target
+    all the images in your home page, you can add `home` to the `id`, thus having
+    `homeLogo`, `homeBanner`, and so on, and apply a margin of 10 px to it:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Similarly, we have the **suffix** selector or the "ends with" attribute selector,
+    which will select all the elements whose attribute ends with the value you specify.
+    The suffix selector is marked with the dollar (`$`) symbol before the equal (`=`)
+    sign, and the syntax will look as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: This will target all the anchor elements whose `href` attribute holds a value
+    that ends with `.jpg`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Another attribute selector is the **substring** selector, also known as the
+    "contains" selector. As the name suggests, it matches the attribute value containing
+    the value specified in the selector. It is marked with the asterisk (`*`) symbol
+    before the equal (`=`) sign, and the syntax will look as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: The preceding syntax will match all the `<ul>` elements that have an ID containing
+    the string `Nav`. For example, you have multiple `<ul>` elements used for navigational
+    purposes and marked with IDs such as `secondaryNav`, `sidebarNav`, and so on.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Also, we have the **hyphen** selector, marked with `|=`, which is used to match
+    all the attribute values that are exactly equal and is immediately followed by
+    a hyphen. You might use this selector rarely but a typical use for it would be
+    with values that include a hyphen, for example, the `lang` attribute. The following
+    listing will target all the elements with a value that exactly matches "en", additionally
+    followed by a hyphen, and will return `en`, `en-us`, `en-uk`, and so on:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: The last attribute selector would be the **whitespace** selector, which targets
+    the specified attribute value that exactly matches in a space-delimited list of
+    values. In the following code snippet, we have a `<p>` element with a custom `data-`
+    attribute, containing three space-separated values, named `new events local`,
+    and the selector will match this element since its `data-post-type` value matches
+    exactly the value specified as `events`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The following is the HTML code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'And the CSS code is as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Note that, with HTML5, any attribute starting with `data-` is valid, unlike
+    its predecessor that considers only the recognized attributes as valid.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Combinator selectors
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'A CSS selector can contain multiple selectors, that is, a combination of simple
+    selectors. A combinator selector contains more than one simple selector joined
+    by a combinator. The combinator is a symbol that represents the relationship between
+    the selectors. We already had three different combinators in CSS2, and CSS3 added
+    one extra. Listed as follows are the four selectors, the combinators used, and
+    what each selector matches:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '| Selector | Combinator | Target |'
+  prefs: []
+  type: TYPE_TB
+- en: '| --- | --- | --- |'
+  prefs: []
+  type: TYPE_TB
+- en: '| Descendant | Space Character | Matches the elements that are descendants
+    of the specified element. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| Direct Descendant (Child Selector) | > | Matches the elements that are a
+    direct descendant of the specified element. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| Adjacent Sibling | + | Matches the elements that are an adjacent sibling
+    (immediately following) to the specified element. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| General Sibling | ~ | Matches the elements that are an adjacent sibling to
+    the specified element. |'
+  prefs: []
+  type: TYPE_TB
+- en: 'The preceding selectors are described as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**The Descendant selector**: It is marked by a space character as a combinator
+    and it will select all elements that are descendants of a specified element. It
+    is as if we are applying an additional filter on the first simple selector. The
+    first selector represents the parent element, and the second is the child (descendant)
+    element you are trying to match. For example, the following code snippet will
+    match all the anchor elements that have the `<li>` element as their parent:'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'The HTML code is as follows:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'The CSS selector is as follows:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: '**The Direct Descendant selector**: It is marked by the greater-than (`>`)
+    sign as a combinator and has the basic form E>F, which matches every F element
+    that is a direct descendant (child) of the E element. In the following code snippet,
+    only the `<p>` elements that are immediate children of the `<div>` element are
+    going to be colored blue while the rest are not.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'The HTML code is as follows:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'The CSS code is as follows:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: '**The Adjacent Sibling selector**: It is marked by a plus (`+`) sign as a combinator,
+    and matches all the sibling elements that are immediately following the parent
+    element. So, there can be no elements in between the sibling elements. If it is
+    a bit complex, the following example will explain it. The selector will apply
+    red color only to one `<p>` element.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'The HTML code is as follows:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[PRE21]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'The CSS code is as follows:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[PRE22]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: '**The General Sibling selector**: It is marked by the tilde (`~`) sign as a
+    combinator, and is a new addition in CSS3\. It is used to select all the elements
+    that are siblings of a given element. So, if we apply the selector to the HTML
+    in the preceding example, both the `<p>` elements will match and will be colored
+    red, as they are both siblings of `h1`.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[PRE23]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Pseudo-class selectors
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'A pseudo-class is similar to a class but, since it is in-built, you do not
+    have to explicitly add it in the HTML code. Also, it differs in syntax; a class
+    selector is preceded by a period (`.`), whereas a pseudo-class is preceded by
+    a colon (`:`). In its basic form, a pseudo-class selector will take the following
+    form:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE24]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'You can specify a pseudo-class without a selector, and it will invoke the default
+    type selector. So, if we specify `:hover` alone, it will match all the elements
+    and apply the style rule to anything in the document that can be hovered on. Else,
+    you can be more detailed and apply the pseudo-class selector to a specific HTML
+    element. For example, the following code snippet will apply a pink color on all
+    the `<p>` elements when hovered over:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE25]'
+  prefs: []
+  type: TYPE_PRE
+- en: Pseudo-classes existed in CSS prior to CSS3 and you are most probably familiar
+    with the famous `:hover`, `:visited`, and `:active` pseudo-classes that represent
+    the different states of the anchor element. CSS3 introduced many more powerful
+    pseudo-classes such as `:required`, `:valid`, `:nth-child(n)`, `:first-child`,
+    `:last-child`, `:only-child`, `:first-of-type`, `:last-of-type`, and several others.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Pseudo-element selectors
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Pseudo-elements represent parts of elements, such as the first line of a paragraph,
+    or the part that appears after an element. Similar to a pseudo-class that acts
+    as a class, a pseudo-element behaves as an element but is in-built and does not
+    need to be defined in the HTML code. Pseudo-elements are distinguished by a double
+    colon (`::`), which was introduced in CSS3\. Note that all the pseudo-elements
+    that were introduced before CSS3 used a single colon (`:`), similar to the pseudo-class
+    syntax.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The following code snippet will select all the generated content defined by
+    the `content` style property that appears after the `<p>` element:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The HTML code is as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE26]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The CSS code is as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE27]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The output will be:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Paragraph content goes here ''I come after a paragraph''**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The following table lists the pseudo-elements:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '| **::first-letter** | Matches the first letter in an element. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| **::first-line** | Selects the first line in an element. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| **::before** | Selects the content generated before an element. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| **::after** | Selects the content generated after an element. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| **::selection** | Selects any content that the user might have highlighted,
+    including text within an editable text field, such as input type text, or any
+    element with the `contenteditable` attribute declared. |'
+  prefs: []
+  type: TYPE_TB
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Although you can have the same behavior programmatically by adding classes to
+    your HTML code using JavaScript, it is easier to add pseudo-classes and pseudo-elements
+    to your selectors; moreover, it gives you cleaner code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Creating fluid layouts with Grid and Flexbox
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: When it comes to implementing the design principles set by Microsoft to build
+    attractive, intuitive, and interactive Windows 8 apps, layout is very important.
+    It is common to define a page layout using HTML structural elements such as `<div>`
+    and `<table>`, and the positioning style rules.
+  prefs: []
+  type: TYPE_NORMAL
+- en: But now, there is a more flexible way to do it with the CSS3 advanced layout
+    features, namely **Grid** layout and **Flexbox** (**Flexible box**) layout. These
+    layout systems allow you to easily implement an adaptive and fluid layout.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The Grid layout
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: It offers a very simple way to create fluid and adaptable layouts for a Windows
+    8 app. It is ideal for implementing a full screen UI since the grid can automatically
+    expand to fill in all the space that is available. The Grid layout allows you
+    to align and position its child elements as columns and rows, entirely using CSS,
+    and is independent of their order in the HTML code. It enables more fluidity in
+    layouts than what would be possible with the approach that uses floats or scripts.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The following example demonstrates how we traditionally used floats to position
+    elements:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The HTML code is as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE28]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The CSS code is as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE29]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The preceding code will result in the following multicolor box. The container
+    has a black border surrounding the two divs inside, the blue div to the left and
+    the red one to the right, and the white space in between is the remaining unoccupied
+    space:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![The Grid layout](img/7102EN_02_01.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'The Grid layout is specified by setting the `display` style rule property of
+    an element to `-ms-grid`, or you can use the `-ms-inline-grid` property for an
+    inline-level grid element. You may have noticed the vendor prefix `-ms`(Microsoft-specific),
+    which is because the status of this CSS feature is still a Working Draft; adding
+    this vendor prefix allows it to work with both Internet Explorer 10 and Windows
+    Store apps using JavaScript in Windows 8\. The following is an example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE30]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The `display: -ms-grid;` property creates a grid; afterwards, we define the
+    columns and rows and specify their sizes using the following properties: `-ms-grid-column`
+    and `-ms-grid-rows`. The `-ms-grid-columns` property specifies the width of each
+    column, and `-ms-grid-rows` specifies the height of each row, in that grid. The
+    width and height values in these two properties respectively are separated by
+    a space character. In the preceding example, the `-ms-grid-columns: 120px 1fr;`
+    property creates two columns; the first one has a width of 120 px and the second
+    one has a width value of 1 fr, that is, one fractional unit, which means that
+    the width of the second column will automatically fill in all of the remaining
+    available space. The same concept applies for rows. The remaining two classes
+    in the preceding code snippet will position the elements in these classes into
+    columns and rows of the grid using the `-ms-grid-column` and `-ms-grid-row` properties.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'The **fraction units (fr)** designate how the available space should be divided
+    among the columns or rows according to their fractional values. For example, if
+    we have a four-columns layout such as the following: `-ms-grid-columns: 100px
+    100px 1fr 2fr;`, column 3 takes one fraction and column 4 takes two fractions
+    of the total remaining space. Hence, the total remaining space is now 3 fr; column
+    3 is set to 1 fr divided by the total (3), so both one-third of the remaining
+    space and column 4 having 2 fr will be assigned two-thirds of the remaining space.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In the preceding example, we used px and fr units to specify the size of the
+    columns and rows. Additionally, we can do so using standard length units (such
+    as px or em), or the percentage of the element''s width or height. Also, we can
+    use the following keywords:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`auto`: This keyword makes the size of the column or row stretch to fit the
+    content inside'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`min-content`: This keyword sets the size of the column or row to the minimum
+    size of any child element'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`max-content`: This keyword sets the size of the column or row to the maximum
+    size of any child element'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`minmax(a,b)`: This keyword sets the size of the column or row to a value between
+    a and b as much as the available space allows'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'The following table lists the properties associated with the Grid layout:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '| **-ms-grid-column** | Specifies in which column of the grid the element will
+    reside. The numbering system is of the **1-based index** type. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| **-ms-grid-columns** | Specifies a width value for each of the grid columns.
+    |'
+  prefs: []
+  type: TYPE_TB
+- en: '| **-ms-grid-column-span** | Specifies the number of columns that the element
+    will occupy in the grid. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| **-ms-grid-column-align** | Specifies a value for the horizontal alignment
+    of the element inside the column. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| **-ms-grid-row** | Specifies in which row of the grid the element will reside.
+    The numbering system is of the 1-based index type. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| **-ms-grid-rows** | Specifies a height value for each of the grid rows. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| **-ms-grid-row-span** | Specifies the number of rows that the element will
+    occupy in the grid. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| **-ms-grid-row-align** | Specifies a value for the vertical alignment of
+    the element inside the row. |'
+  prefs: []
+  type: TYPE_TB
+- en: Moreover, the Grid layout exposes a rich set of properties that allows you to
+    easily cater to the changes in the view states and orientation of the app. We
+    will discuss that later on when we get to the design of the app.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The Flexbox layout
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The second layout model we have is the Flexbox mode, another recent addition
+    in CSS3\. Similar to the Grid layout, the Flexbox layout is enabled using the
+    `display` property and also requires a Microsoft-specific vendor prefix as it
+    is still a **World Wide Web Consortium (W3C)** Working Draft. The Flexbox layout
+    is used to make the relative position and the size of elements stay constant,
+    even if the window sizes of the screen and browser change. Compared to floats,
+    Flexbox provides a better and easier control on the position and size of elements.
+    The advantage you have with Flexbox layout is that it enables relative positioning
+    and dimensions of the elements inside it, since it considers the available space.
+    This allows you to create a fluid layout that maintains the position and size
+    of the elements relative to each other; hence, it enables the elements inside
+    a Flexbox container to resize and reposition themselves when the dimensions of
+    the browser or app window change. A Flexbox layout would be ideal for building
+    apps that present any digital print media, such as a newspaper or a magazine.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'As with the Grid layout, it is quite easy to create a container with a Flexbox
+    layout by setting the `display` property to `-ms-flexbox`. After creating a Flexbox
+    container, we can start manipulating the elements inside it, using the following
+    properties:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`-ms-flex-direction`: It specifies the orientation of the child elements using
+    the following keyword values: `row` (initial value), `column`, `row-reverse`,
+    and `column-reverse`. We will go over each one of the values, and show the effect
+    it applies, in the following example. And what better way to explain it than actual
+    code? So,o suppose we have the following HTML and CSS code snippets:'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[PRE31]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: The preceding syntax creates a Flexbox container with the `flexit` class that
+    wraps in a Flexbox layout the child `<div>` elements marked with text 1, 2, and
+    3 for tracking. We apply some styles and background colors to mark the child elements.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'So the following values in the `-ms-flex-direction` property will give us the
+    results in the following table. Notice how the order and the positioning of the
+    elements change without adding anything to the markup:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '| Property | The Flexbox container | The order and the positioning of the elements
+    |'
+  prefs:
+  - PREF_IND
+  type: TYPE_TB
+- en: '| --- | --- | --- |'
+  prefs:
+  - PREF_IND
+  type: TYPE_TB
+- en: '| row | ![The Flexbox layout](img/7102EN_02_02.jpg) | The child elements are
+    positioned from left to right, in the same order of appearance in the HTML markup.
+    |'
+  prefs:
+  - PREF_IND
+  type: TYPE_TB
+- en: '| row-reverse | ![The Flexbox layout](img/7102EN_02_03.jpg) | The child elements
+    are positioned from right to left, in the reverse order of appearance in the HTML
+    markup. |'
+  prefs:
+  - PREF_IND
+  type: TYPE_TB
+- en: '| column | ![The Flexbox layout](img/7102EN_02_04.jpg) | The child elements
+    are positioned from top to bottom, in the same order of appearance in the HTML
+    markup from left to right. |'
+  prefs:
+  - PREF_IND
+  type: TYPE_TB
+- en: '| column-reverse | ![The Flexbox layout](img/7102EN_02_05.jpg) | The child
+    elements are positioned from bottom to top, in the same order of appearance in
+    the HTML markup. |'
+  prefs:
+  - PREF_IND
+  type: TYPE_TB
+- en: '`-ms-flex-align`: This property specifies the alignment of the child elements
+    in a Flexbox container. It takes the following keyword values: `start`, `end`,
+    `center`, `stretch`, and `baseline`. The alignment is always perpendicular to
+    the layout axis defined in the `-ms-flex-direction` property; so, if the orientation
+    is horizontal, it will set the alignment to vertical and vice versa. For example,
+    if the orientation is `row` (horizontal), the value `start` will set the alignment
+    to top (vertical).'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`-ms-flex-pack`: This property specifies how the available space is divided
+    between the child elements of the Flexbox container, parallel to the axis defined
+    by the `-ms-flex-direction` property, unlike the alignment property described
+    earlier. It takes the following keyword values: `start`, `end`, `center`, and
+    `justify`.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`-ms-flex-wrap`: This property enables the child elements to overflow and wrap
+    to the next line or columns, and specifies the direction of that flow. It takes
+    the following keyword values: `none`, `wrap`, and `wrap-reverse`.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: CSS-powered animations
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: '**CSS transforms** allow you to manipulate HTML elements in a way that previously
+    was only possible with scripts. It enables rotation, translation, scaling, and
+    skewing of elements, and enables the transformation of elements in 2D and 3D.
+    CSS animations enable you to smoothly change the style properties over a period
+    of time, allowing you to design complex animations with better rendering performance
+    when compared to JavaScript-powered animations. Working with the two combined,
+    you can do magic on your app.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: CSS3 animations
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: CSS3 revolutionized animation in web development. Earlier, creating animations
+    required animated images, plugins such as Flash, or some heavy scripting. Although
+    jQuery and other supporting libraries made it a bit easier for developers to create
+    animations with JavaScript, still it cannot compete with the performance capability
+    that the CSS animations offer. Basically, an animation defines an effect that
+    allows an element to change one or many styles, such as color, size, position,
+    opacity, and others, within a time frame. Also, with CSS3 animations, you can
+    allow multiple intermediate changes in styles during the animation itself, other
+    than the ones specified at the beginning and end of the animation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In order to create an animation, you will need the `@keyframe` CSS rule, which
+    is used to specify the styles that will be changed during the animation. The following
+    is the code snippet that creates a `@keyframe` rule named `demo` and changes the
+    background color from red to yellow, and halfway through, at 50percent, it changes
+    the opacity to zero:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE32]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Afterwards, we bind the animation that is defined in the `@keyframe` rule to
+    the element (or the selector) we want the effect applied to. Left alone without
+    being attached to any element, the animation will not be applied anywhere. We
+    will need to specify at least two animation properties when binding the animation
+    to a selector:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Name
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Duration
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'For example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE33]'
+  prefs: []
+  type: TYPE_PRE
+- en: The preceding example binds the animation named `demo` that we created using
+    the `@keyframe` rule, with a duration of 4 seconds, to the element with ID `#logo`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Animations are triggered automatically as soon as they are defined in the DOM.
+    You can specify a certain delay time to avoid that, or you can trigger the animation
+    by code. The animation has six major properties as shown below:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE34]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Or we can use the animation shorthand property by which we can combine all
+    of these properties into a single line:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE35]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Developers are still a bit hesitant to use CSS3 animations, or any other HTML5
+    feature for that matter, due to browser support. In order to address this problem
+    of browser compatibility, some style rules had to be defined with vendor-prefixes.
+    For example, an animation definition would be duplicated to support other browsers,
+    each with its own vendor prefixes as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE36]'
+  prefs: []
+  type: TYPE_PRE
+- en: But when developing for Windows 8, you can reduce it to one, which is the standard.
+    Worrying about multi-browser support is the least of your concerns as Windows
+    8 supports all the standards that work for Internet Explorer 10.
+  prefs: []
+  type: TYPE_NORMAL
+- en: CSS3 transforms
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Another advantage of CSS3 is the concept of 2D and 3D transforms, which enables
+    you to manipulate the elements in your app in a way that was not possible using
+    CSS. It enables you to create rotation, scaling, skewing, and translation of HTML
+    elements in 2D and, newly, in 3D space without the need for a plugin or scripts,
+    defined by the W3C under the **CSS transforms** specification.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Transforms are created using the `transform` property, which holds a list of
+    transform functions to be applied to the specified element. The property value
+    can be set to one or more (space-delimited) transform functions, which will be
+    applied in the order they are listed. Following is a sample code of the `transform`
+    property that applies the rotate function:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE37]'
+  prefs: []
+  type: TYPE_PRE
+- en: The result of the preceding `transform` property is that the element is rotated
+    90 degrees and then translated (moved) 100 px horizontally to the right.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The list of functions available for the `transform` property includes `matrix()`,
+    `matrix3d()`, `perspective()`, `rotate()`, `rotate3d()`, `rotateX()`, `rotateY()`,
+    `rotateZ()`, `scale()`, `scale3d()`, `scaleX()`, `scaleY()`, `scaleZ()`, `skew()`,
+    `skewX()`, `skewY()`, `translate()`, `translate3d()`, `translateX()`, `translateY()`,
+    and `translateZ()`. These functions are provided with the CSS3 IntelliSense features
+    in Visual Studio; thus, when writing a `transform` property, you will be prompted
+    to choose one of those functions.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Visual Studio 2012 has enhanced support for CSS with features such as Regions,
+    IntelliSense, vendor prefixes, and built-in snippets, thereby making it very easy
+    and convenient to develop apps for Windows 8 using HTML5 and CSS.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Introducing media queries
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Your Windows 8 app should have a fluid and responsive UI, as the same app will
+    be downloaded and opened either on a tablet, a PC with a large monitor, or a phone.
+    Your app should adapt to the different view states (full screen portrait or landscape,
+    filled or snapped) and display accordingly. It should look good and function well
+    when the users flip the screen between portrait and landscape, when they zoom,
+    when they snap the app, and so on. Too much stuff to look out for, you might say?
+    Worry not, because if you are developing using a JavaScript app, the answer to
+    all your concerns is **CSS Media Queries**!
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'By using CSS media queries, you can manage the changes to the layout by easily
+    defining different styles to apply to the HTML elements in your app, depending
+    on the view state and size of the current media. You can use a separate media
+    query to tailor for each view state, or you can combine media queries to apply
+    the same set of styles to multiple view states. The basic syntax of a media query
+    is as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE38]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'It is a logical expression that is either `true` or `false`, and consists of
+    the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**@media**: It is a keyword that indicates a media query'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**MediaType**: It is used to specify the type of media we are targeting; it
+    can have one of the following values: `screen` for computer screens, `print` for
+    documents viewed in print mode, and `all` for all devices'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**TargetMediaProperty**: It is used to create more specific queries by adding
+    conditions such as orientation and size'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**MediaRule**: It is used to specify one or more style rules that will be applied
+    in case the media query is evaluated to `true`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'A simple example would look like the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE39]'
+  prefs: []
+  type: TYPE_PRE
+- en: The preceding media query will check whether the medium is a screen and the
+    width of window does not exceed 400 pixels. If `true`, it will apply the orange
+    background color to the body element.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The following code snippet checks for the orientation:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE40]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We can also include the Microsoft-specific vendor property `-ms-view-state`
+    to check for different view states that the app can handle. For example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE41]'
+  prefs: []
+  type: TYPE_PRE
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this chapter, we tried to cover and learn as much as possible from the new
+    and rich CSS3 features and describe which ones are available for us when developing
+    apps for Windows 8\. We looked in detail at the CSS selectors and learned to use
+    them to filter the DOM elements according to our need. We learned about new layout
+    techniques using the Grid and Flexbox display properties.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We saw what magic we can do with the animation and transform properties, and
+    got to have a look at the power of media queries to help us build a responsive
+    layout. In short, CSS3 is a wonderland and you will need to get familiar with
+    its features in order to harness all its powers.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the next chapter, we will go over the main features provided by the Windows
+    Library for JavaScript, which is the backbone of the Windows Store app that is
+    built using JavaScript.
+  prefs: []
+  type: TYPE_NORMAL

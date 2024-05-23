@@ -1,0 +1,534 @@
+- en: Chapter 11. Developing Apps with XAML
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Developing Windows Store apps is not exclusive to HTML5 and JavaScript. Microsoft
+    offers other choices with **Extensible Application Markup Language** (**XAML**)
+    and .NET, thus targeting a broader range of developers and expertise to develop
+    for the Store. Whatever your background is, whether web or Windows development,
+    there is a place for you—a starting point—because the road map to the Windows
+    Store will be the same regardless of your choice of programming language. In the
+    previous chapters, we have been learning how to develop apps and features with
+    HTML5 and JavaScript. But in this chapter, we will learn about other platforms
+    and programming languages available for developers. We will also cover the basics
+    of creating an app with XAML/C#.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Creating apps with different platforms
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: One of the paramount advances with Windows 8 is that you can develop apps with
+    more than one framework and programming language, targeting both web and Windows
+    developers. Moreover, developers can build on and leverage their existing programming
+    skills and knowledge to create Windows Store apps, and will not necessarily have
+    to acquire a completely new set of skills.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Web developers will be able to utilize their HTML5, CSS3, and JavaScript skills
+    and can even port existing websites easily into a Store app, while Windows developers,
+    familiar with Microsoft .NET Framework and Silverlight, can put into action their
+    XAML, C#, and Visual Basic skills. Additionally, Windows 8 targets developers
+    who are familiar with the C++ syntax and native libraries by providing the opportunity
+    to create Windows Store apps in Visual C++/XAML. Moreover, C++, you can create
+    Direct2D and Direct3D apps. In summary, we have the XAML markup with C#, VB.NET,
+    and C++, and to top it, Visual Studio 2012 provides project templates and Intellisense
+    support for all these programming languages.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The same app can be built with either XAML or HTML5, and when deployed and run,
+    both versions will run in an identical manner. Everything that we have learned
+    to do in the previous chapters with JavaScript and HTML5 for Windows Store apps,
+    from functionalities to features, can be done with C#, VB.Net, and XAML. The choice
+    of the programming language to be used is based on personal preference, background
+    experience, and language familiarity more than anything else. Both choices will
+    require some level of learning. Web developers who are familiar with the HTML
+    markup, styling with CSS, and functionality with JavaScript, will need to learn
+    about WinJS-specific JavaScript functions and HTML data attributes and classes.
+    Also, developers who have experience with XAML will notice a great deal of familiarity
+    with WPF and Silverlight, but will have to learn about developing for the Windows
+    Store design and functionality. However, as I mentioned, the learning curve is
+    minimal when you are commencing Windows Store development with a familiar territory.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Introducing XAML apps
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The roadmap for Windows Store apps using XAML is the same as that for Store
+    apps using JavaScript, beginning with tools and acquiring a developer license
+    through the design guidelines to planning the app and finishing with packaging
+    and publishing the app to the Store.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s create a basic Windows Store app using XAML and compare it with an app
+    made using HTML5\. In Visual Studio, from the top menu, navigate to **File** |
+    **New Project**. In the **New Project** dialog window, choose your preferred programming
+    language from the left pane under **Installed** | **Templates** and then select
+    **Windows Store**. Next, we select one of the listed project templates for a Windows
+    Store app and enter a name for it in the **Name:** textbox. I will choose **Visual
+    C#** for this demonstration; feel free to go with **Visual Basic** or **Visual
+    C++**. Finally, click on **OK** to create the project: The following screenshot
+    shows the entire process as discussed:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Introducing XAML apps](img/7102EN_11_01.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'The preceding screenshot shows the following Windows Store app templates provided
+    with XAML: **Blank App (XAML)**, **Grid App (XAML)**, and **Split App (XAML)**.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Blank App (XAML)**: This template provides an empty Windows Store app that
+    will compile and run, but contains no user interface controls or data. When it
+    runs an app based on this template, it will only show a black screen that contains
+    a placeholder text.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Grid App (XAML)**: This template provides an app that enables users to browse
+    through categories and dive into the details of the content that falls under each
+    category. A few good examples for this template include shopping apps, news apps,
+    and photo or video apps. The **Grid App (XAML)** template starts with a landing
+    home page that will display a list of groups or categories. A single group is
+    a named set of items; for example, a group of news articles named Sports News.
+    When the user selects one group, the app opens the group details page, which in
+    turn displays a list of items that the group contains on the right-hand side.
+    Consequently, when the user selects a single item on either the home page or the
+    group details page, the app will open a page that shows the item details.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'The following screenshot shows a sample home page of **Grid App (XAML)**:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '![Introducing XAML apps](img/7102EN_11_08.jpg)'
+  prefs:
+  - PREF_IND
+  type: TYPE_IMG
+- en: '**Split App (XAML)**: This template provides an app that enables users to browse
+    through categories to find specific content similar to a **Grid App (XAML)** template;
+    however, with the **Split App (XAML)** template, users can view a list of items
+    and item details in the same page in a two-column split view. This split view
+    enables all users to switch among the items rapidly. Examples for the usage of
+    this template include news readers or an e-mail app. This template starts with
+    a landing home page that shows a list of groups. When the user selects a group,
+    the app will open a split-view page. The following screenshot shows a sample split-view
+    page:![Introducing XAML apps](img/7102EN_11_09.jpg)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: These three project templates are similar to the ones provided in a Windows
+    Store JavaScript project, but the latter provides two additional templates, the
+    **Fixed Layout App** and the **Navigation App**.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We'll start with the **Blank App (XAML)** template, which contains the minimal
+    project files required to run the app. The **Blank App (XAML)** template creates
+    an empty Windows Store app that contains no user interface, but will compile and
+    run. Once the blank app has been created, navigate to **Solution Explorer** on
+    the right-hand side of Visual Studio and expand the list of project files to see
+    the default files that are created with this template.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The following screenshot shows the contents of **Solution Explorer** to the
+    right and the `MainPage.xaml` file, when opened in the XAML text editor, to the
+    left:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Introducing XAML apps](img/7102EN_11_02.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'The project we just created contains the following folders and files, which
+    are indispensable to all Windows Store apps using C# or Visual Basic:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`Properties`: This folder contains the app assembly information.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`References`: This folder contains the project references files and by default,
+    has the following two SDK references: **.NET for Windows Store apps** and **Windows**.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`Assets`: This folder contains the following images:'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Large and small logo images of sizes 150 x 150 px and 30 x 30 px, respectively.
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The **SplashScreen** image.
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The **StoreLogo** image of size 50 x 50 px.
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`Common`: This folder contains the common shared resources in the app such
+    as the `StandardStyles.xaml` file, which provides a set of default styles that
+    gives the app its Windows 8 look and feel. In addition, this folder will contain
+    the files for the utility and helper classes.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'This template also includes the following `.xaml` page files:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`App.xaml`: This is the main app file that is required to display the user
+    interface and is first loaded when the app runs. This page declares resources
+    that are shared across the app, such as styles, and provides the markup for the
+    content host. This page is similar to what the `default.html` page represents
+    in apps using JavaScript.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`App.xaml.cs`: This is the code-behind file for `App.xaml` and contains the
+    code that handles the global app-specific behavior and events, such as app launching
+    and suspending. This file is similar to what the `default.js` file represents
+    in apps using JavaScript.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`MainPage.xaml`: This is the default startup page of the app and contains the
+    minimal XAML markup and code to instantiate a page.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`MainPage.xaml.cs`: This is the code-behind file corresponding to the `MainPage.xaml`
+    file.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Finally, there is the manifest file, `Package.appxmanifest`, which contains
+    the app description and settings identical to the one in JavaScript templates.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Microsoft recommends to not remove the files in the `Common` folder. Also, it
+    can neither be renamed nor modified because this results in a build error. If
+    there is a necessity to modify these files, you can create a copy of the original
+    file and then modify the copy instead.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Those who haven't heard of XAML before might be lost by now and wondering about
+    the syntax you just saw in the app and the `MainPage.xaml` files. XAML has a basic
+    syntax that is built on XML. When stripped down, an XAML document is an XML document
+    that shows a hierarchical relationship between objects, and to be considered valid,
+    it must also be a valid XML document. XAML files have a `.xaml` filename extension,
+    and each XAML file is associated with a code-behind file that contains the code
+    that will handle events, and manipulate objects and UI elements that were created
+    or declared in XAML. The code-behind file joined with the XAML page's partial
+    class makes a complete class. This is similar to the concept of ASP.NET web pages
+    with `.aspx` files containing the markup and code-behind in the `.cs` or `.vb`
+    files. Also, XAML files can be opened and edited in Microsoft Expression Blend.
+    If you are new to XAML, don't worry much about the syntax because Visual Studio
+    helps you write a valid markup by providing autocompletion hints and suggestion
+    lists, and you will learn the syntax along the way.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Using XAML markup, we can create UI elements just like we do using HTML but
+    with a different syntax. Let''s add the following UI elements inside the `Grid`
+    element in the `MainPage.xaml` file with the following syntax:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The preceding code listing shows the following properties: `x:Name`, which
+    specifies the name assigned to the `TextBlock` element; `Text`, which specifies
+    the data as text that will be filled in this element; and `Content`, which is
+    similar to `Text` but specifies the data as text that will show next to a `CheckBox`
+    element.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The first line in the code listing declares a basic `TextBlock` element, which
+    is similar to a `label` element in HTML. We give this element a name and enter
+    a value for its `Text` property. The second element is `Textbox` with a `Text`
+    value, and the third one is a `Checkbox` element with the `Content` value. You
+    can either write the syntax manually or choose a control from those listed in
+    the **Toolbox** pane and drag it directly to the XAML text editor or the design
+    surface, which are both visible in a split view.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In the designer window, you can manipulate these UI controls and arrange their
+    positioning on the window as shown in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Introducing XAML apps](img/7102EN_11_03.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: You will notice that manipulating the controls in the **Design** pane reflects
+    on the syntax in the **XAML** pane below it, as new properties are being set for
+    the elements and existing ones are being changed. If you run the app now, you
+    will see a black screen containing the three elements we just added to the `MainPage.xaml`
+    file.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The `MainPage.xaml` file contains the minimum markup and code needed to run
+    the page, but lacks all the additional code and classes that implement important
+    features in a Windows Store app, such as adapting to changes in view and handling
+    different states of the app. Fortunately, the other page templates provided by
+    Visual Studio, such as the Basic Page template, include the code and helper classes
+    that help you implement these features. For this purpose, we typically replace
+    that empty `MainPage` template with one of the other page templates while working
+    with a Blank App (XAML) project. In order to replace the `MainPage.xaml` file,
+    right-click on it in **Solution Explorer** and click on **Delete**. Then, right-click
+    on the project root node and click on **Add New Item**, which will open up a dialog
+    window. From there, select the **Windows Store** template type under **Visual
+    C#** (or Visual Basic if you chose a different template at the start of the example).
+    Next, select **Basic Page** and give it the name `MainPage.xaml`, otherwise the
+    project will not build correctly. The following screenshot illustrates the procedure:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Introducing XAML apps](img/7102EN_11_04.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Then, click on **Add**. If this is the first time you have added a new page
+    different from the **Blank Page** template to the **Blank App (XAML)** template,
+    a message dialog will be displayed with the warning, **This addition depends on
+    files that are missing from your project**. Click on **Yes** to add the missing
+    files automatically. The XAML and code-behind files for this page are added to
+    the project, and if you expand the `Common` folder, you will notice that the folder
+    that first contained a single file, `StandardStyles.xaml`, is now populated with
+    code files that contain several helper and utility classes. The newly added page
+    will not show up in the designer until you build the project/solution, so it compiles
+    the helper classes the page depends on. Let's see how the app looks like after
+    this change; press *F5* to build and run the app in debugging mode.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Once it''s run, the app will appear as a black screen containing the title
+    **My Application**, as shown in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Introducing XAML apps](img/7102EN_11_05.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: The important thing to note here is that this page is consistent with the design
+    guidelines for Windows 8 by default, without us having to add any styling or markup.
+    As you can see, the title appears to be of the same font size and is positioned
+    with the exact margins specified in the *Windows 8 UX Guidelines for Windows Store
+    apps* page ([http://www.microsoft.com/en-in/download/details.aspx?id=30704](http://www.microsoft.com/en-in/download/details.aspx?id=30704)).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Adding a title, theme color, and content
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Let's modify this minimal app by adding a title and changing its theme color.
+    Then, we'll add a simple text and write some code to handle a basic button-click
+    event.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To change the title of this app, perform the following steps:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Open the `MainPage.xaml` file.
+  prefs:
+  - PREF_IND
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: In the **XAML** designer pane, select the title **My Application** and either
+    right-click on it and select **Edit Text** or change the value of the `Text` property
+    found in the **Properties** window under `Common`. If it is not shown by default,
+    the **Property** window should be located on the left-hand side of Visual Studio
+    below the **Solution Explorer** panel.
+  prefs:
+  - PREF_IND
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'To change the theme color of this app, perform the following steps. Similar
+    to what we had done in the app using JavaScript, we can switch between dark and
+    light themes here as well. In the app using JavaScript, there were two CSS files,
+    `ui-dark.css` and `ui-light.css`, referenced in the `default.html` page. In apps
+    using XAML, switching between the two themes is done in the `App.xaml` file as
+    follows:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Open the `App.xaml` file.
+  prefs:
+  - PREF_IND
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Go to the `<Application>` tag and add the `RequestedTheme` property before the
+    closing of the tag.
+  prefs:
+  - PREF_IND
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Click within the quotes of the tag, and Visual Studio''s Intellisense will
+    prompt you with two property values: **Light** and **Dark**. Choose **Light**
+    and the `<Application>` tag will look as follows:'
+  prefs:
+  - PREF_IND
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_PRE
+- en: Run the app to see the difference.
+  prefs:
+  - PREF_IND
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Now to add some UI content, open the `MainPage.xaml` file and locate the root
+    `Grid` element and the `<VisualStateManager.VisualStateGroups>` tag inside it.
+    Add the following XAML code snippet just before this tag:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'The preceding XAML code declares a `StackPanel` control that holds UI controls
+    inside it (think of it as a `div` element). Inside this, we add a `TextBlock`
+    element and assign its `Text` property a value, and then we nest a `StackPanel`
+    control inside the parent `StackPanel` (`div` inside a `div` element). This `StackPanel`
+    element will hold two controls: a `TextBox` element to enter the input values
+    that we assign for its `width` and `HorizontalAlignment` properties, and a `Button`
+    control to which we assign a value for its `Content` property. Finally, add another
+    empty `TextBlock` element outside the inner `StackPanel` element.'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Run the app and it will look like the following screenshot:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '![Adding a title, theme color, and content](img/7102EN_11_06.jpg)'
+  prefs:
+  - PREF_IND
+  type: TYPE_IMG
+- en: 'Lastly, let''s add some functionality with an event handler for the button
+    we declared in the markup, as enlisted in the following steps:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Click on the **Post My Answer** button in either the XAML designer or the text
+    editor, and it will show in the **Properties** window.
+  prefs:
+  - PREF_IND
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: In the **Properties** window, locate and click on the **Events** button on the
+    top-left area.
+  prefs:
+  - PREF_IND
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Locate the **Click** event at the top of the list and double-click or press
+    *Enter* in the textbox provided.
+  prefs:
+  - PREF_IND
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: This will create the event handler method. Display it in the code editor of
+    the file `MainPage.xaml.cs`.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'The following screenshot shows the process:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '![Adding a title, theme color, and content](img/7102EN_11_07.jpg)'
+  prefs:
+  - PREF_IND
+  type: TYPE_IMG
+- en: 'The autogenerated event handler comes up with the name `Button_Click` (if the
+    button had a value for its `name` property, the event handler would have looked
+    something like `ButtonName_Click`). The method will look as follows:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Let''s add simple code that gets the text entered in the input textbox and
+    displays it in the empty `TextBlock` named `myAnswer`. The code will look as follows:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'If we go back to the XAML editor, we''ll see that the `Click` event handler
+    was added to the `Button` element like this:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Run the app now, enter some text in the textbox, and test the button. Once clicked,
+    it will output whatever is inside the textbox to the screen.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: There is much more to XAML than this simple demo, and the previous example merely
+    shows us how we can start with a very basic app and build up content and functionality.
+    XAML is not that hard once we become familiar with it; as with any other programming
+    language, we will need practice. However, the choice between XAML and HTML5 is
+    completely yours.
+  prefs: []
+  type: TYPE_NORMAL
+- en: One of the advantages of developing Windows Store apps with XAML is the ability
+    to migrate **Windows Phone 7** apps to Windows 8 using the guide provided by Microsoft
+    to help you make the conversion. Likewise, Microsoft provides a guide to help
+    you port an existing Silverlight or WPF/XAML code to a Windows Store app using
+    XAML. Both these guides are available on the *Windows Phone Dev Center* page ([http://developer.windowsphone.com/en-us](http://developer.windowsphone.com/en-us)).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this chapter, we have learned about different choices offered by Windows
+    8 for developers. Additionally, we were introduced to the XAML language and syntax
+    in Windows Store apps.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We also covered how to start developing Windows Store apps using XAML and how
+    it differs from developing using JavaScript, which gave us a heads-up on what
+    to expect when we want to develop with either languages.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Finally, we created a minimal app and added to it some basic UI content and
+    functionality using the XAML markup.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this book, we introduced new features in HTML5 and CSS3 and then learned
+    how these features are being implemented in a Windows Store app. We also covered
+    the JavaScript controls' functionalities, which are specific to the Windows Store
+    app. After this, we learned how to create a basic JavaScript app and how to quick-start
+    developing Windows Store apps with JavaScript. Further, we got to learn about
+    some of the important features of the apps and how to implement these features.
+    We started by retrieving data and displaying it using WinJS controls. Then, we
+    got introduced to the view states of the app and how to make the app respond to
+    changes in these view states. Afterward, we covered the tiles in Windows 8 and
+    learned how to add live tiles and send notifications to the app. Also, we learned
+    how to integrate the app with Windows Live services to enable authentication and
+    sign-in for users using their e-mail accounts. We also learned about the app bar
+    in a Windows Store app and how to add buttons to it. Finally, we got introduced
+    to the Windows Store and learned all about packaging and publishing the app to
+    the store.
+  prefs: []
+  type: TYPE_NORMAL

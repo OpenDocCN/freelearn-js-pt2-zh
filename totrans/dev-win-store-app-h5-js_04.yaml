@@ -1,0 +1,739 @@
+- en: Chapter 4. Developing Apps with JavaScript
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this chapter we will learn how to get started with developing a Windows 8
+    app using JavaScript. First, we will learn about the tools and then we will cover
+    how to acquire a developer license. Afterwards, we will start with one of the
+    templates provided for Windows Store apps development, build a sample app from
+    a blank template, and modify it so that we get to see to know some of the features
+    of a JavaScript app.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Introducing the tools
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Windows Store apps are a new type of application introduced by Windows 8 and
+    run only on that platform. So, in order to start developing, you will first need
+    to have Windows 8 installed on your machine and second, the required development
+    tools.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There are two options for acquiring Windows 8; one option is to get it from
+    the Subscriber Downloads on MSDN, if you have a subscription there. Alternatively,
+    if you don't have an MSDN account, you can get the 90-day evaluation version of
+    Windows 8 Enterprise from the *Evaluation Center*, found on the MSDN website via
+    [http://msdn.microsoft.com/en-US/evalcenter/jj554510.aspx?wt.mc_id=MEC_132_1_4](http://msdn.microsoft.com/en-US/evalcenter/jj554510.aspx?wt.mc_id=MEC_132_1_4).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Note that the Evaluation Edition cannot be upgraded after expiry.
+  prefs: []
+  type: TYPE_NORMAL
+- en: After installing Windows 8, you will need to download the developer tools, which
+    are available for free on the *Windows Dev Center* page on the MSDN site. The
+    Windows Dev Center, with its new and improved layout, is your starting point for
+    all the tools and resources you might need and can be found under the section
+    **Downloads for developing Windows Store apps** at [http://msdn.microsoft.com/en-US/windows/apps/br229516.aspx](http://msdn.microsoft.com/en-US/windows/apps/br229516.aspx).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The essential download is the bundle containing Visual Studio Express, which
+    will be your tool to develop Windows apps. The link to this download is available
+    under the **Visual Studio Express 2012 for Windows 8** section and contains the
+    following files:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Microsoft Visual Studio Express 2012 for Windows 8
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Blend for Microsoft Visual Studio 2012
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Windows 8 software development kit (SDK)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Windows Store apps project templates (available within Visual Studio 2012)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Additionally, you can find other available downloads on that page, such as:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Design assets: This includes the necessary Photoshop templates (`.psd` files),
+    which include templates, common controls, and common components such as contracts,
+    notifications, and tiles needed for designing an app.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Sample App Pack: This includes hundreds of code samples from Microsoft to help
+    jump-start your project quickly and learn about most of the features. This is
+    available in all or specific programming languages.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Hands-on labs for Windows 8: This includes a series of eight hands-on lab modules,
+    which in turn guide you through the development of a Windows Store app titled
+    Contoso Cookbook. This incorporates many of the key new features available in
+    Windows 8\. These lab series are available in JavaScript and HTML, or C# and **Extensible
+    Application Markup Language** (**XAML**).'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Live SDK: This includes a set of controls and APIs that we can use to enable
+    the app to integrate **Single Sign-on** (**SSO**) with a Microsoft account and
+    access information from SkyDrive, Hotmail, and Windows Live Messenger.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_IND
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Since Windows Store app development in Visual Studio 2012 is only supported
+    on Windows 8, you cannot develop apps on Windows 7 even if you have Visual Studio
+    2012 installed. Moreover, you can't develop Windows Store apps on Windows Server
+    2012 since the developer licenses aren't available for it.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Note that you can use any of the other Visual Studio 2012 editions to develop
+    Windows Store apps, including the Ultimate, Premium, Professional, and Test Professional
+    editions.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Getting a free developer license
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In order to start developing Windows Store apps, you will need to have a developer
+    license for Windows 8\. This license lets you install, develop, test, and evaluate
+    apps locally before they are tested and certified by the Windows Store. Moreover,
+    the developer licenses are free and you do not need a Store account to get one;
+    it only requires a Microsoft account and you can acquire more than one license
+    per account. It expires in 30 days and must be renewed. If you already have a
+    Windows Store account, the license will serve you for 90 days. After you acquire
+    a license on a local machine, you won't be prompted again on that machine unless
+    it expires, or you remove it (maybe by formatting or uninstalling Visual Studio).
+    It is quite easy to get one; you can get a developer license using Visual Studio
+    2012\. When you run it for the first time on Windows 8, it will prompt you to
+    obtain a developer license; all you need to do is to sign in with your Microsoft
+    account. You can always attempt to acquire or renew a developer license for Windows
+    8 from inside Visual Studio using the store options, which we will discuss in
+    more details in [Chapter 10](ch10.html "Chapter 10. Packaging and Publishing"),
+    *Packaging and Publishing*, when we learn about publishing the app.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Bear in mind that the first time you try to run an app, you will be prompted
+    to acquire a developer license if you haven't already done so.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The following screenshot shows the process using Visual Studio 2012 Ultimate.
+    Go to **Project** | **Store** | **Acquire Developer License**.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Getting a free developer license](img/7102EN_04_01.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: If you're using the Express edition, you will have a **Store** option directly
+    in the top menu, not underneath **Project**. You simply have to go to **Store**
+    | **Acquire Developer License**.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Choosing not to acquire or renew a developer license will result in an error
+    (code DEP0100) when you try to build or deploy the app in Visual Studio.
+  prefs: []
+  type: TYPE_NORMAL
+- en: After you install Windows 8 and the required tools and obtain a developer license,
+    you're ready to start building your first app. You start by choosing a programming
+    language to use. As we previously mentioned, Windows 8 allows you to build on
+    your programming language knowledge base and develop with the languages you already
+    know (unless you want to learn something new). If you are into web development,
+    you can choose JavaScript as your programming language and use the latest technologies
+    in web development (HTML5 and CSS3, to name a few), and that's what this book
+    is all about. If you're coming from a .NET background, you can choose Visual C#
+    or Visual Basic and XAML. And you have the C++ option with either C++ and XAML
+    or C++ and DirectX.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using Visual Studio and its templates
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'So we now have the tools. With Visual Studio as our playground and JavaScript
+    as our programming language, we are set and ready to develop. We will start by
+    creating a new project for Windows Store. Go to **File** | **New Project**. Drill
+    down under **Installed**, go to **Templates** and then to **JavaScript** | **Windows
+    Store**, and select a template type as the following screenshot shows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Using Visual Studio and its templates](img/7102EN_04_02.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'As you see in the previous screenshot, on the center pane of the **New Project**
+    dialog there are five templates to choose from. These templates come with Visual
+    Studio 2012 and provide a good starting point and help you jump-start and speed
+    up the development of your apps. These project templates, as per their order of
+    appearance on the **New Project** dialog, are as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Blank App**: This is a basic project template that creates an empty Windows
+    Store app that compiles and runs. However, it contains no user interface controls
+    or data.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Grid App**: This is a project that provides a grid view format of the content.
+    It is a good starting point for an app that allows users to browse through categories
+    of data to find content. A few examples of its use include RSS readers, shopping
+    apps, news apps, and media gallery apps.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Split App**: This is a project that provides a split view of the content,
+    whereby the data is displayed in a two-column master/detail view with the list
+    of data on one side and the details of each single data item on the other side,
+    just as in Outlook. A few examples of its uses include news reader apps, sports
+    scores apps, and e-mail apps.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Fixed Layout App**: This is a project with a basic and minimal template,
+    similar to an app created with the **Blank App** template, but the difference
+    is that the content in this layout is aimed at the fixed-layout viewport, whereby
+    the container is automatically resized when the window size changes to conform
+    to the display area; this scaling is ensured using the `ViewBox` control.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Navigation App**: This is a project that creates an app with the single-page
+    navigation model recommended for Windows Store apps. You cannot implement a navigation
+    model by just adding `anchor` links to the markup; instead, the navigation model
+    is implemented using the `navigator.js` file, which can also be found in the Grid
+    and Split templates, while the **Blank App** and **Fixed Layout App** templates
+    do not include this file and thus you will have to add the file manually.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_IND
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The **Grid App** and **Split App** templates are not only a good starting point
+    to build an app, but are also great templates for learning and will give you a
+    good idea about how the app is built and what it is composed of.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'The three templates **Blank App**, **Grid App**, and **Split App** are shared
+    between all the available programming languages for Windows Store development.
+    Each project template includes the necessary files needed to implement the feature
+    it represents without any development from your side; for example, creating a
+    new Grid App and running it will result in the following app:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Using Visual Studio and its templates](img/7102EN_04_03.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: The result is a Windows Store-ready app that contains dummy data with navigation
+    enabled and even supports **snapped and fill layouts**, which are the layouts
+    that apps exist in when the resolution is split between two apps that are side
+    by side. All of this without even writing a single line of code! So, imagine if
+    you customize this minimal app a little by applying different styles to the layout
+    and display real data in the content (say, RSS feeds from a news website), you
+    will have a news app that is more than 75 percent ready for the Store (missing
+    a couple of features such as semantic zoom, app bar, and settings) in no time.
+  prefs: []
+  type: TYPE_NORMAL
+- en: You can also download samples directly from Visual Studio. These samples will
+    provide completed and working code samples that will compile and run as a Windows
+    Store app, with the purpose of demonstrating the various new programming models,
+    platforms, features, and components available in Windows 8.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Project item templates
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'In addition to the project templates, you have language-specific item templates
+    exclusive to Windows Store apps, in our case, called **JavaScript item templates**.
+    These item templates are app files that can be added to an already existing project
+    and contain commonly used code and functionality (consider it a user control),
+    and also help to reduce development time. Item templates can be added by right-clicking
+    on **Project** from the top menu and then going to **Add** | **New Item**. There
+    are four JavaScript item templates available; they are as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Page Control**: This contains the basic content and markup for a page in
+    the app, which includes a header section with a Back button and a main content
+    section. Each **Page Control** template will include three files to be added to
+    the project (an HTML file containing the markup needed, a JavaScript file containing
+    the code related for the page, and a CSS file that provides the style specific
+    to the page).'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**File Open Picker Contract**: This will add the functionality that enables
+    an app to provide its data as a file list to other requesting apps using a **File
+    Picker** dialog. It will also display the files in a ListView control. A typical
+    use for this would be when creating a photo-picker dialog.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Search Contract**: This will add the search contract that allows the app
+    to respond to search queries coming from Search Charm in Windows 8\. It contains
+    a search results page to present the results to the user. It is important to add
+    this contract if your app has some data that can be searched for.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Share Target Contract**: This will add the share contract to the app, which
+    enables an app to expose data for sharing with other apps and make it integrate
+    with Share Charm in Windows 8\. So, if the app has this contract, it will appear
+    in the list of apps in the Share UI. A typical use for this template would be
+    to allow users to post links or photos to Facebook, Twitter, or any other app
+    that receives shared content. Vice versa, it will also enable the app to receive
+    shared content; thus, the app can behave like Facebook or Twitter.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'The following screenshot shows the **Add New Item** dialog with the previously
+    listed project item templates:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Project item templates](img/7102EN_04_04.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: I recommend you add each item template to a separate folder with a correlated
+    name. Since each item template adds three related files, the solution will be
+    neater and more organized if you group them into separate folders. For example,
+    a folder for pages and under it a folder for each page; the same goes for the
+    contracts.
+  prefs: []
+  type: TYPE_NORMAL
+- en: After you chose an app template and it was loaded onto Visual Studio, you would
+    have basically created a very simple app; this app can directly compile and run.
+    Using Visual Studio, you can run the app either on your local machine or on the
+    Simulator. To run it on your local machine, simply press *F5* to build, deploy,
+    and start the app.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Note that you can instead just deploy the solution but the app will not run
+    directly; you will need to find it among the other apps in the Start menu and
+    launch it manually instead.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'There is a third option to run a remote device connected directly through an
+    Ethernet cable. To use the simulator, you only need to select from the options
+    in the run menu as shown in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Project item templates](img/7102EN_04_05.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: The Windows 8 Simulator is a great tool to help you test and debug the app;
+    it allows you to test the features as if you were working with the real device,
+    especially if you do not have a tablet or a touch-enabled device during development.
+    It will enable the app to change resolutions and screen orientations between landscape
+    and portrait and toggle between the different app layouts and view states (snapped
+    and full). In addition, you can test how the app responds to touch and gestures
+    such as swipe and pinch to zoom. We wouldn't be able to try all these features
+    and functionalities on a laptop or PC during development.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: When you run the app in Visual Studio in the debug mode, you can make changes
+    to the code and markup and refresh the app to see the changes without having to
+    rebuild/rerun it. You can do this using the **Refresh Windows App** button, which
+    will appear next to the pause, stop, and restart debugging buttons, only after
+    you run the app from within Visual Studio.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting started with Blank App
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Let''s start creating a minimal app using the **Blank App** template; the first
+    thing we need to do is launch Visual Studio 2012, create a new project, and go
+    to **JavaScript** | **Windows Store** | **Blank App**. Although the Blank App
+    seems empty when you run it, it contains several files that are essential to any
+    Windows Store app you create using JavaScript; all the other templates will have
+    these files. The following screenshot shows the structure of this app listed in
+    the **Solution Explorer** window:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Getting started with Blank App](img/7102EN_04_06.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'This previous screenshot shows the skeleton of a simple app, with the following
+    files:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`Windows Library for JavaScript 1.0`: The Windows Library for JavaScript is
+    a library of CSS and JavaScript files. As you drill down into this folder you
+    will see that it contains two subfolders, as follows:'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`css`: This folder includes the two main CSS stylesheets that contains the
+    set of styles that gives the app the Windows 8 look and feel. The two stylesheets
+    are `ui-dark.css` and `ui-light.css`. As their names imply, the first will apply
+    a dark color theme to the app and the latter a light color. You can choose either
+    one by referencing it in the HTML pages.'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`js`: This folder includes `base.js` and `ui.js`; these two files contain the
+    JavaScript APIs that provide the controls, objects, and helper functions, all
+    organized into namespaces that will make the development experience using JavaScript
+    much easier.'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`default.css`: This is the stylesheet that contains the CSS styles for the
+    app.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`images`: This folder contains the images needed to present the app and its
+    identity (two logos, the splash screen image, and the store logo).'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`default.js`: This JavaScript file implements the main functionality of the
+    app and contains the code that handles your app''s life cycle. In this file, you
+    can write any additional code that is related to the `default.html` page.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`default.html`: This is the start and home page that is first loaded when the
+    app runs. It provides the markup for the content host (where each page is loaded
+    into the main window).'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`package.appxmanifest`: This is the manifest file. It basically describes the
+    app package for Windows by specifying the properties that describe an app, such
+    as name, description, start page, and so on.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`TestApp_TemporaryKey.pfx` (`AppName_TemporaryKey.pfx`): This file signs the
+    `.appxmanifest` file.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Let''s have a look at the `default.html` page, which is the start page of the
+    app (and in this case, the only page):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'As you can tell from `Doctype html`, the page is HTML5\. We have the title
+    of the app in the `<head>` and then the reference for the Windows Library for
+    JavaScript (`WinJS`) files. The references are marked with the comment `WinJS`
+    `references`. The `.css` file is referenced first so that the loading of the scripts
+    doesn''t delay or hinder the loading of the styles and, in case the `.js` files
+    apply some modifications to the stylesheet, the styles need to be loaded beforehand.
+    The dark color theme is applied; you can simply change it to the light one by
+    changing the reference as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Try not to modify the CSS and JavaScript files of `WinJS`. It is better to create
+    styles or JavaScript functions that override existing styles and functionalities
+    in different files and apply them to the app.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Under the `WinJS` references, there are references to the stylesheets and JavaScript
+    files that are app-specific and clearly differentiated by the comment.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Then comes the body. Here, in the example of a blank app, the body contains
+    nothing but simple text.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'If you attempt to launch the app as is, you will see a black color background
+    covering the screen and will also see the text: **Content goes here**. And just
+    before this page appears, you will notice that a splash screen appears for a few
+    seconds, displaying the image specified for the splash screen in the manifest
+    file. Let''s try to put some life into this blank app by modifying our start page
+    and adding some markup to the body, just as you would add to any HTML page you''ve
+    dealt with before.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Replace the existing paragraph element with the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: Run the app; it will display the markup we just added. We can type in any text
+    in the `input` element but clicking the button will have no effect. So let's create
+    an event handler for this button to output in `div` whatever we add in the `input`
+    element. We need to create the event handler in the `default.js` file because
+    it's where we write the additional code that interacts with the `default.html`
+    page.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'First let''s have a look at this `default.js` file. You will notice some code
+    inside it wrapped by a single function, shown as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: This code represents a self-executing anonymous function that wraps all your
+    code to avoid any naming conflicts and keeps the global namespace clean of unnecessary
+    identifiers. The first line of code in the anonymous function declares the keyword
+    `use strict`, which turns on the strict mode for the JavaScript code. This strict
+    mode provides better error-checking, such as preventing you from assigning a value
+    to a read-only property. After this line, you will see the rest of the code, which
+    handles the activated and checkpoint states of the app by adding the `app.onactivated`
+    and `app.oncheckpoint` event handlers. The code we add inside the `app.onactivated`
+    event handler will be added when the app starts.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Now back to the button event handler; let''s create a function as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Add this function inside the anonymous function before the `app.start()` call
+    at the bottom line. This function retrieves the text from the `input` element
+    and adds it to the `div` element. To add this function to the events of the button
+    (in this case, the `onclick` event), we need to register an event handler with
+    the button. The recommended way to do so is by calling the `addEventListener`
+    method. We need to register this event handler when the app gets activated. So,
+    we should add it inside the `app.onactivated` event handler. And the code will
+    look as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: The `app` variable is a global variable representing an instance of the `Application`
+    class that provides application-level functionality; for example, handling different
+    application events such as the `onactivated` event that we saw in the previous
+    code listing.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Inside the `onactivated` handler, the code checks to see the type of activation
+    that has occurred; in this case, it is a launch activation, which means that this
+    app was activated by the user when it was not running. Then a call is made to
+    `WinJS.UI.processAll()`.This will scan the `default.html` file for any `WinJS`
+    controls and will initialize them. Since the button is not a `WinJS` control and
+    rather a basic HTML control, we could add it before the call to `WinJS.UI.processAll()`,
+    but it's good practice to register the event handlers after it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Run the app, enter some text in the textbox, and the content is displayed when
+    the button is clicked, as the following screenshot shows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Getting started with Blank App](img/7102EN_04_07.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Understanding the ListView control
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'In the previous chapter we introduced a new set of controls provided by the
+    Windows Library for JavaScript; one of these controls was the ListView control,
+    marked as `WinJS.UI.ListView`. What this object basically does is displays data
+    items in a customizable list or grid. To create a ListView control, we need to
+    add the `data-win-control` property to a `div` element and set its property to
+    `WinJS.UI.ListView`. In the `default.html` page, add the following code inside
+    the `body` tag:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: This will create an empty ListView. So, if we run the app, there will be nothing
+    to see. Since it is a `WinJS` control, it will not be rendered in the markup until
+    after we call the `WinJS.UI.processAll` function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let's add some data for the `sampleListView` control to display. The data that
+    might come from a database from the Web or from a JSON data source, will create
+    a data source manually, and preferably in a separate JavaScript file so it would
+    be easier to maintain. So, in Visual Studio, under the `js` folder, add a new
+    item and select a JavaScript file; name it `data.js`. Open this newly created
+    file and create an anonymous function with the strict mode on, just as we saw
+    in the `default.js` file; inside this function, let's create a sample array of
+    objects that make up the data source we need. Give each object in the array the
+    three properties `firstName`, `lastName`, and `Age`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The resulting code will look as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Next, we use the array we just created to create a List object; then we need
+    to expose this List object by declaring a namespace for it and adding the List
+    as a public member:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: In order for the ListView control to be able to access this List, we used the
+    `WinJS.Namespace.define` function to create a namespace and add the List as one
+    of its members, thus making the List publicly accessible since it is created in
+    an anonymous function, which keeps it private. The `WinJS.Namespace.define` function
+    takes two parameters, as you noticed in the previous code. The first parameter
+    is the name of the namespace to create, and the second represents the object (`publicMembers`)
+    that contains one or more key/value pairs.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'After creating the data source and making it accessible by the ListView control,
+    the next thing is to connect the data source to the ListView control. That has
+    to be done in the `default.html` file. Let''s pick up from where we left our sample
+    blank app. We need to add a reference to the data file we just created, as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We then add the `data-win-options` attribute to the `div` element and use the
+    data source we created inside `data.js` to set the `itemDataSource` property inside
+    the `data-win-options` attribute. Set the ListView control''s `itemDataSource`
+    property to `DataSample.itemList.dataSource` as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: The `DataSample.itemList.dataSource` namespace comprises `DataSample`, which
+    is the namespace we registered previously; `itemList`, which is the name of the
+    property defined on the object we registered on the namespace; and finally `dataSource`,
+    which is a property of the `WinJS.Binding.List` method (we are able to call it
+    on `itemList` because the latter was assigned to the List object we created from
+    the array).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'If we run the app now, we will see that the ListView control displays the array
+    we created with no formatting, as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We can style this ListView control by overriding the default styles set in
+    the `win-listview` class, which is defined by the Windows Library for JavaScript,
+    to style the ListView control. In order to override the default styles and apply
+    some to just this ListView control, copy the `win-listview` class and precede
+    it with the specific ID of the `div` element we created, as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We can add more styling to the ListView elements inside and we can define an
+    item template using `WinJS.Binding.Template`, which is used to define the markup
+    we want to use to display each list item and its styles. It is very easy to create
+    a `WinJS.Binding.Template` control; in the HTML page, add a `div` element and
+    set the property of the data attribute `data-win-control` to `WinJS.Binding.Template`.
+    Inside it, add another `div` element that will serve as a parent for the template''s
+    contents, because `WinJS.Binding.Template` must have a single root element. Inside
+    this parent element, we add the markup that we will create, which the ListView
+    will use to populate each data item it contains. Now the template will look like
+    this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'In order to link each element to a specific data item property, we use the
+    `data-win-bind` attribute on each element that displays data. The `data-win-bind`
+    attribute uses this syntax: `data-win-bind="propertyName: dataFieldName"`. Hence,
+    to set the name property on the `h2`, `h3`, and `h6` elements, we use the following
+    code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: It is important to note that the list item template (`WinJS.Binding.Template`)
+    should be before the ListView control in the markup, simply because the HTML markup
+    is hierarchical and each UI element will be rendered as it is being encountered.
+    So, when the ListView control is being rendered and is bound to an `itemTemplate`
+    element, that `itemTemplate` element must exist first; otherwise it will throw
+    an error.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Finally, we need to apply the binding template we just created on the ListView
+    control. Thus, use the `select` syntax to set the `itemTemplate` property of the
+    ListView to `sampleTemplate`, as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'If we run the app now, the ListView control will display the data in a more
+    presentable manner. Here is how it will look:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Understanding the ListView control](img/7102EN_04_08.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Throughout this chapter we have covered the basics for creating a Windows Store
+    app using JavaScript. We got introduced to the tools, and what we need to get
+    going with the development. Then we went over using Visual Studio 2012 and we
+    got to have a look at the templates provided for the development using JavaScript.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We saw how to build an app from scratch and on the way we got to see the anatomy
+    of a JavaScript Windows Store app; we modified this blank app to make it interact
+    in the simplest way possible, at the click of a button. Finally, we learned how
+    to use the ListView control to display data.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the next chapter we will learn how to get the data that we want to display.
+  prefs: []
+  type: TYPE_NORMAL

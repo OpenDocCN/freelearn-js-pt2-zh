@@ -1,0 +1,544 @@
+- en: Chapter 3. JavaScript for Windows Apps
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this chapter, we will get introduced to some of the features provided by
+    the **Windows Library for JavaScript** (the `WinJS` library) that has been introduced
+    by Microsoft to provide access to Windows Runtime for the Windows Store apps using
+    JavaScript. Windows Library for JavaScript is a library of CSS and JavaScript
+    files. It contains a set of powerful and feature-rich JavaScript objects, functions,
+    and methods organized into namespaces, with the aim of making it easier for developers
+    to create Windows Store apps using JavaScript.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We will also learn about asynchronous programming with `WinJS` and see how we
+    can query the document for elements and manipulate these elements using the functions
+    provided by the `WinJS.Utilities` namespace. Next we will learn about the `xhr`
+    function and its use and finally get introduced to the set of UI controls provided
+    by the Windows Library for JavaScript.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Asynchronous programming with Promise objects
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: When building a Windows 8 app, the stress is on having a responsive UI, which
+    is one of the main characteristics of a Windows 8 Store app. In [Chapter 2](ch02.html
+    "Chapter 2. Styling with CSS3"), *Styling with CSS3*, we got to see how we can
+    achieve that at the styling level. The responsive UI also includes having a responsive
+    functionality whereby the code running behind the scenes not only blocks the app's
+    UI all of a sudden but also makes it unresponsive to any user input while some
+    logic or functionality executes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: JavaScript, as a programming language, is single-threaded, which means that
+    a synchronous execution of a long-running process will block all other executions
+    until that process has completed. Thus, you should avoid synchronous execution
+    whenever you can. The solution to this predicament is asynchronous processing,
+    which is essential to create responsive, high-performance apps. One way of achieving
+    asynchronous processing is by using the **callback function mechanism**. A callback
+    function is used as a hook point for continuing the processing after a previous
+    asynchronous operation has terminated. A typical example is a call to a server-side
+    backend.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This function is then invoked as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The callback functions are the typical solution to asynchronous calls but they
+    have a drawback: they create deep chains, especially when you place multiple asynchronous
+    operations in a chain where subsequent functions rely on the result of the previous
+    computation. Windows Library for JavaScript along with Windows Runtime provides
+    a more elegant solution using a mechanism called **Promise**, which simplifies
+    asynchronous programming. Promise, as the name suggests, indicates that something
+    will happen in the future and the Promise is said to be fulfilled after that something
+    has completed.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In the following code sample, we create a function called `sumAsync` that will
+    return a `WinJS.Promise` object and will execute asynchronously when we call it
+    in the `clickMe()` function:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We can deduce from the preceding code sample that, `Promise` is basically an
+    object. This object implements a method named `then`, which in turn takes the
+    following three functions as parameters:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: A function that will be called when the `Promise` object completes and has been
+    fulfilled successfully
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: A function that will be called when an error arises while the `Promise` object
+    is being fulfilled, known as `future`
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: A function that will be called while `Promise` is being fulfilled, to indicate
+    the progress information, known as `deferred`
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'In Visual Studio, when you add a `then` method to a function, you will be prompted
+    in the IntelliSense pop-up window to enter these parameters, as shown in the following
+    screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Asynchronous programming with Promise objects](img/7102EN_03_01.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'You can use the `then` method with any function that returns `Promise`; since
+    it returns `Promise`, you can chain multiple `then` functions. For example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: In the previous example, we appended multiple `then` methods to the functions
+    and completed the processing with the `done` method.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The `done` method takes the same parameter as `then`. However, the difference
+    between the two is that `done` returns `undefined` instead of `Promise`, so you
+    cannot chain it. In addition, the `done` method throws an exception if an `error`
+    function is not provided to handle any errors that occur during processing, while
+    the `then` function does not throw an exception and instead returns the `Promise`
+    object in the `error` state.
+  prefs: []
+  type: TYPE_NORMAL
+- en: All the Windows Runtime APIs that are exposed to Windows Store apps are wrapped
+    in `Promise` objects, exposing methods and functions that return a `Promise` object,
+    allowing you to easily implement asynchronous processes in your app.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Querying the DOM with WinJS.Utilities
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The UI of the app is described in HTML and the corresponding styles. When the
+    app is launched, you should expect different user interactions with the UI. The
+    user will touch some sections of your app; he/she will scroll, zoom in and out,
+    or add or remove items. Moreover, the app might interact with the user through
+    dialogs or conversations and through posting notifications on the screen. Responding
+    to such interactions is handled by code and in our case, specifically by JavaScript
+    code. That's where `WinJS.Utilities` comes in handy, by providing helper functions
+    to do that; for example, functions to add/remove CSS classes or to insert HTML
+    elements. But before anything interacts with the user, you have to select the
+    function using JavaScript, which is called **querying the DOM**.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In [Chapter 2](ch02.html "Chapter 2. Styling with CSS3"), *Styling with CSS3*,
+    we saw how to select parts of the DOM using CSS selectors. JavaScript has built-in
+    functions to do so by using the traditional `document.getElementById` function.
+    This function has a limited functionality and does not allow selecting from the
+    DOM using the CSS selector syntax as the jQuery selectors do, however, now JavaScript
+    includes `querySelector()` and `querySelectorAll()`. These two functions are more
+    powerful and take CSS queries just as the jQuery selector syntax does. While the
+    `querySelector()` function returns a single DOM element, the `querySelectorAll()`
+    function returns a list of nodes. Both functions exist on the `document` and `element`
+    objects. So, you can query the document to find all matching results in the entire
+    document, or you can just query a single element to find all matching objects
+    under it. For example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: Alongside these two JavaScript selection methods, the `WinJS.Utilities` namespace
+    provides two functions with similar features for selecting elements, namely `id()`
+    and `query()`. Basically, these functions wrap the `querySelector` and `querySelectorAll`
+    functions but the return result value is different. The selector functions provided
+    by `WinJS.Utilities` return a `QueryCollection` object, which in turn exposes
+    various operations that perform actions over the elements of the collection, such
+    as adding and removing a class and others.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The following code shows the syntax for using `id()` and `query()`. We first
+    create a `WinJS.Utilities` object and call these two methods on it as shown:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The following screenshot shows the IntelliSense window that lists the functions
+    provided by the `WinJS.Utilities` namespace:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Querying the DOM with WinJS.Utilities](img/7102EN_03_02.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'Querying the DOM is also useful when you need to apply a behavior to the elements
+    of `document`. For example, you might want to add a functionality whenever the
+    user clicks on a particular button. We do so by first querying for that element
+    and then adding a `click` handler to it. The following code shows how:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: In the previous code sample, the `listen()` method is used to wire an event
+    handler to the `click` event of the button with the ID `Btn`; in this handler,
+    we are creating a new `p` element and adding it to the `div` element with the
+    ID `postDiv`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The methods provided by the `WinJS.Utilities` namespace are like a simplified
+    subset of the functions provided in jQuery.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The following is a list of some of the available methods that you can call
+    on the objects returned in `QueryCollection`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`addClass`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`clearStyle`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`getAttribute`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`hasClass`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`query(query)`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`removeClass`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`removeEventListener`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`setAttribute`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`setStyle`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`toggleClass`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`children`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Understanding WinJS.xhr
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'The `xhr` function basically wraps the calls to `XMLHttpRequest` in a `Promise`
+    object. The function is useful for cross-domain and intranet requests, as shown
+    in the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: Since the `WinJS.xhr` function processes asynchronously and returns a `Promise`
+    object, we can pass the `then()` or `done()` method to it, as shown in the previous
+    example.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'You can use the `WinJs.xhr` function to connect to a web service and to download
+    different types of content, such as text or a JSON string that are specified in
+    the `responseType` option of `WinJS.xhr`. The `responseType` option takes a string
+    value that specifies the type of response expected from the request, and the types
+    are as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`text`: This is the default value and expects a response of type string'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`arraybuffer`: This expects an **ArrayBuffer** used to represent binary content
+    such as an array of type integer or float'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`blob`: This expects a **Blob** (**Binary Large Object**), which is an object
+    that represents immutable raw data and is typically of a large file size'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`document`: This expects XML content; that is, content that has a MIME type
+    of `text/xml`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`json`: This expects a JSON string'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`ms-stream`: This expects an `msStream` object that handles streaming data
+    and is marked with a vendor-specific prefix (`ms`) because it is not defined in
+    the W3C specifications yet'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Besides `responseType`, a couple of more options can be applied to the `xhr`
+    (`XMLHttpRequest`) objects, which are all optional except `url`. These options
+    are as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`url`: This specifies a string that is either the absolute or relative URL
+    of the XML data or server-side XML web services'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`type`: This specifies a string that represents the HTTP method used; for example,
+    `GET`, `POST`, or `HEAD`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`user`: This specifies a string that represents the name of the user used for
+    authentication, if required'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`password`: This specifies a string that represents the password used for authentication,
+    if any'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`headers`: This specifies an object that represents a custom HTTP header'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`data`: This specifies an object that contains the data that will be sent with
+    the HTTP request to the server; this data is passed directly to the `XMLHttpRequest.send`
+    method'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`customRequestInitializer`: This specifies a function that can be used for
+    preprocessing on `XMLHttpRequest`.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Let''s populate the basic syntax on how to retrieve some text from a website
+    as shown in the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: The previous code sample will retrieve the text from the specified `url` string
+    and insert it into the `div` element, `responseDiv`; in case there was an error
+    during processing, we retrieve it in the error-handling function via `statusText`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: It is not recommended to use the `XMLHttpRequest` object to request a transfer
+    of extremely large objects that might take a long time to complete, such as the
+    **Blob** and the **FormData** objects. Instead, you should consider using the
+    file upload APIs provided by the Windows Runtime API for such operations.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Introducing a new set of controls
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Besides content, your app will need controls; regular HTML controls such as
+    buttons, select lists, and checkboxes; and some Windows 8 exclusive controls such
+    as the AppBar rating and settings. In addition to the standard built-in HTML controls,
+    `WinJS` provides a set of new and feature-rich controls designed for Windows Store
+    apps using JavaScript. These controls are basically objects available in the `WinJS.UI`
+    namespace; so, a date picker control will look like `WinJS.UI.DatePicker`. Here
+    is a list of the major `WinJS.UI` controls you will use in an app:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`DatePicker`: This renders a customizable control that is used to select a
+    date value'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`TimePicker`: This renders a customizable control that is used to select a
+    time value'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`Menu`: This renders a menu flyout control for displaying commands'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`AppBar`: This renders an application toolbar for displaying commands'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`FlipView`: This renders a collection of items to be displayed one item at
+    a time'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`ListView`: This renders a collection of items in a customizable grid or list
+    layout'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`Flyout`: This is a control that displays a kind of a pop up control containing
+    information; however, it is lightweight and doesn''t create a separate window
+    such as a dialog box'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`Rating`: This is a control that allows the user to rate something and can
+    display three types of ratings—tentative, average, or the user''s rating'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`SemanticZoom`: This is a control that lets the user zoom between a zoomed-in
+    and zoomed-out view, which is supplied by two separate child controls that provide
+    each type of view:'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`ToggleSwitch`: This renders a control that lets the user switch an option
+    between two states (on and off)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`Tooltip`: This renders a control that displays a tooltip to show more information
+    about an object, and it can support rich content (such as images)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`ViewBox`: This renders a control that scales a single child element it contains
+    (without changing its aspect ratio) to make it fit and fill the available space'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_IND
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: These controls are automatically styled with either one of the two stylesheets
+    that appear by default in any new Windows 8 Store app project you create in Visual
+    Studio. The two stylesheets (one with a dark color theme and the other with a
+    light one) will give your app the look and feel of Windows 8.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Unlike standard HTML controls, `WinJS.UI` controls do not have dedicated markup
+    elements or attribute tags; for example, you can''t go on adding a `WinJS.UI.Rating`
+    element such as `<rating/>` to your markup, as you would normally do with the
+    standard HTML elements such as `<input/>`. To add a `WinJS.UI` control, you need
+    to create an HTML element, say `div`, and use the `data-win-control` attribute
+    to specify the type of control you want. The following code shows the syntax to
+    create a `WinJS.UI` `Rating` control:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: This will declare a rating element in the markup but will not load the control
+    in your app when you run it. In order to activate any `WinJS` control that you've
+    declared in the markup, the JavaScript code must call the `WinJS.UI.processAll()`
+    function that processes the document and initializes the controls you created.
+    When you create an app using any of the templates provided in Visual Studio, the
+    `default.js` file includes a call to `WinJS.UI.processAll` in the code, declared
+    in the `app.onactivated` event handler.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'When you run the app, you will see the new `Rating` control as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Introducing a new set of controls](img/7102EN_03_03.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'You can also create a `WinJS` control in code by calling its constructor and
+    passing the HTML element that will host this control to the constructor. For example,
+    if we have `div` with an `id` attribute of `ratingControlDiv`, the JavaScript
+    to create a `Rating` control will be as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: In this case, there will be no need to call the `WinJS.UI.processAll` function,
+    since you didn't create the JavaScript control in the markup.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Also, setting the properties of a `WinJS` control differs from setting the
+    properties of a standard HTML control; the latter has dedicated attributes for
+    that purpose. For example, an `input` element of the type `range` has `min` and
+    `max` attributes whose values can be set in the markup as shown in the following
+    code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'In the case of a JavaScript control, we have to use the `data-win-options`
+    attribute to set a property in the markup, which takes a string that contains
+    one or more property/value pairs (multiple properties are separated with a comma)
+    and in its basic form looks as shown in the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The following syntax will show how to set the `minRating` and `maxRating` attributes
+    for a `WinJS.UI.Rating` control:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: We have glimpsed some of the capabilities and powerful features of the `WinJS`
+    in Windows 8\. We learned how to implement asynchronous programming using the
+    `Promise` object.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Also, we were introduced to the methods provided in the `WinJS.Utilities` namespace
+    that allow us to retrieve and modify the elements of an HTML document. We also
+    covered retrieving different types of content with the `WinJS.xhr()` function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Finally, we learned about the new set of controls provided by the `WinJS` library
+    and how to create these JavaScript controls and set their properties.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the next chapter, we will start developing apps with JavaScript by introducing
+    the needed tools first and then learn about the templates provided for Windows
+    8 JavaScript apps. Also, we will create a very basic app and understand the anatomy
+    of the JavaScript app. We will also learn about the ListView control.
+  prefs: []
+  type: TYPE_NORMAL

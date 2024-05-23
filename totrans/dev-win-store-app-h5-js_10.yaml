@@ -1,0 +1,623 @@
+- en: Chapter 10. Packaging and Publishing
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Windows Store is like a huge shopping mall and your app, once published to the
+    Store, will be like a small shop in that mall; the Windows Store Dashboard is
+    where you will set all the branding, advertising, and marketing material for the
+    shop. Visual Studio is your production environment and the Store is your destination,
+    and everything else in between is in the Windows Store Dashboard. In this chapter
+    we will be introduced to the Store and learn how to get an app through all the
+    stages into publishing. Also, we will see how we can interact with the Store from
+    within Visual Studio.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Introducing the Windows Store
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Developing a Windows Store app is not just about design, coding, and markup.
+    A very essential part of the process that leads to a successful app is done on
+    the Windows Store Dashboard. It is the place where you submit the app, pave its
+    way to the market, and monitor how it is doing there. Also, it is the place where
+    you can get all the information about your existing apps and where you can plan
+    your next app. We already had a sneak preview of the Dashboard in [Chapter 8](ch08.html
+    "Chapter 8. Signing Users in"), *Signing Users in*, when we were learning how
+    to add authentication and the sign-in functionality. The submission process is
+    broken down into seven phases, and in [Chapter 8](ch08.html "Chapter 8. Signing
+    Users in"), *Signing Users in*, we completed the first step in the Release Summary
+    page, which is reserving an app name and registering the app with Windows Store.
+    There are six more steps to complete in order to submit the app for certification.
+    If you haven't already opened a Windows Store developer account, now is the time
+    to do so because you will need it to access your Dashboard. Before you sign up,
+    make sure you have a credit card. The Windows Store requires a credit card to
+    open a developer account even if you had a registration code that entitles you
+    to a free registration.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Once signed in, locate your app listed on the home page under the **Apps in
+    progress** section and click on **Edit**. This will direct you to the Release
+    Summary page and the app will be titled **AppName: Release 1**. The release number
+    will auto-increment each time you submit a new release for the same app. The Release
+    Summary page lists the steps that will get your app ready for Windows Store certification.
+    On this page, you can enter all the info about your Windows Store app and upload
+    its packages for certification. At the moment you will notice that the two buttons
+    at the bottom of the page labeled as **Review release info** and **Submit app
+    for certification** are disabled and will remain so until all the previous steps
+    have been marked **Complete**. The submission progress can always be saved to
+    be resumed later, so it is not necessarily a one-time mission. We''ll go over
+    these steps one by one:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**App name**: This is the first step and it includes reserving a unique name
+    for the app.'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '**Selling details**: This step includes selecting the following:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: The **app price tier** option sets the price of your app (for example, free
+    or 1.99 USD).
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The **free trial period** option is the number of days the customer can use
+    the app before they start paying to use it. This option is enabled only if the
+    **app price tier** is not set to **Free**.
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The **Market** where you would like the app to be listed in the Windows Store.
+    Bear in mind that if your app isn't free, your developer account must have a valid
+    tax profile for each country/region you select.
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The **release date** option specifies the earliest date when the app will be
+    listed in the Windows Store. The default option is to release as soon as the app
+    passes the certification.
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The **App category and subcategory** option indicates where your app be listed
+    in the Store, which in turn lists the apps under **Categories**.
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The **Hardware requirements** option will specify the minimum requirements for
+    the DirectX feature level and the system RAM.
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The **Accessibility** option is a checkbox that when checked indicates that
+    the app has been tested to meet accessibility guidelines.
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Services**: In this step, you can add services to your app such as Windows
+    Azure Mobile Services and Live Services (just as we did in [Chapter 8](ch08.html
+    "Chapter 8. Signing Users in"), *Signing Users in*). You can also provide products
+    and features that the customer can buy from within the app called In-app offers.'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '**Age rating and rating certificates**: In this step, you can set an age rating
+    for the app from the available Windows Store age ratings. Also, you can upload
+    country/region-specific rating certificates in case your app is a game.'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '**Cryptography**: In this step, you specify if your app calls, supports, and
+    contains or uses cryptography or encryption. The following are some of the examples
+    of how an app might apply cryptography or encryption:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Use of a digital signature such as authentication or integrity checking
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Encryption of any data or files that your app uses or accesses
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Key management, certificate management, or anything that interacts with a public
+    key infrastructure
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using a secure communication channel such as NTLM, Kerberos, **Secure Sockets
+    Layer** (**SSL**), or **Transport Layer Security** (**TLS**)
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Encrypting passwords or other forms of information security
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Copy protection or **digital rights management** (**DRM**)
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Antivirus protection
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Packages**: In this step, you can upload your app to the Store by uploading
+    the `.appxupload` file that was created in Visual Studio during the package-creation
+    process. We will shortly see how to create an app package. The latest upload will
+    show on the Release Summary page in the packages box and should be labeled as
+    **Validation Complete**.'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '**Description**: In this step you can add a brief description (mandatory) on
+    what the app does for your customers. The description has a 10,000-character limit
+    and will be displayed in the **details** page of the app''s listing in the Windows
+    Store. Besides description, this step contains the following features:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '**App features**: This feature is optional. It allows you to list up to 20
+    of the app''s key features.'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Screenshots**: This feature is mandatory and requires to provide at least
+    one `.png` file image; the first can be a graphic that represents your app but
+    all the other images must be screenshots with a caption taken directly from the
+    app.'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Notes**: This feature is optional. Enter any other info that you think your
+    customer needs to know; for example, changes in an update.'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Recommended hardware**: This feature is optional. List the hardware configurations
+    that the app will need to run.'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Keywords**: This feature is optional. Enter keywords related to the app to
+    help its listing appear in search results.'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Copyright and trademark info**: This feature is mandatory. Enter the copyright
+    and trademark info that will be displayed to customers in the app''s listing page.'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Additional license terms**: This feature is optional. Enter any changes to
+    the **Standard** **App License Terms** that the customers accept when they acquire
+    this app.'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Promotional images**: This feature is optional. Add images that the editors
+    use to feature apps in the Store.'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Website**: This feature is optional. Enter the URL of the web page that describes
+    the app, if any.'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Support contact info**: This feature is mandatory. Enter the support contact
+    e-mail address or URL of the web page where your customers can reach out for help.'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Privacy policy**: This feature is optional. Enter the URL of the web page
+    that contains the privacy policy.'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Notes to testers**: This is the last step and it includes adding notes about
+    this specific release for those who will review your app from the Windows Store
+    team. The info will help the testers understand and use this app in order to complete
+    their testing quickly and certify the app for the Windows Store.'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Each step will remain disabled until the preceding one is completed and the
+    steps that are in progress are labeled with the approximate time (in minutes)
+    it will take you to finish it. And whenever the work in a single step is done,
+    it will be marked **Complete** on the summary page as shown in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Introducing the Windows Store](img/7102EN_10_01.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Submitting the app for certification
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'After all the steps are marked **Complete**, you can submit the app for certification.
+    Once you click on **Submit for certification**, you will receive an e-mail notification
+    that the Windows Store has received your app for certification. The dashboard
+    will submit the app and you will be directed to the **Certification status** page.
+    There, you can view the progress of the app during the certification process,
+    which includes the following steps:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Pre-processing**: This step will check if you have entered all the required
+    details that are needed to publish the app.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Security tests**: This step tests your app against viruses and malware.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Technical compliance**: This step involves the Windows App certification
+    Kit to check if the app complies with the technical policies. The same assessment
+    can be run locally using Visual Studio, which we will see shortly, before you
+    upload your package.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Content compliance**: This step is done by testers from the Store team who
+    will check if the contents available in the app comply with the content policies
+    set by Microsoft.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Release**: This step involves releasing the app; it shouldn''t take much
+    time unless the publish date you''ve specified in **Selling details** is in the
+    future, in which case the app will remain in this stage until that date arrives.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Signing and publishing**: This is the final step in the certification process.
+    At this stage, the packages you submitted will be signed with a trusted certificate
+    that matches the technical details of your developer account, thus guaranteeing
+    for the potential customers and viewers that the app is certified by the Windows
+    Store.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'The following screenshot shows the certification process on Windows Store Dashboard:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Submitting the app for certification](img/7102EN_10_02.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'No need to wait on that page; you can click on the **Go to dashboard** button
+    and you will be redirected to the **My apps** page. In the box containing the
+    app you just submitted, you will notice that the **Edit** and **Delete** links
+    are gone, and instead there is only the **Status** link, which will take you to
+    the **Certification status** page. Additionally, a **Notifications** section will
+    appear on this page and will list status notifications about the app you just
+    submitted, for example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**BookTestApp: Release 1 submitted for certification. 6/4/2013**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'When the certification process is completed, you will be notified via e-mail
+    with the result. Also, a notification will be added to the dashboard main page
+    showing the result of the certification, either failed or succeeded, with a link
+    to the certification report. In case the app fails, the certification reports
+    will show you which part needs revisiting. Moreover, there are some resources
+    to help you identify and fix the problems and errors that might arise during the
+    certification process; these resources can be found at the *Windows Dev Center*
+    page for Windows Store apps at the following location:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[http://msdn.microsoft.com/en-us/library/windows/apps/jj657968.aspx](http://msdn.microsoft.com/en-us/library/windows/apps/jj657968.aspx)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Also, you can always check your dashboard to check the status of your app during
+    certification.
+  prefs: []
+  type: TYPE_NORMAL
+- en: After the certification process is completed successfully, the app package will
+    be published to the Store with all the relevant data that will be visible in your
+    app listing page. This page can be accessed by millions of Windows 8 users who
+    will in turn be able to find, install, and use your app.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Once the app has been published to the Store and it's up and running, you can
+    start collecting telemetry data on how it is doing in the Store; these metrics
+    include information on how many times the app has been launched, how long it has
+    been running, and if it is crashing or encountering a JavaScript exception. Once
+    you enable telemetry data collection, the Store will retrieve this info for your
+    apps, analyze them, and summarize them in very informative reports on your dashboard.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now that we have covered almost everything you need to know about the process
+    of submitting your app to the Windows Store, let us see what is needed to be done
+    in Visual Studio.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The Store within Visual Studio
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Windows Store can be accessed from within Visual Studio using the **Store**
+    menu. Not all the things that we did on the dashboard can be done here; a few
+    very important functionalities such as app package creation are provided by this
+    menu. The **Store** menu can be located under the **Project** item in the menu
+    bar using Visual Studio 2012 Ultimate, or if you are using Visual Studio 2012
+    Express, you can find it directly in the menu bar, and it will appear only if
+    you're working on a Windows Store project or solution.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We will get to see the commands provided by the **Store** menu in detail and
+    the following is the screenshot that shows how the menu will look:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![The Store within Visual Studio](img/7102EN_10_03.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'The command options in the **Store** menu are as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Open Developer Account...**: This option will open a web page that directs
+    you to *Windows Dev Center* for Windows Store apps, where you can obtain a developer
+    account for the Store.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Reserve App Name...**: This option will direct you to your Windows Store
+    Dashboard and specifically to the **Submit an app** page, where you can start
+    with the first step, reserving an app name, as we saw earlier in [Chapter 8](ch08.html
+    "Chapter 8. Signing Users in"), *Signing Users in*.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Acquire Developer License...**: This option will open up a dialog window
+    that will prompt you to sign in with your Microsoft Account; after you sign in,
+    it will retrieve your developer license or renew it if you already have one.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Edit App Manifest**: This option will open a tab with Manifest Designer,
+    so you can edit the settings in the app''s manifest file.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Associate App with the Store...**: This option will open a wizard-like window
+    in Visual Studio, containing the steps needed to associate an app with the Store.
+    The first step will prompt you to sign in; afterwards, the wizard will retrieve
+    the apps registered with the Microsoft Account you used to sign in. Select an
+    app and the wizard will automatically download the following values to the app''s
+    manifest file for the current project on the local computer:'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Package's display name
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Package's name
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Publisher ID
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Publisher's display name
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Capture Screenshot...**: This option will build the current app project and
+    launch it in the simulator instead of the start screen. Once the simulator opens,
+    you can use the **Copy screenshot** button on the simulator sidebar. This button
+    will be used to take a screenshot of the running app that will save this image
+    as a `.png` file.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Create App Package...**: This option will open a window containing the **Create
+    App Packages** wizard that we will see shortly.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Upload App Package...**: This option will open a browser that directs you
+    to the Release Summary page in the Windows Store Dashboard, if your Store account
+    is all set and your app is registered. Otherwise, it will just take you to the
+    sign-in page. In the Release Summary page, you can select **Packages** and from
+    there upload your app package.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Creating an App Package
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: One of the most important utilities in the **Store** menu is the app package
+    creation, which will build and create a package for the app that we can upload
+    to the Store at a later stage. This package is consistent with all the app-specific
+    and developer-specific details that the Store requires. Moreover, the developers
+    do not have to worry about any of the intricacies of the whole package-creation
+    process, which is abstracted for us and available via a wizard-link window.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the **Create App Packages** wizard, we can create an app package for the
+    Windows Store directly, or create the one to be used for testing or local distribution.
+    This wizard will prompt you to specify metadata for the app package.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The following screenshot shows the first two steps involved in this process:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Creating an App Package](img/7102EN_10_04.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: In the first step, the wizard will ask you if you want to build packages to
+    upload to the Windows Store; choose **Yes** if you want to build a package for
+    the Store or choose **No** if you want a package for testing and local use. Taking
+    the first scenario in consideration, click on **Sign In** to proceed and complete
+    the sign-in process using your Microsoft Account.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'After a successful sign-in, the wizard will prompt you to **select the app
+    name** (step 2 of the preceding screenshot) either by clicking on the apps listed
+    in the wizard or choosing the **Reserve Name** link that will direct you to the
+    Windows Store Dashboard to complete the process and reserve a new app name. The
+    following screenshot shows step 3 and step 4:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Creating an App Package](img/7102EN_10_05.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Step 3 contains the **Select and Configure Packages** section in which we will
+    select **Output location** that points to where the package files will be created.
+    Also, in this section we can enter a version number for this package or chose
+    to make it auto-increment each time we package the app. Additionally, we can select
+    the build configuration we want for the package from the **Neutral**, **ARM**,
+    **x64**, and **x86** options and by default, the current active project platform
+    will be selected and a package will be produced for each configuration type selected.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The last option in this section is the **Include public symbol files** option.
+    Selecting this option will generate the public symbols files (**.pdb**) and add
+    it to the package, which will help the store later in analyzing your app and will
+    be used to map crashes of your app. Finally, click on **Create** and wait while
+    the packaging is being processed. Once completed, the **Package Creation Completed**
+    section appears (step 4) and will show **Output location** as a link that will
+    direct you to the package files. Also, there is a button to directly launch the
+    **Windows App Certification Kit**. **Windows App Certification Kit** will validate
+    the app package against the Store requirements and generate a report of the validation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The following screenshot shows the window containing the **Windows App Certification
+    Kit** process:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Creating an App Package](img/7102EN_10_06.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Alternatively, there is a second scenario for creating an app package but it
+    is more aimed at testing, which is identical to the process we just saw except
+    that you have to choose **No** in the first page on the wizard and there is no
+    need to sign-in with the Microsoft Account. This option will end the wizard when
+    the package creation has completed and display the link to the output folder but
+    you will not be able to launch the **Windows App Certification Kit**. The packages
+    created with this option can only be used on a computer that has a developer license
+    installed. This scenario will be used more often since the package for the Store
+    should ideally be tested locally first. After creating the app package for testing
+    or local distribution, you can install it on a local machine or device.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s install the package locally. Start the **Create App Packages** wizard;
+    choose **No** in the first step, complete the wizard, and find files of the app
+    package just created in the output folder that you specified for the package location.
+    Name this as `PackageName_Test`. This folder will contain an `.appx` file, a security
+    certificate, a Windows PowerShell script, and other files. The Windows PowerShell
+    script generated with the app package will be used to install the package for
+    testing. Navigate to the **Output** folder and install the app package. Locate
+    and select the script file named `Add-AppDevPackage`, and then right-click and
+    choose **Run with PowerShell** as shown in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Creating an App Package](img/7102EN_10_07.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'Run the script and it will perform the following steps:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: It displays information about **Execution Policy Change** and prompts about
+    changing the execution policy. Enter `Y` to continue.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: It checks if you have a developer license; in case there wasn't any script,
+    it will prompt you to get one.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: It checks and verifies whether the app package and the required certificates
+    are present; if any item is missing, you will be notified to install them before
+    the developer package is installed.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: It checks for and installs any dependency packages such as the `WinJS` library.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'It displays the message **Success: Your package was successfully installed**.'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Press *Enter* to continue and the window will close.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'The aforementioned steps are shown in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Creating an App Package](img/7102EN_10_08.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Once the script has completed successfully, you can look for your app on the
+    **Start** screen and start it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Note that for users who are on a network and don't have permission to access
+    the directory where the `Add-AppDevPackage` PowerShell script file is located,
+    an error message might appear. This issue can be solved by simply copying the
+    contents of the `output` folder to the local machine before running the script.
+    Also, for any security-related issues, you might want to consult the Windows Developer
+    Center for solutions.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this chapter, we saw the ins and outs of the Windows Store Dashboard and
+    we covered the steps of the app submission process leading to the publishing of
+    the app in the Store. We also learned about the **Store** menu in Visual Studio
+    and the options it provides to interact with the dashboard. Moreover, we learned
+    how to create app packages and how to deploy the app locally for testing.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the next chapter we will have a sneak peak at the other side of the coin,
+    developing Windows 8 apps with XAML, and understand how similar it is to developing
+    apps with JavaScript, thereby showing you the power of developing apps for Windows
+    8 with multiple programming languages.
+  prefs: []
+  type: TYPE_NORMAL

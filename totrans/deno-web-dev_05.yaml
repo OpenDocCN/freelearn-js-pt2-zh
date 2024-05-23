@@ -1,0 +1,1056 @@
+- en: '*Chapter 7*: HTTPS, Extracting Configuration, and Deno in the Browser'
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'In the previous chapter, we pretty much wrapped up our application''s features.
+    We added authorization and persistence, ending up with an application connected
+    to a MongoDB instance. In this chapter, we''ll focus on some known best practices
+    that are standard in production applications: basic security practices and dealing
+    with configuration.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: First, we'll add a couple of basic security features to our **application programming
+    interface** (**API**), starting with **Cross-Origin Resource Sharing** (**CORS**)
+    protection, to enable the filtering of requests based on their origin. Then, we'll
+    learn how to enable **HyperText Transfer Protocol Secure** (**HTTPS**) in our
+    application so that it supports encrypted connections. This will allow users to
+    perform requests to the API using a secure connection.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Until now, we've used a few secret values, but we weren't concerned about having
+    them in the code. In this chapter, we'll extract the configuration and secrets
+    so that they don't have to live in the code base. We'll then learn how we can
+    have them safely stored and injected in the application. This way, we can be sure
+    that those values are kept a secret and are not present in the code. By doing
+    this, we'll also enable different deployments with different configurations.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Moving forward, we''ll explore the capabilities enabled by one specific Deno
+    feature: the ability to compile and run code in the browser. By using Deno''s
+    compatibility with ECMAScript 6 (supported by modern browsers), we''ll share code
+    between the API and the frontend, enabling a whole new world of possibilities.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Leveraging this specific feature, we''ll explore one specific scenario: building
+    a JavaScript client for the API. This client will be built using the same types
+    and parts of code that also run on the server, and we''ll explore the benefits
+    provided by that.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: This chapter wraps up the *Building an application* section of this book, whereby
+    we built an application step by step, adding some common application features
+    with an incremental approach. While learning, we also made sure this application
+    was as close to real as possible for an introductory book. This enabled us to
+    learn about Deno, many of its APIs, and some community packages while we created
+    a functional application.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'By the end of this chapter, you''ll be familiar with the following topics:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Enabling CORS and HTTPS
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Extracting configuration and secrets
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Running Deno code in the browser
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Technical requirements
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'All the code files needed for this chapter can be found at the following GitHub
+    link:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[https://github.com/PacktPublishing/Deno-Web-Development/tree/master/Chapter07/sections](https://github.com/PacktPublishing/Deno-Web-Development/tree/master/Chapter07/sections)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Enabling CORS and HTTPS
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: CORS protection and HTTPS support are two things considered critical in any
+    running production application. This section will explain how can we add them
+    to the application that we're building.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There are many other security practices that can be added to any API. As those
+    aren't Deno specifics and deserve a book by themselves, we decided to focus on
+    these two elements.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We'll begin by learning about CORS and how can we leverage `oak` and the middleware
+    function feature we know in order to do it. Then, we'll learn how can we also
+    use a self-signed certificate and make our API handle secure HTTP connections.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let's go, starting with CORS.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Enabling CORS
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: If you are not familiar with CORS, it is a mechanism that enables a server to
+    indicate to browsers which origins they should allow resource loading from. When
+    the application is running on the same domain as the API, CORS is not even necessary,
+    as the name directly makes explicit.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'I''ll provide you with the following quote from **Mozilla Developer Network**
+    (**MDN**), explaining CORS:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '"Cross-Origin Resource Sharing (CORS) is an HTTP-header based mechanism that
+    allows a server to indicate any other origins (domain, protocol, or port) than
+    its own from which a browser should permit loading of resources. CORS also relies
+    on a mechanism by which browsers make a "preflight" request to the server hosting
+    the cross-origin resource, in order to check that the server will permit the actual
+    request. In that preflight, the browser sends headers that indicate the HTTP method
+    and headers that will be used in the actual request."'
+  prefs: []
+  type: TYPE_NORMAL
+- en: To give you a more concrete example, imagine you have an API running at `the-best-deno-api.com`
+    and you want to handle requests made from `the-best-deno-client.com`. Here, you'll
+    want your server to have CORS enabled for the `the-best-deno-client.com` domain.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'If you don''t have it enabled, the browser will make a preflight request to
+    your API (using the `OPTIONS` method), and the response to this request will not
+    have an `Access-Control-Allow-Origin: the-best-deno-client.com` header, causing
+    the request to fail and the browser to prevent further requests.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: We'll learn how we can enable this mechanism in our application, allowing requests
+    to be made from `http://localhost:3000` in the example that follows.
+  prefs: []
+  type: TYPE_NORMAL
+- en: As our application is using the `oak` framework, we'll learn how to do it with
+    this framework. However, this is very similar to any other HTTP framework. We
+    basically want to add a middleware function that handles requests and verifies
+    their origins against a list of allowed domains.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We'll use a community package called `cors` ([https://deno.land/x/cors@v1.2.1](mailto:https://deno.land/x/cors@v1.2.1)),
+    but the implementation is quite simple. If you're curious about what it does,
+    take a look at [https://deno.land/x/cors@v1.2.1/oakCors.ts](mailto:https://deno.land/x/cors@v1.2.1/oakCors.ts),
+    as the code is quite straightforward.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Important note
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We''ll use the code we created in the previous chapter to start this implementation.
+    This is available at [https://github.com/PacktPublishing/Deno-Web-Development/tree/master/Chapter06/sections/4-connecting-to-mongodb/museums-api](https://github.com/PacktPublishing/Deno-Web-Development/tree/master/Chapter06/sections/4-connecting-to-mongodb/museums-api).
+    You can also have a look at the finished code for this section here:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[https://github.com/PacktPublishing/Deno-Web-Development/tree/master/Chapter07/sections/3-deno-on-the-browser/museums-api](https://github.com/PacktPublishing/Deno-Web-Development/tree/master/Chapter07/sections/3-deno-on-the-browser/museums-api)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Here, we'll add the `cors` package to our application, together with our own
+    list of allowed domains. The end goal is that we can perform requests from a trusted
+    website to this API.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s do it. Proceed as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Install the `cors` module by updating the `deps` file (check [*Chapter 3*](B16380_03_Final_JM_ePub.xhtml#_idTextAnchor089),
+    *The Runtime and Standard Library,* for reference on how to do this). The code
+    can be seen in the following snippet:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Next, run the `cache` command to update the `lock` file, as follows:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Import `oakCors` on `src/web/index.ts` and register it on the application,
+    before the router is registered, as follows:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Change the `createServer` function parameters to receive an array of `string`
+    named `allowedOrigins` inside `configuration` and later send it to the `oakCors`
+    middleware creator function. The code for this is shown here:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'There''s one thing missing, though—we need to send this array of `allowedOrigins`
+    from `src/index.ts`. Let''s do this, as follows:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Let''s test this, starting by running the API, as follows:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'To test it, create an HTML file named `index.html` in the root folder (`museums-api`),
+    with a script that performs a `POST` request to `http://localhost:8080/api/users/register`.
+    The code for this is shown here:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'In the same folder we created the `index.html` file, let''s run Deno''s standard
+    library web server, using the `-p` flag to set the port to `3000` and `--host`
+    to set the host to `localhost`. The code for this is shown here:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Access `http://localhost:3000` with your browser and you should see a **WORKING**
+    message, as illustrated in the following screenshot:![Figure 7.1 – Testing that
+    the CORS API is working
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '](img/Figure_7.1_B16380.jpg)'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Figure 7.1 – Testing that the CORS API is working
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'If you want to test what happens when the origin is not in the `allowedOrigins`
+    list, you can run the same command but with a different port (or host) and check
+    the behavior. The code for this is shown here:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: You can now navigate to that new **Uniform Resource Locator** (**URL**) on the
+    browser, and you should see a **NOT WORKING** message. If you look at the browser's
+    console, you can also confirm that the browser is warning you that the CORS preflight
+    request failed. That's the desired behavior.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: And that's all we need to enable CORS on the API!
+  prefs: []
+  type: TYPE_NORMAL
+- en: The third-party module we used has a few more options you can explore—things
+    such as filtering for specific HTTP methods or answering the preflight request
+    with a different status code. At the moment, the default options are working for
+    us. We'll now proceed and see how we can enable users to connect to the application
+    via HTTPS, adding an extra layer of security and encryption.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Enabling HTTPS
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Any user-facing application nowadays should not only be allowing but also forcing
+    its users to connect over HTTPS. This is a layer of security added on top of HTTP,
+    making sure all connections are encrypted via a trusted certificate. Once again,
+    we''ll not try to come up with a definition, instead using the following one from
+    MDN ([https://developer.mozilla.org/en-US/docs/Glossary/https](https://developer.mozilla.org/en-US/docs/Glossary/https)):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '"HTTPS (HyperText Transfer Protocol Secure) is an encrypted version of the
+    HTTP protocol. It uses SSL or TLS to encrypt all communication between a client
+    and a server. This secure connection allows clients to safely exchange sensitive
+    data with a server, such as when performing banking activities or online shopping."'
+  prefs: []
+  type: TYPE_NORMAL
+- en: By enabling HTTPS connections in our application, we're making sure that it's
+    way harder to intercept and interpret requests. Without this a malicious user
+    can, for instance, intercept a login request and have access to the user's password-and-username
+    combination. We're protecting the user's sensitive data.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'As we''re using `oak` in our application, we''ll look for a solution on how
+    to support HTTPS connections in its documentation. By looking at [https://doc.deno.land/https/deno.land/x/oak@v6.3.1/mod.ts](mailto:https://doc.deno.land/https/deno.land/x/oak@v6.3.1/mod.ts),
+    we can see that the `Application.listen` method receives a `configuration` object,
+    the same one we previously used to send the `port` variable. There are other options,
+    though, as we can see here: [https://doc.deno.land/https/deno.land/x/oak@v6.3.1/mod.ts#Application](mailto:https://doc.deno.land/https/deno.land/x/oak@v6.3.1/mod.ts#Application).
+    That''s what we''ll use to enable HTTPS.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s see how we can change `oak`''s configuration so that it supports secure
+    connections, by following these steps:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Go to `src/web/index.ts` and add the `secure`, `keyFile`, and `certFile` options
+    to the `listen` method call, as follows:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'To keep our code tidy and more configurable, let''s extract these options and
+    send them as parameters to the `createServer` function, as follows:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'This is what the `CreateServerDependencies` parameter type should look like:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'And this is what the `createServer` function looks like afterward, with the
+    destructured parameters:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'To wrap up, we will now send the paths to the certificate and key files from
+    the `src/index.ts` file, as follows:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Now, to keep the logs accurate, we need to fix the event listener we previously
+    created, which logs that the application is running. This handler should now take
+    into consideration that the application might run over HTTP or HTTPS, and log
+    according to that.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Go back to `src/web/index.ts` and fix the event listener that is listening
+    for the `listen` event so that it checks whether the connection is secure or not.
+    The code for this is shown here:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Let''s run the application and see if it works, as follows:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: You should now be able to access that URL and connect to the application.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'You might still be seeing security warnings, but no worries. You can click
+    **Advanced** and **Proceed to localhost (unsafe)**, as illustrated in the following
+    screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Figure 7.2 – Chrome security warning screen'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '](img/Figure_7.2_B16380.jpg)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Figure 7.2 – Chrome security warning screen
+  prefs: []
+  type: TYPE_NORMAL
+- en: This is due to the certificate being self-signed and not signed by a trusted
+    certificate authority. However, it shouldn't matter much, as the process is the
+    exact same as if it were a production certificate.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If you're still having problems, you might need to access the API URL directly
+    before opening this page (`https://localhost:8080/`). From there, you can just
+    follow the procedure on the following link (https://jasonmurray.org/posts/2021/thisisunsafe/)
+    to enable communication with an API that isn't using a trusted certificate. After
+    that, accessing `https://localhost:8080` will work.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The moment you have a proper certificate, signed by a trusted certificate authority,
+    you can use it the same way we're using this one and everything will keep working
+    just fine.
+  prefs: []
+  type: TYPE_NORMAL
+- en: And that wraps it up for this section! We've added CORS and HTTPS support to
+    our existing application, improving its security.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the next section, we'll see how we can extract the configuration and secrets
+    from our code, enabling it to be a little more flexible and configurable from
+    the outside.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let's go!
+  prefs: []
+  type: TYPE_NORMAL
+- en: Extracting configuration and secrets
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Any application, independent of its dimension, will have configuration parameters.
+    By looking at the application we've been building in the previous chapters, even
+    if we look at the simplest version of them all—the *Hello World* web server—we'll
+    find configuration values, such as the `port` value.
+  prefs: []
+  type: TYPE_NORMAL
+- en: It's also not a coincidence that we're sending a full object called `configuration`
+    inside the `createServer` function, the function that starts up the web server.
+    At the same time, we also have a couple of values that we know should be secret
+    in the application. They're currently living in the code base, as it's been working
+    for our purpose (which is learning), but we want to change it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We're thinking of things such as the **JSON Web Token** (**JWT**) encryption
+    keys, or the MongoDB credentials. Those are definitely not things you want to
+    check out into your version control system. This is what this section is about.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We'll be looking at the configuration values and the secrets currently living
+    in the code base. We will extract them so that they can be kept a secret and only
+    passed to the application when it runs.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Doing this process can be a tough job when you have an application in which
+    the configuration values are scattered across multiple modules and files. However,
+    as we're following some architecture best practices and thinking about keeping
+    the code decoupled and configurable, we made our life a little easier.
+  prefs: []
+  type: TYPE_NORMAL
+- en: By having a look at `src/index.ts`, you can confirm that all the configuration
+    values and secrets we're using are living there. This means that all the other
+    modules are not aware of the configuration, and that's how it should be.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We'll be doing this "migration" in two phases. First, we'll extract all the
+    configuration values into a `configuration` module, and then we'll extract the
+    secrets.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Creating a configuration file
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'To start, let''s find out what hardcoded values we have in the code that should
+    be living in a configuration file. The following snippet highlights the values
+    we don''t want to have living in the code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'By looking at this snippet from our application code, we can already identify
+    a few things, as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The cluster URL and database name (the username and password are secrets)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: JWT algorithm, and expiration time (the key is a secret)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The web server port
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: CORS allowed origins
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The HTTPS certificate and key file paths
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: These are the elements we're going to extract here. We'll start by creating
+    what would be our configuration file with all these values.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We'll use **YAML Ain't Markup Language** (**YAML**), since this is a commonly
+    used file type for configuration. If you're not familiar with it, no worries—it's
+    quite simple to grasp. You can get an overview of how it works on the official
+    website, [https://yaml.org/](https://yaml.org/).
+  prefs: []
+  type: TYPE_NORMAL
+- en: We'll also make sure that we have different configuration files for different
+    environments, thus creating a file that has the environment in its name.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Next, we''ll implement a feature that will allow us to store our configurations
+    in a file, starting by creating the file itself, as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Create a `config.dev.yaml` file at the root of the project and add all the
+    configurations there, like this:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: We now need a way of loading this file into our application. We'll be creating
+    a module named `config` inside the `src` folder for that.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: To read the configuration file, we'll use the filesystem functions we learned
+    in [*Chapter 2*](B16380_02_Final_JM_ePub.xhtml#_idTextAnchor056), *The Toolchain*,
+    together with the `encoding` package from Deno's standard library.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Create a `src/config` folder with a file named `index.ts` inside.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Here, we''ll define and export a function named `load`. This function will
+    be responsible for loading the configuration file. The code for this is shown
+    here:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Since we''re using TypeScript, we''ll define the type of what will be our configuration
+    file, adding that as a return type for the `load` function. This should match
+    the structure of the configuration file we previously created. The code for this
+    is shown here:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Inside the `load` function, we should now try to load the configuration file
+    we previously created, by using Deno filesystem APIs. As there can be multiple
+    files depending on the environment, we''ll also add `env` as a parameter to the
+    `load` function, with the default value of `dev`, as follows:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Install the YAML encoder module from the Deno standard library, using `deno
+    cache` to make sure we update the `lock` file (refer to [*Chapter* *3*](B16380_03_Final_JM_ePub.xhtml#_idTextAnchor089),
+    *The Runtime and Standard Library*), and export it on `src/deps.ts`, as follows:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE21]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Import it on `src/config/index.ts` and use it to parse the contents of the
+    read file, as follows:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE22]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Import the `config` module, call its `load` function, and use the configuration
+    values, which previously were hardcoded values.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'This is what the `src/index.ts` file should look like afterward:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[PRE23]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: We should now be able to run our application as we did previously, with the
+    difference that all our configuration is now living in a separate file.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: And that's it regarding configuration! We've extracted the configurations from
+    the code into a `config` file, making them easier to read and maintain. We've
+    also created a module that abstracts all the configuration-file reading and parsing,
+    making sure the rest of the application isn't concerned about that.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Next, we'll learn how we can extend this `config` module so that it also incorporates
+    secret values read from the environment.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Accessing secret values
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: As I previously mentioned, we've used a couple of values that should be secret,
+    but we initially kept them on the code. Those are values that might change from
+    environment to environment, and configuration we want to keep as a secret for
+    security reasons. This requirement makes it impossible to have them checked out
+    into version control, and thus they have to live somewhere else.
+  prefs: []
+  type: TYPE_NORMAL
+- en: One common practice to do this is to get these values from the environment,
+    using environment variables. Deno provides an API that we'll use to read from
+    environment variables. We'll be extending the `config` module so that it also
+    includes secret values on its exported object of type `Configuration`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Here are the values that are supposed to be secrets and that are still living
+    in the code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: MongoDB username
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: MongoDB password
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: JWT encryption key
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Let''s get them out of the code, and add them to the `configuration` object
+    by following these steps:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In `src/config/index.ts`, add the MongoDB username and password to the configuration
+    and the key to JWT in the configuration type, as follows:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE24]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Extend the `configuration` object to include the `username` and `password`
+    missing properties on `mongoDb` and `key` on `jwt`, as follows:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE25]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: The only thing still to do is to get these values from the environment instead
+    of having them hardcoded here. We'll use Deno's API for that, in order to access
+    the environment (https://doc.deno.land/builtin/stable#Deno.env).
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Use `Deno.env.get` to get the variables from the environment. We should also
+    set a default value in case the `env` variable is not present. The code is shown
+    in the following snippet:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE26]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Let''s get back to `src/index.ts` and use the secret values that we just added
+    to the `configuration` object, as follows:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE27]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: '[PRE28]'
+  prefs: []
+  type: TYPE_PRE
+- en: Now, if we try to register and log in, we'll verify that everything is working.
+    The application is connected to MongoDB and is retrieving the JWT token properly—the
+    secrets are working!
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note for Windows users
+  prefs: []
+  type: TYPE_NORMAL
+- en: In Windows systems, you can use the `set` command ([https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/set_1](https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/set_1))
+    to set environment variable. Windows doesn't support setting environment variables
+    inline, and thus, you have to run these commands prior to running the API. Throughout
+    the book, we'll use the *nix syntax, but you'll have to use the `set` command
+    if you're using Windows, as the following code demonstrates.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Following are the `set` commands for Windows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE29]'
+  prefs: []
+  type: TYPE_PRE
+- en: We just managed to have all the configurations and secrets extracted from the
+    code! This step made the configurations easier to read and maintain by writing
+    them to a file, and made the secrets more secure by sending them via the environment
+    to the application, instead of having them on the code base.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We're getting closer to an application that can easily be deployed and configured
+    in different environments, something we'll do in [*Chapter 9*](B16380_09_Final_JM_ePub.xhtml#_idTextAnchor190),
+    *Deploying a Deno Application*.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the next section, we'll leverage Deno's capabilities to bundle code for the
+    browser, creating a very simple JavaScript client that connects to the API. That
+    client can then be used by frontend clients so that the HTTP connection is abstracted;
+    it will also share code and types with the API code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Get on board!
+  prefs: []
+  type: TYPE_NORMAL
+- en: Running Deno code in the browser
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: One of the things we mentioned in the previous chapters and one that we've considered
+    as one of Deno's selling points is its full compatibility with ECMAScript6\. This
+    makes it possible for Deno code to be compiled and run on the browser. This compilation
+    is something made by Deno itself, and the bundler is included in the toolchain.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This feature enables a whole load of possibilities. A lot of them are due to
+    the capacity for sharing code between the API and the client, and that's what
+    we'll explore in this section.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We'll build a very simple JavaScript client to interact with the Museums API
+    we just built. This client can then be used by any browser application that wants
+    to connect to the API. We'll write that client in Deno and bundle it so that it
+    can be used by a client, or even served by the application itself.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The client we'll write will be a very rudimentary HTTP client, thus we'll not
+    focus much on the code. We're doing this to demonstrate how can we reuse code
+    and types from Deno to generate code that runs on the browser. At the same time,
+    we'll also explain some advantages of keeping a client and its API together.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s start by creating a new module in the application, which we''ll call
+    `client`, as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Create a folder inside `src` named `client`, with a file named `index.ts` inside
+    it.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Let''s create an exported method, `getClient`, which should return an instance
+    of our API client with three functions: `login`, `register`, and `getMuseums`.
+    The code for this is shown in the following snippet:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE30]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Note how we're getting a `config` object that hosts `baseURL`.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Now, it's just a matter of implementing the HTTP logic to make requests to the
+    API. We'll not do a step-by-step guide to implementing this as it is quite straightforward,
+    but you can access the full client on the book files ([https://github.com/PacktPublishing/Deno-Web-Development/blob/master/Chapter07/sections/3-deno-on-the-browser/museums-api/src/client/index.ts](https://github.com/PacktPublishing/Deno-Web-Development/blob/master/Chapter07/sections/3-deno-on-the-browser/museums-api/src/client/index.ts)).
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'This is what the `register` method will look like:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[PRE31]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Note how we're importing types from the `users` module, adding them to our application.
+    This will make our functions much more readable, and it will later allow us to
+    have type-checking and completion when writing tests using the TypeScript client.
+    We're also creating an object with `content-type` headers that will be used in
+    all the requests.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: By creating an HTTP client, we handle things such as authentication automatically.
+    In this specific case, our client can automatically save the token and send it
+    in future requests after the user logs in.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'This is what the `login` method would look like:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[PRE32]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'It''s currently setting the `token` variable that lives on the client instance.
+    That token is later added to authenticated requests such as the `getMuseums` function,
+    as demonstrated in the following snippet:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE33]'
+  prefs: []
+  type: TYPE_PRE
+- en: After creating the client, we want to distribute it. We can use the Deno bundle
+    command to do it, as we learned in [*Chapter 2*](B16380_02_Final_JM_ePub.xhtml#_idTextAnchor056)*,
+    The Toolchain*.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'If we want to have it served by our web server, we can also do this by adding
+    a handler that serves the bundled content of our client file. It would look something
+    like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE34]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'You might need to go back to your `.vscode/settings.json` file and enable the
+    `unstable` property so that it recognizes we''re using unstable APIs. This is
+    demonstrated in the following snippet:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE35]'
+  prefs: []
+  type: TYPE_PRE
+- en: Note how we're using the unstable `Deno.emit` API and setting the `content-type`
+    as `application/javascript`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We're then sending the file emitted by Deno (`deno:///bundle.js`) as the request
+    body.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This way, if a client performs a `GET` request to `/api/client.js`, it will
+    bundle and serve the content of the client we just wrote. The end result will
+    be a bundled, browser- compatible JavaScript file that can then be used by an
+    application.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To finish, we''ll use this client in an HTML file that will authenticate and
+    get the museums from the API. Proceed as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Create an HTML file in the root of the project, named `index-with-client.html`,
+    as illustrated in the following code snippet:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE36]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Create a `script` tag and import the script directly from the API URL, as follows:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE37]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Now, it''s just a matter of using the client we built. We''ll use it to log
+    in (with a user you previously created) and get a list of museums. The code is
+    illustrated in the following snippet:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE38]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: We'll use `window.prompt` to get the username and password when the user accesses
+    the page, and then we'll log in with that data and use it to get museums. After
+    this, we'll just add that to the **Document Object Model** (**DOM**), creating
+    a list of museums.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Let''s spin up the application again, as follows:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE39]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'And then, serving the frontend application, this time adding the `–cert` and
+    `--key` flags with paths to the respective files, to run the file server with
+    HTTPS, as illustrated in the following snippet:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE40]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'We can now access the web page at https://localhost:3000/index-with-client.html,
+    fill in the username and password, and get a list of museums on the screen, as
+    illustrated in the following screenshot:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '![Figure 7.3 – Web page with a JavaScript client getting data from the API'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '](img/Figure_7.3_B16380.jpg)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Figure 7.3 – Web page with a JavaScript client getting data from the API
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To log in in the previous step, you need to use a user you previously registered
+    on the application. If you don''t have one, you can create it using the following
+    command:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE41]'
+  prefs: []
+  type: TYPE_PRE
+- en: Make sure to replace `your-username` with the desired username, and `your-password`
+    with the desired password.
+  prefs: []
+  type: TYPE_NORMAL
+- en: And with that, we've finished our section about using Deno on the browser!
+  prefs: []
+  type: TYPE_NORMAL
+- en: What we just did can be further explored, unlocking great amounts of potential;
+    this is just a quick example that applies to our use case. This practice makes
+    it easier for any browser application to integrate with the application we just
+    wrote. Instead of having to deal with HTTP logic, clients would just have to call
+    methods and receive their responses. As we saw, this client can also handle topics
+    such as authentication and cookies automatically.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This section explored one feature that Deno enables: compiling code for the
+    browser.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: We've applied it in the context of our application by creating an HTTP client
+    that abstracts the user from the API. This feature can be used to do lots of things
+    and is currently being used in writing frontend JavaScript code inside Deno.
+  prefs: []
+  type: TYPE_NORMAL
+- en: As we explained in [*Chapter 2*](B16380_02_Final_JM_ePub.xhtml#_idTextAnchor056),
+    *The Toolchain*, the only thing we have to take into consideration when writing
+    code for the browser is not using functions from the `Deno` namespace. By following
+    these restrictions, we can very easily write code in Deno using all its advantages
+    and compile it to JavaScript for distribution.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This was just an introduction to a very promising feature. This feature, as
+    with Deno, is still in its initial stages, and many great uses for it will be
+    discovered by the community. Now that you're also aware of it, I'm sure you'll
+    also come up with great ideas.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: This was a chapter in which we focused a lot on practices that bring our application
+    closer to a state that we can deploy into production. We started by exploring
+    basic security practices, adding the CORS mechanism and HTTPS to the API. These
+    two features, which are pretty much standard in any application, are a big security
+    improvement on what we already had.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Also, thinking about deploying the application, we also abstracted the configuration
+    and secrets from the code base. We started by creating an abstraction that would
+    deal with it so that the configuration is not scattered, and modules just receive
+    their configuration values without any awareness of how they're loaded. Then,
+    we proceeded to using those values in our current code base, something that revealed
+    itself to be quite easy. This step removed any configuration values from the code
+    and moved them to a configuration file.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Once done with configuration, we used the same abstraction created to deal with
+    secrets in an application. We implemented a feature that loads values from environment
+    variables and adds them to the application configuration. Then, we used those
+    secret values where they were needed, with things such as the MongoDB credentials,
+    and token-signing keys.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We finished the chapter by exploring a possibility offered by Deno since its
+    first days: bundling code for the browser. Applying this feature to our application
+    context, we decided on writing a JavaScript HTTP client to connect to the API.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This step explored part of the potential of sharing code between the API and
+    client, unlocking a world of possibilities. With this, we explored how we can
+    use this bundling feature of Deno to compile a file at runtime and serve it to
+    the user. Part of this feature''s advantages will also be explored in the next
+    chapter, where we''ll write unit and integration tests for our application. Part
+    of those tests will use the HTTP client created here, leveraging one big advantage
+    of this practice: having the client and server in the same code base.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the next chapter, we'll focus deeply on testing. We'll write tests for the
+    logic we wrote in the rest of the book, starting with the business logic. We'll
+    learn how we can improve the reliability of a code base by adding tests, and how
+    the layers and architecture we created are crucial when it comes to writing them.
+    The tests we'll write will go from unit to integration tests, and we'll explore
+    the use cases where they apply. We'll see the value added by tests when it comes
+    to writing new features and maintaining old ones. Along the way, we'll learn about
+    some new Deno APIs.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The code isn't done until the tests are written, and thus we'll write them to
+    conclude our API.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let's go!
+  prefs: []
+  type: TYPE_NORMAL

@@ -1,0 +1,312 @@
+- en: Preface
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Thank you for buying this book. You made a great choice for a new step in frontend
+    and JavaScript technology. The Meteor framework is not just another library that
+    aims to make things easier. It is a complete solution for a web server, client
+    logic, and templates. Additionally, it contains a complete build process, which
+    will make working for the Web by chunks faster. Thanks to Meteor, linking your
+    scripts and styles is a thing of the past, as the automatic build process takes
+    care of everything for you. Surely, this is a big change, but you will soon love
+    it, as it makes extending your app as fast as creating a new file.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Meteor aims to create single-page applications where real time is the default.
+    It takes care of the data synchronization and updating of the DOM. If data changes,
+    your screen will be updated. These two basic concepts make up a lot of the work
+    we do as web developers, and with Meteor this happens without any extra line of
+    code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In my opinion, Meteor is a complete game changer in modern web development.
+    It introduces the following patterns as defaults:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Fat clients: All of the logic resides on the client. HTML is only sent on the
+    initial page load'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: JavaScript and the same API are used on both the client and the server
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Real time: Data synchronizes automatically to all clients'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: A "database everywhere" approach, allowing database queries on the client side
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Publish/subscribe patterns for web server communication as the default
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Once you have used all these new concepts, it is hard to go back to the old
+    way of doing things where so much time goes only into preparing the app's structure
+    while linking files or wrapping them into Require.js modules, writing endpoints,
+    and writing code to request and send data back and forth.
+  prefs: []
+  type: TYPE_NORMAL
+- en: While reading this book, you will be introduced step by step to these concepts
+    and how they connect together. We will build a blog, with the backend to edit
+    posts. A blog is a good example, as it uses listings of posts, different routes
+    for each post, and an admin interface to add new posts, providing all we need
+    to fully understand Meteor.
+  prefs: []
+  type: TYPE_NORMAL
+- en: What this book covers
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: '[Chapter 1](part0015_split_000.html#page "Chapter 1. Getting Started with Meteor"),
+    *Getting Started with Meteor*, describes the necessary steps to install and run
+    Meteor, while also going into details about the folder structure of a Meteor project
+    and, in particular, the Meteor project we will build.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[Chapter 2](part0024_split_000.html#page "Chapter 2. Building HTML Templates"),
+    *Building HTML Templates*, shows how reactive templates are built using handlebars
+    such as syntax and how simple it is to display data in them.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[Chapter 3](part0035_split_000.html#page "Chapter 3. Storing Data and Handling
+    Collections"), *Storing Data and Handling Collections*, covers database usage
+    on the server and the client sides.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[Chapter 4](part0043_split_000.html#page "Chapter 4. Controlling the Data Flow"),
+    *Controlling the Data Flow*, gives an introduction to Meteor''s publication/subscription
+    pattern, which is used to synchronize data between the server and the clients.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[Chapter 5](part0052_split_000.html#page "Chapter 5. Making Our App Versatile
+    with Routing"), *Making Our App Versatile with Routing*, teaches us how to set
+    up routes and make our app behave and feel like a real website.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[Chapter 6](part0060_split_000.html#page "Chapter 6. Keeping States with Sessions"),
+    *Keeping States with Sessions*, discusses the reactive Session object and how
+    it can be used.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[Chapter 7](part0066_split_000.html#page "Chapter 7. Users and Permissions"),
+    *Users and Permissions*, describes the creation of users and how the login process
+    works. At this time, we''ll create the backend part for our blog.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[Chapter 8](part0073_split_000.html#page "Chapter 8. Security with the Allow
+    and Deny Rules"), *Security with the Allow and Deny Rules*, covers how the data
+    flow can be limited to certain users to prevent everybody from making changes
+    to our database.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[Chapter 9](part0081_split_000.html#page "Chapter 9. Advanced Reactivity"),
+    *Advanced Reactivity*, shows how we can build our own custom reactive object that
+    can rerun a function based on a time interval.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[Chapter 10](part0086_split_000.html#page "Chapter 10. Deploying Our App"),
+    *Deploying Our App*, covers how to deploy the app using Meteor''s own deploy service
+    and also on your own infrastructure.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[Chapter 11](part0090_split_000.html#page "Chapter 11. Building Our Own Package"),
+    *Building Our Own Package*, describes how to write a package and publicize it
+    on Atmosphere for everybody to use.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[Chapter 12](part0094_split_000.html#page "Chapter 12. Testing in Meteor"),
+    *Testing in Meteor*, shows how packages can be tested using Meteor''s own tinytest
+    package, as well as using third-party tools to test the Meteor application itself.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[Appendix](part0099_split_000.html#page "Appendix A. Appendix"), contains a
+    list of Meteor commands as well as iron:router hooks and their descriptions.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: What you need for this book
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: To follow the examples in the chapters, you will need a text editor to write
+    the code. I highly recommend Sublime Text as your IDE, as it has a wide range
+    of plugins for almost every task a web developer could think of.
+  prefs: []
+  type: TYPE_NORMAL
+- en: You will also need a modern browser to see your results. As many examples use
+    the browser console to make changes to the database and to see the results of
+    the code snippets, I recommend Google Chrome. Its Developer tools web inspector
+    has everything a web developer needs to work and debug websites with ease.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Additionally, you can use Git and GitHub to store your success every step along
+    the way and in order to go back to the previous versions of your code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The code examples for each chapter will also be available on GitHub at [https://github.com/frozeman/book-building-single-page-web-apps-with-meteor](https://github.com/frozeman/book-building-single-page-web-apps-with-meteor),
+    where each commit in this repository correlates with one chapter of the book,
+    giving you an easy way to see what was added and removed in each step along the
+    way.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Who this book is for
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: This book is for web developers who want to get into the new paradigm of single-page,
+    real-time applications. You don't need to be a JavaScript professional to follow
+    along, but certainly a good basic understanding will make this book a valuable
+    companion.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If you have heard about Meteor but haven't yet used it, this book is definitely
+    for you. It will teach you everything you need to understand and use Meteor successfully.
+    If you have used Meteor before but want to get a deeper insight, then the final
+    chapter will help you improve your understanding of custom reactive objects and
+    writing packages. Testing is probably the least covered topic in the Meteor community
+    right now, so by reading the final chapter, you will easily gain an understanding
+    of how to make your apps robust using automated tests.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Conventions
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this book, you will find a number of styles of text that distinguish between
+    different kinds of information. Here are some examples of these styles, and explanations
+    of their meanings.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Code words in text, database table names, folder names, filenames, file extensions,
+    pathnames, dummy URLs, user input, and Twitter handles are shown as follows: "With
+    Meteor, we never have to link files with the `<script>` tags in HTML."'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'A block of code is set as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'When we wish to draw your attention to a particular part of a code block, the
+    relevant lines or items are set in bold:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Any command-line input or output is written as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: '**New terms** and **important words** are shown in bold. Words that you see
+    on the screen, in menus or dialog boxes for example, appear in the text like this:
+    "However, now when we go to our browser, we will still see **Hello World**."'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Warnings or important notes appear in a box like this.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Tips and tricks appear like this.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Reader feedback
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Feedback from our readers is always welcome. Let us know what you think about
+    this book—what you liked or may have disliked. Reader feedback is important for
+    us to develop titles that you really get the most out of.
+  prefs: []
+  type: TYPE_NORMAL
+- en: To send us general feedback, simply send an e-mail to `<[feedback@packtpub.com](mailto:feedback@packtpub.com)>`,
+    and mention the book title through the subject of your message.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If there is a book that you need and would like to see us publish, please send
+    us a note in the **SUGGEST A TITLE** form on [www.packtpub.com](http://www.packtpub.com)
+    or e-mail `<[suggest@packtpub.com](mailto:suggest@packtpub.com)>`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If there is a topic that you have expertise in and you are interested in either
+    writing or contributing to a book, see our author guide on [www.packtpub.com/authors](http://www.packtpub.com/authors).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Customer support
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Now that you are the proud owner of a Packt book, we have a number of things
+    to help you to get the most from your purchase.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Downloading the example code
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: You can download the example code files for all Packt books you have purchased
+    from your account at [http://www.packtpub.com](http://www.packtpub.com). If you
+    purchased this book elsewhere, you can visit [http://www.packtpub.com/support](http://www.packtpub.com/support)
+    and register to have the files e-mailed directly to you.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Errata
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Although we have taken every care to ensure the accuracy of our content, mistakes
+    do happen. If you find a mistake in one of our books—maybe a mistake in the text
+    or the code—we would be grateful if you could report this to us. By doing so,
+    you can save other readers from frustration and help us improve subsequent versions
+    of this book. If you find any errata, please report them by visiting [http://www.packtpub.com/submit-errata](http://www.packtpub.com/submit-errata),
+    selecting your book, clicking on the **Errata Submission Form** link, and entering
+    the details of your errata. Once your errata are verified, your submission will
+    be accepted and the errata will be uploaded to our website or added to any list
+    of existing errata under the Errata section of that title.
+  prefs: []
+  type: TYPE_NORMAL
+- en: To view the previously submitted errata, go to [https://www.packtpub.com/books/content/support](https://www.packtpub.com/books/content/support)
+    and enter the name of the book in the search field. The required information will
+    appear under the **Errata** section.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Piracy
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Piracy of copyright material on the Internet is an ongoing problem across all
+    media. At Packt, we take the protection of our copyright and licenses very seriously.
+    If you come across any illegal copies of our works, in any form, on the Internet,
+    please provide us with the location address or website name immediately so that
+    we can pursue a remedy.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Please contact us at `<[copyright@packtpub.com](mailto:copyright@packtpub.com)>`
+    with a link to the suspected pirated material.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We appreciate your help in protecting our authors, and our ability to bring
+    you valuable content.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Questions
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: If you have a problem with any aspect of this book, you can contact us at `<[questions@packtpub.com](mailto:questions@packtpub.com)>`,
+    and we will do our best to address the problem.
+  prefs: []
+  type: TYPE_NORMAL

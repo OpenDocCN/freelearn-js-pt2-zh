@@ -1,0 +1,732 @@
+- en: Chapter 5. Data, Meteor Style!
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: We've nearly completed the Lending Library application, without having to worry
+    much about how our data is being stored. Meteor's data caching and synching methodology
+    is intentionally built to make that part of building the application as simple
+    as possible, so that instead of spending a lot of time messing around with database
+    connections, queries, and caching, you can concentrate on writing a great program.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We do want to go over the methodology, however, and make sure we have a solid
+    understanding of how Meteor handles data, so we can perform some common optimizations,
+    and build our applications even more quickly.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In this chapter, you will learn about the following topics:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: MongoDB and document-oriented storage
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Broadcasting changes – how Meteor makes your web application reactive
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Configuring publishers – how to streamline and protect your data
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Document-oriented storage
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Meteor uses a version of MongoDB (minimongo), to store all of the data from
+    your models. It's capable of using any other NoSQL/document-oriented database,
+    but MongoDB comes by default with the Meteor installation. This feature makes
+    your programs much simpler and easier to write, and works really well for quick,
+    lightweight data storage.
+  prefs: []
+  type: TYPE_NORMAL
+- en: But why not use a relational database
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Traditionally, data is stored using a relational model. The relational model,
+    with all of its associated rules, relations, logic, and syntax is an integral
+    and invaluable part of modern computing. The rigid structure of a relational database,
+    with exact requirements for each record, relation, and association, provides us
+    with quick searches, scalability, and the possibility for deep analytics.
+  prefs: []
+  type: TYPE_NORMAL
+- en: That type of exactness, however, isn't always necessary. In the case of our
+    Lending Library, for example, a full-fledged relational database would be overkill.
+    In fact, in some cases, it's more effective to have a flexible data storage system,
+    one that you can extend quickly and without significant recoding.
+  prefs: []
+  type: TYPE_NORMAL
+- en: For example, if you wanted to add a new property to your `list` object, it would
+    be much simpler to just add the new property and let the database worry about
+    it, rather than having to refactor your database code, add a new column, update
+    all of your SQL statements and triggers, and make sure that all previous records
+    have the new property.
+  prefs: []
+  type: TYPE_NORMAL
+- en: That's where document-oriented storage comes into play. In a document-oriented
+    storage system, your data store is made up of a bunch of key-value paired documents.
+    What's the structure of that document? The data store doesn't really care. It
+    could contain pretty much anything as long as each record has a unique key so
+    that it can be retrieved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: So in one document entry, you could have a very simple document. Maybe a key-value
+    pair.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: And then in another document entry (in the same data store) you could have a
+    complex object, with nested arrays, nested objects, and so on.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: Heck, it could be the unabridged works of William Shakespeare. It doesn't really
+    matter. As long as the data store can take that document and assign a unique key
+    to it, it can be stored.
+  prefs: []
+  type: TYPE_NORMAL
+- en: As you may have guessed, the lack of structure *can* make querying, sorting,
+    and manipulating those documents less efficient. But that's okay, because our
+    primary concern is with ease of coding and development speed, not efficiency.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In addition, because our application only has a few core functions, we can quickly
+    identify what queries we'll be using most often, and optimize our document schema
+    around that. This makes a document-oriented database actually perform *better*
+    in some cases than a traditional relational database.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: There are some pretty sophisticated document-oriented storage solutions out
+    there that some would argue are as efficient or even more so than a standard relational
+    database, but that discussion is beyond the scope of this book.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Given the flexible nature of a document-oriented storage system, it is perfect
+    for making quick changes, and the foundation libraries Meteor provides make it
+    so that we don't have to worry about the connection or the structure. All we have
+    to do is have a high-level understanding of how to retrieve, add, and modify those
+    documents, and we can leave the rest to Meteor.
+  prefs: []
+  type: TYPE_NORMAL
+- en: MongoDB
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: MongoDB—a play on the word "humongous"—is an open source NoSQL (not only SQL)
+    database. It provides sophisticated features such as indexing, linking, and atomic
+    operations, but at its heart it is a document-oriented storage solution.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: To learn more about MongoDB, visit the official site [http://www.mongodb.org](http://www.mongodb.org).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Using simple commands, we can see what records (what documents) are available,
+    convert those records into JavaScript objects, and then save those changed objects.
+    Think of MongoDB records as you would think about an actual text document:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Locate the document, and open it for editing (Meteor equivalent: `lists.find
+    (...)`).'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Make changes to the document (Meteor equivalent: `lists.update({...})`).'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Save the document (automatically done with the `.update()` function).
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'It''s not as simple as that, and there''s a lot of syntax you''ll need to learn
+    if you want to consider yourself an expert in MongoDB, but you can clearly see
+    the simple, clean document-oriented approach: Find/create a record, make changes,
+    and save/update the record to the data store.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: We need to discuss one final concept to help you better understand how MongoDB
+    works. It is called a database, but it's easier to conceptualize as a collection
+    of documents. The collection is indexed and quickly accessible, but it's still
+    a collection, rather than a group of relational tables/entities. Just like you'd
+    think about a folder on your hard drive, where you keep all of your text documents,
+    think about MongoDB as a collection of documents, all of which are accessible
+    and able to be "opened", changed, and saved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using direct commands
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: To gain a better understanding of how MongoDB works, let's have some fun in
+    the command line.
+  prefs: []
+  type: TYPE_NORMAL
+- en: First, make sure that your application is up and running (open a terminal window,
+    `cd` to the `~/Documents/Meteor/LendLib` directory, and execute the `meteor` command).
+    Next, open a browser to `http://localhost:3000`.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Now, you will want to open an *additional* terminal window, `cd` to the `~/Documents/Meteor/LendLib`
+    directory, and run the following command:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'You should see a message similar to the following screenshot:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '![Using direct commands](img/0823OS_05_12.jpg)'
+  prefs:
+  - PREF_IND
+  type: TYPE_IMG
+- en: You have now connected to the running MongoDB database for your Lending Library
+    application. Let's poke around with a couple of commands.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'First, let''s bring up the help screen. Enter the following command and hit
+    *Enter*:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'You''ll get a list of commands, and a brief explanation of what each one does.
+    One in particular will show us even *more* commands we can use: `db.help()`. This
+    will give us a list of database-related commands. Type the following into your
+    terminal window, and press *Enter*:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Don't get overwhelmed by the number of possible commands. You don't need to
+    know all of these, unless you'd like to become an expert on MongoDB. You only
+    need to know a few, but having a look around never hurt anybody, so let's proceed.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'As mentioned previously, documents are stored in MongoDB in a logical grouping
+    called a collection. We can see this firsthand, and take a look at our lists collection
+    directly in the terminal window. To see a list of all available collections, enter
+    the following:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'In the response you will find the name of your Lending Library collection:
+    `lists`. Let''s go ahead and take a look at the `lists` collection. Enter the
+    following:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Well, that wasn't very exciting. All we got back was `meteor.lists`. We want
+    to be able to perform some queries on that collection. So this time, lets assign
+    the collection to a variable.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: It appears that we have the same result as last time, but we have a lot more
+    than that. We've now assigned the `lists` collection to the variable `myLists`.
+    Therefore, we can run commands in the terminal window just like we would inside
+    our Meteor code.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Let''s get the `Clothes` list, which currently doesn''t have any items in it,
+    but still exists. Enter the following command:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'This will return some very basic JSON. If you look closely, you''ll be able
+    to see the empty items array, represented as `"items" : [ ]`. You''ll also notice
+    an `_id` key-value, with a long number next to it, similar to the following:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: We didn't add that `_id`. MongoDB created it for us. It's a unique key, so that
+    if we know it, we can make changes to that document without disturbing any of
+    the other documents. We actually use this inside our Lending Library application,
+    in multiple locations.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'If you look inside `~/Documents/Meteor/LendLib/LendLib.js`, you''ll see the
+    following function for adding an item to a list:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: Notice that when we call the `lists.update()` function, we identify which document
+    we're going to update by the `_id`. This ensures that we're not updating multiple
+    documents accidentally. If, for example, you were to give two lists the same category
+    name (for example, `"DVDs"`), and used the category as the selector `({Category:"DVDs"}`),
+    you would be taking action on both category lists. If, instead, you use the `_id`,
+    it will only update the unique document with that matching `_id`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting back to the terminal, we now have the variable `myLists` assigned to
+    our `lists` collection, and we've assigned the `Clothes` variable to the document
+    in our `lists` collection that represents the `Clothes` list.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Take note of what the `Clothes` list currently looks like in our browser.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Using direct commands](img/0823OS_05_01.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'Let''s go ahead and add our favorite shirt to the `Clothes` list. We''ll do
+    this directly, in the terminal window. Enter the following command:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: This command updates `myLists`, using `Clothes._id` as the selector, and calls
+    `$addToSet`, adding an item with the `Name:"Favorite Shirt"`. It will take a few
+    seconds for Meteor to update, but you will soon see your favorite shirt now added
+    to the list.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Using direct commands](img/0823OS_05_02.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: If you re-run the `Clothes` assignment command `Clothes = myLists.findOne({Category:"Clothes"})`
+    you will now see that the `items` array has an entry for your favorite shirt.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We can just as easily update or remove an item, using the `.update()` function
+    with different arguments (`$pull` for removing, `$set` for updating).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: For code examples, review the `removeItem()` and `updateLendee()` functions
+    in `LendLib.js`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: For a more in-depth tutorial on MongoDB commands, visit [http://mongodb.org](http://mongodb.org)
+    and click on **TRY IT OUT**.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now that we've gone through some of the commands we can implement directly,
+    let's revisit some of our `LendLib.js` code, and discuss the reactive code that
+    tracks changes to our collection.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Broadcasting changes
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Using a publish/subscribe model, Meteor is constantly looking for changes to
+    collections and to `Session` variables. When changes are made, a change event
+    is broadcast (or published). Callback functions are listening (or subscribed)
+    to the events being broadcast, and the code in a function is activated when the
+    specific event it's subscribed to is published. Alternatively, the data model
+    can be directly bound to portions of the HTML/Handlebars templates, so that when
+    a change occurs, the HTML is re-rendered.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Published events
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: So, when is an event published? As mentioned previously, events are broadcast
+    when there's a change in the model. In other words, when a collection or a variable
+    is modified, Meteor publishes the appropriate change event. If a document is added
+    to a collection, an event is triggered. If a document already in a collection
+    is modified and then saved back into the collection, an event is triggered. Finally,
+    if a `Session` variable is changed, an event is triggered. Functions and templates
+    are listening (subscribed) to the specific events, and will process the change
+    in the data appropriately.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'If you recall from [Chapter 3](ch03.html "Chapter 3. Why Meteor Rocks!"), *Why
+    Meteor Rocks!*, this is the Model View View-Model pattern at work. In a reactive
+    context, functions and templates react to changes in the model. In turn, actions
+    from the view will create changes to the model, through the View-Model logic:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Published events](img/0823OS_05_03.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'Meteor''s MVVM is a clean, concise development pattern:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Set up subscribers to model changes (model = collections, documents, and `Session`
+    variables).
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Create logic to handle view events (view events = button click, text input,
+    and so on).
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Change the model, when the logic calls for it (changes = published events).
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Around and around it goes, with a click on a button causing a model change,
+    which then triggers an event, listened to by a template. This updates the view
+    based on the model change. Lather, rinse, repeat.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Configuring publishers
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Up to this point, we have been using `autopublish`. Meaning, we haven't had
+    to code specific publish events for any events or collections. This is great for
+    testing, but we want to have a bit more control over what events and documents
+    get published, so we can improve both performance and security.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If we have a large dataset, we may not want to return the entire collection
+    every time. If `autopublish` is being used, the entire collection will return,
+    and that can slow things down, or it can expose data we don't want to have exposed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Turning off autopublish
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The time has come to turn off `autopublish`. Temporarily stop your Meteor application
+    (if it''s still running) by opening the terminal window you ran the `meteor` command
+    from. You can stop it by pressing *Ctrl* + *C*. Once it''s stopped, enter the
+    following command:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: This removes the `autopublish` library, which is responsible for the automatic
+    publishing of all events inside of Meteor.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: It's considered a best practice to remove `autopublish` from your project. `autopublish`
+    is for developing and debugging, and should be turned off when you're ready to
+    start using your application in earnest.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'By turning this off, you''ve effectively made your application do nothing!
+    Congratulations! You can see your amazing progress by starting up your Meteor
+    service again (enter the `meteor` command and press *Enter*), and opening/navigating
+    to `http://localhost:3000`. You will see the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Turning off autopublish](img/0823OS_05_04.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'The categories/lists are gone! You can even check in the console if you''d
+    like. Enter the following command:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'You should see a count of `6`, but you will instead see a count of `0`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Turning off autopublish](img/0823OS_05_05.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: What gives? Well, it's pretty simple, actually. Because we removed the `autopublish`
+    library, the server is no longer broadcasting any changes to our model.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Why again did we do this? What's the purpose of breaking our application? Ah!
+    Because we want to make our application more efficient. Instead of getting every
+    record automatically, we're going to instead just get the records we need, and
+    the minimum set of data fields from those records.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Listing categories
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'In `LendLib.js`, inside the `if(Meteor.isServer)` block, create the following
+    `Meteor.publish` function:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: This tells the server to publish a `"Categories"` event. It will publish this
+    whenever a change is made to the variables found inside the function. In this
+    case, it's `lists.find()`. Whenever a change is made that would affect the results
+    of `lists.find()`, Meteor will trigger/publish an event.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'If you noticed, the `lists.find()` call isn''t empty. There''s a selector:
+    `{fields:{Category:1}}`. This selector is telling the `lists.find()` call to only
+    return the `fields:` specified. And only one field is specified –`{Category:1}`.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: This snippet of JSON is telling the selector that we want to get the `Category`
+    field (`1` = true, `0` = false). Because that is the only field mentioned, and
+    it's set to `1` (true), Meteor assumes that you want to *exclude* all other properties.
+    If you had any fields set to `0` (false), Meteor would assume that you want to
+    *include* all the other fields you didn't mention.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: For more information on the `find()` function, consult the MongoDB documentation
+    at [http://www.mongodb.org/display/DOCS/Advanced+Queries](http:// http://www.mongodb.org/display/DOCS/Advanced+Queries).
+  prefs: []
+  type: TYPE_NORMAL
+- en: So, if you save this change, your browser will refresh and... nothing happens
+    to the display!
+  prefs: []
+  type: TYPE_NORMAL
+- en: Why? As you may have guessed, removing the `autopublish` library did more than
+    get rid of the `publish` events. It also got rid of the listeners/subscribers.
+    We don't have any subscriber set up to listen on the `Categories` event channel.
+    So we need to add a subscriber event that is tuned in to the `Categories` channel.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Inside the `if (Meteor.isClient)` function, at the very top, just inside the
+    opening bracket, enter the following line of code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: Save this change, and you will now see your `Categories` back where they belong.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Listing categories](img/0823OS_05_06.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Before we celebrate, go ahead and click on the **Clothes** category.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Listing categories](img/0823OS_05_07.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Our favorite shirt is missing! As you probably figured out by now, this is because
+    the publish event we set up was very specific. The only field in the `Categories`
+    channel being published is the `Category` field. All the other fields, including
+    our `items` (and therefore our favorite shirt) are not being broadcast.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let's double-check this. Click on the **+** button inside of the **Clothes**
+    category in your browser, type in `Red Hooded Sweatshirt`, and press *Enter*.
+    The new entry will appear for a split second, and then it will disappear. This
+    is because of local caching and server sync.
+  prefs: []
+  type: TYPE_NORMAL
+- en: When you enter the new `item`, the local cache contains a copy. That `item`
+    is temporarily visible to your client. However, when the sync with the server
+    occurs, the server update only publishes the `Category` field, so when the server
+    model updates the local model, the `item` is no longer included.
+  prefs: []
+  type: TYPE_NORMAL
+- en: One more test, just for funzies. In your terminal window, stop the Meteor service
+    (*Ctrl* + *C*). Now, in your browser, enter another `item` in the **Clothes**
+    category (we'll use `Pumped Up Kicks`). Because the service is stopped, no sync
+    happens with the server, so you're using your local cache, and there is your `item`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Listing categories](img/0823OS_05_08.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Now start your server back up. Your client will sync with the server, and poof!
+    your `item` is gone again.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Listing categories](img/0823OS_05_13.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Listing items
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'This is no good, because we want to see our `items`. So, let''s add `items`
+    back in, and grab the appropriate list of `items` whenever a `Category` is selected.
+    In `LenLib.cs`, just below our first `Meteor.publish()` function inside the `if(Meteor.isServer)`
+    block, add the following function:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: This `publish` function will publish on the `"listdetails"` channel. Any listener/subscriber
+    will provide the variable `category_id`, so that our `find()` function returns
+    a leaner recordset.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Notice that nothing has changed in our client yet (your `items` still aren't
+    visible). That's because we need to create the `subscribe` function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Just below our first `Meteor.subscribe()` function, add the following function:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: Save your changes, and check out your swag **Clothes** collection!
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Listing items](img/0823OS_05_09.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Let's look under the hood here for a minute, and figure out what just happened.
+    Notice that the subscription uses `Session.get('current_list')`. That is the variable
+    that gets passed into the publish function. In other words, the value inside of
+    the `Session` variable `current_list` will be used as `category_id` in the `find()`
+    function's selector.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If you remember from [Chapter 4](ch04.html "Chapter 4. Templates"), *Templates*,
+    we have a click event handler set up to listen for `Category` changes. When you
+    click on **Clothes**, for example, an event fires, and the `selectCategory()`
+    function inside `LendLib.js` handles the event, and changes our `Session` variable.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: That `Session.set()` triggers a publish event. We wrapped the `Meteor.subscribe()`
+    function for the `"listdetails"` channel inside of a `Meteor.autosubscribe()`
+    function. We did this because the `Session.set()` event will trigger `Meteor.autosubscribe()`,
+    and we have a `Meteor.subscribe()` function in there, specifically for the `"listdetails"`
+    channel.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In other words:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`Session.set()` triggers an event.'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '`Meteor.subscribe()` listens to that event because it uses the `Session` variable.'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Meteor resets the subscription listener on the `"listdetails"` channel (because
+    it's wrapped inside `Meteor.autosubscribe()`).
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Meteor sees that new subscription listener and fires an initial event.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '`Meteor.subscribe()` function picks up that event, passes in the `category_id`
+    variable, and the UI refreshes because of the model change.'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Checking your streamlined data
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The display is now no different than when we started this chapter. But underneath
+    the display, the model is much leaner. With the **Clothes** category selected,
+    run the following command in the browser console:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs: []
+  type: TYPE_PRE
+- en: Expand the object, and you'll see that there are no items listed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Checking your streamlined data](img/0823OS_05_10.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: The reason there are no items is because our `Session` variable `current_list`
+    is set to `Clothes`, not `DVDs`. The `find()` function only gets the full record
+    for the `current_list`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Now enter the following command in the browser console and press *Enter*:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs: []
+  type: TYPE_PRE
+- en: Expand the object, and you'll see your three items in an array.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Checking your streamlined data](img/0823OS_05_11.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Click around, add items to categories, add new categories, and check the underlying
+    data model that's visible on the client. You'll see that your lists are now much
+    less visible, and therefore more secure and discreet. This probably won't be a
+    problem for your own personal Lending Library application, but as we expand this
+    out in the next chapter, so that multiple people can use it, streamlined and discreet
+    data will really improve performance.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this chapter, you've learned what MongoDB is, how a document-oriented database
+    works, and you've performed direct queries in the command line, becoming familiar
+    with Meteor's default data repository system. You've also streamlined your application
+    by removing `autopublish`, and have gained a firm understanding of the publish/subscribe
+    design pattern built in to Meteor.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the next chapter, you'll really tighten up security on your app, allowing
+    multiple users to keep track of and control their own lists of items, and you'll
+    see how to further streamline your client and server code through the use of folders.
+  prefs: []
+  type: TYPE_NORMAL

@@ -1,0 +1,774 @@
+- en: Chapter 4. Templates
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: We've gotten just a taste of templates so far, and are now ready to dive in,
+    creating a working application using the MVVM design pattern. This chapter will
+    take us through the template system in depth, and show us how to implement display
+    logic, add design considerations to a model (create the View-Model), and take
+    care of data flow.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In this chapter, you will complete the following tasks:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Completing the Lending Library core functionality
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Creating multiple templates and template logic
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Adding, deleting, and updating entries in the data model
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Seeing reactivity in action and using it in your application
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: A new HTML template
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: We've already created our categories through the use of the `categories` template.
+    Now, we want to take this to the next level and display the actual items that
+    we may want to let people (except STEVE!) borrow. So when we click on a category
+    we should get a **list** of **items**.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s use that terminology. We need a place to display a `list`. So, let''s
+    modify our`~/Documents/Meteor/LendLib/LendLib.html` code just a bit at the top:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We did two things by adding this code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: We wrapped the `div` element with `id="categories-container"` inside of the
+    `div` called `lendlib`. This is for stylistic purposes, so that our `list` will
+    more or less line up with the `categories` template.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'We added a `div` with `id="list"` just below it, and added a call to a new
+    template: `{{> list}}.` This is our template/placeholder for the `list` of `items`,
+    which we''ll see shortly in the sections that follow.'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: And there you have it. We've created a very easy-to-maintain structure, with
+    definite boundaries in the document. We know where our `categories` are going
+    to go, and we know where our `list` of `items` is going to go.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Now let''s see about the list template itself. Not so simple, but still not
+    bad. At the very end of `LendLib.html`, below the closing `</template>` tag for
+    our `categories` template, place the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Let''s go through this step by step, so we understand what each line does:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here we declare the HTML `<template>` with the name `"list"`, to match the call
+    to the list template we made in the body. We create an unordered list `<ul>` and
+    give it an `id` so we can refer to it later if need be.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Then we start a templated `each` statement. This time, we're going to iterate
+    through `items`. We haven't created the Meteor `items` template just yet, but
+    we'll get there soon enough.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: Now, under the `each` statement, we create an `<li>` element and give it two
+    class names. The `lending_item` class name is added so that we can refer to it
+    in our View-Model (Meteor template code). The `alert` class name is for Bootstrap,
+    so it will display all nice and pretty.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Next, we create a `button` that we can use, should we choose to delete the item.
+    Notice, that we give it an ID `id="{{Name}}"`. This will be read from the `items`
+    View-Model, and will make our jobs much easier in the future, should we want to
+    delete the `item` from our `items` collection. There are also two class names
+    on this one. `close` is added for Bootstrap, and `delete_item` is added so that
+    we can refer to it in the View-Model when the time comes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now, just below that we have another template placeholder for `{{Name}}`. This
+    is so that we can use the title of the item (for example on a DVD item the title
+    could be "Mission Impossible") inside our display element. We'll see this in action
+    very soon.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Now we begin a series of conditional statements. The first conditional statement
+    has to do with when we want to edit who is borrowing our item, or the **lendee**:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: We are first using an `if` statement to see if our *current mode* for this `item`
+    is `lendee_editing`. That is to say, if we wanted to edit the lendee, we would
+    be in "lendee editing" mode, and therefore (in our JavaScript file) `Template.list.lendee_editing`
+    would return `true`. If this is the case, we need a textbox, hence the inclusion
+    of the `<input>` element, with its associated `id`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Alternately—and this is the default—we just want to display who the lendee is,
+    if there is one. If there isn't, we'll want to maybe change the color or something,
+    but we still want it displayed. So, we create a Bootstrap-styled `label` in the
+    form of a `<div>` element.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'At the end of the class declarations, we see a template variable: `...{{LendClass}}"`.
+    This class addition is stylistic. It will tell our CSS template whether to show
+    it as "free" (someone can borrow it) or as "lent out." If it''s green, it''s free,
+    if it''s red, someone has borrowed it. And what CSS class name is used to represent
+    the color will be determined in `LendLib.js`, by the `item.LendClass` property,
+    which we will create shortly.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Then we have the value inside the div: `{{Lendee}}` . This is also a property
+    in `LendLib.js`, as the `item.Lendee` property, and it will either display the
+    name of the lendee, or "free" if no one has borrowed it.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: We then have the ending `</li>` tag, and our `each` comes to an end with `{{/each}}`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Now, we have our second `if` statement, and this one is actually a nested `if`.
+    This one is outside of the `each` statement, so it''s not specific to items. This
+    `if` statement displays either a light-green bar with a **+** sign, or a textbox
+    in the form of an `<input>` element, so that we can add items to our list:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: So we see our first `if`, which is conditioned on whether we're even displaying
+    any list items. If we are, that means we have a list selected. Or rather, we are
+    in the `list_selected` mode. Keeping track of this is part of the View-Model's
+    job, so `Template.list.list_selected` is found inside `LendLib.js`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We then create an `<li>` element, style it green with the Bootstrap `alert-success`
+    class, and add the `&plus;` sign.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Next is our nested (second) `if`. This one is checking to see if we are adding
+    to the list of items. If we are, we are in `list_adding` mode, so we'll display
+    a textbox in the form of an `<input>` element. If not, we'll just leave the pretty
+    light-green box with just the **+** sign in it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Finally, we end our nested `if`, our `</li>`, our parent `if`, our `</ul>`,
+    and our `</template>`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Gluing it all together
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The View-Model (MVVM) or controller (MVC) or presenter (MVP) is considered the
+    glue of an MV* application model. That's because it "glues" together all the view
+    items, such as buttons or textboxes, to the model.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Pretty fancy explanation, eh? Well, you try to come up with a better explanation
+    for what it does. It really does fill in the cracks, and keep the model and the
+    view together. Someone else invented the term, not us, so let's continue without
+    the Judgy McJudgerson viewpoint, mmmk?
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this section, we'll go through all the changes step-by-step that need to
+    happen inside of `~/Documents/Meteor/LendLib/LendLib.js` in order to glue the
+    template and the data model together.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Our items View-Model
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'In our data model that we created in [Chapter 2](ch02.html "Chapter 2. Reactive
+    Programming… It''s Alive!"), *Reactive Programming…It''s Alive!*, we added some
+    sample `items` when we created a couple of the `lists`. We did so, if you recall,
+    using the browser console, as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'You''ll notice that we have a hierarchy in there. Every `list` in the `lists`
+    collection has an `items` object, which is an array:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We need to represent this items array to our HTML template, but we need a couple
+    of extra properties, so the view knows what to do with it. Specifically, we need
+    to:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Return the name of the lendee or return "free" if there is no lendee (`item.Lendee`)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Return the CSS class (red or green), depending on if the item is lent out (`item.LendClass`)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: So, we're going to get the `items` collection from the currently selected list,
+    add the `Lendee` and `LendClass` properties, and make the template available.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Open `~/Documents/Meteor/LendLib/LendLib.js`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Immediately after the closing `}` curly bracket for the `function focusText(...`,
+    add the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: We'll walk through this step-by-step.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here we're declaring the `Template.list.items` function, and checking to see
+    if a `list` is selected. If a `list` is selected, the `Session` variable `current_list`
+    will have a value in it. If it's null, there's no reason to return anything, so
+    we'll just return null.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: This is the View-Model at work. It is reading the contents of a given category,
+    and incorporating the current state of the UI, according to whether the user has
+    selected a list. This is the glue at work.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If something is selected, we need to first find the category. We'll call it
+    `cats`, because it's shorter, even though it's not strictly speaking the best
+    naming convention. But what do we care? We're doing this for fun, and `cats` are
+    awesome!
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: We are using the MongoDB command `findOne()`, and passing the `current_list`
+    session parameter as `_id` in the selector/query. If something is selected, we
+    will get a single category/list back. Let's check to make sure we do, and that
+    we also get `items`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'If nothing returns, or there are no `items` in the category, we don''t really
+    need to figure out the `Lendee` or the `LendClass`, do we? So let''s create an
+    `if` statement, and a `for` statement inside the `if`, that will only get executed
+    if we have something worth iterating over:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: First, we check to see if `cats` and `cats.items` are not undefined/null.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Next, we iterate over all the values in `items` (`items` is an array, if you
+    recall). To make it easier, we declare the variable `d = cats.item[i]`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now we add the `Lendee` property, checking to see if the item is lent to anyone
+    with the `LentTo` property. If it isn't (if `LentTo` doesn't exist), we'll assign
+    the string `"free"` instead.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Likewise, if `LentTo` exists, we declare the red Bootstrap label class, `label-important`
+    as the `LendClass`. If the item is not lent out, we'll use the green Bootstrap
+    class, `label-success` instead.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Finally, with our new `Lendee` and `LendClass` properties assigned, we'll return
+    `cats.items`. We didn't save these properties to our model. That's because they're
+    *not* part of the model. They're used by the view, so we'll only make them available
+    via the View-Model template.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Additional view states
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'We now need to declare the templates for all the different view states. That
+    is, we need to add properties to the View-Model/session that will let us know
+    what we''re looking at, what we''re editing, and what should be hidden/visible.
+    Specifically, we need to access the state value in four situations:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Are we looking at a list? (`list_selected`)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: What list are we looking at? (`list_status`)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Are we adding an item to a list? (`list_adding`)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Are we updating the lendee? (`lendee_editing`)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Add the following code, just below our newly-created items template/function
+    in `LendLib.js`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: Let's go over each of these template functions.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: The `Session` variable `current_list` can be either `undefined` or `null`. If
+    it's `undefined`, `Session.equals('current_list'),null)` will return `true`. So
+    we need to check both cases, unfortunately.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: '`list_status` is used to tell the category button whether it should show as
+    selected. The easiest way to do that is via a CSS class. Bootstrap uses `btn-inverse`
+    to show white-on-black text, but that''s our default button look and feel. So,
+    because we are using the exact opposite color scheme, we''ll use Bootstrap''s
+    regular black-on-white appearance for the selected category.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: In other words, for the `current_list`, we'll return `""` (default button look
+    and feel). For all the other lists/categories, we'll return `"btn-inverse"`, to
+    change the CSS style.
+  prefs: []
+  type: TYPE_NORMAL
+- en: You may be wondering about `this._id`. `this`, in this instance, refers to the
+    MongoDB record (technically document cursor), and `._id` is the unique MongoDB
+    identifier for that "record". This is called the **context**, and in this case
+    when using the HTML template, the context is implied to be the list/category element
+    from where the template was called.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: This one's really straightforward. If the `Session` variable `list_adding` is
+    `true`, we're adding to the list. If it isn't, we're not.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: To check and see if we should be in lendee editing mode, we'll check the `Session`
+    variable `lendee_input` and see `a` if it has a value, and `b` if that value is
+    the `Name` of the item we just clicked on. Once again, this is the implied context.
+    This time, it's not the list, it's the item. How do we know this? Because of where
+    this function is called from. Remember the HTML?
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: Notice how we use `lendee_editing` in the `if` statement, right after we use
+    `{{Name}}`. This is showing us the context. `this.Name` in `LendLib.js` has the
+    same context as `{{Name}}` in `LendLib.html`. In other words, `this.Name` is referencing
+    the same property as `{{Name}}`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: While we're here in the HTML templates, there's one change we need to make to
+    the HTML categories template. We waited until now, so that the change would make
+    sense. When you make the following code change, you'll see how the templates `{{list_status}}`
+    and `{{_id}}` are used, and why the context for `this._id` suddenly makes sense.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Locate the following lines in `LendLib.html` (should be around line 27 or so):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'And change it to look like the following code snippet:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs: []
+  type: TYPE_PRE
+- en: Adding events
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We are now going to hook up all the events. Instead of doing this in the HTML
+    (our view), we'll do it in the template declarations (our View-Model).
+  prefs: []
+  type: TYPE_NORMAL
+- en: The first one takes place in the `Template.categories.events` declaration, because
+    we need to add the event that will change the `Session` variable `current_list`.
+    If you recall, `current_list` helps us know whether we have a selected list (`list_selected`)
+    and what list that is (`list_status`).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In `LendLib.js`, between the event declaration for `''focusout #add-category''`
+    and the end `});` bracket for the `Template.categories.events` function, add the
+    following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs: []
+  type: TYPE_PRE
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Don't forget the comma (`,`) right after the `'focusout... function(e,t){...}`
+    code block.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This adds a click event for every button with the CSS class `"category"`, and
+    calls the function `selectCategory()`. We'll declare that right now.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Just after the `focusText()` function and just before the `Template.list.items`
+    declaration, add the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE21]'
+  prefs: []
+  type: TYPE_PRE
+- en: Yes, you could have put this anywhere. Yes, you could have just put a generic
+    function inline with the click event declaration. So why put it here? Because
+    it makes our code more readable, and we need a section for all the add/delete/update
+    calls we'll need anyway, so it fits right here.
+  prefs: []
+  type: TYPE_NORMAL
+- en: And yes, it's very simple. It just updates the `Session` variable `current_list`
+    with `this._id`. The context of `this` here is the category/list, and therefore
+    `_id` is the MongoDB-generated ID for the record.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Alright, now that we have all the categories events taken care of, let''s work
+    on the items events. At the very end of the `if (Meteor.is_client) {...` code
+    block, just inside the closing `}` bracket, put the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE22]'
+  prefs: []
+  type: TYPE_PRE
+- en: Six events! It looks more monstrous than it is. As usual, let's break it down,
+    step-by-step.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE23]'
+  prefs: []
+  type: TYPE_PRE
+- en: We declare `Template.lists.events`, and enumerate our events. The first one
+    is for adding an item. The button to add an item is, funnily enough, named `btnAddItem`
+    so all we have to do is add the declaration, and then write our function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We set `list_adding` to `true`. Because we use `Session.set()`, the change cascades
+    through our templates. This is a reaction, or reactive programming in action.
+    We also call `Meteor.flush()` to ensure the UI is cleaned up, and then, as a courtesy
+    to our user, we focus the textbox (named `item_to_add`) so our beloved user can
+    just start typing.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE24]'
+  prefs: []
+  type: TYPE_PRE
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: You can learn more about what `Meteor.flush()` does in the Meteor documentation
+    at [http://docs.meteor.com/#meteor_flush](http://docs.meteor.com/#meteor_flush).
+  prefs: []
+  type: TYPE_NORMAL
+- en: The next event is based on the `keyup` event for our `item_to_add` textbox.
+    If we hit *Enter* or Return (`e.which === 13`) we're going to call the `addItem()`
+    function to update the data model, and then we're going to hide the textbox. How
+    do we do that? Set `list_adding = false`, of course. Again, doing it through `Session.set()`
+    will cascade the change through our templates.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Something else that you may have missed: Remember when we manually added a
+    category/list in [Chapter 2](ch02.html "Chapter 2. Reactive Programming… It''s
+    Alive!"), *Reactive Programming – It''s Alive!*, using the console? The change
+    was instantly reflected in the HTML DOM. The same thing is true here. When `addItem()`
+    updates the data model, that change triggers a template refresh for `Template.list.items`.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE25]'
+  prefs: []
+  type: TYPE_PRE
+- en: The trigger creates a situation so that if we we change our minds about adding
+    an `item`, all we have to do is click away from it. If the textbox `item_to_add`
+    triggers the `focusout` event, we'll set the `Session` variable `list_adding`
+    to `false`, and the template will cascade.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE26]'
+  prefs: []
+  type: TYPE_PRE
+- en: Remember when we created the little [![Adding events](img/0823OS_04_05.jpg)]
+    button in our HTML `lists` template? That button belongs to the CSS class `delete_item`,
+    and when the user clicks on it, we will call the `removeItem()` function, passing
+    the `current_list`, and the `id` from the HTML element that was clicked, which
+    happens to be the item `Name` (we added `id="{{Name}}"` on line 39 of `LendingLib.html`).
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE27]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We now focus on the `lendee` section/button. If you recall, we set up a `<div>`
+    element with the CSS class `lendee` in `LendingLib.html`. We are now declaring
+    that whenever one of those `<div>` elements is clicked, we''ll perform actions
+    very similar to when we wanted to add an `item` to a `list`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Set the `Session` variable that controls textbox visibility to `true` (`lendee_input`).
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Refresh the UI (`Meteor.flush()`).
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Set focus on the textbox (`focusText()`).
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'One more event handler:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE28]'
+  prefs: []
+  type: TYPE_PRE
+- en: The textbox with `id="edit_lendee"` has two `keyup` conditions attached to it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If we hit *Enter* or Return (`e.which === 13`), we'll update the `LentTo` property
+    on the data model using `updateLendee()`. We'll then hide the textbox by setting
+    `lendee_input` to `null`. Keep in mind that updating the data model, and setting
+    a `Session` variable will cause the templates to refresh (reactive programming
+    again).
+  prefs: []
+  type: TYPE_NORMAL
+- en: If we instead decide we don't like the changes, we're going to hit the *Esc*
+    key (`e.which === 27`) in which case, we'll set `lendee_input` to `null` and let
+    the reactive programming hide the textbox.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Model updates
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We have two things left to do. We need to take care of making our app pretty
+    (not just yet, though), and we need to create the `addItem()`, `removeItem()`
+    and `updateLendee()` functions that we just made references to in the `events`
+    section.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'So let''s get to work! In `LendingLib.js`, in the helpers section (just above
+    `Template.lists.items`, on line 68 or so) let''s add our `addItem()` function:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE29]'
+  prefs: []
+  type: TYPE_PRE
+- en: '`addItem()` takes two arguments: `list_i`d and `item_name`.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`list_id` is used in the selector (the query) portion of the `update` statement,
+    and `item_name` contains the value to be added to the `item.Name` property of
+    the new `item` to be added.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: But first, we need to check to make sure we have values for `item_name` and
+    `list_id`. If we don't, we'll just `return`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now, we'll call the MongoDB `update()` function on the `lists` collection. `{_id:list_id}`
+    is the selector. We're telling MongoDB to find us the record with an `_id` `=
+    list_id`. We then tell MongoDB what kind of update we're going to perform. In
+    this case, we'll use `$addToSet`, which will append to an array. And what are
+    we going to append?
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`{items:...` indicates that we''re updating the `items[]` array. `{Name:item_name}`
+    is what we''re adding, and it''s the `Name` property. This is equivalent to saying
+    `item.Name = item_name`.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Once we add this, as you might have guessed by now, the templates will automatically
+    update, because a change was made to the data model. Stop for a second and think
+    about that. In six lines of code, we performed an update query *and* propagated
+    the change to our UI. Six lines! Pretty magical, isn't it?
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s handle `removeItem()` next:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE30]'
+  prefs: []
+  type: TYPE_PRE
+- en: Wow, this looks really similar to the `addItem()` function. We are, in fact,
+    using the same `update()` function, just with a different action this time. This
+    time we'll use `$pull`, which pulls an element out of the `items[]` array, where
+    `Name == item_name`. Once again, six lines is all we need. The data model and
+    the UI will both update automatically.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Now we tackle `updateLendee()`, which is a little more complex, but only because
+    Meteor actually uses minimongo, which is a pared-down version of MongoDB, and
+    lacks cursor variable support. That means that instead of using something like
+    `items.$.Name`, where `$` is the cursor location, we instead need to go through
+    the `items[]` array, update values, and then call an update where we replace the
+    entire `items[]` array with our updated one. Here''s how we do it for `LendLib.js`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE31]'
+  prefs: []
+  type: TYPE_PRE
+- en: We get the `list_id`, the `item_name`, and the `lendee_name`, so we can identify
+    the right record (we use `list_id` and `item_name` for that), and then update
+    the `LentTo` property with the value in `lendee_name`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To save some typing, we declare variable `l`, using the MongoDB `findOne()`
+    function. This takes a two-part selector statement: `_id:list_id` and `"items.Name":item_name`.
+    This selector is basically saying "find me *one* record where the `_id == list_id`
+    and the `items[]` array has a record where `Name == item_name`."'
+  prefs: []
+  type: TYPE_NORMAL
+- en: If `l` has a value, and `l` also has `items`, we'll go into our `for` loop.
+    Here we check specifically for whichever array element had `Name == item_name`.
+    If we find one, we'll set the `LentTo` property to `lendee_name`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Once we're done with the `for` loop, we'll call the MongoDB `update()` function,
+    and use the `$set` action to replace the old `items[]` array with the new one
+    that is `{"items":l.items}`. Automatic updates happen again, and our UI (view)
+    and data document (model) are in sync again.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Style updates
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Right now, you can run the application. It will be a visual train wreck, because
+    we haven''t set any CSS styles yet, but let''s go ahead and do that real quick.
+    We''d all stare at a train wreck anyway, just admit it! Make sure your application
+    is running (`> meteor` in the console) and navigate to `http://localhost:3000`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Style updates](img/0823OS_04_01.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'Click on **DVDs**, and you should see the one entry for **Mission Impossible**:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Style updates](img/0823OS_04_02.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: It's not all that bad, besides some width/height issues, but that's because
+    we are using Bootstrap. Let's go ahead and fix the remaining UI issues.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'First, we have one final change in `LendLib.js`. Change the `focusText()` function
+    (located at about line 55):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE32]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'It should now be:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE33]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This change just makes it so that when we go to edit something with a value
+    already in it (like the lendee), the value will transfer to the textbox. This
+    makes it easier for the user to see who the current lendee is. The `val ? val
+    : ""` conditional statement is necessary, because if `val` isn''t passed or is
+    null, `"undefined"` gets put into the textbox.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We now want to update the CSS for all the other visual idiosyncrasies. We won''t
+    be going over the CSS here, as there are probably much better ways to deal with
+    it, and we''re not experts on CSS. So just add the following to `~/Documents/Meteor/LendLib/LendLib.css`,
+    and save the changes:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE34]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'If you kept `http://localhost:3000` open, your browser will automatically refresh.
+    If you didn''t, open it backup (make sure Meteor is running) and observe the results:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Style updates](img/0823OS_04_03.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Don't forget to test all your new functionality! Add new categories, add items
+    to a list, change the lendee, delete the lendee, delete the items, and so on,
+    and just get a feel for how fast and clean the updates to the model are.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now, open two browsers, both pointing to `http://localhost:3000`. You'll notice
+    that changes you make in one browser are reflected in the other one as well! Just
+    as before, Meteor is taking care of the data model synching between the client
+    and server, and any change on one client is propagated to the other clients by
+    the server.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Style updates](img/0823OS_04_04.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Once you get as many items and lists created as you'd like, move on to the next
+    chapter.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this chapter, you've completed the templates, events, and data model sections
+    for your Lending Library application. You've created statements to add, delete,
+    and update your records, and implemented UI state changes. You've seen firsthand
+    how reactive programming works, and gained a solid understanding of context. You
+    are now able to create an application from scratch, using the core functionality
+    of Meteor to develop quickly and with robust functionality. In the next chapter,
+    you'll dive even deeper into Meteor's data caching and synching methodology, and
+    harden your application.
+  prefs: []
+  type: TYPE_NORMAL

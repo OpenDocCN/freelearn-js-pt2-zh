@@ -1,0 +1,506 @@
+- en: Chapter 7. Users and Permissions
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Having worked through the previous chapters, we should have a working blog by
+    now. We can click on all links and posts, and even lazy load more posts.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this chapter, we will add our backend login and create the admin user. We
+    will also create the template to edit posts and make an edit button visible to
+    the admin user so that they can edit and add new content.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In this chapter, we will learn the following concepts:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Meteor's `accounts` package
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Creating users and a log in
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to restrict certain routes to only logged-in users
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_IND
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: You can delete all the session examples from the previous chapter, as we won't
+    need them to progress with our app. Delete the session's code from `my-meteor-blog/main.js`,
+    `my-meteor-blog/client/templates/home.js`, and `my-meteor-blog/client/templates/home.html`,
+    or download a fresh copy of the previous chapter's code.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: If you've jumped right into the chapter and want to follow the examples, download
+    the previous chapter's code examples from either the book's web page at [https://www.packtpub.com/books/content/support/17713](https://www.packtpub.com/books/content/support/17713)
+    or from the GitHub repository at [https://github.com/frozeman/book-building-single-page-web-apps-with-meteor/tree/chapter6](https://github.com/frozeman/book-building-single-page-web-apps-with-meteor/tree/chapter6).
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: These code examples will also contain all the style files, so we don't have
+    to worry about adding CSS code along the way.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Meteor's accounts packages
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Meteor makes it very easy to add authentication to our web app using its `accounts`
+    package. The `accounts` package is a complete login solution tied to Meteor''s
+    core. Created users can be identified by ID in many of Meteor''s server-side functions,
+    for example, in a publication:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: Additionally, we can add support for login via Facebook, GitHub, Google, Twitter,
+    Meetup, and Weibo by simply adding one or more of the `accounts-*` core packages.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Meteor also comes with a simple login interface, an extra template that can
+    be added using the `{{> loginButtons}}` helper.
+  prefs: []
+  type: TYPE_NORMAL
+- en: All registered user profiles will be stored in a collection called `Users`,
+    which Meteor creates for us. All the processes in authentication and communication
+    use the **Secure Remote Password** (**SRP**) protocol and most external services
+    use OAuth.
+  prefs: []
+  type: TYPE_NORMAL
+- en: For our blog, we will simply create one admin user, which when logged in will
+    be able to create and edit posts.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: If we want to use one of the third-party services to log in, we can work through
+    this chapter first, and then add one of the previously mentioned packages.
+  prefs: []
+  type: TYPE_NORMAL
+- en: After we add the additional packages, we can open up the **Sign in** form. We
+    will see a button where we can configure the third-party services for use with
+    our app.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Adding the accounts packages
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'To start using a login system, we need to add the `accounts-ui` and `accounts-password`
+    packages to our app, as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To do so, we open up the terminal, navigate to our `my-meteor-blog` folder,
+    and type the following command:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: After we have successfully added the packages, we can run our app again using
+    the `meteor` command.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: As we want to prevent the creation of additional user accounts by our visitors,
+    we need to disallow this functionality in our `accounts` package, `config`. First,
+    we need to open up our `my-meteor-blog/main.js` file, which we created in the
+    previous chapter, and remove all of the code, as we won't need the session examples
+    anymore.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Then add the following lines of code to this file, but make sure you don''t
+    use `if(Meteor.isClient)`, as we want to execute the code on both the client and
+    the server this time:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: This will forbid any call of `Accounts.createUser()` on the client and the `accounts-ui`
+    package will not show the **Register** button to our visitors.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_IND
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: This option doesn't seem to work for third-party services. So, when using third-party
+    services, everybody can sign up and edit posts. To prevent this, we will need
+    to create "deny" rules for user creation on the server side, which is beyond the
+    scope of this chapter.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Adding admin functionality to our templates
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The best way to allow editing of our post is to add an **Edit post** link to
+    our post's page, which can only be seen if we are logged in. This way, we save
+    rebuilding a similar infrastructure for an additional backend, and make it easy
+    to use as there is no strong separation between frontend and backend.
+  prefs: []
+  type: TYPE_NORMAL
+- en: First, we will add a **Create new post** link to our `home` template, then add
+    the **Edit post** link to the post's `pages` template, and finally add the login
+    buttons and form to the main menu.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Adding a link for new posts
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Let''s begin by adding a **Create new post** link. Open the `home` template
+    at `my-meteor-blog/clients/templates/home.html` and add the following lines of
+    code just above the `{{#each postsList}}` block helper:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: The `{{currentUser}}` helper comes with the `accounts-base` package, which was
+    installed when we installed our `accounts` packages. It will return the current
+    logged-in user, or return null if no user is logged in. Using it inside an `{{#if}}`
+    block helper allows us to show content only to logged-in users.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Adding the link to edit posts
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'To edit posts, we simply add an **Edit post** link to our `post` template.
+    Open up `post.html` from the same folder and add `{{#if currentUser}}..{{/if}}`
+    after `{{author}}`, as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: Adding the login form
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Now that we have both links to add and edit posts, let's add the login form.
+    We can create our own form, but Meteor already comes with a simple login form,
+    which we can style to fit our design.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Since we added the `accounts-ui` package previously, Meteor provides us with
+    the `{{> loginButtons}}` template helper, which works as a drop-in-place template.
+    To add this, we will open our `layout.html` template and add the following helper
+    inside our menu''s `<ul></ul>` tags, as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: Creating the template to edit posts
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Now we are only missing the template to edit the posts. To add this, we will
+    create a file called `editPost.html` inside our `my-meteor-blog/client/templates`
+    folder, and fill it with the following lines of code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: As we can see, we have added the helpers for `{{title}}`, `{{description}}`,
+    and `{{text}}`, which will come later from the post's data. This simple template,
+    with its three text fields, will allow us to edit and create new posts later.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If we now check out our browser, we will notice that we can't see any of the
+    changes we made so far, apart from the **Sign in** link in the corner of our website.
+    To be able to log in, we first need to add our admin user.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Creating the admin user
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Since we deactivated the creation of users from the client, as a security measure
+    we will create the admin user on the server in the same way we created our example
+    posts.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Open the `my-meteor-blog/server/main.js` file and add the following lines of
+    code somewhere inside `Meteor.startup(function(){...})`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: If we now go to our browser, we should be able to log in using the user we just
+    created, and we immediately see that all the edit links appear.
+  prefs: []
+  type: TYPE_NORMAL
+- en: However, when we click any of the edit links, we will see the `notFound` template
+    appearing because we didn't create any of our admin routes yet.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Adding permissions
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Meteor's `account` package doesn't come by default with configurable permissions
+    for users.
+  prefs: []
+  type: TYPE_NORMAL
+- en: To add permission control, we can add a third-party package such as the `deepwell:authorization`
+    package, which can be found on Atmosphere at [http://atmospherejs.com/deepwell/authorization](http://atmospherejs.com/deepwell/authorization)
+    and which comes with a complex role model.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If we want to do it manually, we can add the simple `roles` properties to our
+    user document when we create the user, and then check for these roles in our allow/deny
+    roles when we create or update posts. We will learn about allow/deny rules in
+    the next chapter.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'If we create a user using the `Accounts.createUser()` function, we can''t add
+    a custom property, so we need to update the user document after we have created
+    the user, as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'By default, Meteor publishes the `username`, `emails`, and `profile` properties
+    of the currently logged-in user. To add additional properties, such as our custom
+    `roles` property, we need to add a publication, to access the `roles` property
+    on the client as well, as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Open the `my-meteor/blog/server/publictions.js` file and add the following
+    publication:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'In the `my-meteor-blog/main.js` file, we add the subscription as follows:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Now that we have the `roles` property available on the client, we can change
+    `{{#if currentUser}}..{{/if}}` in the `home` and `post` templates to `{{#if currentUser.roles.admin}}..{{/if}}`
+    so that only admins can see the buttons.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: A note on security
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The user can only update their own `profile` property using the following command:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'If we want to update the `roles` property, we will fail. To see this in action,
+    we can open up the browser''s console and type the following command:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This will give us an error stating: **update failed: Access denied**, as shown
+    in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![A note on security](img/00021.jpeg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: If we want to allow users to edit other properties such as their `roles` property,
+    we need to add a `Meteor.users.allow()` rule for that.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Creating routes for the admin
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Now that we have an admin user, we can add the routes, which lead to the `editPost`
+    template. Though in theory the `editPost` template is available to every client,
+    it doesn't create any risk, as the allow and deny rules are the real security
+    layer, which we will take a look at in the next chapter.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To add the route to create posts, let''s open up our `my-meteor-blog/routes.js`
+    file and add the following route to the `Router.map()` function:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This will simply show the `editPost` template as soon as we click on the **Create
+    new post** link on our home page, as shown in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Creating routes for the admin](img/00022.jpeg)'
+  prefs: []
+  type: TYPE_IMG
+- en: We see that the form is empty because we did not set any data context to the
+    template, and therefore the `{{title}}`, `{{description}}`, and `{{text}}` placeholders
+    in the template displayed nothing.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To make the edit post route work, we need to add subscriptions similar to those
+    we did for the `Post` route itself. To keep things **DRY** (which means **Don''t
+    Repeat Yourself**), we can create a custom controller, which both routes will
+    use, as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Add the following lines of code after the `Router.configure(...);` call:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Now we can simply edit the `Post` route, remove the `waitOn()` and `data()`
+    functions, and add `PostController` instead:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Now we can also add the `Edit Post` route by just changing the `path` and the
+    `template` properties:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: That's it! When we now go to our browser, we will be able to access any post
+    and click on the **Edit** button, and we will be directed to `editPost` template.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: If you are wondering why the form is filled in with the post data, take a look
+    at `PostController`, which we just created. Here, we return the post document
+    inside the `data()` function, setting the data context of the template to the
+    post's data.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now that we have these routes in place, we should be done. Shouldn't we?
+  prefs: []
+  type: TYPE_NORMAL
+- en: Not yet, because everybody who knows the `/create-post` and `/edit-post/my-title`
+    routes can simply see the `editPost` template, even if he or she is not an admin.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Preventing visitors from seeing the admin routes
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here, first we create the `requiresLogin()` function, which will be executed
+    before the `Create Post` and `Edit Post` routes because we pass them as the second
+    arguments to the `Router.onBeforeAction()` function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Inside the `requiresLogin()`, we check whether the user is logged in, which
+    will return the user document when calling `Meteor.user()`, and if they have the
+    role `admin`. If not, we simply render the `notFound` template and don't continue
+    to the route. Otherwise, we run `this.next()`, which will continue to render the
+    current route.
+  prefs: []
+  type: TYPE_NORMAL
+- en: That's it! If we now log out and navigate to the `/create-post` route, we will
+    see the `notfound` template.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If we log in, the template will switch and immediately show the `editPost` template.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This happens because the `requiresLogin()` function becomes reactive as soon
+    as we pass it to `Router.onBeforeAction()`, and since `Meteor.user()` is a reactive
+    object, any change to the user's status will rerun this function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now that we have created the admin user and the necessary templates, we can
+    move on to actually creating and editing the posts.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this chapter, we learned how to create and log in users, how we can show
+    content and templates only to logged-in users, and how routes can be altered depending
+    on the login status.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To learn more, take a look at the following links:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[https://www.meteor.com/accounts](https://www.meteor.com/accounts)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[https://docs.meteor.com/#/full/accounts_api](https://docs.meteor.com/#/full/accounts_api)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[https://docs.meteor.com/#/full/meteor_users](https://docs.meteor.com/#/full/meteor_users)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[http://en.wikipedia.org/wiki/Secure_Remote_Password_protocol](http://en.wikipedia.org/wiki/Secure_Remote_Password_protocol)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[https://github.com/EventedMind/iron-router/blob/devel/Guide.md#using-hooks](https://github.com/EventedMind/iron-router/blob/devel/Guide.md#using-hooks)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: You can find this chapter's code examples at [https://www.packtpub.com/books/content/support/17713](https://www.packtpub.com/books/content/support/17713)
+    or on GitHub at [https://github.com/frozeman/book-building-single-page-web-apps-with-meteor/tree/chapter7](https://github.com/frozeman/book-building-single-page-web-apps-with-meteor/tree/chapter7).
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the next chapter, we will learn how we can create and update posts and how
+    to control updates to the database from the client side.
+  prefs: []
+  type: TYPE_NORMAL

@@ -1,0 +1,510 @@
+- en: Chapter 8. Signing Users in
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: A Windows Store app can be personalized for users who sign in to the app; thus,
+    it is fairly important to make the authentication process very simple. Windows
+    8 enables users to sign in to their devices by using a Microsoft account, hence
+    making it easier for developers to provide a single sign-on experience for users
+    on their apps. Furthermore, Windows 8 offers a **Software Development Kit** (**SDK**)
+    and a set of APIs to allow Windows Store apps to enable single sign on with Microsoft
+    accounts, and to integrate with info in Microsoft SkyDrive, Outlook.com, and Windows
+    Live Messenger. In this chapter we will learn about the Live Connect API and how
+    to integrate the apps with this API to sign in users and retrieve user profile
+    information. We will learn how to start integrating the apps with Live Connect,
+    and show some code that introduces a few basic things that the Live Connect APIs
+    can do.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Introducing Live Connect
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'There are many scenarios when an app will need to authenticate users and access
+    their profile info, from the simple purpose of displaying a welcome message with
+    a user''s name to the extent of accessing their profile info and giving the user
+    a personalized experience. Moreover, you can build an app that offers great features
+    by integrating with products and services such as Microsoft SkyDrive that allows
+    working with documents and media and accessing files on the cloud or Outlook to
+    work with contacts and calendars. The scenarios where your app will need to integrate
+    authentication with Microsoft accounts can be summed up as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The app requires the user to be signed in to work, for example, a contacts app
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The app can work without needing the user to sign in but delivers a more personalized
+    experience for those who do; for example, a weather or news app
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The app contains certain features that integrate with SkyDrive or Hotmail, and
+    thus require a Microsoft account sign in
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'The authentication process and the integration with Microsoft cloud services
+    such as Microsoft SkyDrive and Outlook are implemented using Live Connect. Live
+    Connect is a set of APIs that allow integrating the app with these compatible
+    services. These APIs are provided by the Live SDK that is one of the Microsoft
+    Software Development kits for developing apps. The Live Connect APIs utilize an
+    open standard that allows you to focus on coding to implement features, rather
+    than spending time learning new concepts when all you want to do is implement
+    the features introduced by this new concept. For example, you can use the **Open
+    Authentication** (**OAuth**) standard to integrate with the authentications services
+    of Facebook and other social networking APIs without having to learn the internal
+    workings of the authentication process at the level of those social networking
+    APIs; more importantly, you can use the programming language you know to do the
+    calls. The open standards used by Live Connect include the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**OAuth 2.0**: It is the latest version of the OAuth protocol that is an open
+    standard for authenticating users'' credentials. Social networking APIs, including
+    Live Connect, have adopted OAuth as its authentication standard. OAuth basically
+    enables users to be authenticated using the Live Connect authorization web services
+    without having to share their confidential sign-in credentials with the apps.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Representational State Transfer (REST)**: It is an architectural style popular
+    in web services implementation. In Windows Store development, REST allows us to
+    easily request users'' info through Live Connect APIs. This REST implementation
+    supports standard HTTP methods such as GET, PUT, POST, and DELETE.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**JSON**: It stands for **JavaScript Object Notation**, a lightweight data-interchange
+    format used for representing info in web services. Live Connect exchanges user
+    info in JSON format. For instance, when the function requests a user''s profile
+    information, that info is returned in a response object that contains `first_name`,
+    `last_name`, and so on.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: In Windows 8, users can sign in to their devices by using their Microsoft accounts
+    (Hotmail, Live, and Outlook); hence, the app can take advantage of this functionality
+    to provide a single sign-on experience. For example, the main apps of Windows
+    8 such as People, Mail, and Messaging, and also Microsoft websites such as Outlook
+    and Bing can take advantage of the single sign-on, so the users don't need to
+    sign in to these apps and websites after they are signed into the PC; the process
+    will be done on their behalf. The apps we develop can do the same by implementing
+    the features in the Live Connect APIs so that a user can be directly authenticated
+    in our apps if already signed in to the device.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Before we can start using Live Connect features, there are two prerequisites:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Register the app with the Windows Store
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Configure the Live Connect settings for the Windows Store apps in your Windows
+    Store Dashboard
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'First we need to register the app on the Store in your Windows Store Dashboard,
+    which can be accessed via the following link:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[https://appdev.microsoft.com/StorePortals/en-us/Home/Index](https://appdev.microsoft.com/StorePortals/en-us/Home/Index)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Sign in to the store dashboard; you will need Microsoft account credentials
+    for that, and you will see the following screen:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Introducing Live Connect](img/7102EN_08_01.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'This is the main page where your entire app will be listed. Also, this is the
+    screen that the first-time users will see. In order for the app to start using
+    the Live Connect APIs, it must be registered and its settings configured accordingly.
+    Additionally, for a Windows Store app to use Live Connect, it will need to have
+    a package identity that is a combination of a package name and publisher and that
+    will uniquely identify the app. To get the package identity, we need to submit
+    the app; this is basically reserving a name for your app, adding its description,
+    and submitting it for certification. At this level, we don''t need to submit the
+    app to the Windows Store for certification; we will just need to enter a name
+    for it in the Windows Store developer account. In order to do so, we''ll start
+    by clicking on the **Submit an app** link, which is the first link in the menu
+    to the left under **Dashboard**, as you may have noticed in the previous screenshot.
+    You will be directed to the **Submit an app** page, as shown in the following
+    screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Introducing Live Connect](img/7102EN_08_02.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'Click on **App name** to give the app a unique name that will be reserved for
+    this app only; no other app can use it. The reservations will last for one year
+    if the app was not fully submitted to the Store. Make sure that you have the rights
+    to use the name because the app will be listed in the Windows Store under this
+    name. Note that the app name should be the same as the one entered for the **DisplayName**
+    field in the app manifest file. To proceed, enter a value in the text box provided
+    and click on **Reserve app name**; the name is now reserved; click on **Save**
+    to return to the app summary page. Now the app will be listed on the dashboard
+    in a tilelike box containing **Delete** and **Edit** links. The following screenshot
+    shows a test app created to serve as an example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Introducing Live Connect](img/7102EN_08_03.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'Next we need to configure the Live Services for the app. To do so, follow the
+    given steps:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: If you are in the dashboard page, locate your app and click on **Edit**. You
+    will be directed to the app summary page.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Click on **Advanced features**.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Click on **Push Notifications and Live Connect services info**.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'You will be directed to the page **Push notifications and Live Connect services
+    info page** and will need to follow the steps under the heading **If your app
+    uses Live Connect services, review**. It includes the following steps:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Identifying your app
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'This includes defining the correct identity values in the app''s manifest.
+    These values have been created when we reserved an app name. We can set these
+    values in two ways:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: We could set the app's identity values by using the **Store** menu in Visual
+    Studio 2012 for Windows 8\. Within an open project, in the top menu, click on
+    **Project**; then select **Store** from the menu that appears, navigate to the
+    submenu, and click on **Associate App with the Store**. Follow and finish the
+    wizard, the process is illustrated in the following screenshot:![Introducing Live
+    Connect](img/7102EN_08_04.jpg)
+  prefs:
+  - PREF_IND
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: In the first step of the wizard, marked by number 2 in the previous screenshot,
+    you will be prompted to sign in using your Microsoft account.
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Alternatively, we can set the app''s package identity manually in the app manifest
+    file. Open your app''s `AppManifest.xml` file in a text editor and set these attributes
+    of the `<identity>` element using the `Name` and `Publisher` values. The Windows
+    Store created these values when you reserved your app''s name, and you can retrieve
+    it from the Windows Store Dashboard. The following code shows the syntax of the
+    XML setting node that contains these values:'
+  prefs:
+  - PREF_IND
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_PRE
+- en: Authenticating your service
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'This step involves retrieving the client secret values. Live Connect services
+    use the client secret to authenticate the communications from your server in order
+    to protect your app''s security. The following client secret will be displayed:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '**zqMKo4G0t3ICZe1h06ofrKYZ1/hVuZXn**.'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Note that you can always come back to the page and create a new client secret
+    if there is a need.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Representing your app to Live Connect users
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: This is the last step to configure the Live Connect services info and involves
+    specifying the settings for the consent dialog that Live Connect services use
+    to prompt the user for permission to access and interact with their data. In this
+    step, you can provide them with the links to your own terms of service and privacy
+    policy, and upload your app logo to be displayed in the consent dialog.
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: That concludes the registration and configuration process of the app on the
+    Windows Store. Now to the coding part; we'll see how to enable a basic sign-in
+    and authentication functionality.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Signing in users to the app
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'To start coding the sign-in functionality, we need to reference the Live Connect
+    APIs in our app solution; in order to do so, we should first download and install
+    Live SDK for Windows if you haven''t already installed it. It can be found and
+    downloaded from the *Live Connect Developer Center* via the following link:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[http://msdn.microsoft.com/en-us/live/ff621310.aspx](http://msdn.microsoft.com/en-us/live/ff621310.aspx)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: On that page, you will also find download links to Live SDK versions that support
+    Android and iOS. Alternatively, you can find and install Live SDK in Visual Studio
+    directly to your open solution using the NuGet Package Manager.
+  prefs: []
+  type: TYPE_NORMAL
+- en: To do so, open the app solution in Visual Studio, right-click on the solution
+    from the **Solution Explorer**, and click on **Manage NuGet Packages…**
+  prefs: []
+  type: TYPE_NORMAL
+- en: A dialog will appear, type `livesdk` in the search textbox provided at the top
+    right of the dialog; the package manager will search online for all the relevant
+    matches that include `livesdk`. From the search results, locate **Live SDK** and
+    click on **Install**. This will install the Live SDK package and include it in
+    the references.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The following screenshot shows the **Manage NuGet Packages** dialog on the
+    screen:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Signing in users to the app](img/7102EN_08_09.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'Next, we add a reference to the Live Connect APIs in our project. For doing
+    so, follow the given steps:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: From the **Solution Explorer**, right-click on **References** and then click
+    on **Add Reference**.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Click on **Windows** | **Extension SDKs** | **Live SDK**.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Click on **Add** and then click on **Close**.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Once we add the reference to the Live SDK, the JavaScript file `wl.js` will
+    be added to the solution. For convenience, I recommend you to copy and paste this
+    file to your `js` folder. Then we add the `<script>` element that points to the
+    newly added `wl.js`, so we can make use of the Microsoft IntelliSense for this
+    API in `default.html` pages, as shown in the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: Notice that the file path set for the `src` attribute contains `///`; the reason
+    we used 3 backslashes (/) was because there are three levels in the directory
+    hierarchy to reach the `wl.js` file that is located in the directory `js` under
+    `LiveSDKHTML` under `References`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Adding the reference to this script file will enable Microsoft IntelliSense
+    in the HTML file it is being referenced in.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Moreover, if you want to enable the intelliSense at the level of JavaScript,
+    add the reference to the top of the JavaScript file you are using to call methods
+    of this API, as shown in the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: It is recommended you write the code that uses the `wl.js` in a separate JavaScript
+    file. This will make it easier to make modifications and debug the app.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let's add a button that when clicked, will prompt the user to sign in and respond
+    to the consent dialog.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The following markup will add a `button` with ID `signIn` and a `div` with
+    ID `log`. This `div` will be used to display content on the screen that will give
+    us an idea of what is happening when we click on the **Sign in** button:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'First we initialize the Live Connect APIs by calling the `WL.init` method (the
+    app must call this function on every page before making other function calls in
+    the library), and then subscribe to the `auth.login` event on the page load, as
+    shown in the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: On the callback function of the `auth.login` event, we check the status using
+    the `WL.getSession()` method that gets the current session object; if it exists,
+    the user is signed in.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Next, we will add the sign-in functionality on the click of the button and
+    the log function:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'On the click of the sign in button, we first check if there is a session and
+    whether the user is signed in already. If there is no session, we attempt to log
+    in the user by calling the `WL.login` method; this method takes the parameter
+    `scope: "wl.signin"`. The scope values such as `"wl.signin"` or `"wl.skydrive"`
+    are used to indicate what parts of the user data the app will be able to access
+    if the user consents.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In the previous lines of code, we defined a single scope using this format:
+    `scope: "wl.signin"`, which is a string parameter. We can define multiple scopes
+    as well, but with a slightly different format, using an array of string values,
+    as shown in the following line of code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: The scope can also be set when initializing the library by passing it as an
+    optional parameter to the `WL.init` method. Moreover, the scope values entered
+    in the `login` method will override and extend the list of scopes defined in the
+    `init` method. Also, the scope value of `WL.init` is used when there was no scope
+    provided by the `login` method.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `WL.login` function should be called only in response to a user action,
+    such as clicking a button as in our example, because this function can result
+    in launching the consent page prompt.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `log` function only takes text, and simply appends it to the contents of
+    the `div` with the ID`log` so that we can get status info of what has happened.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Run the app now. You will see the following screenshot prompting you to log
+    in; the consent dialog will follow:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Signing in users to the app](img/7102EN_08_06.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'Follow the steps that appear in the previous screenshot. At the end, the app
+    will display the message: **You are signed in!**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting user info
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The `login` function returns a promise object that allows us to properly react
+    in case of a success, that is, a successful sign-in by the user. Our goal is to
+    get the user''s profile information. As such we need to modify the previously
+    shown `WL.login` call and request additional scopes such as `wl.basic`, `wl.birthday`,
+    and `wl.emails`, which will allow us to retrieve basic profile information such
+    as first and last names and also get the user''s birthday and e-mails. In the
+    success callback of the login method, we then execute a call to the `WL.api` function,
+    which returns our desired user profile info. Technically, the `WL.api` function
+    makes a call to the Live Connect Representational State Transfer (REST) API. The
+    syntax to the `WL.api` call is shown in the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'In the previous code sample, we passed the `me` shortcut to request info about
+    the signed-in user. The path parameter specifies the path to the REST API object,
+    in this case the object `me`, which contains properties such as `first_name` and
+    `last_name`; `WL.api` returns a promise object so we can call `then()` on it,
+    and in the success callback we will request the first and last names of the user,
+    which are provided by the scope `"wl.basic"`. The code will be as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Add the previous code to the `then` method called on `WL.login` in the sign-in
+    button click handler, and the complete code will be as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Run the app now and you will notice that the consent dialog will change requesting
+    to access to info about your birthday and e-mail address, as shown in the following
+    screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Getting user info](img/7102EN_08_07.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'After you approve the consent prompt, click on the **Sign in** button and the
+    app will display the requested info, as shown in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Getting user info](img/7102EN_08_08.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: To abide by the guidelines set by Microsoft for the Windows Store apps, you
+    should not display the Microsoft account sign-in or sign-out options anywhere
+    on the app other than the **Settings Flyout** control or part of a task. The users
+    expect account management options to be in the Settings charm and changing its
+    location will lead to an inconsistent and unexpected experience for your users.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this chapter, we were introduced to Live Connect and learned about its core
+    concepts and saw what we can do with these APIs, what settings are needed by the
+    app to start calling the APIs, and how to write the basic code to call the APIs.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We also covered how to register the app on the Store and communicate with the
+    Store from within Visual Studio.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Then we got to utilize the Live Connect APIs and sign in the user to the app.
+    Also, we learned how to get session info after the user signs consent.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the next chapter we will learn about the app bar, how to create one for the
+    app, and how to add menu buttons to it.
+  prefs: []
+  type: TYPE_NORMAL

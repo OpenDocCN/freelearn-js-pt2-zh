@@ -1,0 +1,567 @@
+- en: Chapter 8. Security with the Allow and Deny Rules
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In the previous chapter, we created our admin user and prepared the `editPost`
+    template. In this chapter, we will make this template work so that we can create
+    and edit posts using it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: To make it possible to insert and update documents in our database, we need
+    to set constraints so that not everybody can change our database. In Meteor, this
+    is done using the allow and deny rules. These functions will check documents before
+    they are inserted into the database.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In this chapter, you will cover the following topics:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Adding and updating posts
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using the allow and deny rules to control the updating of the database
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using methods on the server for more flexibility
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using method stubs to enhance user experience
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_IND
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: If you've jumped right into the chapter and want to follow the examples, download
+    the previous chapter's code examples from either the book's web page at [https://www.packtpub.com/books/content/support/17713](https://www.packtpub.com/books/content/support/17713)
+    or from the GitHub repository at [https://github.com/frozeman/book-building-single-page-web-apps-with-meteor/tree/chapter7](https://github.com/frozeman/book-building-single-page-web-apps-with-meteor/tree/chapter7).
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: These code examples will also contain all the style files, so we don't have
+    to worry about adding CSS code along the way.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Adding a function to generate slugs
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'In order to generate slugs from our post''s titles, we will use the `underscore-string`
+    library, which comes with a simple `slugify()` function. Luckily, a wrapper package
+    for this library already exists on the Meteor package servers. To add it, we run
+    the following command from the terminal in our `my-meteor-blog` folder:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: This will extend `underscore`, which is used by default in Meteor, with extra
+    string functions such as `_.slugify()`, to generate a slug from strings.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Creating a new post
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Now that we can generate slugs for each created page, we can proceed to add
+    the saving process to the `editPost` template.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To do so, we need to create a JavaScript file for our `editPost` template by
+    saving a file called `editPost.js` to the `my-meteor-blog/client/templates` folder.
+    Inside this file, we will add an event for the **Save** button of the template:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: Now, if we go to the `/create-post` route and click on the **Save Post** button,
+    the **Post saved** log should appear in the browser's console.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Saving a post
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'In order to save the post, we will simply take the form''s content and store
+    it in the database. Later, we''ll redirect to the newly created post page. To
+    do so, we extend our click event with the following lines of code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We get the current user so that we can add him later as the post''s author.
+    We then generate a slug from the post''s title using our `slugify()` function:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: Following this, we insert the post document into the `Posts` collection using
+    all other form fields. For the `timeCreated` property, we get the current Unix
+    timestamp using the `moment` package, which we added in [Chapter 1](part0015_split_000.html#page
+    "Chapter 1. Getting Started with Meteor"), *Getting Started with Meteor*.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The `owner` field will later help us to determine by which user this post was
+    created:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: The second argument we pass to the `insert()` function is a callback function
+    provided by Meteor that will receive an error argument if something goes wrong.
+    If an error happens, we alert it, and if everything goes fine, we redirect to
+    the newly inserted post using our generated slug.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Since our route controller will then subscribe to a post with this slug, it
+    will be able to load our newly created post and display it in the post template.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now, if we go to the browser, fill in the form, and click on the **Save** button,
+    we should have created our first own post!
+  prefs: []
+  type: TYPE_NORMAL
+- en: Editing posts
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: So saving works. What about editing?
+  prefs: []
+  type: TYPE_NORMAL
+- en: When we click on the **Edit** button in the post, we will be shown the `editPost`
+    template again. This time, however, the form fields are filled with the data from
+    the post. So far so good, but if we press the **Save** button now, we will create
+    another post instead of updating the current one.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Updating the current post
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Since we set the data context of the `editPost` template, we can simply use
+    the presence of the post''s `_id` field as an indicator to update, instead of
+    inserting the post data:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: Knowing the `_id`, we can simply update the current document using the `$set`
+    property. Using `$set` will only overwrite the `title`, `description`, and `text`
+    fields. The other fields will be left as they are.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note that we now also need to create the `_this` variable on top of the function
+    in order to access the `slug` property of the current data context in the callback
+    later. This way, we can later redirect to our edited post page.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now, if we save the file and go back to our browser, we can edit the post and
+    click on **Save**, and all changes will be saved as expected to our database.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now, we can create and edit posts. In the next section, we will learn how to
+    restrict updates to the database by adding the allow and deny rules.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Restricting database updates
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Until now, we simply added the insert and update functionality to our `editPost`
+    template. However, anybody can insert and update data if they just type an `insert`
+    statement into their browser's console.
+  prefs: []
+  type: TYPE_NORMAL
+- en: To prevent this, we need to properly check for insertion and update rights on
+    the server side before updating the database.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Meteor's collections come with the allow and deny functions, which will be run
+    before every insertion or update to determine whether the action is allowed or
+    not.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The allow rules let us allow certain documents or fields to be updated, whereas
+    the deny rules overwrite any allow rules and definitely deny any action on its
+    collection.
+  prefs: []
+  type: TYPE_NORMAL
+- en: To make this more visible, let's visualize an example where we define two allow
+    rules; one will allow certain documents' `title` fields to be changed and another
+    will allow only editing of the `description` fields, but an additional deny rule
+    can prevent one specific document to be edited in any case.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Removing the insecure package
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: To start using the allow and deny rules, we need to remove the `insecure` package
+    from our app so that no client can simply make changes to our database without
+    passing our allow and deny rules.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Quit the running `meteor` instance using *Ctrl* + *C* in the terminal and run
+    the following command:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: After we have successfully removed the package, we can run Meteor again using
+    the `meteor` command.
+  prefs: []
+  type: TYPE_NORMAL
+- en: When we now go to our browser and try to edit any post, we will see an alert
+    window stating **Access denied**. Remember that we added this `alert()` call before,
+    when an update or insert action failed?
+  prefs: []
+  type: TYPE_NORMAL
+- en: Adding our first allow rules
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In order to make our posts editable again, we need to add allow rules to enable
+    database updates again.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To do so, we will add the following allow rules to our `my-meteor-blog/collections.js`
+    file, but in this case we''ll execute them only on the server side by checking
+    against Meteor''s `isServer` variable, as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: In the insertion *allow* rule , we will insert the document only if the post
+    owner matches the current user and if the user is an admin, which we can determine
+    by the `roles.admin` property we added in the previous chapter.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'If the allow rule returns `false`, the insertion of the document will be denied.
+    Otherwise, we will successfully add a new post. Updating works the same way, just
+    that we only check whether the current user is an admin:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The arguments passed to the `update` function are listed in the following table:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '| Field | Description |'
+  prefs: []
+  type: TYPE_TB
+- en: '| --- | --- |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `userId` | The user ID of the current logged-in user, who performs that `update`
+    action |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `doc` | The document from the database, without the proposed changes |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `fields` | An array with field parameters that will be updated |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `modifier` | The modifier the user passed to the `update` function, such
+    as `{$set: {''name.first'': "Alice"}, $inc: {score: 1}}` |'
+  prefs: []
+  type: TYPE_TB
+- en: The `fetch` property, which we specify last in the allow rule's object, determines
+    which fields of the current document should be passed to the update rule. In our
+    case, we only need the `owner` property for our update rule. The `fetch` property
+    exists for performance reasons, to prevent unnecessarily large documents from
+    being passed to the rule's functions.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Additionally, we can specify the `remove()` rule and the `transform()` function.
+    The `remove()` rule will get the same arguments as the `insert()` rule and allow
+    or prevent removal of documents.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `transform()` function can be used to transform the document before being
+    passed to the allow or deny rules, for example, to normalize it. However, be aware
+    that this won't change the document that gets inserted into the database.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If we now try to edit a post in our website, we should be able to edit all posts
+    as well as create new ones.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Adding a deny rule
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'To improve security, we can fix the owner of the post and the time when it
+    was created. We can prevent changes to the owner and the `timeCreated` and `slug`
+    fields by adding an additional deny rule to our `Posts` collection, as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: This rule will simply check whether the `fields` argument contains one of the
+    restricted fields. If it does, we deny the update to this post. So, even if our
+    previous allow rules have passed, our deny rule ensures that the document doesn't
+    change.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We can try the deny rule by going to our browser''s console, and when we are
+    at a post page, typing the following commands:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This should give you an error stating **update failed: Access denied**, as
+    shown in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Adding a deny rule](img/00023.jpeg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Though we can add and update posts now, there is a better way of adding new
+    posts than simply inserting them into our `Posts` collection from the client side.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Adding posts using a method call
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Methods are functions that can be called from the client and will be executed
+    on the server.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Method stubs and latency compensation
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The advantage of methods is that they can execute code on the server, having
+    the full database and a stub method on the client available.
+  prefs: []
+  type: TYPE_NORMAL
+- en: For example, we can have a method do something on the server and simulate the
+    expected outcome in a stub method on the client. This way, the user doesn't have
+    to wait for the server's response. A stub can also invoke an interface change,
+    such as adding a loading indicator.
+  prefs: []
+  type: TYPE_NORMAL
+- en: One native example of a method call is Meteor's `Collection.insert()` function,
+    which will execute a client-side function, inserting the document immediately
+    into the local `minimongo` database as well as sending a request executing the
+    real `insert` method on the server. If the insertion is successful, the client
+    has the document already inserted. If an error occurs, the server will respond
+    and remove the inserted document from the client again.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In Meteor, this concept is called **latency compensation**, as the interface
+    reacts immediately to the user's response and therefore compensates the latency,
+    while the server's round trip will happen in the background.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Inserting a post using a method call enables us to simply check whether the
+    slug we want to use for the post already exists in another post. Additionally,
+    we can use the server's time for the `timeCreated` property to be sure we are
+    not using an incorrect user timestamp.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Changing the button
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'In our example, we will simply use the method stub functionality to change
+    the text of the **Save** button to `Saving…` while we run the method on the server.
+    To do so, perform the following steps:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To start, let''s first change the **Save** button''s static text with a template
+    helper so that we can change it dynamically. Open up `my-meteor-blog/client/templates/editPost.html`
+    and replace the **Save** button code with the following code:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Now open `my-meteor-blog/client/templates/editPost.js` and add the following
+    template helper function at the beginning of the file:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Here, we return the session variable named `saveButton`, which we set to the
+    default value, `Save Post`, earlier.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Changing the session will allow us to change the text of the **Save** button
+    later while saving the document.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Adding the method
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Now that we have a dynamic **Save** button, let's add the actual method to our
+    app. For this, we will create a new file called `methods.js` directly in our `my-meteor-blog`
+    folder. This way, its code will be loaded on the server and the client, which
+    is necessary to execute the method on the client as a stub.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Add the following lines of code to add a method:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: This will add a method called `insertPost`. Inside this method, the stub functionality
+    is already added by making use of the `isSimulation` property, which is made available
+    in the `this` object of the function by Meteor.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The `this` object also has the following properties:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`unblock()`: This is a function that when called will prevent the method from
+    blocking other method calls'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`userId`: This contains the current user''s ID'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`setUserId()`: This a function to connect the current client with a certain
+    user'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`connection`: This is the connection on the server through which this method
+    is called'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'If `isSimulation` is set to `true`, the method is not run on the server side
+    but as a stub on the client. Inside this condition, we simply set the `saveButton`
+    session variable to `Saving…` so that the button text will change:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'To complete the method, we will add the server-side code for post insertion:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here, we get the current user to add the author name and owner ID.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We throw an exception with `new Meteor.Error` if the user is not logged in.
+    This will stop the execution of the method and return an error message we define.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We also search for a post with the given slug. If we find one, we prepend a
+    random string to the slug to prevent duplicates. This makes sure that every slug
+    is unique, and we can successfully route to our newly created post:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Before we insert the newly created post, we add `timeCreated` using the `moment`
+    library and the `author` and `owner` properties:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'After we insert the document, we return the corrected slug, which will then
+    be received in the callback of the method call as the second argument:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: Calling the method
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Now that we have created our `insertPost` method, we can change the code in
+    the submit event, where we inserted the post earlier in our `editPost.js` file,
+    with a call to our method:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs: []
+  type: TYPE_PRE
+- en: As we can see in the callback of the method call, we route to the newly created
+    post using the `slug` variable we received as the second argument in the callback.
+    This ensures that if the `slug` variable is modified on the server side, we use
+    the modified version to route to the post. Additionally, we reset the `saveButton`
+    session variable to change the text to `Save Post` again.
+  prefs: []
+  type: TYPE_NORMAL
+- en: That's it! Now, we can create a new post and save it using our newly created
+    `insertPost` method. However, editing will still be done from the client side
+    using `Posts.update()`, as we now have allow and deny rules, which make sure that
+    only allowed data is modified.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this chapter, we learned how to allow and deny database updates. We set up
+    our own allow and deny rules and saw how methods can improve security by moving
+    sensitive processes to the server side. We also improved our procedure of creating
+    posts by checking whether the slug already exists and adding a simple progress
+    indicator.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'If you want to dig deeper into the allow and deny rules or methods, take a
+    look at the following Meteor documentations:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[http://docs.meteor.com/#/full/allow](http://docs.meteor.com/#/full/allow)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[http://docs.meteor.com/#/full/deny](http://docs.meteor.com/#/full/deny)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[https://docs.meteor.com/#/full/methods_header](https://docs.meteor.com/#/full/methods_header)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: You can find this chapter's code examples at [https://www.packtpub.com/books/content/support/17713](https://www.packtpub.com/books/content/support/17713)
+    or on GitHub at [https://github.com/frozeman/book-building-single-page-web-apps-with-meteor/tree/chapter8](https://github.com/frozeman/book-building-single-page-web-apps-with-meteor/tree/chapter8).
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the next chapter, we will make our interface real time by constantly updating
+    the post's timestamps.
+  prefs: []
+  type: TYPE_NORMAL

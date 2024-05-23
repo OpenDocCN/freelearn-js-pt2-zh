@@ -1,0 +1,1391 @@
+- en: Chapter 1. Instant Testing with QUnit
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Welcome to Instant testing with QUnit!
+  prefs: []
+  type: TYPE_NORMAL
+- en: For a long time, JavaScript wasn't taken seriously. However, with the advent
+    of AJAX, it turned out that using JavaScript web pages can be brought to speed
+    with the desktop software RIA Rich Internet application ([http://en.wikipedia.org/wiki/Rich_Internet_application](http://en.wikipedia.org/wiki/Rich_Internet_application)).
+    The forthcoming server-side JavaScript proved that application can be written
+    entirely in JavaScript. JavaScript-based applications started growing up and getting
+    complex. Even if good developers work on them, any sophisticated software will
+    still have defects. Test engineers do their best to catch these before the product
+    is released, but it is hardly possible to detect all the flaws manually. Automated
+    testing is the best way to increase the efficiency and coverage of software testing.
+    Besides, it reveals any problem present in the early development stages, which
+    cuts down the cost of fixing it drastically.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Regardless of the technologies used, the best development practices include
+    automation of unit tests, integration tests, system tests, and functional tests.
+    Unit tests verify if the smallest functional parts of the application work as
+    intended in isolation. Integration tests check if the components of the project
+    collaborate properly. System tests examine the whole application—usually for criteria
+    such as usability, performance/load/stress, scalability, compatibility, and security—and
+    functional tests validate that the application UI is fine from the user's perspective.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Currently, there are plenty of tools meant to achieve automated testing in JavaScript.
+    One of the most popular testing frameworks is QUnit. It's sufficiently powerful,
+    extremely flexible and, at the same time, surprisingly easy to start with.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This is a practical book showing how to achieve a beneficial automated testing
+    of your JavaScript applications with QUnit and its plugins, how to engage QUnit
+    for automated cross-browser testing, and how to utilize QUnit in conjunction with
+    developer automation and continuous integration tools.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The book provides framework-agnostic Vanilla JS examples on all the contributed
+    tasks that one can find easy to follow. The source code is categorized by the
+    tasks and available for download at [http://www.packtpub.com/support](http://www.packtpub.com/support).
+    Thus, whatever your previous experience or whatever libraries you work with, you
+    can master the tasks in no time.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Setting up QUnit (Simple)
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this recipe, we will download the QUnit testing framework components and
+    create a test runner HTML. We will examine how the QUnit test runner reports on
+    cases of both succeeded and failed tests. We will also consider some of the best
+    practices of the framework fi le structure.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting ready
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The framework consists of the QUnit JavaScript module, the test runner HTML,
+    and the style sheet. Test runner is a test suite executer. It loads other QUnit
+    components and generates the report page. We include our tests either directly
+    in the test runner HTML or in an external file. The component model is illustrated
+    as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Getting ready](img/2173_01_01.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'We can simply copy-paste the test runner code from [www.qunitjs.com](http://www.qunitjs.com)
+    as well as download the CSS and JavaScript components. In fact, it can work without
+    downloading by using the following links to jQuery CDN in the test runner:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[http://code.jquery.com/qunit/qunit-git.css](http://code.jquery.com/qunit/qunit-git.css)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[http://code.jquery.com/qunit/qunit-git.js](http://code.jquery.com/qunit/qunit-git.js)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to do it
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Well, how does it work?
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Create an `index.html` file with the following content:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Load HTML in your browser. You will see something similar to the following screenshot![How
+    to do it](img/2173_01_02.jpg)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'So, what is on the page? First the title that we assigned in the HTML. Underneath
+    follows a bar that is in calming green if all the tests succeeded and alerting
+    red if any failed. In case the tests fail, we will see something similar to the
+    following screenshot:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '![How to do it](img/2173_01_03.jpg)'
+  prefs:
+  - PREF_IND
+  type: TYPE_IMG
+- en: 'Further, we can see a toolbox. It contains the following options:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: The **Hide passed tests** checkbox, useful when you have plenty of tests running
+    and want to focus only on those that failed.
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The **Check for Globals** checkbox, which allows you to test if the global object
+    was modified during testing.
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The **No try-catch** checkbox, which triggers the running of the tests outside
+    the try-catch block revealing native exceptions. This handy while debugging on
+    legacy browsers.
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Right below the toolbox, QUnit displays the user agent details. After that,
+    we have a report area with the overall statistics and a list of per test results.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: How it works
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'You may like to know what really happens behind the scenes. While the QUnit
+    JavaScript module is being processed, it subscribes a handler on the `window.onload`
+    event. The handler initializes the `QUnit` object and populates the placeholders
+    of the test runner layout with the elements required to build the report page.
+    Towards the end, it calls the `QUnit.start` method, which actually runs tests
+    available at that time. Thus, by default, QUnit tries to run tests as soon as
+    the page DOM is ready. If you work with modular JavaScript such as AMD and CommonJS,
+    all the modules, including tests, are loaded asynchronously. The case requires
+    the test runner to be manually started, which can be performed by using a configuration
+    option as described in the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: There's more
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In the previous example, we placed the dummy test code straight into the test
+    runner HTML. fine for a short example, but doesn't suit a real project with a
+    lot of tests. You will have to come up with a decent file structure. I would recommend
+    creating a dedicated subdirectory (tests) in your project's `wwwroot`. There you
+    can add subdirectories per project module under test. These subdirectories contain
+    the code for module tests and test-related files, if required.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Usually, test runner is simply named `index.html` as it aggregates all the QUnit
+    tests of the project. I would encapsulate different kinds of tests into respective
+    runners such as `unit-tests.html`, `functional-tests.html`, and `acceptance-tests.html`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Thus, we can run fast unit tests with every commit (for example, by a Continuous
+    Integration server) and run functional and acceptance tests before any deployment.
+    It also improves test readability when you keep functional tests out of acceptance
+    tests.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: Testing assertions (Simple)
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Assertion is the main method used in testing. In this recipe, we will examine
+    all the assertion methods that QUnit has. Besides, we will take a look at a few
+    assertion methods provided by popular QUnit plugins.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting ready
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'It would be much more useful if while learning assertions, we test the real
+    code. The following two helper functions are quite suitable to show discrete cases
+    of the use of assertions:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: The first one is an analog of the PHP `trim` function. It removes any white
+    spaces from the beginning and end of a supplied string. The second function implements
+    class-based inheritance. So, you can create, for this function, a new class (`constructor`)
+    by extending a given one (`SuperType`) with a specified object (`subType`).
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Define the test scope with the required assertions as follows:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Here, the scope of the test is defined comprises one or more assertions. QUnit
+    provides assertion methods such as `equal`, `notEqual`, `strictEqual`, `notStrictEqual`,
+    `ok`, `deepEqual`, and `notDeepEqual`.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_IND
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'You may find plenty of examples made with the simplified interface on the Internet.
+    QUnit methods are of course namespaced, but they are also exposed as shortcut
+    functions on the global object. So, you can put the code in the following way:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: However, I would rather recommend against it. As you see, it's hardly short
+    of code, but it may interfere with the global properties added by other scripts
+    and you won't be able to access plugin assertions this way.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Test `utils.trim` with equality assertions. If we pass a string as an argument
+    to the `utils.trim` function from the preceding example, we expect this string
+    with all leading and trailing whitespaces removed in the output. If the whitespaces
+    still exist, the function doesn't work as intended. This can be tested by applying
+    the common pattern as follows
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Test `utils.trim` with strict equality assertions. Surely, we can''t test properly
+    this function with only one or two assertions, but nevertheless the case shows
+    you can use the `equal` and `notEqual` methods. The methods `strictEqual` and
+    `notStrictEqual` act in the same way as the last two except that they check for
+    equality more strictly (let''s say in a proper way). That''s all about the difference
+    between `==` and `===` JavaScript comparison operators. The first one is known
+    as bad part JavaScript (See *JavaScript: The Good Parts, Douglas Crockford, O''Reilly
+    Media*) and should be avoided unless one really means /fals comparison. Thus,
+    we rather rewrite the `utils.trim` test the following code:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Examine the risks of using weak equality assertions:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Test `utils.extendClass` with boolean assertions. First, we have to write a
+    client code for the method. We define a pseudo class (constructor with some members
+    added to the prototype) and pass it to `utils.extendClass`. We need to test it
+    if the derived pseudo class makes an instance of what we extended. We cannot use
+    equality assertion methods here, but QUnit provides the `ok` assertion method,
+    which verifies if a supplied expression is true, and can likely be used.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Test the two identical objects with deep equality assertions. At this point,
+    we have tried the entire core QUnit assertion methods. However, QUnit API also
+    includes helper methods `deepEqual` and `notDeepEqual` that allow you to assert
+    on the equality of complex types such as arrays, objects, regular expressions,
+    dates, and functions. This is useful when you need to compare two identical objects.
+    Equality methods (`equal`/`strictEqual`) will never confirm the identical objects
+    unless these are not references to the same object. On the contrary, `deepEqual`
+    recursively compares members of both the supplied types. The following code is
+    an example of the assertion that two arrays are identical:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: There's more
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Besides QUnit core assertion methods, you can also use the methods provided
+    by numerous QUnit plugins. We will examine the most popular ones here.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Most xUnit frameworks have facilities for so-called **Parameterized Unit Tests**
+    (**PUTs**). These tests are provided with a set of any number of test input values.
+    During test exercising, these values are passed repeatedly as parameters to the
+    test. Thus, the unit is tested with all the necessary input cases. The **Parameterize**
+    plugin ([https://github.com/AStepaniuk/qunit-parameterize](https://github.com/AStepaniuk/qunit-parameterize))
+    brings these facilities to QUnit.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Do you remember we were testing the `utils.trim` function? To make sure the
+    string is trimmed correctly, in many cases we would need to write a lot of assertions
+    repeating almost the same code all over the test scope. It can be simplified notably
+    by using the Parameterize plugin. See the following example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'If you need to assert that two float numbers are equal to some degree, it would
+    be not so easy to achieve this in JavaScript. That is another "bad" part of the
+    language. Consider the following code snippet:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'On the other hand, the **Close** plugin ([https://github.com/JamesMGreene/qunit-assert-close](https://github.com/JamesMGreene/qunit-assert-close))
+    provides a much more convenient way to do this as shown in the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Here `actual` and `expected` are the float numbers we compare, `maxDifference`
+    / `minDifference` are the degree to which we compare them, and `message` is an
+    optional description of the assertion. So, the test may look like the following
+    code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Sometimes, we have to make sure that functions are being invoked in a defined
+    order for example, the AMD-compatible module loader works asynchronously but must
+    resolve dependencies when they are sequenced. The **Step** plugin ([https://github.com/JamesMGreene/qunit-assert-step](https://github.com/JamesMGreene/qunit-assert-step))
+    allows us to assert the proper sequence in which the code should perform. The
+    following example verifies that the `bar` function is called prior to the `foo`
+    function:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: Nowadays, the canvas element is widely used to render diagrams, simple animation,
+    and browser-based games. Obviously, it means a lot of code testing. However, any
+    assertion on a canvas region doesn't seem an easy task. The **Canvas** plugin
+    ([https://github.com/JamesMGreene/qunit-assert-canvas](https://github.com/JamesMGreene/qunit-assert-canvas))
+    provides the assertion method to test individual pixel values in a canvas. In
+    the following example, we define a canvas area on the page and draw a black rectangle.
+    Then, we assert a dot on the rectangle that has black color.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'HTML5 tolerates HTML-like looseness such as non-closed elements and non-escaped
+    attribute values. This makes it difficult to compare two different HTML strings
+    that are treated equally by a browser. The HTML plugin ([https://github.com/JamesMGreene/qunit-assert-html](https://github.com/JamesMGreene/qunit-assert-html))
+    solves the issue in the following way:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: Writing a custom assertion plugin (Advanced)
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: This recipe will guide you on the basis of creating QUnit plugins. We will create
+    a custom assertion method and add it to the common QUnit assertion service.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting ready
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: QUnit is easy to start with as it provides only a few necessary assertion methods.
+    Nevertheless, you can have as many methods as you wish by using QUnit plugins.
+    Plenty of plugins are already available on the Internet. Besides, you may need
+    your own custom plugin. Luckily, QUnit has a Callback API, which makes it easy.
+    You can simply register your own handler on the entry and exit points of every
+    testing scope (test suite, module, and test) or subscribe a handler function to
+    the event that happens every time assertion performed in a test; for instance,
+    PhantomJS ([www.phantomjs.org](http://www.phantomjs.org)) is widely used to run
+    QUnit tests in the console. However, the QUnit output test results as an HTML
+    report in DOM, which doesn't work with the command line. The PhantomJS runner
+    JavaScript (NodeJS) utility solves this issue by translating the QUnit output
+    into a format compatible with the command-line interface. It registers a callback
+    with the `QUnit.log` method to collect and store results on every assertion. It
+    also subscribes a handler on the test suite complete event with `QUnit.done`,
+    which outputs the accumulated results in the required way.
+  prefs: []
+  type: TYPE_NORMAL
+- en: However, if you write just an assertion method, you may do without the callbacks
+    API in most cases. You can simply add your method in the `QUnit.assert` object.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Write an assertion method. Imagine that we need a convenient method for asserting
+    that a supplied element is visible. The method is very simple—it only checks if
+    the element is hidden via style properties visibility and display.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Extend the `QUnit.assert` object with this new method. As `QUnit` already provides
+    the `extend` helper, we don't need to use a third party library or write our own
+    helper for extending an object to do it.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Save this code in the `qunit-assert-is-visible.js` file.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Provide the test runner HTML as follows:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Load the test runner in a browser, and examine the results shown in the following
+    screenshot:![How to do it](img/2173_03_01.jpg)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Testing exceptions (Medium)
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this recipe, we will learn how to handle the function's exceptional behavior,
+    how to define custom exceptions, and how to test exceptions are really thrown
+    for invalid input and these are exceptions of the intended types.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting ready
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We've learnt already how to test whether or not a function performs the intended
+    business logic. But what about its exceptional behavior? Let's say we supply invalid
+    input parameters. We expect the function to warn us about them. The best practice
+    would be to check the parameters have been passed onto the function entry point
+    and thrown exceptions if any of the parameters are invalid. We need a way to test
+    this logic as well.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Do you remember the `utils.trim` function example? We have to modify it now
+    for checking the validity of the input parameters:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE21]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Well, the function throws exception whenever it detects an invalid input but
+    these are custom exceptions that must be defined. This can be done by declaring
+    new error object constructors that inherit from standard JavaScript errors. Please
+    find the implementation for this in the following example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE22]'
+  prefs: []
+  type: TYPE_PRE
+- en: How to do it
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Define the test scope and the assert expected exception is thrown. In this
+    case, QUnit provides the `throws` method, which can be described with the following
+    code:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE23]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Test whether `utils.trim` validates the input parameters and throws the intended
+    exceptions:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE24]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Load the test runner in a browser and examine the results shown in the following
+    screenshot:![How to do it](img/2173_04_01.jpg)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Testing asynchronous calls (Medium)
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this recipe, we will see how QUnit deals with asynchronous callbacks. We
+    will write an assertion test for an asynchronously called function. We will also
+    go through an example of testing the XHR-associated function by mocking the transfer
+    method.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting ready
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'One of the greatest features of JavaScript is its ability to call functions
+    asynchronously. You can easily make multiple functions that execute simultaneously
+    as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE25]'
+  prefs: []
+  type: TYPE_PRE
+- en: As you understand, these functions cannot be tested the way we did before. We
+    cannot assert on the function straight after it is launched. Otherwise, we risk
+    asserting on the call before it is completed. We will encounter the same problem
+    while testing handlers subscribed to events and even while using JavaScript objects
+    associated with events;—for instance, XHR.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Define the test scope. For testing asynchronously called functions, QUnit provides
+    the `asyncTest` method, which in contrast to the test method receives an additional
+    parameter with a number of expected assertions. Thus, QUnit will set the test
+    as complete only when the supplied number of assertions is performed.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE26]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Assert within the asynchronous callback. Since we assert asynchronously, we
+    have to call the `QUnit.start` method as soon as the last assertion is done. This
+    will let QUnit know when it can jump to the next test.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE27]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Load the test runner in a browser, and examine the results shown in the following
+    screenshot:![How to do it](img/2173_05_01.jpg)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: There's more
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The described approach works fine with the test-friendly code. I mean the code
+    where the asynchronous call accepts test callback injection or fires an event
+    on which a handler is subscribed. When you are working with black-box code, you
+    have no way to assert on asynchronous calls except mock the transfer utility whose
+    interface you are familiar with; for example, while unit-testing a function that
+    relies on XHR, we have to mock the helper performing the request. We do it anyway
+    as it includes an across network communication and gets out of the unit scope.
+    Let''s say the function under test uses the jQuery.get method. We know its interface
+    and can override it with our own method, which does nothing but report to QUnit.
+    You can see this in the following example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE28]'
+  prefs: []
+  type: TYPE_PRE
+- en: The `RSSFeed` constructor produces an object that can load data from a remote
+    source. Data is being loaded asynchronously using `$.get`. To test the method,
+    we override `$.get` with our own method. Our implementation invokes a supplied
+    callback as expected from `jQuery.get` and does it asynchronously by using `setTimeout`.
+    Towards the end, it makes the assertion and notifies QUnit that the test is complete.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Organizing test cases (Simple)
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this recipe, we will learn how to keep the tests logically organized by using
+    the `QUnit.module` method.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting ready
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'While working on a real project, the number of tests can be pretty huge; for
+    example, the jQuery test suite contains about 6,000 tests shown in the following
+    screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Getting ready](img/2173_06_01.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Navigation on such lists without any grouping abilities would be a tough task.
+    Luckily, QUnit provides the module method, which allows us to organize the tests
+    and run a specific group of tests individually.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Imagine we have an application handles user interaction with the Sign In and
+    Password Reset forms. We don''t need any implementation details for now, but a
+    high-level concept as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE29]'
+  prefs: []
+  type: TYPE_PRE
+- en: Thus, we have two object constructors and three methods each that must be tested.
+    Let's split up the test into two groups, one for the SignIn form and one for Rest
+    PasswordForm.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Define a test group (`module`) for the `SignInForm` constructor.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE30]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Put underneath all the tests relevant to the group.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE31]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Load the test runner in a browser and examine the results shown in the following
+    screenshot:![How to do it](img/2173_06_02.jpg)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Using a shared setup (Medium)
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this recipe, we will guide you on test group operations such as shared preliminary
+    tasks and how to keep the testing environment clean between test executions.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting ready
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: While writing more and more tests, you will realize that to get clear results,
+    you need to repeatedly set up the environment in a specific state before running
+    a test and restore its original state afterwards. This is a time-consuming task
+    that involves code duplication. Most testing frameworks, including QUnit, support
+    the so-called shared setup code. Thus, you can define two callbacks for a group
+    of tests. The first one (`setup`) takes responsibility for recreating the intended
+    environment state prior to every test of the exercising group. The second (`teardown`)
+    cleans up the changes made to the environment after every test is done.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To consider the advantages of the approach, let''s take a sample module for
+    testing:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE32]'
+  prefs: []
+  type: TYPE_PRE
+- en: A constructor producing `SignInForm` can hide or show up. During initialization,
+    the object (`SignInForm`) binds to the elements. An instance of `SignInForm` expects
+    of HTML layout an element to bind to. The `SignInForm` methods are permitted to
+    modify DOM within the bounding box element. Theoretically, every second test starts
+    on a diverse DOM that may affect test results. We can prevent the problem by adding
+    a clean bounding box to the DOM tree on the test setup and removing it with teardown.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Define a test group (`module`) for the `SignInForm` constructor as follows:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE33]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: The second parameter `QUnit.module` of the module method expects an object called
+    shared setup confi guration.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE34]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Add the code appending the bounding box element to the DOM tree on setup and
+    the code removing it on teardown as follows:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE35]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Move the `SignInForm` instance creation code to the shared setup as it is repeatedly
+    required by every test of the group.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE36]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Write tests to assert on the `SignInForm` methods.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE37]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Load the test runner in a browser and examine the results shown in the following
+    screenshot:![How to do it](img/2173_07_01.jpg)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Testing user actions (Medium)
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this recipe, we will write a simple calculator widget. By testing, we will
+    simulate end-user actions and assert the intended application behavior.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting ready
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Before jumping on the test, we definitely need an application expecting user
+    actions. Let it be a simple calculator that cannot do complex operations but will
+    sum up two of the supplied numbers, as seen in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Getting ready](img/2173_08_01.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'To make it work, we subscribe a handler to the `click` event on the **Calculate**
+    button. The handler takes the values of the first and second fields, sums them
+    up, and puts the result in the third field. The implementation of the code is
+    as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE38]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Let''s save the source code into the `calc.js` file and load it from the HTML
+    layout:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE39]'
+  prefs: []
+  type: TYPE_PRE
+- en: Now, we run this HTML in a browser and test it manually. With numbers typed
+    in, the button clicked, and the result received, we are now ready to write an
+    automated test for the actions we just performed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Subscribe a handler to the DOM-ready event and get references on the involved
+    elements. To mimic a user typing numbers and clicking the button, we need to refer
+    to the inputs and the button. However, elements will be available only when the
+    DOM tree is built. So, we obtain references on the elements in the handler, which
+    is called on the DOM-ready event. For that, we use the helper introduced in the
+    sample application as follows:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE40]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Define a test scope and simulate the user behavior. Within the scope, we assign
+    test values to inputs and trigger the click event. Since the application responds
+    to the click event immediately, we can synchronously assert that the value in
+    the result field equals the sum of numbers we supplied.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE41]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Load the test runner in a browser and examine the results shown in the following
+    screenshot:![How to do it](img/2173_08_02.jpg)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Running Qnit in the console (Advanced)
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this recipe, we will run QUnit tests from the command line by using the PhantomJS
+    headless browser.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting ready
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We've learnt how to run QUnit in a browser and it's suitable in the beginning.
+    However, in an advanced development cycle, the tests are being executed by a tool
+    such as a piece of build automation software or a **VCS** (**version control system**).
+    So, we need to run our tests in the console. That can be done with QUnit tests
+    using a headless browser.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s take **PhantomJS** ([https://github.com/ariya/phantomjs](https://github.com/ariya/phantomjs)).
+    First of all, we have to install the package. That''s quite easy to do with a
+    package manager in Mac OS or in Unix/Linux. For an instance using Homebrew on
+    Mac OS, you can do it like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE42]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'On Windows, you can simply download the executable file from [http://phantomjs.org/download.html](http://phantomjs.org/download.html)
+    and add its location to the Windows path as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Hold *Win* and press *Pause*.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Click on **Advanced System Settings**.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Click on **Environment Variables**.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Append `C:\phantomjs` to the *Path* variable.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: We will also need the PhantomJS Runner script ([https://github.com/ariya/phantomjs](https://github.com/ariya/phantomjs)),
+    which plugs in to QUnit to translate the report output into command-line-compatible
+    format.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Install PhantomJS.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Download PhantomJS Runner and save it as `runner.js`.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Run the test suite with the following command:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE43]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Examine the results shown in the following screenshot:![How to do it](img/2173_09_01.jpg)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: There's more
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: You may find plenty of projects on GitHub ([https://github.com](https://github.com))
+    using the **Travis CI** ([https://travis-ci.org](https://travis-ci.org)) continuous
+    integration server. Travis CI reports to the project members when somebody breaks
+    the build. It means if you make some changes in the project code and use the push
+    command to commit to GitHub, Travis CI can automatically check if the changed
+    code still adheres to the style guide and linter requirements, if the unit test
+    still passes, and so on. How does it work? With every code commit, Travis CI pulls
+    down the project's working directory from GitHub and runs the **Grunt** task runner
+    ([www.gruntjs.com](http://www.gruntjs.com)). Grunt performs the tasks supplied
+    in the confi guration fi le (`Gruntfile.js`). Among other tasks, you can assign
+    QUnit tests. Travis CI stores the test results in the build report and notifi
+    es the commit if the build fails.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s see how we can take advantage of this approach:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Install Node.js. For Mac OS X, we can again recourse to Homebrew:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE44]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Installation instructions for other platforms can be found on this page:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[https://github.com/joyent/node/wiki/Installing-Node.js-via-package-manager](https://github.com/joyent/node/wiki/Installing-Node.js-via-package-manager)'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Install Grunt. It can be easily done now that we have the `Node.js` package
+    manager:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE45]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Move to the project working directory.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Configure the project with `package.json`.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE46]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Install the required dependencies:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE47]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Set up the `Grunt` task to fire up the QUnit test runner in `test-suite.html`:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE48]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Examine the results shown in the following screenshot:![There's more](img/2173_09_02.jpg)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Cross-browser-distributed testing (Advanced)
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: This recipe will guide you on automating client-side cross-platform/browser
+    testing using the command-line tool **Bunyip**.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting ready
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In contrast to the server-side software, JavaScript applications are being executed
+    on the client side and therefore depend on the user browser. Normally, project
+    specification includes the list of the browsers and platforms that the application
+    must support. The longer the list, the harder is cross-browser-compatibility testing.
+    For example, jQuery supports 13 browsers on different platforms. The project is
+    fully tested in every declared environment with every single commit. That is possible
+    thanks to the distributed testing tool TestSwarm ([swarm.jquery.org](http://swarm.jquery.org)).
+    You may also hear of other tools such as Js TestDriver ([code.google.com/p/js-test-driver](http://code.google.com/p/js-test-driver))
+    or Karma ([karma-runner.github.io](http://karma-runner.github.io)). We will take
+    Bunyip ([https://github.com/ryanseddon/bunyip](https://github.com/ryanseddon/bunyip))
+    as it has swiftly been gaining popularity recently.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'How does it work? You launch the tool for a test runner HTML and it provides
+    the connect end-point (`IP:port`) and launches a locally installed browser if
+    configured. As soon as you fire up the address in a browser, the client is captured
+    by Bunyip and the connection is established. With your confirmation, Bunyip runs
+    the tests in every connected browser to collect and report results. See the following
+    figure:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Getting ready](img/2173_10_01.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Bunyip is built on top of the Yeti tool ([www.yeti.cx](http://www.yeti.cx))
+    works with **YUI Test**, QUnit, **Mocha**, **Jasmine**, or DOH. Bunyip can be
+    used in conjunction with BrowserStack. So, with a paid account at BrowserStack
+    ([www.browserstack.com](http://www.browserstack.com)), you can make Bunyip run
+    your tests on hundreds of remotely hosted browsers.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To install the tool type in the console as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE49]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Here, we recourse to the `Node.js` package manager is part of `Node.js`. So
+    if you don''t have `Node.js` installed, find the installation instructions on
+    the following page:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[https://github.com/joyent/node/wiki/Installing-Node.js-via-package-manager](https://github.com/joyent/node/wiki/Installing-Node.js-via-package-manager)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now, we are ready to start using Bunyip.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Add to the QUnit test suite (`test-suite.html`) the following configuration
+    option to prevent it from auto-starting before the plugin callback is set up:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE50]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Launch a Yeti hub on port 9000 (default configuration) and use `test-suite.html`.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE51]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Copy the connector address (for example, `http://127.0.0.1:9000`) from the output
+    and fire it up in diverse browsers. You can use Oracle VirtualBox ([www.virtualbox.org](http://www.virtualbox.org))
+    to launch browsers in virtual machines set up on every platform you need.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Examine the results shown in the following screenshot:![How to do it](img/2173_10_02.jpg)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Building a web project (Advanced)
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: While working with a JavaScript project build may sound odd, it's quite relevant
+    here. Using build , we can perform a bunch of project-related tasks with a single
+    command. It's common practice nowadays to run tasks such as JavaScript linting,
+    code standard validation, CSS preprocessing, and API documentation update with
+    a build script, manually or using continuous integration tools. This recipe shows
+    how the QUnit testing task can be added to the project build script.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting ready
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: For this task, we will use **Apache Ant (** [http://ant.apache.org/](http://ant.apache.org/)
+    **)** for build automating. On Mac OS X, Ant is available by default. On Unix/Linux,
+    it is available in ports and you can use a package manager to install Ant. As
+    for Windows you can find the installation instructions in the official manual
+    at [ant.apache.org/manual/index.html](http://ant.apache.org/manual/index.html).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Since Ant runs QUnit tests on the command line, we will use PhantomJS as it
+    is discussed in . However, if we are to satisfy third-party software executing
+    the build script such as continuous integration tools, we need to make the QUnit
+    report in a specific format. Most tools accept **JUnit XML**. We can translate
+    the QUnit output to JUnit format with a plugin called **JUnit Logger** ([https://github.com/jquery/qunit-reporter-junit](https://github.com/jquery/qunit-reporter-junit)).
+    So, we add to the test runner HTML the plugin JavaScipt module and the following
+    configuration option:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE52]'
+  prefs: []
+  type: TYPE_PRE
+- en: But here pops up another problem. The PhantomJS Runner script now breaks JUnit
+    XML with its own report version. You can simply comment out `console.log` occurrences
+    in the `QUnit.done` and `QUnit.testDone` callback functions at the end of `runner.js`
+    and save it, say as `runner-muted.js`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Set up the build script as `build.xml` in the root of the project working directory:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE53]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Extend it with the build target to run QUnit tests:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE54]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Run Ant in the same directory where `build.xml` is located:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE55]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Examine the results shown in the following screenshot:![How to do it](img/2173_11_01.jpg)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: QUnit and CI – setting up Jenkins (Advanced)
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Continuous integration is the practice of automating predeployment-related tasks
+    that allows team members to integrate their work into the project frequently..
+    As an approach, CI doesn't require any particular tool but is most profitable
+    when used with a Continuous Integration Server. You can find many open source
+    servers available nowadays. Yet Jenkins (known as Hudson till 2011; [www.jenkins-ci.org](http://www.jenkins-ci.org))
+    seems to be the most popular solution. It became known as the better alternative
+    to **CruiseControl** (the first original implementation of the CI automation concept)
+    and won many open source awards. Jenkins is quite easy to set up and has a huge
+    repository of plugins that integrate the server with a wide range of third-party
+    tools
+  prefs: []
+  type: TYPE_NORMAL
+- en: We will now install a Jenkins CI server and set it up for a QUnit test runner
+    job.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting ready
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The best way to explain CI is to show it in an example. Let''s assume you are
+    one of the developers working on a project. You''re using a version control system
+    so your collaboration on the code goes fine. Yet whenever a stable release is
+    tagged, you inevitably run into problems (integration hell). You attempt to build
+    the release and get surprised with the results. While working with the front end,
+    "build" as a term may sound odd it is nonetheless quite relevant here. During
+    release, a number of tasks must be performed: code quality analysis, code standard
+    violation check, tests, CSS preprocessing, CoffeScript or TypeScript compilation,
+    API documentation generation, image optimization, JS/CSS concatenation, and compression
+    (see the article *H5bp Ant Build Script* at [https://github.com/h5bp/ant-build-script](https://github.com/h5bp/ant-build-script)).
+    It gets even better on the server-side sources: project size is measured, software
+    metrics are calculated, mess detection is performed, and code duplicates are identified
+    (see *Template for Jenkins Jobs for PHP Projects* at [http://jenkins-php.org/index.html](http://jenkins-php.org/index.html)).
+    That is what we call a build. We automate the build processing using special software,
+    such as Apache Ant, Maven, Grunt, Phing, and Bash.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: CI server listens to the updates on the version control repository. Whenever
+    you commit, the server pulls the working version of the project and runs the **build
+    script**. It collects the reports of the tools performing the build tasks and
+    lets you know by e-mail whether the build was successful or not. Thus, you know
+    immediately if the changes you made cause any trouble during integration.
+  prefs: []
+  type: TYPE_NORMAL
+- en: To get a better grip on CI, we install Jenkins server and define a job running
+    QUnit tests.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Install Jenkins. If you work under MacOS X, just run:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE56]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: To install Jenkins on Unix/Linux, please find instructions at [https://wiki.jenkins-ci.org/display/JENKINS/Use+Jenkins](https://wiki.jenkins-ci.org/display/JENKINS/Use+Jenkins)
+    and for Windows at [https://wiki.jenkins-ci.org/display/JENKINS/Installing+Jenkins+as+a+Windows+service](https://wiki.jenkins-ci.org/display/JENKINS/Installing+Jenkins+as+a+Windows+service).
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Create a dedicated user `Jenkins` for the server daemon.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Fire up `http://localhost:8080` (by default configuration) in your browser.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Examine the Jenkins dashboard page shown in the following screenshot:![How to
+    do it](img/2173_12_01.jpg)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Enable the Git plugin.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Navigate to **Jenkins** | **Manage Jenkins** | **Manage Plugins** | **Available**
+    and select **Git plugin**.
+  prefs:
+  - PREF_IND
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Confirm your choice by clicking on the **OK** button at the bottom of the page.
+  prefs:
+  - PREF_IND
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Add a new job to Jenkins.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Enter the **Jenkins Dashboard** page and click on the **Add new job** link.
+  prefs:
+  - PREF_IND
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Specify the project (`job`) name in the displayed form.
+  prefs:
+  - PREF_IND
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Choose **Build a free-style software project** as shown in the following screenshot:![How
+    to do it](img/2173_12_02.jpg)
+  prefs:
+  - PREF_IND
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Examine the next screen as shown in the following screenshot:![How to do it](img/2173_12_03.jpg)
+  prefs:
+  - PREF_IND
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Choose the **Source Code Management** / **Git** section and type in your Git
+    remote repository (for example, `git@dsheiko.local:repo/tree`)
+  prefs:
+  - PREF_IND
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Select **Publish JUnit test result report** in the **Post-build Actions** combo-box,
+    and specify the location of our build-generated report file (`build/qunit/qunit-results.xml`)
+  prefs:
+  - PREF_IND
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Confirm changes by clicking on the **Save** button
+  prefs:
+  - PREF_IND
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Come back to the **Jenkins Dashboard** page and click on the **Build Now** link.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Find a new record added in the **Build History** block of the Jenkins sidebar
+    menu.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Open the link and examine the **build details** page.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Follow the **Test Result** link at the bottom to get report details.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Examine the rest of the results shown in the following screenshot:![How to do
+    it](img/2173_12_04.jpg)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Configure the job for continuous integration
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Open the project page and click on **Configure**.
+  prefs:
+  - PREF_IND
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Choose the build-required notification method in **Build Triggers** and specify
+    a run schedule in the **Schedule** field as shown in the following screenshot:![How
+    to do it](img/2173_12_05.jpg)
+  prefs:
+  - PREF_IND
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Pick up **E-mail notification** from the **Post-build Actions** combo-box and
+    type in your email address.
+  prefs:
+  - PREF_IND
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Commit a change in your project and push it to the Git server and get automatically
+    notified if the QUnit tests fail.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: There's more
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: If you are an authorized `jenkins` user at the Git server, you won't be able
+    to make a build using the Git plugin. You need a pair of SSH keys to exchange
+    between the `git` and `jenkins` users as described in the *Git Documentation*
+    section ([http://git-scm.com/book/ch4-4.html](http://git-scm.com/book/ch4-4.html)).
+    If you are on a Mac, the article *Setting up a Git Server on Mac OSX* ([http://blog.smitec.net/posts/setting-up-a-git-server-on-osx/](http://blog.smitec.net/posts/setting-up-a-git-server-on-osx/))
+    will be of great help.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In order to use the Jenkins Git plugin, under Unix/Linux, we login as `jenkins`
+    and create a pair of RSA keys:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE57]'
+  prefs: []
+  type: TYPE_PRE
+- en: Then, we copy derived the `jenkins_rsa.pub` file to the Git server.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE58]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We also have to edit `~/.ssh/config` to configure the SSH client:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE59]'
+  prefs: []
+  type: TYPE_PRE
+- en: Now, Jenkins is supposed to be automatically authorized on the Git server.
+  prefs: []
+  type: TYPE_NORMAL

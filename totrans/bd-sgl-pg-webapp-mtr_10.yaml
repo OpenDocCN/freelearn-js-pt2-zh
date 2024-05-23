@@ -1,0 +1,639 @@
+- en: Chapter 10. Deploying Our App
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Our app is now ready to be deployed. In this chapter, we will see how we can
+    deploy our app on different servers to make it public and show the world what
+    we built.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Meteor makes it easy to deploy applications on its own server infrastructure.
+    It's free and quick to do, but probably not the right place for a production environment.
+    Therefore, we will take a look at manual deployment as well as some great tools
+    built to deploy on any Node.js server.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In this chapter, we will cover the following topics:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Registering a Meteor developer account
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Deploying on Meteor's own server infrastructure
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Bundling and deploying Meteor manually
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Deploying using Demeteorizer
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Deploying using Meteor Up
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_IND
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: If you want to have the full app we've built in this book to deploy, download
+    the code from the book's web page at [https://www.packtpub.com/books/content/support/17713](https://www.packtpub.com/books/content/support/17713)
+    or from the GitHub repository at [https://github.com/frozeman/book-building-single-page-web-apps-with-meteor/tree/chapter10](https://github.com/frozeman/book-building-single-page-web-apps-with-meteor/tree/chapter10).
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: This code won't have the part where dummy posts are created, so you can have
+    a clean blog to start with on your own server.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Deploying on meteor.com
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Meteor provides its own hosting environment, where everybody can deploy apps
+    with a single command, for free. In order to deploy apps, Meteor creates a developer
+    account for us so that we can manage and deploy our apps later. To start, let''s
+    perform the following steps to deploy our app on [meteor.com](http://meteor.com):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Deploying on a subdomain of meteor.com is as simple as running the following
+    command in the terminal from our app''s folder:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: We can freely choose the subdomain we want to deploy on. If `myCoolNewBlog.meteor.com`
+    is already taken, Meteor will ask us to log in to the owner's account to overwrite
+    the currently deployed app, or we will have to choose another name.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: If the domain name is free, Meteor will ask us to provide an e-mail address
+    so that it can create a developer account for us. After entering the e-mail address,
+    we will receive an e-mail with a link to set up our Meteor Developer account,
+    as shown in the following screenshot:![Deploying on meteor.com](img/00028.jpeg)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: To create our account, we need to follow the link given by Meteor so that we
+    can fully set up our account by adding a username and a password, as shown in
+    the next screenshot:![Deploying on meteor.com](img/00029.jpeg)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: After we have done that, we get access to our developer account's page, where
+    we can add e-mail addresses, check our last login, and authorize other Meteor
+    developers to log in to our apps (though we have to add the `accounts-meteor-developer`
+    package first).
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Now, to finally deploy our app, we need to log in with our Meteor Developer
+    account in the terminal by using `$ meteor login`, entering our credentials, and
+    running the `deploy` command again:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Using the `$ meteor authorized –add <username>` command, we can allow other
+    Meteor developers to deploy to our app's subdomain, as shown in the following
+    screenshot:![Deploying on meteor.com](img/00030.jpeg)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: If we want to update our deployed app, we can simply run `$ meteor deploy` from
+    inside our app's folder. Meteor will ask us for our credentials, and we can then
+    deploy our app.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: If we're on a friend's computer and want to use our Meteor account, we can do
+    so using `$ meteor login`. Meteor will keep us logged in and everybody can redeploy
+    any of our apps. We need to make sure we use `$ meteor logout` when we're finished.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Deploying on meteor.com using a domain name
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We can also host our app on [meteor.com](http://meteor.com), but can define
+    our own domain name.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To do this, we simply deploy using our domain name, as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: This will host the app on meteor.com, but with no direct URL such as [myapp.meteor.com](http://myapp.meteor.com).
+  prefs: []
+  type: TYPE_NORMAL
+- en: To point our domain to the app on the Meteor servers, we need to change the
+    **A record** of our domain to the IP address of `origin.meteor.com` (which is
+    `107.22.210.133` at the time of writing this book), or the `CNAME` record to `origin.meteor.com`.
+    You can do this at the provider where you registered your domain under the DNS
+    configuration.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Meteor will then get a request from our domain and redirect internally to the
+    server where our app is located.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Backup and restore databases hosted on meteor.com
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'If you ever need to back up your database or move it to another server, you
+    can get temporary Mongo database credentials for the deployed database using the
+    following command:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This will get something like the following credentials:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'You can then use the credentials from the preceding output to back up your
+    database using `mongodump`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: This will create a folder named `dump/yourapp_meteor_com` where you are and
+    put the dump files of the database inside.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To restore it to another server, use `mongorestore`, with the last argument
+    being the folder where you put the database dump:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'If you simply want to put the data into your local Meteor app''s database,
+    start the Meteor server using `$ meteor` and run the following command:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: Deploying on other servers
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Meteor's free hosting is great, but when it comes to using an app in production,
+    we want to be in control of the server we're using.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Meteor allows us to create a bundle of our application so that we can deploy
+    it on any Node.js server. The only downside to this is that we need to install
+    certain dependencies ourselves. Additionally, there are two packages out there
+    that make deploying apps almost as simple as Meteor itself, though their configuration
+    is still needed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Bundling our app
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'In order to deploy our app on our own server, we need to have a Linux server
+    with the latest version of Node.js and NPM installed. The server should have the
+    same platform as our local machine on which we will create the bundle. If you
+    want to deploy your app on another platform, take a look at the next section.
+    Now let''s build the app by performing the following steps:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'If our server fits the aforementioned requirements, we can go to our app''s
+    folder on our local machine and run the following command:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'This will create `myAppBuildFolder` with a `*.tar.gz` file inside. We can then
+    upload this file to our server and extract it under `~/Sites/myApp` for example.
+    Then we go to the extracted folder and run the following commands:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'This will install all the NPM dependencies. After they''re installed, we set
+    the necessary environment variables:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: The `export` commands will set the `MONGO_URL`, `ROOT_URL`, and `MAIL_URL` environment
+    variables.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: As this manual deployment doesn't come with preinstalled MongoDB, we need to
+    either install it on our machine or use a hosted service such as Compose ([http://mongohq.com](http://mongohq.com)).
+    If we rather want to install MongoDB on our server ourselves, we can follow the
+    guide at [http://docs.mongodb.org/manual/installation](http://docs.mongodb.org/manual/installation).
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: The `ROOT_URL` variable should be the URL of the domain pointing to our server.
+    If our app sends e-mails, we can additionally set our own SMTP server or use a
+    service such as Mailgun ([http://mailgun.com](http://mailgun.com)) and change
+    the SMTP host in the `MAIL_URL` variable.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: We can also specify the port on which we want our app to run using the `PORT`
+    environment variable. If we don't set the `PORT` variable, it will use port `80`
+    by default.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'After we set these variables, we go to the root folder of our app and start
+    the server using the following command:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Tip
+  prefs:
+  - PREF_IND
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: If you want to make sure your application is restarted in case it crashes or
+    when the server is rebooted, take a look at the `forever` NPM package, which is
+    explained at [https://github.com/nodejitsu/forever](https://github.com/nodejitsu/forever).
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: If everything goes fine, our app should be reachable at `<your server's ip>:8080`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In case we run into trouble by manually deploying our app, we can use the next
+    approach.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Deploying using Demeteorizer
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The disadvantage of using `$ meteor build` is that most node modules are already
+    compiled, and therefore can cause problems in the server''s environment. Hence
+    comes Demeteorizer, which is very similar to `$ meteor build` but will additionally
+    unpack the bundle and create a `package.json` file with all the node dependencies
+    and the correct node version for the project. Here is how we deploy using Demeteorizer:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Demeteorizer comes as an NPM package, which we can install using the following
+    command:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Note
+  prefs:
+  - PREF_IND
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: If the `npm` folder doesn't have the right permissions, use `sudo` before the
+    command.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Now we can go to our app''s folder and type the following command:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'This will output the ready-to-distribute app to the `my-meteor-blog-converted`
+    folder. We just copy this folder to our server, set the same environment variables
+    as described earlier, and run the following command:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: This should start our app on the port we specified.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Deploying using Meteor Up
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The previous steps help us to deploy our app on our own server, but this method
+    still requires us to build, upload, and set the environment variables.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Meteor Up** (**mup**) aims to make deploying as easy as running `$ meteor
+    deploy`. However, if we want to use Meteor Up, we need to have full admin rights
+    on the server.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Additionally, this allows us to auto-restart the app in case it crashes, using
+    the `forever` NPM package, as well as start the app when the server reboots, using
+    the `upstart` NPM package. We can also revert to the previously deployed version,
+    which gives us a good basis for deployment on the production environment.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The next steps are for more advanced developers, as they require setting up
+    `sudo` rights on the server machine. Therefore, if you're inexperienced in deployment,
+    consider using a service such as Modulus ([http://modulus.io](http://modulus.io)),
+    which offers online Meteor deployment using its own command-line tool, available
+    at [https://modulus.io/codex/meteor_apps](https://modulus.io/codex/meteor_apps).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Meteor Up will set up the server and deploy our app as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To install `mup` on our local machine, we type the following command:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Now we need to create a folder for our deployment configuration, which could
+    be in the same folder where our app is located:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Meteor Up creates a configuration file for us, which will look like the following:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Now we can edit this file to work for our server environment.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'First, we will add the SSH server authentication. We can provide either our
+    RSA key file or a username and a password. If we want to use the latter, we need
+    to install `sshpass`, a tool used to provide SSH passwords without using the command
+    line:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Note
+  prefs:
+  - PREF_IND
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: To install `sshpass` for our environment, we can follow the steps at [https://gist.github.com/arunoda/7790979](https://gist.github.com/arunoda/7790979),
+    or if you're on Mac OS X, take a look at [http://www.hashbangcode.com/blog/installing-sshpass-osx-mavericks](http://www.hashbangcode.com/blog/installing-sshpass-osx-mavericks).
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Next, we can set some options, such as choosing to install MongoDB on the server.
+    If we use a service such as Compose, we will set it to `false`:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'If we already have Node.js installed on our server, we will also set the next
+    option to `false`:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'If we want to mention a specific Node.js version, we can set it as follows:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[PRE21]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Meteor Up can also install PhantomJS for us, which is necessary if we use Meteor''s
+    spiderable package, which makes our app crawlable by search engines:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[PRE22]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'In the next option, we will set the name of our app, which can be the same
+    as our app''s folder name:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[PRE23]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Finally, we point to our local app folder so that Meteor Up knows what to deploy:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[PRE24]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Meteor Up also lets us preset all the necessary environment variables, such
+    as the correct `MONGO_URL` variable:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE25]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'The last option sets the time Meteor Up will wait for before checking whether
+    the app started successfully:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE26]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Setting up the server
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'In order to set up the server using Meteor Up, we need a no-password access
+    to `sudo`. Perform the following steps to set up the server:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To enable no-password access, we need to add our current user to the server''s
+    `sudo` group:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE27]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Then add `NOPASSWD` to the `sudoers` file:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE28]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Now replace the `%sudo ALL=(ALL) ALL` line with the following line:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE29]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Deploying with mup
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'If everything has worked fine, we can set up our server. The following steps
+    explain how we can deploy with `mup`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Run the following command from inside the local `my-meteor-blog-deployment`
+    folder:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE30]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: This will configure our server and install all requirements chosen in our configuration
+    file.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Once this process is done, we can deploy our app any time by running the following
+    command from the same folder:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[PRE31]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: This way, we can also create production and staging environments by creating
+    two separate Meteor Up configurations with two distinct app names, and deploy
+    it to the same server.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Outlook
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Currently, Meteor limits native deployment to its own servers, with limited
+    control over the environment. Planned is an enterprise-grade server infrastructure
+    called **Galaxy**, which will make deploying and scaling Meteor apps as simple
+    as Meteor itself.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Nonetheless, with Meteor's simplicity and great community, we already have a
+    rich set of tools available to deploy to any Node.js-based hosting and PaaS environment.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: For example, if we wanted to deploy on Heroku, we can take a look at the build
+    pack by Jordan Sissel at [https://github.com/jordansissel/heroku-buildpack-meteor](https://github.com/jordansissel/heroku-buildpack-meteor).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this chapter, we learned how to deploy Meteor and how simple deploying on
+    Meteor's own server infrastructure can be. We also used tools such as Demeteorizer
+    and Meteor Up to deploy on our own server infrastructure.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To read more about the specific deployment methods, take a look at the following
+    resources:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[https://www.meteor.com/services/developer-accounts](https://www.meteor.com/services/developer-accounts)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[https://docs.meteor.com/#/full/deploying](https://docs.meteor.com/#/full/deploying)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[https://www.meteor.com/services/build](https://www.meteor.com/services/build)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[https://github.com/onmodulus/demeteorizer](https://github.com/onmodulus/demeteorizer)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[https://github.com/arunoda/meteor-up](https://github.com/arunoda/meteor-up)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: You can find the full example code of this app, ready for deployment, at [https://www.packtpub.com/books/content/support/17713](https://www.packtpub.com/books/content/support/17713)
+    or on GitHub at [https://github.com/frozeman/book-building-single-page-web-apps-with-meteor/tree/chapter10](https://github.com/frozeman/book-building-single-page-web-apps-with-meteor/tree/chapter10).
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the next chapter, we will create a package of our previously created `ReactiveTimer`
+    object and publish it to Meteor's official package repository.
+  prefs: []
+  type: TYPE_NORMAL

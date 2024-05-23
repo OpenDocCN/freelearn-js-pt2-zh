@@ -1,0 +1,1244 @@
+- en: '*Chapter 4*: Building a Web Application'
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Here we are! We have traveled down a long road to get here. This is where all
+    the fun starts. We''ve been through three phases: getting to know what Deno is,
+    exploring the toolchain provided by it, and understanding the details and functionality
+    available via its runtime.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Pretty much all the content from the previous chapters will prove to be useful
+    in this one. Hopefully, the introductory chapters made you feel confident enough
+    to start applying what we have learned together. We'll use those chapters, together
+    with your existing TypeScript and JavaScript knowledge, to build a complete web
+    application.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We'll be writing an API that contains business logic, handles authentication,
+    authorization, and logging, and much more. We will cover enough of the fundamental
+    pieces for you to, at the end, feel comfortable choosing Deno to build your next
+    great app.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this chapter, instead of talking just about Deno, we will also go over some
+    thoughts regarding the fundamentals of software engineering and application architecture.
+    We believe it is crucial to keep some things in mind when it comes to building
+    an application from scratch. We will look at of the fundamentals, which will be
+    proven useful and help us structure our code, enabling it to evolve in the future
+    by making it easy to change.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Later, we will start to reference some third-party modules, look at their approaches,
+    and decide on what we'll use from here on to help us deal with routing and HTTP
+    related challenges. We'll also make sure that we structure our application in
+    a way that the third-party code is isolated and works as an enabler for the functionalities
+    we want to build, more than the functionalities themselves.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We will cover the following topics in this chapter:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Structuring a web application
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Exploring Deno HTTP frameworks
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Let's get started!
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Technical requirements
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The code files used in this chapter are available at the following link: [https://github.com/PacktPublishing/Deno-Web-Development/tree/master/Chapter04/museums-api](https://github.com/PacktPublishing/Deno-Web-Development/tree/master/Chapter04/museums-api).'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Structuring a web application
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'When starting an application, it''s important that we spend some time thinking
+    about its structure and architecture. That''s where there this section will start:
+    by looking at the backbone of application architecture. We''ll have a look at
+    what advantages it brings and align ourselves with a set of principles that will
+    help us scale it as the application grows.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Then, we'll develop what will become the application's first endpoint. However,
+    first, we'll start with the business logic. The persistency layer will follow,
+    and we'll finish by looking at an HTTP endpoint that will act as the application's
+    entry point.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Deno as an unopinionated tool
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: When we're using tools that are low level and delegate many decisions to developers,
+    such as Node.js and Deno, structuring an application is one of the big challenges
+    that arises.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This is very different compared to an opinionated web framework, such as PHP
+    Symfony, Java SpringBoot, or Ruby on Rails, where many of these decisions are
+    made for us.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Most of these decisions have something to do with structure; that is, code and
+    folder structure. Those frameworks normally provide us with ways to deal with
+    dependencies, imports, and even provide some guidance regarding different application
+    layers. Since we're using the *raw* language with a few packages, we will take
+    care of structure by ourselves in this book.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The aforementioned frameworks can't be directly compared with Deno since they
+    are frameworks built on top of languages, such as PHP, Java, and Ruby. But when
+    we look at the JS world, namely at Node.js we can observe that the most popular
+    tools used to create HTTP servers are Express.js and Kao. These tend to be much
+    lighter than the aforementioned frameworks, and even though there are also some
+    solid complete alternatives such as Nest.js or hapi.js, the Node.js community
+    tends to prefer a *library* approach more than a *framework* one.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Even though these very popular libraries provide a good amount of functionality,
+    many decisions are still delegated to developers. This isn't the libraries' fault,
+    but more a community preference.
+  prefs: []
+  type: TYPE_NORMAL
+- en: On one hand, having direct access to these primitives lets us build applications
+    that are very well-suited to our use cases. On the other hand, flexibility is
+    a trade-off. Having a lot of flexibility comes the responsibility of making an
+    innumerous number of decisions. And when it comes to making many decisions there
+    are many opportunities to make bad decisions. The hard part is that these are
+    normally decisions that drastically influence the way a code base scales, and
+    that's what gives them such importance.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In its current state, Deno and its community are following an approach that's
+    very similar to Node.js on this framework-versus-library subject. The community
+    is mostly betting on light and small pieces of software that are created by developers
+    to fit their specific needs. We'll evaluate some of these later in this chapter.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Starting here, and throughout this book, we'll use an application structure
+    that we believe offers great benefits for the use case at hand. However, don't
+    expect that structure and architecture to be a silver bullet, as we are pretty
+    sure such things do not exist in the software world; every architecture will have
+    to keep evolving as it grows.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Instead of just throwing in a recipe and following it, we want to become familiar
+    with a way of thinking – a rationale. This should enable us to make correct decisions
+    further down the road with one objective in mind: *writing code that is easy to
+    change*.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: By writing code that is easy to change, we're always ready to change our application
+    for the better without much effort.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The most important part of an application
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Applications are created to fit a purpose. It doesn't matter if that purpose
+    is to support a business or a simple pet project. At the end of the day, we want
+    it to do something. That *something* is what makes the application useful.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This might seem obvious, but it is sometimes very easy for us, as developers,
+    to get so enthusiastic about a technology that we forget that it is just a means
+    to an end.
+  prefs: []
+  type: TYPE_NORMAL
+- en: As Uncle Bob says in his *Architecture – the lost years* talk ([https://www.youtube.com/watch?v=hALFGQNeEnU](https://www.youtube.com/watch?v=hALFGQNeEnU)),
+    it is very common for people to forget the application's purpose and focus more
+    on the technology itself. It is very important that we remember this in all the
+    phases of application development, but it is even more critical when we're setting
+    up its initial structure. Next, we'll discover the requirements for the application
+    we'll be building throughout the remainder of this book.
+  prefs: []
+  type: TYPE_NORMAL
+- en: What is our application about?
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Even though we truly believe that business logic is the most important thing
+    in any application, in this book, the case is a little different. We''ll be creating
+    an example application, but it will just be a means to reach the main goal: learning
+    Deno. However, as we want the process to be as real as possible, we want to have
+    a clear objective in mind.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We will build an application that will let people create and interact with
+    a list of museums. We can make this clearer by listing its features as user stories,
+    as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The user is able to register and log in.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The user is able to create a museum with a title, description, and location.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The user can view a list of museums.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Throughout this journey, we'll develop APIs and the logic to support those features.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now that we're familiar with the end goals, we can start thinking about how
+    to structure the application.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Understanding folder structure and application architecture
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The first thing we need to be aware of regarding the folder structure, especially
+    when we're starting a project from scratch without a framework, is that it will
+    keep evolving with the project. A folder structure that is good for a project
+    with a couple of endpoints will not be as good for a project with hundreds of
+    them. This depends on many things, from team size, to the standards defined, and
+    ultimately to preferences.
+  prefs: []
+  type: TYPE_NORMAL
+- en: When defining the folder structure, it is important that we get to a place where
+    we can facilitate future decisions about where to locate a piece of code. The
+    folder structure should provide clear hints on how to make good architectural
+    decisions.
+  prefs: []
+  type: TYPE_NORMAL
+- en: At the same time, we certainly don't want to create an overengineered application.
+    We'll create enough abstractions so that modules are very contained and do not
+    have knowledge outside their domain, but not more than that. Keeping this in mind
+    also forces us to build flexible code and clear interfaces.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Ultimately, what''s most important is that the architecture enables the code
+    base to be as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Testable
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Easy to extend
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Decoupled from a specific technology or library
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Easy to navigate and reason about
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: We'll have to keep in mind that, while creating folders, files, and modules,
+    we don't want any of the previously listed topics to be compromised.
+  prefs: []
+  type: TYPE_NORMAL
+- en: These principles are very much in line with the SOLID principles of software
+    design, made famous by Uncle Bob, Robert C. Martin ([https://en.wikipedia.org/wiki/SOLID](https://en.wikipedia.org/wiki/SOLID))
+    in another talk worth watching ([https://youtu.be/zHiWqnTWsn4](https://youtu.be/zHiWqnTWsn4)).
+  prefs: []
+  type: TYPE_NORMAL
+- en: The folder structure we are going to use in this book might sound familiar to
+    you if you come from a Node.js background.
+  prefs: []
+  type: TYPE_NORMAL
+- en: As it also happens with Node.js there's nothing preventing us from creating
+    a full API in a single file. However, we will not do this as we believe that some
+    initial separation of concerns will vastly improve our flexibility later, without
+    sacrificing the developer's productivity.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the following section, we'll look at the responsibilities of the different
+    layers and how they fit together while developing a feature for our application.
+  prefs: []
+  type: TYPE_NORMAL
+- en: By following this line of thought, we strive to guarantee a degree of decoupling
+    between modules. For instance, we want to ensure that making a change in the web
+    framework doesn't means we have to touch business logic objects.
+  prefs: []
+  type: TYPE_NORMAL
+- en: All these recommendations, as well as the ones we will be making throughout
+    this book, will help ensure that the central part of our application is our business
+    logic, with everything else being just plugins. A JSON API is just a way of sending
+    our data to our users, while a database is just a way to persist data; neither
+    of these should be central parts of the application.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'One way to make sure we''re doing this is to do the following mental exercise
+    when we are writing the code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*"When you''re writing business logic, imagine that these objects will be used
+    in a different context. Take, for instance, using the business logic with a different
+    delivery mechanism (a CLI, for instance) or a different persistence engine (an
+    in-memory database instead of a NOSQL database)."*'
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the next few pages, we'll walk you through how to create different layers,
+    and we'll also explain all the design decisions and what they enable.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let's get practical and start creating our project's backbone.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Defining the folder structure
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The first thing we'll do in our project's folder is create an `src` folder.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This is, predictably, where our code will live. We don't want any code to be
+    at the root level of the project because configuration files, READMEs, documentation
+    folders, and so on might be added there. This would make it hard to distinguish
+    the code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We'll be spending most of our time inside the `src` folder in the following
+    chapters. Since our application is about museums, we'll create a folder inside
+    the `src` folder named `museums`. This is where most of the logic that will be
+    written in this chapter will live. Later, we'll create files for types, controllers,
+    and repositories. Then, we'll create the `src/web` folder.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The controller's file is where our business logic will live. The repository
+    will take care of the logic related to data access, while the web layer will handle
+    everything that is *web-related*.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'You can see what the final structure will look like by taking a look at the
+    GitHub repository of this book: [https://github.com/PacktPublishing/Deno-Web-Development/tree/master/Chapter04/museums-api](https://github.com/PacktPublishing/Deno-Web-Development/tree/master/Chapter04/museums-api).'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The initial requirement for this chapter is that there is a route where we can
+    perform a GET request and receive a list of museums in JSON format.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We will start in the controller's file (`src/museums/controller.ts`) and write
+    the required business logic.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This is how the folder''s structure should look like:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: This is our starting point. Everything that is related to museums will be located
+    inside the `museums` folder, and we'll call it a module. The `controller` file
+    will host the business logic, the `repository` file will host data fetching capabilities,
+    and the `types` file will be where our types will be located.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now, let's start coding!
+  prefs: []
+  type: TYPE_NORMAL
+- en: Developing the business logic
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We previously stated that our business logic is the most important part of our
+    application. Even though ours will be super simple for now, that's what we'll
+    develop first.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Since we''ll be using TypeScript for our application, let''s create the interface
+    that will define our `Museum` object. Follow these steps:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Go into `src/museums/types.ts` and create a type that defines a `Museum`:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Make sure it is exported as we'll be using this across other files.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Now that we know the type, we must create some business logic to get a list
+    of museums.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Inside `src/museums/types.ts`, create an interface that will define `MuseumController`.
+    It should contain a method that lists all the museums:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Inside `src/museums/controller.ts`, create a class that will act as the controller.
+    It should contain a function named `getAll`. In the future, this is where the
+    business logic will live, but for now, we can just return an empty array:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: We could use this to directly access the database and get certain records. However,
+    since we want to be able to have our business logic isolated and not coupled with
+    other parts of the application, we won't do this.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: On top of that, we also want our business logic to be testable in isolation,
+    without depending on a connection to a database or a server. To achieve this,
+    we can't access our data source directly from our controller. Later, we will create
+    an abstraction that will be responsible for getting those records from the database.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: For now, we know that we will need to call an external module that will get
+    all the museums for us it give them to our controller – it doesn't matter from
+    where.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Keep in mind the following software design best practice: *"Code to an interface,
+    not an implementation."*'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Simply put, this quote means that we should define the module's signature and
+    only then start thinking about its implementation. This vastly helps when it comes
+    to designing clear interfaces.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Going back to our controller, we know that the controller's `getAll` method
+    will, at some point, have to call a module to get the data from a data source.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Inside `src/museums/types.ts`, define `MuseumRepository`, the module that will
+    be responsible for getting the museums from a data source:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Inside `src/museums/controller.ts`, add an injected class called `museumRepository`
+    to the constructor:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Create a file called `src/index.ts`, import the `MuseumController`, instantiate
+    it, and call the `getAll` method, logging its output. For now, you can inject
+    a dummy repository that just returns an empty array:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Run it to check whether it''s working:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: That's it! We just received the empty array that's coming from the dummy repository
+    function!
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: With the abstraction we have created, our controller is now decoupled from the
+    data source. Its dependencies are injected via a constructor, allowing us to change
+    repositories without changing the controller later.
+  prefs: []
+  type: TYPE_NORMAL
+- en: What we just did is called **dependency inversion** – the **D** in the SOLID
+    principles – and it consists of lifting up part of the dependencies to the function
+    caller. This makes it very easy to test the inside functions independently, as
+    we will see in [*Chapter 8*](B16380_08_Final_JM_ePub.xhtml#_idTextAnchor178),
+    *Testing – Unit and Integration*, where we'll cover testing.
+  prefs: []
+  type: TYPE_NORMAL
+- en: To transform what we just wrote into a fully functioning app, we need to have
+    a database or something that looks like one. We need something that can store
+    and retrieve a list of museums. Let's create that now.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Developing the data accessing logic
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: While developing the controller, we noticed that we needed something that would
+    be able to get the data; that is, the repository. This is the module that will
+    abstract all the calls to a data source, and in this case, the data source that
+    stores the museums. It will have a very well-defined set of methods, and whoever
+    wants to access the data should do so through this module.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We already have part of its interface defined inside `src/museums/types.ts`,
+    so let's write a class that implements it. For now, we will not connect it to
+    a real database. We will use an ES6 Map as an in-memory database instead.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s get into our repository file and start writing our data accessing logic
+    by following these steps:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Open the `src/museums/repository.ts` file and create a `Repository` class.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'It should have a property named `storage` that will be a JavaScript `Map`.
+    The `Map` keys should be strings and the values should be objects of the `Museum`
+    type:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: We are using TypeScript generics to set the types of our `Map`. Note that we've
+    imported the `Museum` interface from the museum controller, as well as `MuseumRepository`,
+    which is implemented by our class.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Now that the *database* is "ready", we have to expose certain methods so that
+    people can interact with it. The requirement from the previous section is that
+    we can get all the records from the database. Let's implement that next.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Inside the repository class, create a method named `getAll`. It should be responsible
+    for returning all the records in our `storage` `Map`:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Create a `src/museums/index.ts` file that exports the museum''s controller
+    and repository:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: To remain consistent, we'll need go to all the previous imports that were importing
+    from a file that isn't `src/museums/index.ts` and change them so that they're
+    only importing things from this file.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Update the `controller.ts` and `repository.ts` imports to import from the `index`
+    file:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: You've probably guessed what we must do next… Do you remember the end of the
+    previous section, where we injected a dummy function into the museum's controller,
+    which was returning an empty array? Let's go back to this and use the logic we
+    just wrote.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Go back to `src/index.ts`, import the `Repository` class we''ve just developed
+    and inject it into the `MuseumController` constructor:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Now, let's add a fixture to our "database" so that we can check it if it's actually
+    printing something.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Access the storage property in `museumRepository` and add a fixture to it.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'This is currently an anti-pattern as we''re directly accessing the module''s
+    database, but we''ll create a method so that we can add fixtures properly later:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Now, let''s run our code again:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: With that, the connection to our database is working, as we can see by the printed
+    fixture.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: The abstractions we created in the previous section enabled us to change the
+    data source without changing the controller. This is one of the advantages of
+    the architecture we are using.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now, if we recall our initial requirement, we can confirm that we are halfway
+    there. Our business logic to satisfy the use case has been created – we're just
+    missing the HTTP part.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Creating the web server
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Now that we have our functionality in place, we need to expose it via a web
+    server. Let''s use what we''ve learned from the standard library to create it
+    by following these steps:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Create a file named `index.ts` inside the `src/web` folder and add the logic
+    there to create a server. We can copy and paste it from the previous chapter''s
+    exercise:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Since we want our application to be easily configurable, we don't want `port`
+    to be hardcoded here but to be configurable from the outside. We need to export
+    this server creation logic as a function.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Wrap the server logic creation inside a function that receives the configuration
+    and `port` as an argument:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Make this function''s parameters an `interface`. This will help us in terms
+    of documentation and will also add type safety and static checks:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Now that we have configured the web server, we can think of using it for our
+    use case.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Go back to `src/index.ts`, import `createServer`, and use it to create a server
+    running on port `8080`:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Run it and see if it works:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Here, we can see that we have a log stating that the server is running and a
+    log of the result from the previous section.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Now, we can test the web server with `curl` to guarantee it is working:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs: []
+  type: TYPE_PRE
+- en: As we can see, it works – we have some pretty basic logic that still doesn't
+    satisfy our requirements but that spins up a web server. What we'll do next is
+    connect this web server with the logic we wrote previously.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Wiring the web server to the business logic
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We're pretty close to finishing what we planned to do at the beginning of this
+    chapter. We currently have a web server and some business logic; it is the connection
+    that is missing.
+  prefs: []
+  type: TYPE_NORMAL
+- en: One quick way to connect both things would be to import the controller directly
+    on `src/web/index.ts` and use it there. Here, the application would have the desired
+    behavior and currently, that doesn't bring any problems.
+  prefs: []
+  type: TYPE_NORMAL
+- en: However, since we are thinking of an app architecture that can grow without
+    many issues, we won't do this. This is because it would make it very hard to test
+    our web logic in isolation, thus compromising one of our principles.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If we import the controller directly from the web server, every time we call
+    the `createServer` function in a testing environment, it will automatically import
+    and call the methods from the `MuseumController` and that's not what we want.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We will use dependency inversion once more to send the controller's methods
+    to the web server. If this still seems too abstract, don't worry – we'll get to
+    the code in a minute.
+  prefs: []
+  type: TYPE_NORMAL
+- en: To make sure we aren't forgetting our initial goal, what we want is for, when
+    a user does a `GET` request to `/api/museums`, our web server to return a list
+    of museums.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Since we're doing this as an exercise, we will not use a routing library just
+    yet.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We just want to add a basic check to ensure that the URL and method of the request
+    are the ones we want to answer to. If they are, we want to return the list of
+    museums.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s go back to the `createServer` function and add our route handler:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE21]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We''ve added a basic check for the request URL and method and a different response
+    when they match the initial requirement. Let''s run the code to see how it behaves:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE22]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Again, test it with `curl`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE23]'
+  prefs: []
+  type: TYPE_PRE
+- en: It works – cool!
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now comes the part where we define what we need in order to satisfy this request
+    as an interface.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We ultimately require a function that returns a list of museums to be injected
+    into our server. Let''s add that inside the `CreateServerDependencies` interface
+    by following these steps:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Back inside `src/web/index.ts`, add `MuseumController` as a dependency to the
+    `createServer` function:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE24]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Call the `getAll` function from the museum''s controller to get a list of all
+    the museums and respond to the request:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE25]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Go back to `src/index.ts`, which is where we are calling the `createServer`
+    function, and send the `getAll` function from `MuseumController`. You can also
+    remove the code that directly calls the controller method from the previous section
+    as it is of no use at the moment:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE26]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Run the application again:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE27]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Send a request to http://localhost:8080/api/museums; you will get a list of
+    museums:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE28]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: And there it is – we're getting the list of museums!
+  prefs: []
+  type: TYPE_NORMAL
+- en: We've just accomplished the goal of this section; that is, to connect our business
+    logic to the web server.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note how we've enabled the controller methods to be injected instead of the
+    web server being the one that directly imports it. This was made possible because
+    we used dependency inversion. This is something we'll keep doing throughout this
+    book, whenever we want to decouple and increase the testability of modules and
+    functions.
+  prefs: []
+  type: TYPE_NORMAL
+- en: While doing our mental exercise to test the coupling of our code, when we wanted
+    to use the current business logic with a different delivery mechanism, such as
+    a CLI, nothing impeded us. We could still reuse the same controllers and repositories.
+    This means that we're doing a nice job of using abstractions to decouple our business
+    logic from the application logic.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now that we have the baseline of our application architecture and folder structure,
+    and we also understand the *whys* behind it, we can start looking at the utilities
+    that might help us build it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the next section, we will have a look at the current HTTP frameworks that
+    exist in the Deno community. We won't spend much time doing this, but we want
+    to understand the pros and cons of each one and ultimately choose one to help
+    us with the rest of our journey.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Exploring Deno HTTP frameworks
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: When you're building an application that's more complex than a simple tutorial,
+    and if you don't want to take a purist approach, you are most likely going to
+    use third-party software.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Obviously, this is not something particular to Deno. Even though there are communities
+    that are keener on using third-party modules than others, all the communities
+    use third-party software.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We could go over the reasons why people do or don't do this, but the more popular
+    reasons are always to do with reliability and time management. This might be because
+    you want to use software that is battle tested instead of building it yourself.
+    Sometimes, it is a mere time management question of not wanting to rewrite something
+    that has already been created.
+  prefs: []
+  type: TYPE_NORMAL
+- en: One important thing we have to say is that we must be extremely cautious in
+    terms of how many of the applications we're building are coupled with third-party
+    software. We don't mean that you should try to reach for the utopia of having
+    everything completely decoupled, especially because that introduces other problems
+    and lots of indirection. What we're saying is that we should be very aware of
+    the cost of bringing a dependency into our code and the trade-offs it introduces.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the first section of this chapter, we built the foundations for a web application
+    that we'll be adding features to throughout the rest of this book. In its current
+    state, it is still very small, so it doesn't have any dependencies other than
+    the standard library.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In that application, we did a couple of things that we don't believe will scale
+    well, such as defining routes by matching URLs and HTTP methods using plain `if`
+    statements.
+  prefs: []
+  type: TYPE_NORMAL
+- en: As the application grows, it is likely that we will have more advanced needs.
+    These needs can go from dealing with an HTTP request body in different formats
+    to having more complex routing systems, handling headers and cookies, or connecting
+    to a database.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Because we don't believe in reinventing the wheel when it comes to developing
+    applications, we will analyze a few libraries and frameworks that currently exist
+    in the Deno community and are focused on creating web applications.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We will take a general look at the existing solutions and explore their features
+    and approaches.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the end, we'll choose the one we believe offers the best trade-off for our
+    use case.
+  prefs: []
+  type: TYPE_NORMAL
+- en: What alternatives exist?
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: At the time of writing, there are a few third-party packages that offer a great
+    amount of functionality to create web applications and APIs. Some of them are
+    heavily inspired by very popular Node.js packages, such as Express.JS, Koa, or
+    hapi.js, while others are inspired by other frameworks outside of JavaScript,
+    such as Laravel, Flask, and so on.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We'll be exploring four of them that are quite popular and well-maintained at
+    the time of writing. Keep in mind since as Deno and the mentioned packages are
+    evolving quickly, this might change over time.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Important note
+  prefs: []
+  type: TYPE_NORMAL
+- en: There is a great article by Craig Morten that does a very thorough analysis
+    and exploration of the available libraries. I heavily recommend this article if
+    you want to find out more ([https://dev.to/craigmorten/what-is-the-best-deno-web-framework-2k69](https://dev.to/craigmorten/what-is-the-best-deno-web-framework-2k69)).
+  prefs: []
+  type: TYPE_NORMAL
+- en: We will try to be diverse when it comes to the packages we're going to explore.
+    There are some that provide more abstractions and structure than others, and some
+    that provide not much more than mere utility functions and composable functionality.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The packages we''ll explore are as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Drash
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Servest
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Oak
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Alosaur
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Let's look at each one separately.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Drash
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Drash ([https://github.com/drashland/deno-drash](https://github.com/drashland/deno-drash))
+    aims to be different from the existing Deno and Node.js frameworks. This motivation
+    is explicitly mentioned by its maintainer, Edward Bebbington, on a blog post where
+    he compares Drash to other alternatives and explains the motivations behind its
+    creation ([https://dev.to/drash_land/what-makes-drash-different-idd](https://dev.to/drash_land/what-makes-drash-different-idd)).
+  prefs: []
+  type: TYPE_NORMAL
+- en: These motivations are great, and the inspiration of very popular software tools
+    such as Laravel, Flask, and Tonic justifies most of these decisions. Some of the
+    similarities are also noticeable the moment you look at Drash's code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'It really offers a different approach compared to libraries such as Express.js
+    or Koa, as the documentation states:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '"Where Deno is different than Node.js, Drash aims to be different than Express
+    or Koa, utilizing resources and a full class-based system."'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The main differences are that Drash doesn''t want to provide an application
+    object where developers can then register their endpoints, like some popular Node.js
+    frameworks do. It sees endpoints as resources that are defined within a class,
+    similar to the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE29]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'These resources are then plugged into Drash''s application later:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE30]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here, we can directly state it is, in fact, different from the other frameworks
+    we've mentioned. These differences are deliberate and plan to please developers
+    that are fans of this approach and the problems it solves for other frameworks.
+    Those use cases are very well-explained in Drash's documentation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Drash's resource-based approach is definitely something to keep an eye on. Its
+    inspiration from very mature pieces of software such as Flask and Tonic definitely
+    brings something to the table and proposes a solution that helps solve some of
+    the common problems unopinionated tools have. The documentation is complete and
+    easy to understand, which makes it a great asset to have when it comes to choosing
+    a tool for building your application with.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Servest
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Servest ([https://servestjs.org/](https://servestjs.org/)) calls itself a *"progressive
+    HTTP server for Deno."*
+  prefs: []
+  type: TYPE_NORMAL
+- en: One of the reasons it was created was because its author wanted to make some
+    APIs from the standard library's HTTP module easier to use and experiment with
+    new features. The latter is something that is really hard to do on a standard
+    library that needs stability.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Servest directly focuses on this comparison with the standard library's HTTP
+    module. One of its main objectives, which is directly stated on the project's
+    home page, is making it easy to migrate from the standard library's HTTP module
+    to Servest. This summarizes Servest's vision well.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'API-wise, Servest is very similar to what we''re used to from Express.js and
+    Koa. It provides an application object where routes can be registered. You can
+    also recognize obvious influences from what is provided by the standard library
+    module, as we can see in the following code snippet:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE31]'
+  prefs: []
+  type: TYPE_PRE
+- en: We can recognize the application object from well-known Node.js libraries and
+    the request object from the standard library, among other things.
+  prefs: []
+  type: TYPE_NORMAL
+- en: On top of this functionality, Servest also provides common features, such as
+    support for directly rendering JSX pages, serving static files, and authentication.
+    The documentation is also clear and full of examples.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Servest tries to leverage knowledge and familiarity from Node.js users while
+    using the benefits provided by Deno in a promising mix. Its progressive nature
+    brings very nice features to the table, with the promise to make developers more
+    productive than when they're using the standard library HTTP package.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Oak
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Oak ([https://oakserver.github.io/oak/](https://oakserver.github.io/oak/)) is
+    currently the most popular Deno library when it comes to creating web applications.
+    Its name derives from a play on words of Koa, a very popular Node.js middleware
+    framework and Oak's main inspiration.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Due to its heavy inspirations, it is of no surprise that its APIs resemble Koa
+    by using asynchronous functions and a context object. Oak also includes a router,
+    also inspired by `@koa/router`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'If you know Koa, the following code might look very familiar to you:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE32]'
+  prefs: []
+  type: TYPE_PRE
+- en: For those of you who are not familiar with Koa, we'll explain it in brief, since
+    understanding it will help you understand Oak.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Koa provides a minimal and unopinionated approach by using modern JavaScript
+    features. One of the initial reasons Koa was created (by the same team who created
+    Express.js) was that its creator wanted to create a framework that would leverage
+    modern JavaScript features, as opposed to Express, which was created at the beginning
+    of Node.js' lifetime.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The team wanted to use new features such as promises and async/await, and then
+    solve challenges that developers faced with Express.JS. Most of these challenges
+    were related to error handling, dealing with callbacks, and the lack of clarity
+    of some APIs.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Oak's popularity doesn't come out of nowhere, and its current distance from
+    the alternatives in terms of GitHub stars reflects that. By themselves, GitHub
+    stars don't mean much, but together with opened and closed issues, the number
+    of releases, and so on, we can see why people are trusting it. Of course, this
+    familiarity plays a big role in terms of this package's popularity.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In its current state, Oak is a solid (in terms of Deno's community standards)
+    way to build web applications as it provides a very clear and direct set of features.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Alosaur
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Alosaur ([https://github.com/alosaur/alosaur](https://github.com/alosaur/alosaur))
+    is a Deno web application framework based on decorators and classes. It is similar
+    to Drash in a way, even though the final approaches are quite different.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Among its main features, Alosaur provides things such as template rendering,
+    dependency injection, and OpenAPI support. These features have been added on top
+    of what is a standard for all the alternatives we presented here, such as middleware
+    support and routing.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This framework''s approach is to define controllers by using classes and define
+    their behavior using decorators, as shown in the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE33]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here, we can see that the application's instantiation has similarities with
+    Drash. It also uses TypeScript decorators to declare a framework's behavior.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Alosaur takes a different approach compared to most of the aforementioned libraries,
+    mainly because it doesn't try to be minimal. Instead, it provides a set of features
+    that prove to be useful when it comes to building certain types of applications.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We decided to have a look at it not only because it does what it is supposed
+    to do, but also because it has some features that are not so common in the Node.js
+    and Deno world. This includes things such as dependency injection and OpenAPI
+    support, which are not offered by any other of the presented solutions. At the
+    same time, it keeps features such as template rendering, which is something that
+    might be familiar to you from Express.JS but not so familiar in more modern frameworks.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The final solution is very promising and complete in the sense of the functionalities
+    it provides. It is definitely something to keep an eye on so that you can see
+    how it evolves.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The verdict
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: After looking at all the presented solutions and recognizing that all of them
+    have their merits, we've decided to go with Oak for the rest of this book.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This doesn't mean that this book will focus on Oak. It will not, as it will
+    only handle HTTP and routing. Oak's minimal approach will fit very nicely with
+    what we will be doing next, helping us to incrementally create features without
+    it getting in the way. The fact that it is also one of the most stable, maintained,
+    and popular options in the Deno community has an obvious influence on our decision.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Be aware that this decision doesn't mean that what we will learn in the next
+    few chapters can't be done in any of the alternatives. In fact, because of the
+    way we will organize our code and architecture, we believe that it would be easy
+    to keep up with most of the things we are going to do using a different framework.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Throughout the rest of this book, we will use other third-party modules that
+    can help us build the functionalities we've proposed. The reason we've decided
+    to have a deeper look at the libraries that deal with HTTP is because this is
+    the fundamental delivery mechanism for the application we'll be developing.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this chapter, we finally started building an application that leverages our
+    knowledge of Deno. We started by considering the main goals we will have when
+    we build an application and define its architecture. These goals will set the
+    tone for most of our conversations regarding architecture and structure throughout
+    this book as we'll keep going back to them, ensuring that we're in line with them.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We started by creating our folder structure and trying to achieve our very
+    first application goal: have an HTTP endpoint that lists museums. We did this
+    by building the simple business logic first and progressed while needs such as
+    separation of concerns and isolation and responsibilities arose. These needs derived
+    our architecture, proving why the layers and abstractions we created are useful
+    and demonstrating what they add.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'By having the responsibilities and the module''s interfaces well-defined, we
+    understood that we could temporarily build our application by using an in-memory
+    database, which we did. It was possible to build the application to fit this chapter''s
+    requirement with that, and layer separation allows us to come back later and change
+    it to a proper persistency layer without any issues. After defining the business
+    and data accessing logic, we created a web server with the standard library that
+    worked as a delivery mechanism. After creating a very rudimentary routing system,
+    we plugged in the business logic we built previously and satisfied the main requirement
+    for this chapter: having an application that returns a list of museums.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: We did all of this without creating a direct coupling between the business logic,
+    the data fetching, and the delivery layers. This is something we believe will
+    be very useful as we start adding complexity, extending our application, and adding
+    tests to it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This chapter wraps up by having a look at the HTTP frameworks and libraries
+    that currently exist in the Deno community and understanding their differences
+    and approaches. Some of them use approaches that are familiar to Node.js users,
+    while others deeply use TypeScript and its features to create a more structured
+    web application. By looking at the four currently available solutions, we learned
+    what is being developed in the community and the directions they might go in.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We ended up choosing Oak, a very minimal and reasonably mature solution, to
+    help us solve the routing and HTTP challenges we'll come across in the rest of
+    this book.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the next chapter, we'll start adding Oak to our code base, together with
+    useful features such as authentication and authorization, using concepts such
+    as middleware, and growing our application so that it achieves the goals we set
+    ourselves up to complete.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let's go!
+  prefs: []
+  type: TYPE_NORMAL

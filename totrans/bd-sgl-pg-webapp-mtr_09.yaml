@@ -1,0 +1,593 @@
+- en: Chapter 9. Advanced Reactivity
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Now our blog is basically complete, as we can create and edit entries. In this
+    chapter, we will make use of Meteor's reactive templates to make our interface
+    timestamps update itself. We will build a reactive object that will rerun the
+    template helper, which displays the time when the blog entries were created. This
+    way, they will always display the correct relative time.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In this chapter, we will cover the following topics:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Reactive programming
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Rerunning functions manually
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Building a reactive object using the `Tracker` package
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Stopping reactive functions
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_IND
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: If you've jumped right into the chapter and want to follow the examples, download
+    the previous chapter's code examples from either the book's web page at [https://www.packtpub.com/books/content/support/17713](https://www.packtpub.com/books/content/support/17713)
+    or from the GitHub repository at [https://github.com/frozeman/book-building-single-page-web-apps-with-meteor/tree/chapter8](https://github.com/frozeman/book-building-single-page-web-apps-with-meteor/tree/chapter8).
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: These code examples will also contain all the style files, so we don't have
+    to worry about adding CSS code along the way.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Reactive programming
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: As we already saw throughout the book, Meteor uses something called **reactivity**.
+  prefs: []
+  type: TYPE_NORMAL
+- en: One problem that a developer has to solve when building a software application
+    is the consistency of the data represented in the interface. Most modern applications
+    use something called **Model-View-Controller** (**MVC**), where the controller
+    of a view makes sure that it always represents the current state of the model.
+    The model is mostly a server API or a JSON object in the browser memory.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The most common ways of keeping consistent interfaces are as follows (courtesy:
+    [http://manual.meteor.com](http://manual.meteor.com)):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Poll and diff**: Periodically (for example, every second), fetch the current
+    value of the thing, see whether it''s changed, and if so, perform the update.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Events**: The thing that can change emits an event when it changes. Another
+    part of the program (often called a controller) arranges to listen for this event,
+    gets the current value, and performs the update when the event fires.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Bindings**: Values are represented by objects that implement some interface,
+    such as `BindableValue`. Then, a "bind" method is used to tie two `BindableValues`
+    together so that when one value changes, the other is updated automatically. Sometimes,
+    as a part of setting up the binding, a transformation function can be specified.
+    For example, `Foo` can be bound to `Bar` with the `toUpperCase` transformation
+    function.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: These patterns are good, but they still need a lot of code to maintain the consistency
+    of the data represented.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Another pattern, although not yet as commonly used, is **reactive programming**.
+    This pattern is a declarative way of binding data. It means when we use a reactive
+    data source such as a `Session` variable or `Mongo.Collection`, we can be sure
+    that reactive functions or template helpers that use these will rerun as soon
+    as its value changes, always keeping the interface or calculations based on these
+    values updated.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The Meteor manual gives us an example use case where reactive programming comes
+    in handy:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*Reactive programming is perfect for building user interfaces, because instead
+    of attempting to model all interactions in a single piece of cohesive code, the
+    programmer can express what should happen upon specific changes. The paradigm
+    of responding to a change is simpler to understand than modeling which changes
+    affect the state of the program explicitly.*'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: ''
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: '*For example, suppose that we are writing an HTML5 app with a table of items,
+    and the user can click on an item to select it or ctrl-click to select multiple
+    items. We might have an <h1> tag and want the contents of the tag to be equal
+    to the name of the currently selected item, capitalized, or else "Multiple selection"
+    if multiple items are selected. And we might have a set of <tr> tags and want
+    the CSS class on each <tr> tag to be "selected" if the items corresponding to
+    that row is in the set of selected items, or the empty string otherwise.*'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: 'To make this example happen in the aforementioned patterns, we can quickly
+    see how complex it gets compared to reactive programming (courtesy: [http://manual.meteor.com](http://manual.meteor.com)):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: If we use poll and diff, the UI will be unacceptably laggy. After the user clicks,
+    the screen won't actually update until the next polling cycle. Also, we have to
+    store the old selection set and diff it against the new selection set, which is
+    a bit of a hassle.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: If we use events, we have to write some fairly tangled controller code to manually
+    map changes to the selection or to the name of the selected item, onto updates
+    to the UI. For example, when the selection changes, we have to remember to update
+    both the `<h1>` tag and (typically) two affected `<tr>` tags. What's more, when
+    the selection changes, we have to automatically register an event handler on the
+    newly selected item so that we can remember to update `<h1>`. It is difficult
+    to structure clean code and maintain it, especially as the UI is extended and
+    redesigned.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: If we use bindings, we will have to use a complex **domain-specific language**
+    (**DSL**) to express the complex relationships between the variables. The DSL
+    will have to include indirection (bind the contents of `<h1>` not to the name
+    of any fixed item, but to the item indicated by the current selection), transformation
+    (capitalize the name), and conditionals (if more than one item is selected, show
+    a placeholder string).
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: With Meteor's reactive template engine, Blaze, we can simply use the `{{#each}}`
+    block helper to iterate over a list of elements and add some conditions for each
+    element based on user interaction or on an item's property to add a selected class.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If the user now changes the data or the data coming in from the server changes,
+    the interface will update itself to represent the data accordingly, saving us
+    a lot of time and avoiding unnecessary complex code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The invalidating cycle
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: One key part of understanding the reactive dependencies is the invalidate cycle.
+  prefs: []
+  type: TYPE_NORMAL
+- en: When we use a reactive data source inside a reactive function, such as `Tracker.autorun(function(){…})`,
+    the reactive data source itself sees that it is inside a reactive function and
+    adds the current function as a dependency to its dependency store.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Then, when the value of the data source changes, it invalidates (reruns) all
+    its dependent functions and removes them from its dependency store.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the rerun of the reactive function, it adds the reactive function back to
+    its dependency store so that they will rerun on its next invalidation (value change)
+    again.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This is the key to understand the reactive concept, as we will see in the following
+    example.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Imagine that we have two `Session` variables set to `false`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Moreover, We have the `Tracker.autorun()` function, which uses both these variables:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: We can now call `Session.set('second', true)`, but the reactive function will
+    not rerun, because it was never called in the first run, as the `first` session
+    variable was set to `false`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If we now call `Session.set(first, true)`, the function will rerun.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Additionally, if we now set `Session.set('second', false)`, it will rerun as
+    well, as in the second rerun, `Session.get('second')` can add this reactive function
+    as a dependency.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Because the reactive data sources source will always remove all dependencies
+    from its store on every invalidation and add them back in the rerun of the reactive
+    function, we can set `Session.set(first, false)` and try to switch it to `Session.set('second',
+    true)`. The function will *not* rerun again, as `Session.get('second')` was never
+    called in this run!
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Once we understand this, we can make more fine-grained reactivity, keeping
+    reactive updates to a minimum. The console output of the explanation looks similar
+    to the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![The invalidating cycle](img/00024.jpeg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Building a simple reactive object
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: As we saw, a **reactive object** is an object that when used inside a reactive
+    function, will rerun the function when its value changes. The Meteor's `Session`
+    object is one example of a reactive object.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this chapter, we will build a simple reactive object that will rerun our
+    `{{formatTime}}` template helper at time intervals so that all the relative times
+    are updated correctly.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Meteor's reactivity is made possible through the `Tracker` package. This package
+    is the core of all reactivity and allows us to track dependencies and rerun these
+    whenever we want.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Perform the following steps to build a simple reactive object:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To get started, let''s add the following code to the `my-meteor-blog/main.js`
+    file:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: This will create a variable named `ReactiveTimer` on the client with a new instance
+    of `Tracker.Dependency`.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Below the `ReactiveTimer` variable, but still inside the `if(Meteor.isClient)`
+    condition, we will add the following code to rerun all dependencies of our `ReactiveTimer`
+    object every 10 seconds:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: The `Meteor.setInterval` will run the function every 10 seconds.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_IND
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Meteor comes with its own implementation of `setInterval` and `setTimeout`.
+    Even though they work exactly as their native JavaScript equivalents, Meteor needs
+    these to reference the right timeout/interval for a specific user on the server
+    side.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Meteor comes with its own implementation of `setInterval` and `setTimeout`.
+    Even though they work exactly as their native JavaScript equivalents, Meteor needs
+    these to reference the right timeout/interval for a specific user on the server
+    side.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Inside the interval, we call `ReactiveTimer.changed()`. This will invalidate
+    every dependent function, causing it to rerun.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Rerunning functions
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'So far, we have no dependency created, so let''s do that. Add the following
+    code below `Meteor.setInterval`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: If we now get back to our browser console, we should see **Function re-run**
+    every 10 seconds, as our reactive object reruns the function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We can even call `ReactiveTimer.changed()` in our browser console and the function
+    will rerun as well.
+  prefs: []
+  type: TYPE_NORMAL
+- en: These are good examples, but don't make our timestamps update automatically.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To do this, we need to open up `my-meteor-blog/client/template-helpers.js`
+    and add the following line at the top of our `formatTime` helper function:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This will make every `{{formatTime}}` helper in our app rerun every 10 seconds,
+    updating the relative time while it passes. To see this, go to your browser and
+    create a new blog entry. If you save the blog entry now and watch the time created
+    text, you will see that it changes after a while:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Rerunning functions](img/00025.jpeg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Creating an advanced timer object
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The previous example was a simple demonstration of a custom reactive object.
+    To make it more useful, it is better to create a separate object that hides the
+    `Tracker.Dependency` functions and adds additional functionality.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Meteor's reactivity and dependency tracking allows us to create dependencies
+    even when the `depend()` function is called from inside another function. This
+    dependency chain allows more complex reactive objects.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In the next example, we will take our `timer` object and add a `start` and
+    `stop` function to it. Additionally, we will also make it possible to choose a
+    time interval at which the timer will rerun:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'First, let''s remove the previous code examples from the `main.js` and `template-helpers.js`
+    files, which we added before, and create a new file named `ReactiveTimer.js` inside
+    `my-meteor-blog/client` with the following content:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: This creates a classic prototype class in JavaScript, which we can instantiate
+    using `new ReactiveTimer()`. In its constructor function, we instantiate a `new
+    Tracker.Dependency` and attach it to the function.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Now, we will create a `start()` function, which will start a self-chosen interval:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: This is the same code as we used before with the difference that we store the
+    interval ID in `this._intervalId` so that we can stop it later in our `stop()`
+    function. The interval passed to the `start()` function must be in seconds;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Next, we add the `stop()` function to the class, which will simply clear the
+    interval:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Now we only need a function that creates the dependencies:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Our reactive timer is ready!
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Now, to instantiate the `timer` and start it with whatever interval we like,
+    add the following code after the `ReactiveTimer` class at the end of the file:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: At last, we need to go back to our `{{formatTime}}` helper in the `template-helper.js`
+    file, and `add` the `time.tick()` function, and every relative time in the interface
+    will update as time goes by.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'To see the reactive timer in action, run the following code snippet in our
+    browser''s console:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: We should now see **Timer ticked!** logged every 10 seconds. If we now run `time.stop()`,
+    the timer will stop running its dependent functions. If we call `time.start(2)`
+    again, we will see Timer ticked! now appearing every two seconds, as we set the
+    interval to `2`:![Creating an advanced timer object](img/00026.jpeg)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: As we can see, our `timer` object is now rather flexible, and we can create
+    any number of time intervals to be used throughout the app.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Reactive computations
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Meteor's reactivity and the `Tracker` package is a very powerful feature, as
+    it allows event-like behavior to be attached to every function and every template
+    helper. This reactivity is what keeps our interface consistent.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Although we only touched the `Tracker` package until now, it has a few more
+    properties that we should take a look at.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We already learned how to instantiate a reactive object. We can call `new Tracker.Dependency`,
+    which can create and rerun dependencies using `depend()` and `changed()`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Stopping reactive functions
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: When we are inside a reactive function, we also have access to the current computational
+    object, which we can use to stop further reactive behavior.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To see this in action, we can use our already running `timer` and create the
+    following reactive function using `Tracker.autorun()` in our browser''s console:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here, we create `someInnerFunction()` to show how we can access the current
+    computation as well from nested functions. In this inner function, we get the
+    computation using `Tracker.currentComputation`, which gives us the current `Tracker.Computation`
+    object.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We use the `count` variable, we created before the `Tracker.autorun()` function,
+    to count up. When we reach 10, we call `Tracker.currentComputation.stop()`, which
+    will stop the dependency of the inner and the `Tracker.autorun()` functions, making
+    them nonreactive.
+  prefs: []
+  type: TYPE_NORMAL
+- en: To see the results quicker, we stop and start the `timer` object with an interval
+    of two seconds at the end of the example.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'If we copy and paste the previous code snippet into our browser''s console
+    and run it, we should see **Running for the xx time** appearing 10 times:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Stopping reactive functions](img/00027.jpeg)'
+  prefs: []
+  type: TYPE_IMG
+- en: The current computational object is useful to give us control over reactive
+    dependencies from inside the dependent functions.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Preventing run at start
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The `Tracker` `.Computation` object also comes with the `firstRun` property,
+    which we have used in an earlier chapter.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Reactive functions, for example, when created using `Tracker.autorun()` also
+    run when they are parsed by JavaScript for the first time. If we want to prevent
+    this, we can simply stop the function before any code is executed when checking
+    whether `firstRun` is `true`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: We don't need to get the current computation here using `Tracker.currentComputation`,
+    as `Tracker.autorun()` gets it already as its first argument.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Also, when we stop a `Tracker.autorun()` function, as described in the following
+    code, it will never create the dependency for the session variable, as `Session.get()`
+    was never called in the first run:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: To make sure that we make the function depending on the `myValue` session variable,
+    we need to put it before the `return` statement.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Advanced reactive objects
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The `Tracker` package has a few more advanced properties and functions that
+    allow you to control when dependencies are invalidated (`Tracker.flush()` and
+    `Tracker.Computation.invalidate()`) and allow you to register additional callbacks
+    on it (`Tracker.onInvalidate()`).
+  prefs: []
+  type: TYPE_NORMAL
+- en: These properties allow you to build complex reactive objects, which are out
+    of the scope of this book. If you want to get a deeper understanding of the `Tracker`
+    package, I recommend that you take a look at the Meteor manual at [http://manual.meteor.com/#tracker](http://manual.meteor.com/#tracker).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this chapter, we learned how to build our own custom reactive object. We
+    learned about `Tracker.Dependency.depend()` and `Tracker.Dependency.changed()`
+    and saw how reactive dependencies have their own computational objects, which
+    can be used to stop its reactive behavior and prevent running at start.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To dig deeper, take a look at the documentation for the `Tracker` package and
+    see detailed property descriptions for the `Tracker.Computation` object at the
+    following resources:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[https://www.meteor.com/tracker](https://www.meteor.com/tracker)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[https://docs.meteor.com/#/full/tracker](https://docs.meteor.com/#/full/tracker)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[https://docs.meteor.com/#/full/tracker_computation](https://docs.meteor.com/#/full/tracker_computation)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[https://docs.meteor.com/#/full/tracker_dependency](https://docs.meteor.com/#/full/tracker_dependency)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: You can find this chapter's code examples at [https://www.packtpub.com/books/content/support/17713](https://www.packtpub.com/books/content/support/17713)
+    or on GitHub at [https://github.com/frozeman/book-building-single-page-web-apps-with-meteor/tree/chapter9](https://github.com/frozeman/book-building-single-page-web-apps-with-meteor/tree/chapter9).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now that we have finalized our blog, we will take a look at how to deploy our
+    app on servers in the next chapter.
+  prefs: []
+  type: TYPE_NORMAL

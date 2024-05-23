@@ -1,0 +1,1355 @@
+- en: '*Chapter 3*: The Runtime and Standard Library'
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Now that we know enough about Deno, we're in a good place to write a few real
+    applications with it. In this chapter, we'll be using no libraries as its primary
+    purpose is to present the runtime APIs and the standard library.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We will be writing small CLI utilities, web servers, and more, always leveraging
+    the power of what the official Deno team created, with no external dependencies.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The Deno namespace will be our starting point as we believe it makes sense to
+    explore what the runtime includes first. Following this idea, we'll also look
+    at the Web APIs that Deno shares with the browser. We'll use `setTimeout` to `addEventListener`,
+    `fetch`, and so on.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Still in the Deno namespace, we will get to know the program lifecycle, interact
+    with the filesystem, and build small command-line programs. Later, we will get
+    to know buffers and understand how they can be used to asynchronously read and
+    write.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We will then take a quick turn into the standard library and we'll go through
+    some useful modules. This chapter doesn't aim to replace the standard library's
+    documentation; it will instead present you with some of its capabilities and use
+    cases. We'll get to know it while we write small programs.
+  prefs: []
+  type: TYPE_NORMAL
+- en: On this journey through the standard library, we will use modules that deal
+    with the filesystem, ID generation, text formatting, and HTTP communication. Part
+    of it will be an introduction to what we'll explore in more depth in later chapters.
+    You'll finish this chapter by writing your first JSON API, and connecting to it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The following are the topics that we will be covering in this chapter:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The Deno runtime
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Exploring the Deno namespace
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using the standard library
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Building a web server using the HTTP module
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Technical requirements
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'All the code files of this chapter can be found at the following GitHub link:
+    [https://github.com/PacktPublishing/Deno-Web-Development/tree/master/Chapter03](https://github.com/PacktPublishing/Deno-Web-Development/tree/master/Chapter03).'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The Deno runtime
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Deno provides a set of functions that are included in the runtime as globals
+    in the `Deno` namespace. The runtime APIs are documented at [https://doc.deno.land/](https://doc.deno.land/)
+    and can be used to do the most elementary, low-level things.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Two types of functions are available on Deno without any imports: Web APIs
+    and the `Deno` namespace. Whenever there''s a behavior in Deno that also exists
+    on the browser, Deno mimics the browser APIs – those are Web APIs. Since you come
+    from the JavaScript world, you''re probably familiar with most of them. We''re
+    speaking about functions such as `fetch`, `addEventListener`, `setTimeout`, and
+    objects such as `window`, `Event`, `console`, among others.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Code written using Web APIs can be bundled and run in the browser with no transformations.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The other big part of the APIs exposed by the runtime lives inside a global
+    namespace named `Deno`. You can use the REPL and the documentation, two of the
+    things we explored in [*Chapter 2*](B16380_02_Final_JM_ePub.xhtml#_idTextAnchor056),
+    *The Toolchain*, to explore it and get a quick grasp of what functions it includes.
+    Later in this chapter, we'll also experiment with some of the most common ones.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If you want to access the documentation of all the symbols that are included
+    in Deno, you can run the `doc` command with the `--builtin` flag.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Stability
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The functions inside the `Deno` namespace are considered stable from version
+    1.0.0 onwards. This means the Deno team will make an effort to support them across
+    newer versions, and will do its best to keep them compatible with future changes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Features that are still not considered stable for production live under the
+    `--unstable` flag, as you probably imagined, since we've used them in previous
+    examples.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The documentation of unstable modules can be accessed by using the `--unstable`
+    flag with the `doc` command or by accessing [https://doc.deno.land/builtin/unstable](https://doc.deno.land/builtin/unstable).
+  prefs: []
+  type: TYPE_NORMAL
+- en: The standard library is not yet considered stable by the Deno team and thus
+    they have a different version from the CLI (at the time of writing, it is on version
+    0.83.0).
+  prefs: []
+  type: TYPE_NORMAL
+- en: In contrast with the `Deno` namespace functions, the standard library doesn't
+    normally need the `--unstable` flag to run, except if any module from the standard
+    library is using unstable functions from the `Deno` namespace.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Program lifecycle
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Deno supports the browser compatible `load` and `unload` events that can be
+    used to run setup and cleanup code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Handlers can be written in two different ways: with `addEventListener` and
+    by overriding the `window.onload` and `window.onunload` functions. The `load`
+    events can be asynchronous but the same is not true for `unload` events as they
+    can''t be canceled.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Using `addEventListener` enables you to register unlimited handles; for instance:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'If we run the preceding code, we get the following output:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Another way to schedule code to run on setup and teardown phases is by overriding
+    the `onload` and `onunload` functions from the `window` object. These functions
+    have the particularity that only the last to be assigned runs. This happens because
+    they override one another; see the following code, for instance:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'By running the preceding program, we got the following output:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: If we then look at the initial code we wrote, we can understand that the first
+    two declarations were overridden by the two declarations following them. That's
+    what happens when we override `onunload` and `onload`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Web APIs
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'To demonstrate that we can use the Web APIs the exact same way we can use on
+    the browser, we''ll write a rudimentary program that fetches the Deno website
+    logo, converts it to base64, and prints to the console an HTML page with the base64
+    of the image there. Let''s do this by following these steps:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Start with the request to [https://deno.land/logo.svg](https://deno.land/logo.svg):'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Convert it into `blob`:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Get the text out of the `blob` object and convert it into `base64`:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Print to the console an HTML page with an image tag using the base64 image:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'When we run this, we get the expected output:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Now, with the help of *nix output redirection features, we can create an HTML
+    file with the output of our script:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: You can now inspect the file, or open it directly in the browser to test that
+    it works.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'It is also possible to use your knowledge from the previous chapter and directly
+    run a script from the Deno standard library to serve the current folder:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'And then, by navigating to `http://localhost:4507/deno-logo.html`, we can check
+    that the image is there and working:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Figure 3.1 – Accessing a web page with the Deno.land logo as a base64 image'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '](img/Figure_3.1_B16380.jpg)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Figure 3.1 – Accessing a web page with the Deno.land logo as a base64 image
+  prefs: []
+  type: TYPE_NORMAL
+- en: Those are just examples of Web APIs that are supported in Deno. In this specific
+    example, we've used `fetch` and `btoa` but more will be used throughout the chapter.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Feel free to experiment with these already familiar APIs, either by writing
+    simple scripts or by using the REPL. In the rest of the book, we'll be using known
+    functions from the Web APIs. In the next section, we'll get to know the Deno namespace,
+    the functions that only work inside Deno, and generally provide a more low-level
+    behavior.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Exploring the Deno namespace
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: All the functionality that is not covered by a Web API lives under the Deno
+    namespace. This is functionality that is exclusive to Deno and that can't, for
+    instance, be bundled to run in Node or the browser.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this section, we'll explore some of this functionality. We'll be building
+    small utilities, mimicking some of the programs you use daily.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If you want to explore the available functions before we get our hands dirty,
+    they are available at [https://doc.deno.land/builtin/stable](https://doc.deno.land/builtin/stable).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Building a simple ls command
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: If you've ever used a *nix system's Terminal or Windows PowerShell, you are
+    probably familiar with the `ls` command. Briefly, it lists the files and folders
+    inside a directory. What we will do is create a Deno utility that mimics some
+    functionality of `ls`, that is, lists the files in a directory, and shows some
+    details about them.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The original command has a countless number of flags, which we will not implement
+    here for brevity reasons.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The information we decided to show is the name, size, and last modified date
+    of a file. Let''s get our hands dirty:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Create a file named `list-file-names.js` and use `Deno.readDir` to get a list
+    of all files and folders in the current directory:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'This will print the files in the current directory on different lines:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Use `Deno.args` (https://doc.deno.land/builtin/stable#Deno.args) to get the
+    command-line arguments. If no argument is sent, use the current directory as a
+    default:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: We're leveraging array destructuring to get the first value of `Deno.args` and
+    at the same time using default properties to set the default value of the `path`
+    variable.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Navigate to the `demo-files` folder ([https://github.com/PacktPublishing/Deno-Web-Development/tree/master/Chapter03/ls/demo-files](https://github.com/PacktPublishing/Deno-Web-Development/tree/master/Chapter03/ls/demo-files))
+    and run the following command:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: It looks like it is working. It is getting the files from the folder it is currently
+    in and listing them.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: We now need to get the file information so that we can display it.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Use `Deno.stat` (https://doc.deno.land/builtin/stable#Deno.stat) to get information
+    about the files:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: $ deno run --allow-read index.ts ./demo-files
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 12   7/4  .hidden
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 96   7/4  folder
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 96   7/4  second-folder
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 5    7/4  my-best-file
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 20   7/4  .file1
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 0    7/4  .hidden-file
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: And we get our list of files and folders in the `deno-files` directory we sent
+    as a parameter, together with the size in bytes and the creation month and day.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Here, we're using the already known and required `--allow-read` flag to give
+    Deno permissions to access the filesystem. However, in the previous chapter, we
+    mentioned that there was a different way for Deno programs to ask for permissions,
+    using what we called "dynamic permissions." That's what we'll learn about next.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using dynamic permissions
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: When writing Deno programs ourselves, it's very common that we know the required
+    permissions beforehand. However, when writing or executing code that might or
+    might not need some permissions or writing an interactive CLI utility, it might
+    not make sense to ask for all permissions at once. That's what dynamic permissions
+    are for.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Dynamic permissions allow programs to ask for permissions as they are needed,
+    allowing whoever is executing the code to give or deny specific permissions interactively.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This is a feature that is still unstable and thus its APIs can change, but I
+    think it's still worth mentioning, because of the amount of potential it enables.
+  prefs: []
+  type: TYPE_NORMAL
+- en: You can have a look at Deno's permissions API at [https://doc.deno.land/builtin/unstable#Deno.permissions](https://doc.deno.land/builtin/unstable#Deno.permissions).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'What we''ll do next is make sure that our `ls` program asks for filesystem
+    read permissions. Let''s do it by following these steps:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Use `Deno.permissions.request` to ask for read permissions before executing
+    the program:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: This asks for permissions for the directory where the program is going to run.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Run the program and grant permissions on the current directory:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Run the program and deny read permissions on the current directory:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: And that's how dynamic permissions work!
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Here, we've used them to control the filesystem read permissions, but they can
+    be used to ask for access to all the available permissions (mentioned in [*Chapter
+    2*](B16380_02_Final_JM_ePub.xhtml#_idTextAnchor056), *The Toolchain*) in the runtime.
+    They're very useful when writing CLI applications, allowing you to interactively
+    tune which permissions the running program has access to.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using the filesystem APIs
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Accessing the filesystem is one of the basic needs we have when writing programs.
+    As you have probably already seen in the documentation, Deno provides APIs to
+    do these common tasks.
+  prefs: []
+  type: TYPE_NORMAL
+- en: With a decision to standardize communication with the Rust core, all of these
+    APIs return `Uint8Array` and the decoding and encoding should be made by their
+    consumers. This is a substantial difference from Node.js, where some functions
+    return converted formats, where others return blobs, buffers, and so on.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let's explore these filesystem APIs and read the contents of a file.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We''re going to read the example file available at [https://github.com/PacktPublishing/Deno-Web-Development/tree/master/Chapter03/file-system/sentence.txt](https://github.com/PacktPublishing/Deno-Web-Development/tree/master/Chapter03/file-system/sentence.txt),
+    using the `TextDecoder` and `Deno.readFile` APIs, as the following script demonstrates:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs: []
+  type: TYPE_PRE
+- en: You can note that we've used the `TextDecoder` class, another API that is present
+    in the browser.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Do not forget to use the `--allow-read` permission when running the script so
+    it can read from the filesystem.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'If we want to write the content of this file to another file, we can use `writeFile`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE21]'
+  prefs: []
+  type: TYPE_PRE
+- en: Note that we don't need the `TextEncoder` anymore since we're using `Uint8Array`
+    we got from `readFile` to send directly to the `writeFile` method. Remember to
+    use the `--allow-write` flag when running it, since it's now writing to the filesystem.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'As you probably guessed or read in the documentation, Deno provides an API
+    exactly for that, `copyFile`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE22]'
+  prefs: []
+  type: TYPE_PRE
+- en: Now, you probably noticed we're always using `await` before the method calls
+    on Deno namespace functions.
+  prefs: []
+  type: TYPE_NORMAL
+- en: All asynchronous operations on Deno return a promise, and that's the main reason
+    we're doing this. We could use the equivalent `then` syntax and deal with the
+    result there, but we find this to be more readable.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Other APIs for removing, renaming, changing permissions, and so on are also
+    included in the Deno namespace, as you can find in the documentation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Important note
+  prefs: []
+  type: TYPE_NORMAL
+- en: Many of the asynchronous APIs in Deno have an equivalent *synchronous* API that
+    can be used for specific use cases where you want to block the process and get
+    a result (for example, `readFileSync`, `writeFileSync`, and so on).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using buffers
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Buffers represent regions in memory that are used to store temporary binary
+    data. They are commonly used to deal with I/O and network operations. As asynchronous
+    operations are something where Deno excels, we'll be exploring buffers in this
+    section.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Deno buffers differ from Node buffers. This happens because when Node was created,
+    and up until version 4, there was no support in JavaScript for `ArrayBuffers`.
+    As Node optimized for asynchronous operations (where buffers really shine), the
+    team behind it had to create a Node buffer to emulate the behavior of a native
+    buffer. Later, `ArrayBuffers` were added into the language and the Node team migrated
+    the existing buffer to leverage it. It currently isn't more than a subclass of
+    `ArrayBuffers`. This same buffer was then deprecated in v10 of Node. As Deno was
+    recently created, its buffer deeply leverages `ArrayBuffer`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Reading and writing from Deno.Buffer
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Deno provides a dynamic length buffer that is implemented on top of `ArrayBuffer`,
+    a fixed memory allocation. Buffers provide functionality similar to a queue where
+    data can be written and read by different consumers. As we initially mentioned,
+    they are heavily used for jobs such as networking and I/O as they allow asynchronous
+    reading and writing.
+  prefs: []
+  type: TYPE_NORMAL
+- en: To give an example, imagine you have an application that is writing some logs
+    that you want to process. You can do it synchronously as they come, or you can
+    have that application writing to a buffer and have a consumer processing them
+    asynchronously.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let's write a small program for that situation. We will write two short programs.
+    The first one will emulate an application producing logs; the second will consume
+    those logs by using a buffer.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We''ll start by writing code that emulates an application producing logs. At
+    [https://github.com/PacktPublishing/Deno-Web-Development/blob/master/Chapter03/buffers/logs/example-log.txt](https://github.com/PacktPublishing/Deno-Web-Development/blob/master/Chapter03/buffers/logs/example-log.txt),
+    there''s a file that has some example logs we''ll use:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE23]'
+  prefs: []
+  type: TYPE_PRE
+- en: This code reads the content from the example file and splits it into lines.
+    Then, it gets a random line number and every 100 ms writes that line into a buffer.
+    This file then exports a function that we can call to start "generating random
+    logs." We'll use this in the next script to mimic an application producing logs.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Now comes the interesting part: we''ll write our basic *log processor* by following
+    these steps:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Create a buffer and send it to the `start` function of the log producer we
+    just wrote:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE24]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Call the `processLogs` function to start processing the log entries present
+    in the buffers:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE25]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: As you can see, the `processLogs` function would be called and nothing would
+    happen, as we haven't implemented a program to do it yet.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Create an object type of `Uint8Array` inside the `processLogs` function and
+    read the content of the buffer there:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE26]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: The documentation ([https://doc.deno.land/builtin/stable#Deno.Buffer](https://doc.deno.land/builtin/stable#Deno.Buffer))
+    states that when there is something to read, the `read` function from `Deno.Buffer`
+    returns the number of bytes read. When there is nothing to read, the buffer is
+    empty and it returns null.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Now, inside `if`, we can just decode the content that was read, as we know
+    it comes in `Uint8Array` format:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE27]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: To print the decoded value on the console, we can use the already known `console.log`.
+    We can also do it differently, by using `Deno.stdout` ([https://doc.deno.land/builtin/stable#Deno.stdout](https://doc.deno.land/builtin/stable#Deno.stdout))
+    to write to the standard output.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '`Deno.stdout` is a `writer` object in Deno ([https://doc.deno.land/builtin/stable#Deno.Writer](https://doc.deno.land/builtin/stable#Deno.Writer)).
+    We can use its `write` method to send text there:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[PRE28]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: And with this, we're writing to `Deno.stdout`, the value we just read. We're
+    also adding a line break at the end (`\n`) so that it becomes a little more readable
+    on the console.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: If we leave it this way, this `processLogs` function will run only once. As
+    we want this to run again and check if there are more logs in `buffer`, we'll
+    need to schedule it to run again later.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Use `setTimeout` to call the same `processLogs` function 100 ms from now:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE29]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'As an example, if we open the `example-log.txt` file, we can see that there
+    are lines that contain dates in the following format: `Thu Aug 20 22:14:31 WEST
+    2020`.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s imagine we just want to print logs that have `Tue` on them. Let''s write
+    the logic to do that:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE30]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Then, we execute the program while inside the folder containing the `example-logs.txt`
+    file:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE31]'
+  prefs: []
+  type: TYPE_PRE
+- en: The log lines with the dates appear as they are read from the buffer and match
+    our criteria.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This was a short demonstration of what can be done with buffers. We were able
+    to asynchronously write and read from a buffer. This approach allows, for instance,
+    a consumer to be working on a portion of a file while the application is reading
+    other parts of it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The Deno namespace provides a lot more functionality than what we've tried here.
+    In this section, we decided to pick a few parts and give you a glimpse of how
+    much it enables.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We'll be using these functions, together with third-party modules and the standard
+    library, when we write our web server, from [*Chapter 4*](B16380_04_Final_JM_ePub.xhtml#_idTextAnchor108),
+    *Building a Web Application,* onwards.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using the standard library
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this section, we'll explore the behavior provided by Deno's standard library.
+    It is currently not considered stable by the runtime and thus modules are separately
+    versioned. At the time we're writing, the standard library is at *version 0.83.0*.
+  prefs: []
+  type: TYPE_NORMAL
+- en: As we previously mentioned, Deno is very meticulous in what it adds to the standard
+    library. The core team wants it to provide enough behavior, so people don't need
+    to rely on millions of external packages to do certain things, but at the same
+    time doesn't want to add too much of an API surface. This is a fine balance that
+    is hard to strike.
+  prefs: []
+  type: TYPE_NORMAL
+- en: With the assumed inspiration of golang, most of the Deno standard library functions
+    mimic the language created by Google. This happens because the Deno team truly
+    believes in the way *golang* evolved its standard library, one that is commonly
+    known for being well polished. As a funny note, Ryan Dahl (Deno and Node creator)
+    mentions in one of his talks that, when pull requests add new APIs to the standard
+    library, the equivalent *golang* implementation is asked for.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We'll not go over the whole library for the same reasons we didn't go over the
+    whole Deno namespace. What we'll do is build a couple of useful programs with
+    it while we learn what it enables. We'll go from stuff such as generating IDs,
+    to logging, to HTTP communication, among other known use cases.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Adding colors to our simple ls
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: A few pages ago, we built a very rough and simple "clone" of the `ls` command
+    in *nix systems. At the time we listed the files, together with their size and
+    modification date.
+  prefs: []
+  type: TYPE_NORMAL
+- en: To start exploring the standard library, we're going to add some coloring to
+    the terminal output of that program. Let's make folder names be printed in red
+    so we can easily differentiate them.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We'll create a file called `list-file-names-color.ts`. This time we will be
+    using TypeScript as we'll get much better completion because the standard library
+    and the Deno namespace functions were written with that.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let's explore the standard library functions that allow us to colorize our text
+    (https://deno.land/std@0.83.0/fmt/colors.ts).
+  prefs: []
+  type: TYPE_NORMAL
+- en: If we want to look at a module's documentation, we can go directly to code,
+    but we can also use the `doc` command or the documentation website. We'll use
+    the latter.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Navigate to https://doc.deno.land/https/deno.land/std@0.83.0/fmt/colors.ts.
+    All the listed available methods are presented on the screen:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Import the method from the standard library''s formatting library that prints
+    the text in red:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE32]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Use it inside our `async` iterator that is going through our files in the current
+    directory:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE33]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'By running it inside the `demo-files` folder ([https://github.com/PacktPublishing/Deno-Web-Development/tree/master/Chapter03/ls](https://github.com/PacktPublishing/Deno-Web-Development/tree/master/Chapter03/ls)),
+    we get the folders printed in red (it is not possible to see this in the printed
+    book, but you can run it locally):'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE34]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: We now have a better `ls` command that enables us to distinguish folders from
+    files, using the coloring functions from the standard library. There are many
+    other modules provided by the standard library that we'll have a look at during
+    the course of the book. Some of them will be used when we start writing our own
+    application.
+  prefs: []
+  type: TYPE_NORMAL
+- en: One module that we'll pay special attention to is the HTTP module, which we'll
+    heavily use from the next section onwards.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Building a web server using the HTTP module
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The main focus of this book, together with presenting Deno and how it can be
+    used, is to learn how to use it to build web applications. Here, we'll create
+    a simple JSON API to introduce you to the HTTP module.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We'll build an API that will save and list notes. We will call these notes post-its.
+    Imagine that this is the API that will feed your post-its board.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We'll create a very simple routing system with the help of Web APIs and the
+    functions from the Deno standard library's HTTP module. Keep in mind we're doing
+    this to explore the APIs themselves and thus this is not production-ready code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let's start by creating a folder named `post-it-api` and a file named `index.ts`
+    inside. One more time, we will use TypeScript as we believe the autocomplete and
+    type checking capabilities greatly improve our experience and reduce the number
+    of possible errors.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The final code for this section is available at [https://github.com/PacktPublishing/Deno-Web-Development/blob/master/Chapter03/post-it-api/steps/7.ts](https://github.com/PacktPublishing/Deno-Web-Development/blob/master/Chapter03/post-it-api/steps/7.ts):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Start by importing the standard library HTTP module into our file:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE35]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Write the logic to handle requests by using `AsyncIterator`, as we did in previous
+    examples:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE36]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'If we now run it, this is what we get. Keep in mind we need to use the `--allow-net`
+    flag, mentioned in the Permissions section, for it to have network access:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[PRE37]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'For clarity, we can extract the port and the server instance to a separate
+    variable:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE38]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: And we have our server working, as it was before, with the small difference
+    that now the code looks (arguably) more readable with the configuration variables
+    at the top of the file. We'll later learn how can we extract those from the code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Returning a list of post-its
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Our first requisite is that we have an API that returns a list of post-its.
+    Those will be composed of the name, title, and the date created. Before we get
+    there, and to enable us to have multiple routes, we need a routing system.
+  prefs: []
+  type: TYPE_NORMAL
+- en: For the purpose of this exercise, we'll build ours. This is our way of getting
+    to know some of the APIs built into Deno. We'll later agree that when writing
+    production applications, it is sometimes better to reuse tested and heavily used
+    pieces of software than to keep reinventing the wheel. However, it is completely
+    fine to *reinvent the wheel* for learning purposes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: To create our basic routing system, we will use some APIs that you probably
+    know from the browser. Objects such as `URL`, `UrlSearchParams`, and so on.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Our goal is to be able to define a route by its URL and path. Something like
+    `GET /api/post-its` would be nice. Let's do it!
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Start by creating a `URL` object ([https://developer.mozilla.org/en-US/docs/Web/API/URL](https://developer.mozilla.org/en-US/docs/Web/API/URL))
+    to help us parse the URL and its parameters. We''ll extract `HOST` and `PROTOCOL`
+    to a different variable, so we don''t have to repeat ourselves:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE39]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Use the created `URL` object to do some routing. We''ll use a `switch case`
+    for that. When no route matches, a `404` should be sent to the client:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE40]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Tip
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'You can use the `--unstable` and `--watch` flags together when running your
+    script to restart it on file changes as follows: `deno run` `--allow-net` `--watch`
+    `--unstable` `index.ts`.'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Access `http://localhost:8080/api/post-its` and confirm we have the correct
+    response. Any other routes will get a 404 response.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Note that we're using the `continue` keyword to make Deno jump out of the current
+    iteration after responding to the request (remember we're inside a `for` loop).
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: You might have noticed that, at the moment, we're just routing by path and not
+    by method. This means any request made to `/api/post-its`, either `POST` or `GET`,
+    will get the same response. Let's fix that by moving ahead.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Create a variable that contains the request method and the pathname:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE41]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: We can now define our routes the way we desire, `GET /api/post-its`. Now that
+    we have the basics of our routing system, we'll write the logic to return our
+    post-its.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Create the TypeScript interface that will help us maintain the structure of
+    the post-its:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE42]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Create a variable that will work as our *in-memory database* for this exercise.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'We''ll use a JavaScript object where the keys are the IDs and values are the
+    objects of the `PostIt` type we just defined:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[PRE43]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Add a couple of fixtures to our database:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE44]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Note that we're *generating* the *IDs* by hand for now. Later, we'll use another
+    module from the standard library to do it. Let's get back to our API and change
+    the `case` that handles our route.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Change the `case` that will return all the post-its instead of the hardcoded
+    message.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'As our database is a key/value store, we need to use `reduce` to build an array
+    with all our post-its (delete the line highlighted in the code block):'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[PRE45]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Run the code and go to `/api/post-its`. We should have our post-its listed there!
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: You might have noticed that it is still not 100 percent correct, since our API
+    is returning JSON, and its headers do not match the payload.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'We''ll add the `content-type` by using an API we know from the browser, the
+    `Headers` object ([https://developer.mozilla.org/en-US/docs/Web/API/Headers](https://developer.mozilla.org/en-US/docs/Web/API/Headers)).
+    Delete the line highlighted in the following code block:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE46]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: We've created an instance of the `Headers` object up there, and then we used
+    it on the response, on `req.respond`. This way, our API is now more coherent,
+    digestible, and following standards.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Adding a post-it to the database
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Now that we have a way to read our post-its, we will need a way to add new ones
+    as it doesn't make much sense to have an API with completely static content. That's
+    what we'll do.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We''ll use the *routing infrastructure* we created to add a route that allows
+    us to *insert* records into our database. Since we''re following REST guidelines,
+    that route will live on the same path as the one that lists `post-its`, but with
+    a different method:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Define a route that always returns the `201` status code:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE47]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Testing it, with the help of `curl`, we can see it''s returning the correct
+    status code:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE48]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Following the recommendation, read the value and print it to get a better understanding
+    of it:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE49]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Make a request with `body`, with the help of `curl`:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE50]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Uint8Array(25) [
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 123,  34, 116, 105, 116, 108, 101,
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 34,58,32,34,84,   101, 115,
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 116,  32, 112, 111, 115, 116,  45,
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 105, 116,  34, 125
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: ']'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[PRE51]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Use `TextDecoder` to get the request body as a readable value. After doing
+    this, we''ll log the output again and we''ll make a new request:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE52]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'This is what the server printed to the console this time:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[PRE53]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: We're getting there!
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Since the body is a string, we need to parse it into a JavaScript object. We''ll
+    use an old friend of ours, `JSON.parse`:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE54]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'We now have the request body in a format we can act on, and that''s pretty
+    much all it takes for us to create a new database record. Let''s create one by
+    following these steps:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Use the `uuid` module ([https://deno.land/std@0.83.0/uuid](mailto:https://deno.land/std@0.67.0/uuid))
+    from the standard library to generate a random UUID for our records:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE55]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'In our route''s switch case, we''ll create an `id` with the help of the `generate`
+    method and insert it in the *database*, adding the `createdAt` date on top of
+    what the user sent in the request payload. For the sake of this example, we''re
+    skipping validation:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE56]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Note that we''re using the same `headers` object we previously defined (in
+    the `GET` route) so that our API responds with `Content-Type: application/json`.'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Then again, as we follow the *REST* guidelines, we return the `201` `Created`
+    code and the created record.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Save the code, restart the server, and run it again:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE57]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: $ curl http://localhost:8080/api/post-its
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '{"postIts":[{"title":"Read more","body":"PacktPub books","id":"3209ebc7-b3b4-4555-88b1-b64b33d507ab","createdAt":"2021-01-10T16:28:52.210Z"},{"title":"Finish
+    book","body":"Deno Web Development","id":"a1afee4a-b078-4eff-8ca6-06b3722eee2c","createdAt":"2021-01-10T16:28:52.210Z"},{"title":"Buy
+    groceries","body":"1 x Milk","id":"b35b0a62-4519-4491-9ba9-b5809b4810d5","createdAt":"2021-01-10T16:29:05.519Z"}]}'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[PRE58]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: And it works! We now have an API that returns and adds post-its to a list.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This pretty much wraps up what we'll do in terms of APIs with the HTTP module
+    for this chapter. As most of the APIs, like the one we wrote, are made to be consumed
+    by a frontend application, we'll do that to wrap up this chapter.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Serving a frontend
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Since it is out of the scope of this book, we will not write the frontend code
+    that interacts with this API. However, if you want to use it with a single-page
+    application that fetches the post-its and displays them, I've included one in
+    the book's files ([https://github.com/PacktPublishing/Deno-Web-Development/blob/master/Chapter03/post-it-api/index.html](https://github.com/PacktPublishing/Deno-Web-Development/blob/master/Chapter03/post-it-api/index.html)).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'What we''ll learn here is how can we use the web server we just built to serve
+    an HTML file:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: First, we need to create a route at the root of our server. Then, we need to
+    set the correct `Content-Type` and return the file's content by using the already
+    known filesystem APIs.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'In order to get the path to the HTML file in reference to the current file,
+    we''ll use the URL object together with the `import.meta` declaration from JavaScript
+    ([https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import.meta](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import.meta)),
+    which contains the path to the current file:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[PRE59]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'In order for us to be a little more secure, we will specify the exact folder
+    the program can read, by sending it to the `--allow-read` flag:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE60]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: This will prevent us from any bugs that might allow malicious people to read
+    from our filesystem.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Access the URL with the browser, and you should get to a page where we can
+    see the fixture `post-its` we''ve added. To add a new one, you can also click
+    the **Add a new post-it** text and fill in the form:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '![Figure 3.2 – The frontend consuming the post-it API'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '](img/Figure_3.2_B16380.jpg)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Figure 3.2 – The frontend consuming the post-it API
+  prefs: []
+  type: TYPE_NORMAL
+- en: Important note
+  prefs: []
+  type: TYPE_NORMAL
+- en: Please keep in mind that, in many production environments, it is not a recommended
+    practice to have your API serving your frontend code. Here, we did it for learning
+    purposes, so we could understand some of the possibilities of the standard library
+    HTTP module.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this section, we learned how can we use the modules provided by the standard
+    library to our benefit. We made a simple version of a very common command, `ls`,
+    and used the output formatting functions from the standard library to add some
+    color to it. To finish the section, we made an HTTP API with a couple of endpoints
+    that listed and persisted records. We went through different requirements and
+    learned how Deno can be used to accomplish them.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: As we go through the book, our knowledge of Deno gets more practical and we
+    start to use it for use cases that are closer to the real world. That was what
+    this chapter was about.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We started the chapter by learning about some fundamental characteristics of
+    the runtime, namely the program lifecycle, and how Deno sees module stability
+    and versioning. We rapidly moved on to the Web APIs provided by Deno by writing
+    a simple program that fetches the Deno logo from the website, converts it to base64,
+    and puts it into an HTML page.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Then, we got into the `Deno` namespace and explored some of its low-level functionality.
+    We built a couple of examples with the filesystem API and ended up building a
+    rudimentary copy of the `ls` command with it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Buffers are things that are heavily used in the Node world, with their capabilities
+    to perform asynchronous read and write behavior. As we know, Deno shares many
+    use cases with Node.js, and that made it impossible to not talk about buffers
+    in this chapter. We started by explaining how Deno buffers differ from Node.js'
+    and ended the section by building a small application that handles reading and
+    writing asynchronously from them.
+  prefs: []
+  type: TYPE_NORMAL
+- en: To wrap up the chapter, we got closer to one of the main goals of this book,
+    using Deno for web development. We created our first JSON API with Deno. In the
+    process, we learned about multiple Deno APIs and we even built our basic routing
+    system. We then proceeded by creating a couple of routes that listed and created
+    records in our *data storage*. Getting closer to the end of this chapter, we learned
+    how we can handle headers in our APIs and added those to our endpoints.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We finished the chapter by serving a single-page application directly from our
+    web server; that same single-page application that consumed and interacted with
+    our API.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This was a chapter where lots of ground was covered. We started building APIs
+    that are now much closer to reality than what we previously did. We also got more
+    of a grasp on what it is to develop with Deno, using permissions, and the documentation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The current chapter wraps up our introductory journey and has hopefully left
+    you curious about what is coming next.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the next four chapters, we'll be building a web application and will explore
+    all the decisions made in the process. Most of the knowledge you have learned
+    so far will be used later, but there is also a ton of new, exciting stuff coming
+    up. In the next chapter, we'll start creating an API that we'll be adding features
+    to as the chapters progress.
+  prefs: []
+  type: TYPE_NORMAL
+- en: I hope to have you on board!
+  prefs: []
+  type: TYPE_NORMAL

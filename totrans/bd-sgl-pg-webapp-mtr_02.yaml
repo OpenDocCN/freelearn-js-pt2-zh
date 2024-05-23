@@ -1,0 +1,1036 @@
+- en: Chapter 2. Building HTML Templates
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: After we successfully installed Meteor and set up our folder structure, we can
+    now start building the basic templates for our blog.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this chapter, we will learn how templates are built. We will see how to display
+    data and how some parts can be altered using helper functions. We will take a
+    look on adding events, using conditions, and understanding data contexts, all
+    in templates.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The following is an overview of what will be covered in this chapter:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The basic template structure
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Displaying data
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Writing template helper functions
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using conditions in templates
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Data contexts and how those can be set
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Nesting templates and data context inheritance
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Adding events
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Building block helpers
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_IND
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: If you jump right into this chapter without setting up the folder structure
+    in the [Chapter 1](part0015_split_000.html#page "Chapter 1. Getting Started with
+    Meteor"), *Getting Started with Meteor*, download the previous chapter's code
+    examples from either the book's web page at [https://www.packtpub.com/books/content/support/17713](https://www.packtpub.com/books/content/support/17713)
+    or from the GitHub repository at [https://github.com/frozeman/book-building-single-page-web-apps-with-meteor/tree/chapter1](https://github.com/frozeman/book-building-single-page-web-apps-with-meteor/tree/chapter1).
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: These code examples will also contain all the style files, so we don't have
+    to worry about adding CSS code along the way.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Writing templates in Meteor
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Normally when we build websites, we build the complete HTML on the server side.
+    This was quite straightforward; every page is built on the server, then it is
+    sent to the client, and at last JavaScript added some additional animation or
+    dynamic behavior to it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This is not so in single-page apps, where every page needs to be already in
+    the client's browser so that it can be shown at will. Meteor solves this problem
+    by providing templates that exists in JavaScript and can be placed in the DOM
+    at some point. These templates can have nested templates, allowing for an easy
+    way to reuse and structure an app's HTML layout.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Since Meteor is so flexible in terms of folder and file structure, any `*.html`
+    page can contain a template and will be parsed during Meteor's build process.
+    This allows us to put all templates in the `my-meteor-blog/client/templates` folder,
+    which we created in the [Chapter 1](part0015_split_000.html#page "Chapter 1. Getting
+    Started with Meteor"), *Getting Started with Meteor*. This folder structure is
+    chosen as it helps us organizing templates when our app grows.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Meteor's template engine is called **Spacebars**, which is a derivative of the
+    handlebars template engine. Spacebars is built on top of **Blaze**, which is Meteor's
+    reactive DOM update engine.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Blaze can generate reactive HTML directly using its API, though it's more convenient
+    to use Meteor's Spacebars or a third-party template language built on top of Blaze
+    such as Jade for Meteor.
+  prefs: []
+  type: TYPE_NORMAL
+- en: For more detail about Blaze, visit [https://docs.meteor.com/#/full/blaze](https://docs.meteor.com/#/full/blaze)
+    and [https://github.com/mquandalle/meteor-jade](https://github.com/mquandalle/meteor-jade).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'What makes Spacebars so exciting is its simplicity and reactivity. Reactive
+    templates mean that some parts of the template can automatically change when the
+    underlying data changes. There is no need of manual DOM manipulation and inconsistent
+    interfaces belong to the past. To get a better understanding of Meteor, we will
+    start with the basic HTML files for our app:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s create an `index.html` file in our `my-meteor-blog/client` folder with
+    the following lines of code:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Note
+  prefs:
+  - PREF_IND
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Note that our `index.html` file doesn't contain the `<html>...</html>` tags,
+    as Meteor gathers all `<head>` and `<body>` tags in any file and builds up its
+    own `index.html` file, which will be delivered to the user. Actually, we can also
+    name this file `myapp.html`.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Next, we run our Meteor app from the command line by typing the following command:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: This will start a Meteor server with our app running.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: That's it! We can open our browser, navigate to `http://localhost:3000`, and
+    we should see **Hello World**.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: What happens here is that Meteor will look through all the HTML files available
+    in our app's folder, concatenating the content of all `<head>` and `<body>` tags,
+    which it finds and serve them to the clients as its index file.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If we take a look at the source code of our app, we will see that the `<body>`
+    tag is empty. This is because Meteor sees the content of the `<body>` tag as its
+    own templates, which will be injected with its corresponding JavaScript template
+    when the DOM is loaded.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: To see the source code, don't use the Developer Tools' **elements panel**, as
+    this will show us the source code after the JavaScript is executed. Right-click
+    on the website instead and select **View page source** in Chrome.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We will also see that Meteor already linked all kinds of JavaScript files in
+    our `<head>` tag. These are Meteor''s core packages and our add third-party packages.
+    In production, these files will be concatenated into one. To see this in action,
+    go to the terminal, quit our running Meteor server using *Ctrl* + *C*, and run
+    the following command:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: If we now take a look at the source code, we will see that there is only one
+    cryptic-looking JavaScript file linked.
+  prefs: []
+  type: TYPE_NORMAL
+- en: For the next steps, it is better to go back to our developer mode by simply
+    quitting Meteor and running the `meteor` command again, since this will reload
+    the app faster when file changes occur.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Building the basic templates
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Now, let''s add the basic templates to our blog by creating a file called `layout.html`
+    in the `my-meteor-blog/client/templates` folder. This template will serve as the
+    wrapper template for our blog layout. To build the basic templates, perform the
+    following steps:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Add the following lines of code to `layout.html`, which we just created:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Next, we will create the home page template, which will later list all our
+    blogs posts. In the same templates folder as `layout.html`, we will create a file
+    named `home.html` with the following lines of code:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'The next file will be a simple **About** page and we save it as `about.html`
+    with the following code snippet:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: As you can see, we used a `{{#markdown}}` block helper to wrap our texts. The
+    curly braces are handlebars syntax, which Blaze uses to bring logic to the HTML.
+    The `{{#markdown}}...{{/markdown}}` block will transform all markdown syntax inside
+    into HTML when the template gets rendered.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_IND
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The markdown text cannot be indented as we do with the HTML tags because the
+    markdown syntax interprets indentation as code.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'To be able to use `{{#markdown}}` block helper, we need to first add the `markdown`
+    core package to our app. To do this, we quit our running app in the terminal using
+    *Ctrl* + *C* and type the following command:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Now we can run the `meteor` command again to start our server.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: However, when we now go to our browser, we will still see **Hello World**. So
+    how can we make now our templates visible?
+  prefs: []
+  type: TYPE_NORMAL
+- en: Adding templates and partials
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'To show the home template in the app, we need to open `index.html`, which we
+    created earlier, and perform the following steps:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We replace `Hello World` with the following template inclusion helper:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: If we go back to our browser now, we see that the text is gone and the `layout`
+    template, which we created earlier, has appeared with its header and menu.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'To complete the page, we need to show the `home` template in the `layout` template.
+    We do this by simply adding another template inclusion helper to the `main` section
+    of the `layout` template in our `layout.html` file, as follows:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: If we go back to the browser, we should see the following screenshot:![Adding
+    templates and partials](img/00004.jpeg)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: If we would now switch `{{> home}}` for `{{> about}}`, we would see our `about`
+    template instead.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Displaying data with template helpers
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Each template can have functions, which are called `template` helpers, and they
+    can be used inside the template and child templates.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In addition to our custom helper functions, there are three callback functions
+    that are called when the template is created, rendered, and destroyed. To display
+    data with template helpers, perform the following steps:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To see the three callback functions in action, let''s create a file called
+    `home.js` and save it to our `my-meteor-blog/client/templates/` folder with the
+    following code snippet:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: If we now open the console of our browser, we will see the first two callbacks
+    are being fired. The last one will only fire if we dynamically remove the template.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'To display data in the `home` template, we will create a helper function that
+    will return a simple string as follows:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Now if we go to our `home.html` file, add the `{{exampleHelper}}` helper after
+    the `{{markdown}}` block helper, and save the file, we will see the string appearing
+    in our browser, but we will notice that the HTML is escaped.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'To make Meteor render the HTML correctly, we can simply replace the double
+    curly braces with triple curly braces, as shown in the following line of code,
+    and Blaze won''t let the HTML escape:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Note
+  prefs:
+  - PREF_IND
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Note that in most of our templates helper, we *shouldn't* use triple stache
+    `{{{...}}}` as this opens the door for XSS and other attacks. Only use it if the
+    HTML returned is safe to be rendered.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Additionally, we can return unescaped HTML using double curly braces, but we
+    need to return the string passed through the `SpaceBars.SafeString` function,
+    as shown in the following example:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Setting the data context for a template
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Now that we have our `contextExample` template, we can add it to our `home`
+    template by passing some data as follows:'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: This will show the text in the `contextExample` template because we were displaying
+    it using `{{someText}}`.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_IND
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Remember that filenames don't really matter as Meteor is collecting and concatenating
+    them anyway; however, the template name matters since we use this to reference
+    templates.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Setting the context in HTML is not very dynamic, as it is hardcoded. To be able
+    to dynamically change the context, it is better to set it using a `template` helper
+    function.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'To do this, we must first add the helper to our `home` templates helpers, which
+    returns the data context, as follows:'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Now we can add this helper as the data context to our `contextExample` template
+    inclusion helper, as follows:'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Also, to show the nested data object we return, we can use Blaze dot syntax
+    in the `contextExample` template by adding the following line of code to the template:'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: This will now display both the `someText` and the `someNested.text`, which was
+    returned by our helper functions.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using the {{#with}} block helper
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Another way of setting the data context is by using the `{{#with}}` block helper.
+    The following code snippet has the same result as the former inclusion helper
+    that utilizes the helper function:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We would even get the same results in the browser when we don''t use a subtemplate
+    and just add the content of the `contextExample` template inside the `{{#with}}`
+    block helper, as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: '"this" in template helpers and template callbacks'
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In Meteor, `this` in template helpers is used differently in template callbacks
+    such as `created()`, `rendered()`, and `destroyed()`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'As already mentioned, templates have three callback functions that are fired
+    in different states of the template:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`created`: This fires when the template gets initiated but is not yet in the
+    DOM'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`rendered`: This fires when the template and all its sub templates are attached
+    to the DOM'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`destroyed`: This fires when the template is removed from the DOM and before
+    the instance of the template gets destroyed'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'In these callback functions, `this` refers to the current template instance.
+    The instance object can access the templates DOM and comes with the following
+    methods:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`this.$(selectorString)`: This method finds all elements that match `selectorString`
+    and returns a jQuery object from those elements.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`this.findAll(selectorString)`: This method finds all elements that match `selectorString`,
+    but returns the plain DOM elements.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`this.find(selectorString)`: This method finds the first element that matches
+    `selectorString` and returns a plain DOM element.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`this.firstNode`: This object contains the first element in the template.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`this.lastNode`: This object contains the last element in the template.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`this.data`: This object contains the templates data context'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`this.autorun(runFunc)`: A reactive `Tracker.autorun()` function that is stopped
+    when the template instance is destroyed.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`this.view`: This object contains the `Blaze.View` instance for this template.
+    `Blaze.View` are the building blocks of reactive templates.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Inside helper functions, `this` refers only to the current data context.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To make these different behaviors visible, we will take a look at some examples:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'When we want to access the DOM of a template, we must do it in the rendered
+    callback because only at this point, the template elements will be in the DOM.
+    To see it in action, we edit our `home.js` file as follows:'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: This will replace the first `p` tag that is created by the `{{#markdown}}` block
+    helper, which we put there before, with the string we set. Now when we check the
+    browser, we will see that the first `<p>` tag that contained our blog's introduction
+    text has been replaced.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'For the next example, we need to create an additional template JavaScript file
+    for our `contextExample` template. To do this, we create a new file called `examples.js`
+    in our `templates` folder and save it using the following code snippet:'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'This will add the rendered callback as well as a helper called `logContext`
+    to our `contextExample` template helpers. To make this helper run, we also need
+    to add this helper to our `contextExample` template as follows:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[PRE21]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: When we now go back to the console of our browser, we see that the data context
+    object has been returned for all the `rendered` callbacks and helpers from our
+    rendered `contextTemplates` template. We can also see that helpers will run before
+    the rendered callback.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: In case you need access to the templates instance from inside a template helper,
+    you can use `Template.instance()` to get it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now let's use make our template interactive using events.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Adding events
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: To make our template a bit more dynamic, we will add a simple event, which will
+    reactively rerun the `logContext` helper we created earlier.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'First, however, we need to add a button to our `contextExample` template:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE22]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'To catch the click event, open `examples.js` and add the following `event`
+    function:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE23]'
+  prefs: []
+  type: TYPE_PRE
+- en: This will set a session variable called `randomNumber` to a random number.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: We will talk in depth about sessions in the next chapter. For now, we only need
+    to know that when a session variable changes, all functions that get that session
+    variable using `Session.get('myVariable')` will run again.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To see this in action, we will add a `Session.get()` call to the `logContext`
+    helper, and return the former set''s random number as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE24]'
+  prefs: []
+  type: TYPE_PRE
+- en: If we go to the browser, we will see the **Get some random number** button.
+    When we click on it, we see a random number appearing just above the button.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: When we use the `contextTemplates` template multiple times in our `home` template,
+    we will see that each instance of that template helper will display the same random
+    number. This is because the session object will rerun all its dependencies, all
+    of which are instances of the `logHelper` helper.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now that we have covered template helpers, let's create a custom block helper.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Block helpers
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: '[PRE25]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE26]'
+  prefs: []
+  type: TYPE_PRE
+- en: The `{{> Template.contentBlock}}` is a predefined placeholder for the block's
+    content. The same applies for `{{> Template.elseBlock}}`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: When `this` (in this example, we use the template's context as a simple Boolean)
+    is `true`, it will show the given `Template.contentBlock`. Otherwise, it will
+    show the `Template.elseBlock` content.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To see how we can use the recently created template as a block helper, take
+    a look at the following example, which we can add to `home` template:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE27]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Now we should see the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Block helpers](img/00005.jpeg)'
+  prefs: []
+  type: TYPE_IMG
+- en: When we now change `true`, which we pass to `{{#blockHelperExample}}`, to `false`,
+    we should see the content after the `{{else}}` instead.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We can also use a helper function to replace the Boolean value, so that we
+    can switch the block helper dynamically. Additionally, we can pass key-value arguments
+    and access them by their key inside the block helper template, as shown in the
+    following code example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE28]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We can also access the given argument by its name in the block template as
+    follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE29]'
+  prefs: []
+  type: TYPE_PRE
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Note that the data context for the block's content will be the one from the
+    template in which the block appears, not the one of the block helper template
+    itself.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Block helpers are a powerful tool because they allow us to write self-contained
+    components that, when packed into a package, can be used as a drop-in-place functionality
+    by others. This feature has the potential to allow for a vibrant marketplace,
+    like the marketplace we see in jQuery plugins.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Listing posts
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: This template will be used for each post we display in the home page.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To make it appear, we need to add a `{{#each}}` helper to the `home` template,
+    as follows:'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[PRE30]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: When the `postsList` helper, which we pass to the `{{#each}}` block helper,
+    returns an array, the content of `{{#each}}` will be repeated for each item in
+    the array, setting the array item as the data context.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'To see this in action, we add the `postsList` helper in our `home.js` file
+    to the template helpers, as follows:'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[PRE31]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'As we can see, we return an array where each item is an object containing our
+    post''s data context. For `timeCreated`, we use the `moment` function of our previously
+    added third-party package. This will generate dummy timestamps of a few days in
+    the past. If we now go to our browser, we will see the two posts listed, as shown
+    in the following screenshot:![Listing posts](img/00006.jpeg)*   To display `timeCreated`
+    from our post item in the correct format, we need to create a helper function
+    to format the timestamp. However, because we want to use this helper in other
+    templates later, we need to make it a global helper that can be accessed by any
+    template. To do this, we create a file named `template-helpers.js` and save it
+    to our `my-meteor-blog/client` folder, as it doesn''t belonging to any specific
+    template.*   To register a global helper, we can use Meteor''s `Template.registerHelper`
+    function:'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[PRE32]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Now, we only have to add the helper to our `postInList` template by replacing
+    the content of the footer with the following code snippet:'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[PRE33]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Now, if we save both the files and go back to our browser, we will see a relative
+    date added to our blog post''s footer. This works because we pass the time and
+    a type string to the helper, as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE34]'
+  prefs: []
+  type: TYPE_PRE
+- en: The helper then returns the formatted date using a `moment` function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: With this global helper, we can now format any Unix timestamp, in any template
+    to relative times, ISO time strings, and a standard date format (using the LLLL
+    format, which converts to Thursday, September 4, 1986, 8:30 P.M.).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now that we have already used the `{{#with}}` and `{{#each}}` block helpers,
+    let's take a look at the other default helpers and syntax that Blaze uses.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Spacebars syntax
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'To wrap it all up, lets summarize the Spacebars syntax:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '| Helper | Description |'
+  prefs: []
+  type: TYPE_TB
+- en: '| --- | --- |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `{{myProperty}}` | The template helper can be a property from the template''s
+    data context or a template helper function. If a helper function and a property
+    with the same name exist, the template helper will use the helper function instead.
+    |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `{{> myTemplate}}` | The inclusion helper is for a template and always expects
+    a template object or null. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `{{> Template.dynamic template=templateName [data=dataContext]}}` | With
+    the `{{> Template.dynamic ...}}` helper, you can render a template dynamically
+    by providing a template helper returning a template name for the template parameter.
+    When the helper would rerun and return a different template name, it will replace
+    the template on this position with the new one. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `{{#myBlockHelper}}`...`{{/myBlockHelper}}` | A block helper that contains
+    both HTML and the Spacebars syntax. |'
+  prefs: []
+  type: TYPE_TB
+- en: 'By default, Spacebars comes with the following four default block helpers:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`{{#if}}..{{/if}}`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`{{#unless}}..{{/unless}}`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`{{#with}}..{{/with}}`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`{{#each}}..{{/each}}`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'The `{{#if}}` block helper allows us to create simple conditions, as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE35]'
+  prefs: []
+  type: TYPE_PRE
+- en: The `{{#unless}}` block helper works the same as `{{#if}}`, but with swapped
+    logic.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `{{#with}}` block, as seen earlier, will set a new data context to its content
+    and containing templates, and the `{{#each}}` block helper will render multiple
+    times, setting a different data context for each iteration.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Accessing parent data contexts
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'To complete our journey through the Spacebars syntax, let''s take a closer
+    look at the template helper syntax that we used to display data. As we''ve already
+    seen, we can display data using the double curly braces syntax, as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE36]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Inside this helper, we can access the properties of an object using the dot
+    syntax:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE37]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We can also access a parent data context using a path-like syntax:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE38]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Additionally, we can move more than just one context up:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE39]'
+  prefs: []
+  type: TYPE_PRE
+- en: This feature allows us to be very flexible about the data context.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: If we want to do the same from inside a template helper, we can use the Template
+    API `Template.parentData(n`), where `n` is the number of steps up to access the
+    data context of parent templates.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`Template.parentData(0)` is the same as `Template.currentData()`, or `this`
+    if we are in a template helper.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Passing data to helpers
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Passing data to helpers can be done in two different ways. We can pass arguments
+    to a helper as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE40]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Then, we can access it in the helper as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE41]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Besides this, we can pass data in the form of key-values:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE42]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This time, however, we need to access them as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE43]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Be aware that block and inclusion helpers act differently because they always
+    expect objects or key-values as arguments:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE44]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We would then need to typecast the passed argument if we want to use it in
+    a helper function as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE45]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Beisdes, we can also simply display the string in our block helper template
+    using `{{Template.contentBlock}}` as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE46]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We can also pass another template helper as an argument to an inclusion or
+    block helper, as shown in the following example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE47]'
+  prefs: []
+  type: TYPE_PRE
+- en: Though passing data to template helpers and inclusion/block helpers are slightly
+    different, arguments can be quite flexible when using helpers to generate them.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Reactive templates are one of the most impressive features of Meteor, and once
+    we get used to them, we probably won't look back to manual DOM manipulation anymore.
+  prefs: []
+  type: TYPE_NORMAL
+- en: After reading this chapter, we should know how to write and use templates in
+    Meteor. We should also understand its basic syntax and how to add templates.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We saw how to access and set data in templates and how to use helpers. We learned
+    about different types of helpers, such as inclusion helpers and block helpers.
+    We also built our own custom block helpers and used Meteor's default helpers.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We learned that templates have three different callbacks, for when the template
+    gets created, rendered, and destroyed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We learned how to pass data to helpers, and how this differs in normal helpers
+    and block helpers.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To dig deeper, take a look at the following documentations:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[https://docs.meteor.com/#/full/templates_api](https://docs.meteor.com/#/full/templates_api)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[https://www.meteor.com/blaze](https://www.meteor.com/blaze)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[https://docs.meteor.com/#/full/blaze](https://docs.meteor.com/#/full/blaze)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[https://atmospherejs.com/meteor/spacebars](https://atmospherejs.com/meteor/spacebars)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[http://momentjs.com](http://momentjs.com)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: You can find this chapter's code examples either at [https://www.packtpub.com/books/content/support/17713](https://www.packtpub.com/books/content/support/17713)
+    or on GitHub at [https://github.com/frozeman/book-building-single-page-web-apps-with-meteor/tree/chapter2](https://github.com/frozeman/book-building-single-page-web-apps-with-meteor/tree/chapter2).
+  prefs: []
+  type: TYPE_NORMAL
+- en: With all this new knowledge about templates, we are ready to add data to our
+    database and see how we can display it in our home page.
+  prefs: []
+  type: TYPE_NORMAL

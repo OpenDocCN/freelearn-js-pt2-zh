@@ -1,0 +1,352 @@
+- en: Chapter 6. Making the App Responsive
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this chapter, we will learn about the different view states that the app
+    can exist in and how we can make the app adapt to these view states and to a variety
+    of form factors and displays sizes. Windows 8 targets different platforms and
+    runs on various devices with dissimilar sizes, from large HD monitors and laptops
+    to 10-inch widescreen tablets and 4-inch-wide smartphones. So, in order to abide
+    by the Windows 8 UX guidelines, the app should maintain the same look and feel
+    and sustain its functionality when users view it on these different devices, they
+    flip their screen to toggle between landscape and portrait orientation, they zoom
+    in or out, or the app switches between the various view states. The app should
+    provide fluid and flexible layouts in a way that allows its UI to reflow gracefully
+    and cater for these changes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Throughout this chapter, we will learn how to make the app responsive so that
+    it handles screen sizes and view state changes and responds to zooming in and
+    out. We will first introduce the concept of app view states and then we will learn
+    how to handle changes in view states with CSS and JavaScript. Lastly, we will
+    learn about the concept of Semantic Zoom in apps.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Introducing app view states
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'The view states represent the ways that the user can choose to display the
+    app. There are four possible application view states; they are listed here with
+    the description of each:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Full screen landscape view**: With this, the app fills the entire screen,
+    and this is the default state for all Windows Store apps.![Introducing app view
+    states](img/7102EN_06_01.jpg)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Full screen portrait**: With this, the app fills the entire screen again,
+    but this time in a portrait orientation.![Introducing app view states](img/7102EN_06_02.jpg)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Snapped view**: With this, the app fills a narrow region of the entire screen
+    (320px) either to the left or right; thus, the screen will display two apps simultaneously.![Introducing
+    app view states](img/7102EN_06_03.jpg)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Filled view**: With this, the app runs side by side with a snapped app and
+    it fills the region of the screen that is not occupied by that app; thus, the
+    screen will display two apps simultaneously again.![Introducing app view states](img/7102EN_06_04.jpg)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: If we look at the preceding image, we will see two apps running side by side;
+    one in snapped view and the other in filled view. The user has snapped an app
+    (Bing News) by dragging another app (the weather app) or window onto the screen.
+    The second app will become the currently running app and will have the filled
+    view state while the once fullscreen app will be snapped to the side. Now the
+    user can toggle the view state of these apps between snapped and filled by pressing
+    the Windows key and period (*.*).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Snapping an app resizes it to 320 pixels wide, which allows it to share the
+    screen with another app, thus enabling two apps to be visible at the same time
+    so the user can multitask.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: You can have snapped and filled views only on displays with a horizontal resolution
+    greater than or equal to 1366 relative pixels. This is because the snapped view
+    will occupy 320 pixels on either side of the screen. So, the remaining 1046 pixels
+    will be allocated to the splitter (22 pixels) and the app in filled view, which
+    must always have a horizontal resolution of 1024 relative pixels or greater. Thus,
+    the size of 1366 x 768 is considered a reference point.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The app can always be snapped either manually, when the user snaps it to either
+    side, or automatically, in response to another app being dragged into the full
+    screen. Thus, you cannot prevent an app from getting into the snap view. Since
+    users can snap every app, if you don't design your app for the snapped view state,
+    the system will resize your app anyway and might crop the content and mess up
+    the way the app looks.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Rotation, on the other hand, is not obligatory, and you can choose to make your
+    app support it or not. So, if your app does not support portrait orientation and
+    the user flips the device, nothing will happen to your app; that is, it will not
+    rotate with the new device orientation. Having said this, of course, it is highly
+    recommended to support rotation in order to have a satisfied user, who is, after
+    all, the target of your app.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'When you click and open the `package_appmanifest` file, you will be able to
+    set up options for the application UI; one of these options is **Supported rotations**,
+    which is an optional setting that indicates the app''s orientation preference
+    and has four values: **Landscape**, **Portrait**, **Landscape-flipped**, and **Portrait-flipped**,
+    as shown in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Introducing app view states](img/7102EN_06_05.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Handling a view state
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'There are two ways to cater for a snapped view: by using the CSS3 media queries
+    or by using the JavaScript layout change events, and sometimes both. We use media
+    queries for changes in layout that can be tackled using CSS-like element sizes,
+    element display (inline, block), and element visibility. By using CSS media queries,
+    it becomes very easy to define different styles that will be applied depending
+    on the view state of the app. You can use a separate media query for each view
+    state you have, or you can apply the same set of styles to multiple view states
+    by combining more than one media query. The following code shows the syntax for
+    a media query that matches the different view states; the first one matches the
+    snapped view state and the second matches a combination of view states.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'So, if we have a set of classes and other selectors specifying the styles in
+    the UI, we can change these styles with every media query. For example, the following
+    code shows the wrapper `div` of the page defined as CSS Grid with two columns;
+    it is changed to a single column layout once inside the `media` query for the
+    view state `snapped`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: The units `vw` and `vh`, set for the width and height values shown in the preceding
+    code, represent view width and view height respectively, which specify the full
+    width and height resolution that the app is occupying.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The previous code sample shows the use of CSS Grid, which is one of the most
+    convenient ways to achieve a fluid and adaptable UI layout that can handle the
+    change in view states. This is because the Grid automatically expands to distribute
+    the content and fill the available space and it allows you to dictate the position
+    of elements inside it purely by CSS, independent of the order in which they are
+    specified in the HTML markup. This makes it easy to specify the different arrangements
+    for the elements on different screen sizes or in different view states.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The second approach to handling change in window sizes is to use JavaScript
+    events, which are the best option when you tackle changes in behavior and properties
+    that cannot be specified with CSS styles, such as the scroll direction of the
+    `WinJS` ListView control and the control changes (such as changing from a horizontal
+    list of buttons to a drop-down list control). If we take the case of a ListView
+    control, it uses the grid mode to display the items vertically and horizontally
+    in a way that fills the `container` element and the available space when the app
+    is in landscape, is in portrait, or is filled. But when the app is snapped, the
+    ListView control should rearrange and display the items vertically only to avoid
+    horizontal scrolling using the list mode. The list and grid mode cannot be specified
+    in the CSS because they are defined in the `data-win-options` attribute as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Here is where the JavaScript events come in, allowing us to create view-specific
+    layouts by registering an event listener for the window resize event that queries
+    the `ViewManagement.ApplicationView.value` property, which is provided by the
+    WinRT to directly query the current view state of an app. The following sample
+    shows the code of an event listener for the window resize event:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: ListView and Grid are flexible controls that provide maximum control over the
+    UI with minimum development efforts, as both support the built-in flexible layouts
+    and can arrange and distribute their content automatically. You should try to
+    use them wherever possible.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Understanding semantic zoom
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: As per the UX guidelines for the Windows Store app, the content flows horizontally
+    and the user will, either by mouse or by touch, scroll the content from left to
+    right or right to left (in some languages). But imagine a scenario where you have
+    content that features a long list of data, such as in the case of an address book
+    or maybe a list of different news articles, where scrolling to navigate the content
+    becomes cumbersome for the user. In the case of an address book app where the
+    contacts are organized alphabetically, the user has to scroll all the way to find
+    a contact whose name starts with the letter z; that is, at the end of list, while
+    the user could zoom out to the view level that only lists the letters and find
+    a specific contact that falls under that letter.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The same goes for a catalog or a news app that organizes items/articles by
+    category; instead of long scrolling to reach the desired content, which falls
+    under a category that happens to be at the end of the list, the user can zoom
+    out to the category level. The following screenshots show a "zoomed-out" view
+    of the People app and Bing News app on Windows 8, respectively:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Understanding semantic zoom](img/7102EN_06_06.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'The semantic zoom view of the Bing News app in Windows 8 is shown as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Understanding semantic zoom](img/7102EN_06_07.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The semantic zoom interaction is touch-optimized, so it can be performed with
+    the pinch and stretch gestures. Also, the user can zoom either by scrolling the
+    mouse scroll wheel or using the keyboard by holding the *Ctrl* key down and pressing
+    the plus (+) or minus (-) key.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This technique is called **semantic zoom** and is used by Windows Store apps
+    for presenting—in a single view—two levels of detail for large sets of related
+    content while providing quicker navigation. This technique uses two zoom levels
+    of the same content for organizing the data: a "zoomed-in" detailed view, which
+    is the default mode of display for the apps, and a "zoomed-out" view, which displays
+    the items in groups based on some metadata.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In order to provide the app with the semantic zoom feature, we will need to
+    define these two modes of semantic levels. Luckily, `WinJS.UI` offers us the best
+    way to do so using the `WinJS.UI.SemanticZoom` object, which will in turn render
+    a semantic zoom control that enables the user to zoom between two different views
+    of the same content. The zoom control uses two child controls to render these
+    two different views; the first child control will supply the zoomed-out view and
+    the other will provide the zoomed-in view or vice versa. It is quite easy to declare
+    a semantic zoom control, either in the markup or in script as shown in the following
+    code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In HTML:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'In JavaScript:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: After we have defined the `SemanticZoom` control, let's add to it the two child
+    controls that will hold the two views.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Bear in mind that the child controls should support the semantic zoom functionality
+    by implementing the `IZoomableView` interface, which in turn allows the control
+    to be exposed as either a zoomed-in or a zoomed-out view of the `SemanticZoom`
+    control. Currently, the only control provided by Windows Library for JavaScript
+    that supports this functionality is the ListView control. Hence, the two child
+    controls will be two instances of a ListView control, as shown in the following
+    code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Now we need some data to display in these two views. Do you recall the data
+    array we created back in [Chapter 4](ch04.html "Chapter 4. Developing Apps with
+    JavaScript"), *Developing Apps with JavaScript*, when we were getting introduced
+    to the ListView control? Well, let''s use it again and add more names to it. Feel
+    free to add as many as you like; here it is again for reference:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Now we need to create a version of this data source that contains the grouping
+    information. We can do so using the `createGrouped` method, which allows us to
+    create a grouped version of the list. We learned about similar methods, `createdFiltered`
+    and `createSorted`, in the previous chapter. The `createGrouped` method creates
+    a grouped projection over a list and takes the following three function parameters:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`getGroupKey`: This takes an item in the list and returns the group key that
+    this item belongs to'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`getGroupData`: This takes an item in the list and returns the data object
+    that represents the group that this item belongs to'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`compareGroups`: This compares two groups and returns a negative value if the
+    first group has a lesser value than the second group, zero if the two groups have
+    the same value, and a positive value if the first group has a greater value than
+    the second group'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'The following code will create a grouped version of our `bindingList` object,
+    which uses the first letter of each item''s name to define the metadata:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'In order to bind the grouped data to the zoomed-out `ListView` control, we
+    set its `itemDataSource` property to `groupedItemsList.groups.dataSource`, which
+    contains the group information, and we set `itemDataSource` for the zoomed-in
+    `ListView` control to `groupedItemsList.dataSource`, which contains the items
+    to display, as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: With this knowledge in hand, you can create templates for both views as we learned
+    in [Chapter 4](ch04.html "Chapter 4. Developing Apps with JavaScript"), *Developing
+    Apps with JavaScript*, to better present the data.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this chapter we got introduced to the different view states that the user
+    can choose to display apps. Then we learned about the techniques and controls
+    that allow us to cater to the changes in these view states, either by CSS and
+    media queries or using JavaScript event handlers that detect the change in window
+    size.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Finally, we learned about semantic zoom and how easy it is to incorporate this
+    feature into an app.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the following chapter we will learn about live tiles, how to add tiles and
+    badges to the app logo, and make the tiles alive and send notifications from the
+    app to the user.
+  prefs: []
+  type: TYPE_NORMAL

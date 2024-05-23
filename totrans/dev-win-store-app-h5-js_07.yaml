@@ -1,0 +1,313 @@
+- en: Chapter 7. Making the App Live with Tiles and Notifications
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The **Start** screen of Windows 8 is flashing with tiles and these tiles are
+    more than just big icons associated with a specific app. In this chapter we will
+    learn about the concept of app tiles, tile types, and the use of each. Also, we
+    will get to see how to define these tiles for the app. Then we will get introduced
+    to notifications and different types of notification methods, and we'll write
+    a sample code that creates and implements a simple notification for the app.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Introducing tiles, badges, and notifications
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: A unique characteristic of Windows 8 apps is the concept of tiles. Moreover,
+    the tiles are what make a Windows 8 app distinguishable. The apps fill and decorate
+    the **Start** screen with an extravaganza of colors, logos, and information. The
+    tiles are the graphical representation of the app on the **Start** screen. Moreover,
+    an app tile is the launching point of the app; clicking on a tile will start the
+    application similar to what we have with a Windows application shortcut on the
+    desktop.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The following is a screenshot of the **Start** screen from a clean installation
+    that shows a couple of app tiles:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Introducing tiles, badges, and notifications](img/7102EN_07_01.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'Every installed app has a default tile that is added to the **Start** screen
+    right after installation. This default tile has a default logo image that represents
+    the app logo or any other branding to identify the app. By default, a static content
+    appears on the tile, which contains text specifying the name of the app and an
+    image representing the logo. The previous screenshot shows an example of the basic
+    app tiles on a Windows 8 **Start** screen. You can notice in the previous screenshot
+    that there are two sizes for the tiles: a square (150x150) px and a rectangle
+    (310x150) px. In Windows 8 naming convention, these two sizes are square and wide.
+    As you can see, both sizes display text and images and a notification badge to
+    show some sort of status; we will get to see what a badge is in a bit. All apps
+    support a square tile by default; supporting a wide tile is optional. If an app
+    does not provide a wide logo image for the default tile, users will not be able
+    to make the app tile larger from the **Start** screen menu. Also, if the app includes
+    a wide logo image, Windows 8 will show the tile in its wide format by default.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Users can personalize their **Start** screen by switching between a wide and
+    a square tile as long as the app tile contains both versions. If an app does not
+    contain a wide logo, users will not be able to make the tile larger. Users can
+    right-click on the app and the **Start** screen app bar will appear. From there,
+    users can click on the **Larger** option to change the size of the tile. The following
+    screenshot shows how a user changes the tile of the **Store** app from square
+    to wide.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Introducing tiles, badges, and notifications](img/7102EN_07_02.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'Windows 8 displays the default tile image as long as it has no notifications
+    to display, and it will revert to the default image when the notification expires
+    or when a user turns off live notifications. Both image sizes and other images
+    such as **Small Logo**, which is displayed in the search results next to the app
+    name, and **Store Logo**, which is displayed on the Windows Store, are included
+    in the app package and are specified in the app manifest under the **Tile Images
+    and Logos** settings in the **Application UI** pane of the Manifest Editor. On
+    the Manifest Editor, we can specify a background color for the tile, the color
+    of the text that will appear on the tile, and a short name for the app; more importantly,
+    we can browse for (and choose images for) the different tile sizes, as shown in
+    the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Introducing tiles, badges, and notifications](img/7102EN_07_03.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: If you check on your **Start** screen for the `test` app we created in the previous
+    chapters, you will see that the app tile displays the image specified in the 150x150
+    px default logo; it fills the square tile and cannot be made larger. Try choosing
+    a **Wide logo** to run the app, and then make the app tile larger to view the
+    changes. The content of a tile is defined in XML, based on a set of Windows-provided
+    templates, in order to maintain the Windows 8 look and feel. The tile's contents
+    can be defined within these templates by providing the corresponding text or images,
+    or both. The tile also displays either a logo or a short name.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In addition to the default tiles, there are the secondary tiles that enable
+    a user to show specific content from the app on the **Start** screen. The secondary
+    tile is created via the **Pin to Start** option available in the app bar, whereby
+    a user chooses to pin a particular location or content from the app to the **Start**
+    screen. When the app is launched from the secondary tile, the user is directed
+    to a specific location inside that app. For example, we can pin a contact from
+    the **People** app, and the secondary tile will personalize the **Start** screen
+    with the updated info about that contact; alternatively, maybe we can pin the
+    **Weather** of a specific city. Secondary tiles allow the users to personalize
+    their **Start** screen info that is important to them. The following screenshot
+    shows two tiles for the weather app; on the left is the default tile showing the
+    **Weather** from the current location and on the right is the secondary tile showing
+    a pinned content of the weather in the city of **London**:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Introducing tiles, badges, and notifications](img/7102EN_07_04.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: The app tile can convey status information related to the app when it is not
+    running, using a notification badge that expresses a summary or status information
+    that can be numeric between 1 and 99 (values greater than 99 will be displayed
+    as 99+) or it can be a set of Windows-provided image symbols known as **glyphs**.
+    The badges appear on the lower-right corner of the tile and can be featured on
+    both square and wide tiles.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Another UI-related concept of the app is the toast notification; this is a pop-up
+    notification that shows up on the top-right corner of the screen. Toast notifications
+    enable the app to send information to the user when the app is not running on
+    the screen, even if the user is using another app, or when on the desktop and
+    not the Windows 8 **Start** screen.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: It is important to note that app tiles shouldn't be used as an advertisement
+    surface. Using the tile to show ads is not allowed in most cases as per the terms
+    of the Windows Store app.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Working with live tiles
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The app tile is a core part of your app; most probably it's the part that is
+    most frequently seen. That is why you should utilize this tile to draw the users'
+    attention and get them back into the app by implementing a live tile. A live tile
+    is one of the ideal ways to attract users to your app by displaying important
+    info that shows the best of what's happening inside the app. For example, the
+    **People** app in Windows 8 has a live tile whereby it changes the pictures of
+    the contacts at specific time intervals.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Unlike a static tile display, for which the default content is generally a full
+    tile logo image and text that indicates the app name, the live tile can update
+    the default tile to show new content. Live tiles can be used to keep the user
+    updated about their contacts, to show event information, or show latest news.
+    Also, a live tile can show a summary of updates in the app, such as the number
+    of unread mails, thus giving users a motive to launch the app.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Sending notifications
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Tiles, secondary tiles, lock screen tiles, and toast can be updated through
+    several types of notifications. These notifications can be generated via a local
+    API call or from a call to some service running on the cloud. Additionally, there
+    are four different notification delivery methods that can send tile and badge
+    updates and toast notifications. These methods include the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Local**: It sends notifications while the app is running either on the screen
+    or in the background to update an app tile or badge, or pops up a toast notification.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Scheduled**: It sends a notification at a certain time that is known in advance;
+    for example, a reminder for an upcoming appointment.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Periodic**: It sends notifications in a periodic manner by polling for new
+    content from a cloud server at fixed time intervals; for example, updating the
+    weather every 12 hours. Periodic notifications work with tiles and badges but
+    are not suitable for toasts.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Push**: It sends notifications from a cloud server directly to the screen
+    even if the app is not running. Push notifications are ideal for situations that
+    include real-time data such as social network updates or time-sensitive information
+    such as instant message or breaking news. This notification method can be used
+    with tiles, badges, and toast.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: By default, local tile notifications do not expire but can be and ideally should
+    be given an expiration time; push, periodic, and scheduled notifications, however,
+    expire after three days from the time when they were provided. By specifying an
+    expiration time, the app can remove the notification content from the tile if
+    it is still being displayed when it hits the expiry time.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Choosing a notification method is determined primarily by the information that
+    you want to deliver and the nature and content of the app.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Bear in mind that a user can turn tile notifications off and on at any time,
+    so be wary of overwhelming the user with unnecessary toast notifications.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In order to implement the notifications feature and allow the app to transmit
+    toast notifications, we must declare it as toast capable in the manifest file.
+    Once the app has been declared toast capable, it will be added to the list of
+    apps in the **Notifications:** section of the **PC** settings. The following screenshot
+    shows where to change the **Toast capable** setting:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Sending notifications](img/7102EN_07_05.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'Now let''s write some code to create a simple local toast notification. We
+    will need to use the `Windows.UI.Notifications` namespace very frequently; so,
+    for the purpose of simplicity let''s declare a namespace variable as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Next, we need to provide a `ToastTemplateType` by choosing from one of the
+    Windows-provided templates; these templates ensure that an app will maintain the
+    expected Windows 8 look and feel in the toast notifications. There are text templates
+    such as: **toastText01**, **toastText02**, **toastText03**, **toastText04**. The
+    templates for image and text are: **toastImageAndText01**, **toastImageAndText02**,
+    **toastImageAndText03**, **toastImageAndText04**.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`WinJS` provides IntelliSense for these templates, which will be listed when
+    we call the `ToastTemplateType` enumeration on the notifications variable, as
+    shown in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Sending notifications](img/7102EN_07_06.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'For this example, we''ll choose the `toastText01` that contains only a single
+    text string that wraps across a maximum of three lines. If the text exceeds three
+    lines, it will be truncated. We''ll then get the template content that is an XML
+    document as shown in the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The `templateContent` variable will contain the following XML skeleton:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The next thing we need to do is fill the content in this XML template, so we
+    need to retrieve the element with a tag name `text`, as shown in the following
+    code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Then we create the toast notification based on the XML content we''ve just
+    specified, as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Lastly, we will create a `toastNotifier` variable which will send `newToast`,
+    the toast notification we defined to the screen, as shown in the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Write the code to be executed in the `then()` function called on the `WinJS.UI.processAll()`
+    method; thus the toast notification will appear as soon as the app starts. If
+    we run the app now, the following toast notification will pop up in the top-right
+    corner of the screen:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Sending notifications](img/7102EN_07_07.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Note that the background color applied to the toast notification is the one
+    declared in the app manifest for the app's tile.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The previous code allowed us to implement a minimal toast notification; you
+    can experiment with the rest of the toast templates and compare the results.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this chapter we got introduced to the concept of tiles, badges, and notifications
+    at the UI level, and we learned the difference between each of them and where
+    we can use them.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We also learned how to send notifications and wrote a sample code which implements
+    sending a very simple toast notification to the screen.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the next chapter, we will learn how to use the Windows Live Services to enable
+    user authentication and allow the users to sign in using their e-mail IDs.
+  prefs: []
+  type: TYPE_NORMAL

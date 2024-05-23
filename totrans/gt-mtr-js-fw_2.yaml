@@ -1,0 +1,713 @@
+- en: Chapter 2. Reactive Programming… It's Alive!
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: As you learned in [Chapter 1](ch01.html "Chapter 1. Setup and Installation"),
+    *Setup and Installation*, Meteor operates on a reactive programming model. This
+    means that your client/browser isn't only concerned with displaying data, but
+    it's also listening for changes to that data, so that it can "react" to those
+    changes. These areas of data, where your browser looks for changes, are called
+    **reactive contexts**.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We will start our Lending Library application in earnest, laying the framework
+    for future chapters, and using Meteor's built-in reactive contexts to track and
+    propagate changes to our application to all clients who are listening.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In this chapter, you will learn about:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Creating your first real application
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using reactive programming to track and automatically update changes
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Exploring and testing changes to your data from multiple browser windows
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Creating the Lending Library
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: There are two kinds of people in this world. Those who remember who they lent
+    something to, and those who buy a *lot* of stuff twice. If you're one of the people
+    that are on a first-name basis with your UPS delivery driver, this application
+    is for you!
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using Meteor, we're going to build a Lending Library. We'll keep track of all
+    our stuff, and who we lent it to, so that the next time we can't remember where
+    we put our linear compression wrench, we can simply look up who we last lent it
+    to, and go get it back from them.
+  prefs: []
+  type: TYPE_NORMAL
+- en: And when that same friend says, "are you sure you lent it to me?" we can say,
+    "yeah, STEVE, I'm sure I lent it to you! I see you're enjoying your digital cable,
+    thanks to my generous lending of said linear compression wrench. Why don't you
+    go find it so I too can enjoy the benefits of digital cable in my own home?!"
+  prefs: []
+  type: TYPE_NORMAL
+- en: Okay, okay, maybe Steve forgot too. Maybe he's a dirty liar and he sold your
+    wrench to pay for his deep-fried Twinkies® habit. Either way, you've got your
+    own custom Meteor app that gives you proof that you're not going crazy. And if
+    he did sell it for deep fried carnival food, at least you can make him share his
+    stash with you, while you watch the game at his house.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Creating the base application
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The first thing we want to do is create the base application, which we can then
+    expand to fit our needs.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Start by navigating to your applications folder. This can be anywhere, but
+    as mentioned, we''ll be working out of `~/Documents/Meteor` as our root folder:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Now we create our base folder structure for our Lending Library application:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'As usual, we''ll get instructions on how to get the application up and running.
+    Let''s go ahead and try that, just to make sure that everything was created properly:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: This navigates to the Lending Library folder `~/Documents/Meteor/LendLib` and
+    runs the application.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Open a browser and navigate to `http://localhost:3000/`. You should see the
+    following screen:![Creating the base application](img/0823OS_02_01.jpg)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Hello World just isn''t going to cut it, so let''s change that to Lending Library.
+    Open `~/Documents/Meteor/LendLib/LendLib.html` in your favorite editor. Towards
+    the top (line 9 or so), you''ll see the template HTML code snippet that''s responsible
+    for our greeting. Go ahead and change `Hello World` to `Lending Library`:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Save that change, and the page will refresh:![Creating the base application](img/0823OS_02_02.jpg)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'The welcome message wasn''t located in the HTML file, however. If you noticed,
+    it''s found in a template function called greeting:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Let''s change that as well. Open `~/Documents/Meteor/LendLib/LendLib.js` and
+    make the following change to the greeting template function:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Save the change, and your page will update:![Creating the base application](img/0823OS_02_03.jpg)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Creating a collection
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Okay, you've just made a few small changes to static files, but what we really
+    want to see is some dynamic, reactive programming, and some live HTML!
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We need to attach a data source: something that will keep track of our items.
+    Normally, this would be quite a process indeed, but Meteor makes it easy, supporting
+    Minimongo (a light version of MongoDB) out of the box.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'To learn more about NoSQL databases (and specifically MongoDB, the default
+    database used inside Meteor) you can visit the following sites:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[http://en.wikipedia.org/wiki/NoSQL](http://en.wikipedia.org/wiki/NoSQL)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[http://www.mongodb.org/](http://www.mongodb.org/)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[http://www.packtpub.com/books/all?keys=mongodb](http://www.packtpub.com/books/all?keys=mongodb)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s create our collection. Inside `LendLib.js`, we want to add the following
+    as the first line, and then save the change:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: This creates a new collection in MongoDB. Since it comes before anything else
+    in the `LendLib.js` file, the collection is available for both the client and
+    server to see. It is persistent, as we'll see in a moment, and once values are
+    entered into it, they can be retrieved by any client accessing the page.
+  prefs: []
+  type: TYPE_NORMAL
+- en: To see this persisted object, we'll need to use the console for our web page.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Fun with the browser console
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The **browser console** is a debugging tool available in most modern browsers
+    by default, or as an add-on through plugins.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: For a more in-depth tutorial on using the console in Chrome, check out [http://developer.chrome.com/extensions/tut_debugging.html.](http://developer.chrome.com/extensions/tut_debugging.html.)
+  prefs: []
+  type: TYPE_NORMAL
+- en: Since we're using Chrome, the console is available by default. In a browser
+    window pointing to `http://localhost:3000/` enter the shortcut key combination
+    *[command]* + *[option]* + *i* or you can right-click anywhere on the page and
+    select **Inspect Element**:![Fun with the browser console](img/0823OS_02_04.jpg)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: This will open our debugging tools. We now want to get into the console.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Click on the **Console** icon found at the extreme right of the debugging menu
+    bar:![Fun with the browser console](img/0823OS_02_05.jpg)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: You will now have a blinking cursor, and you're ready to check for our newly-minted
+    collection!
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Enter the following command in the console and hit *Enter*:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'You should get a returned object that says Meteor Collection:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '![Fun with the browser console](img/0823OS_02_06.jpg)'
+  prefs:
+  - PREF_IND
+  type: TYPE_IMG
+- en: Adding some data
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'This means that our changes were accepted, and we have a new persistent collection!
+    It''s blank, but let''s do something about that:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Enter the following commands in the browser console to create a couple of sample
+    categories:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: After each command, you'll get a GUID (something like `f98c3355-18ce-47b0-82cc-142696322a06`),
+    which is Meteor's way of telling you that the item was saved properly. Being the
+    natural skeptics that we are, we're going to check this.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Enter the following command:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: You should get back an object, with an expandable icon next to it.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Click on that icon to expand, and you should have the following:![Adding some
+    data](img/0823OS_02_07.jpg)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: We could similarly check for our tools collection by entering the command `lists.findOne({Category:"Tools"})`
+    but we don't need to. This time we'll trust that Meteor entered it correctly.
+    We do, however, want to check to see if the objects are persistent.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Refresh the web page. Your console will clear, but the categories we entered
+    have been saved in the persistent Meteor Collection, so we can check again to
+    see if they're hanging around.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Enter the following command in the console:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: This command finds all records in the `lists` collection and gives us a total
+    count. If everything went according to plan, you should have gotten back a count
+    of `2`.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: We're on our way! We've created two categories, and we have one item in each
+    category. We've also verified that the `lists` collection is being saved from
+    session to session. Now, let's see how to display this in our page.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Displaying collections in HTML
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We're now going to see our collection come to life inside the HTML page we created
+    when we initialized our project. This page will use templates, which are reactive,
+    allowing us to have changes made to our collection appear instantly, without a
+    page refresh. This type of reactive programming, where the DOM for the page can
+    be instantly updated without a refresh is called **Live HTML**.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'To read more about Live HTML, consult the Meteor documentation at the following
+    URL:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[http://docs.meteor.com/#livehtml](http://docs.meteor.com/#livehtml)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'With `~/Documents/Meteor/LendLib/LendLib.html` still open, locate the `body`
+    tag, and add a new **template** declaration:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: This creates a new `div`, with the contents being filled by a `template partial`
+    named `categories`.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Now, at the very bottom of the page, let''s add the skeleton for the categories
+    `template partial`:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: This won't change the appearance of the page, but we now have a `template partial`
+    where we can list our categories.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Let''s put in our section title:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'And now let''s get our categories in there:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'This creates the categories `div`, where we can then go through and list all
+    of our categories. If we only had one record to deal with, the code would look
+    like this:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'But we need to wrap this into a loop (in this case, an `#each` statement) so
+    we get all the categories:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Notice that we are telling the template "for each record in the lists collection"
+    with our `{{#each lists}}` command, and then, "display the category" with `{{Category}}`.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Save these changes, and look at the web page:![Displaying collections in HTML](img/0823OS_02_08.jpg)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: It doesn't look much different. Yes, we have our header (**my stuff**), but
+    where are the categories we just created our `template` for?
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: There's one more step we need to complete in order for the categories to show
+    up. Currently, the template we just created isn't pointed towards anything. In
+    other words, we have a lists collection, and we have a template, but we don't
+    have the underlying JavaScript function that hooks them together. Let's take care
+    of that.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'In `~/Documents/Meteor/LendLib/LendLib.js` we can see some `Template` functions:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: These code chunks are hooking up JavaScript functions and objects to the HTML
+    hello `template`. Meteor's built-in `Template` object makes this possible, and
+    we're going to follow the same pattern to hook up our categories `template`.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'We want to declare to any listening client that the categories template has
+    a `lists` collection. We do this by entering the following code, just below the
+    `Template.hello.events = {...}` code block:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Tip
+  prefs:
+  - PREF_IND
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The Template declaration must be inside the `if (Meteor.isClient) {...}` code
+    block, so the client will pick up the change, and the server will ignore it.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'We''ve now declared the `lists` collection for all templates to use, and we
+    can have the function return the results from a `Meteor.Collection` query. We
+    do that using the `find()` command:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'This code will find every record in the `lists` collection, and will sort the
+    results by `Category` (name). Save these changes, and you will now see a populated
+    list of categories:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '![Displaying collections in HTML](img/0823OS_02_09.jpg)'
+  prefs:
+  - PREF_IND
+  type: TYPE_IMG
+- en: Cleaning up
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'We''re fast approaching a working application, and we want it to look super-shiny
+    and clean. Let''s do a bit of cleanup in our code, and add some CSS to make things
+    more readable:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We don''t need the greeting anymore. Let''s get rid of that. Remove the following
+    highlighted lines from `LendLib.html` and save the page:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'We''ll want to keep the Template.hello declarations in LendLib.js for now,
+    as a reference. We''ll comment them out for now, and remove them later when they''re
+    no longer needed:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[PRE21]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Now, let''s add the Twitter Bootstrap Framework, which gives us a lot of style
+    without much effort:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Using a terminal window, create a `client` folder in `/LendLib/`:'
+  prefs:
+  - PREF_IND
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE22]'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_PRE
+- en: Download the latest Bootstrap framework at [http://twitter.github.com/bootstrap/assets/bootstrap.zip](http://twitter.github.com/bootstrap/assets/bootstrap.zip)
+    and extract the archive into the `~/Documents/Meteor/LendLib/client` folder.
+  prefs:
+  - PREF_IND
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Because Meteor will read and use every file put in to the application folder,
+    we want to eliminate the redundant files. We don't have to worry too much about
+    efficiency, but some things are just shameful, and leaving that much extraneous
+    code lying around is right up there with enjoying the *Twilight* movies.
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Navigate to the bootstrap folder:'
+  prefs:
+  - PREF_IND
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE23]'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Delete the unneeded files:'
+  prefs:
+  - PREF_IND
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE24]'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_PRE
+- en: Tip
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: If you know what you're doing with Bootstrap, you can just copy the `images`,
+    `min.js`, and `min.css` files over instead of following the previous instructions.
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'After all these changes, your UI should be really clean and simple:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '![Cleaning up](img/0823OS_02_10.jpg)'
+  prefs:
+  - PREF_IND
+  type: TYPE_IMG
+- en: 'Let''s quickly make it more distinct and readable. In `LendLib.html`, let''s
+    change our header from a `div` tag to an `h2` tag:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE25]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'And let''s turn categories into a pretty button group:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE26]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'This gives us a distinct, clean-looking page:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '![Cleaning up](img/0823OS_02_11.jpg)'
+  prefs:
+  - PREF_IND
+  type: TYPE_IMG
+- en: Creating a reaction
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: With our basic template and collection created, and with Meteor putting our
+    `lists` collection into the reactive context, we can now proceed to watch the
+    reactive programming model in action.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Navigate to our Lending Library page at `http://localhost:3000/` and open the
+    browser console window.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In the console, enter the following command:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE27]'
+  prefs: []
+  type: TYPE_PRE
+- en: You will instantly see the page update. But notice that this time, the full
+    page didn't refresh! That's because under the hood, Meteor is tracking changes
+    to our reactive context (in this case, the `lists` collection) and `template`
+    is being updated immediately after a change is made.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s make a few more changes. Enter the same `Fraggles` command again:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE28]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Just as before, a new **Fraggles** button instantly appears:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Creating a reaction](img/0823OS_02_12.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'But we have too many Fraggles categories now. There *are* a lot of Fraggles,
+    but unless you''re some weirdo collector you don''t need *two* categories. So
+    let''s remove them:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE29]'
+  prefs: []
+  type: TYPE_PRE
+- en: This command finds any records where `Category = "Fraggles"` and deletes them.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'It would probably be better to add a single collection entry for all our collectibles,
+    so let''s do that instead:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE30]'
+  prefs: []
+  type: TYPE_PRE
+- en: As you can see, the changes are made instantly, with no page refresh.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Multiple clients
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Good things should be shared. Meteor gets this, and as we're about to see for
+    ourselves, the reactive programming model allows us to share updates in real time,
+    across multiple clients.
+  prefs: []
+  type: TYPE_NORMAL
+- en: With your Chrome web page still open to `http://localhost:3000/` open a new
+    browser tab and navigate to the same page.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: If you really want to get fancy, you can conduct this same experiment with multiple
+    browsers (Firefox, Opera, or Safari) – each session is live and reactive!
+  prefs: []
+  type: TYPE_NORMAL
+- en: You now have two clients open, which are simulating the application being opened
+    by different people, at different locations, with different computers. Meteor's
+    reactive model allows you to treat all clients the same, and a change made by
+    one will be propagated to all the others.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'With your eyes on the new second browser, type the following command into the
+    console on browser #1:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE31]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'You will notice that the change propagates to *both* browsers, and again without
+    the page refreshing:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Multiple clients](img/0823OS_02_13.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Feel free to make any extra collections, remove or rename, and so on. Experiment
+    a little, and notice how these changes can be instantly made to every listening
+    client. Meteor operates under a very powerful paradigm, and in the next chapter,
+    we'll be able to see exactly why this is such an important and disruptive change
+    to web application development.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this chapter you've successfully created the framework for your new Meteor
+    application. You've seen firsthand how quickly a new project can be created, and
+    you've created some major database and template functionality, with just a few
+    lines of code. You've seen live HTML and reactive programming in action, and you
+    are now ready to go even deeper into the Meteor engine. You've conquered the tip
+    of the iceberg, my friend. Take a break, have a cold one, and get ready for even
+    more Meteor awesomeness!
+  prefs: []
+  type: TYPE_NORMAL

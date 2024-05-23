@@ -1,0 +1,839 @@
+- en: Chapter 12. Testing in Meteor
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this final chapter, we will discuss how we can test a Meteor app.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Testing is a comprehensive topic and it goes beyond the scope of this chapter.
+    To keep it simple, we will briefly cover two tools available, as they are certainly
+    different, and show a simple example for each.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In this chapter, we will cover the following topics:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Testing the `reactive-timer` package
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using Jasmine to conduct unit tests on our app
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using Nightwatch to conduct acceptance tests on our app
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_IND
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: If you want to jump right into the chapter and follow the examples, download
+    the code of [Chapter 10](part0086_split_000.html#page "Chapter 10. Deploying Our
+    App"), *Deploying Our App*, which contains the finished example app, either from
+    the book's web page at [https://www.packtpub.com/books/content/support/17713](https://www.packtpub.com/books/content/support/17713)
+    or from the GitHub repository at [https://github.com/frozeman/book-building-single-page-web-apps-with-meteor/tree/chapter10](https://github.com/frozeman/book-building-single-page-web-apps-with-meteor/tree/chapter10).
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Types of tests
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Tests are pieces of code that test other pieces of code or functionality of
+    an app.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We can divide tests into four general groups:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Unit test**: In this test, we test only a small unit of our code. This can,
+    for example, be a function or a piece of code. Unit tests should not call other
+    functions, write to the hard disk or database, or access the network. If such
+    functionality is needed, one should write stubs, which are functions that return
+    the expected value without calling the real function.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Integrations test**: In this test, we combine multiple tests and run them
+    in different environments to make sure that they still work. The difference in
+    this test compared to the unit test is that we are actually running connected
+    functionalities, such as calling the database.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Functional test**: This can be a unit test or tests in the interface, but
+    will only test the functionality of a feature/function without checking for side
+    effects, such as whether or not variables were cleaned up properly.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Acceptance test**: This runs tests on the full system, which can, for example,
+    be a web browser. The idea is to mimic the actual user as much as possible. These
+    tests are very similar to user stories that define a feature. The downside is
+    that they make it hard to track down bugs, as the test occurs on a higher level.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: In the following examples, we will mostly write functional tests for simplicity.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Testing packages
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In the previous chapter, we built a package out of the `ReactiveTimer` object.
+    A good package should always contain unit tests so that people can run them and
+    be sure that changes to that package don't break its functionality.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Meteor provides a simple unit test tool for packages, called `TinyTest`, which
+    we will use to test our package:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To add tests, we need to copy the `meteor-book:reactive-timer` package, which
+    we built in the previous chapter, to the `my-meteor-blog/packages` folder of our
+    app. This way, we can make changes to the package, as Meteor will prefer the package
+    in the `packages` folder over one in its package servers. If you removed the package,
+    simply add it back using the following command:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Note
+  prefs:
+  - PREF_IND
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Additionally, we need to make sure we delete the `my-meteor-blog/client/ReactiveTimer.js`
+    file, which we should have if we used the code example from [Chapter 10](part0086_split_000.html#page
+    "Chapter 10. Deploying Our App"), *Deploying Our App*, as a basis.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Then we open the `package.js` file from our `packages` folder and add the following
+    lines of code to the end of the file:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: This will include our `meteor-book:reactive-timer` package and `tinytest` when
+    running tests. It will then run the `tests.js` file, which will contain our unit
+    tests.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Now, we can create the tests by adding a folder called `tests` to our package's
+    folder and create a file called `tests.js` inside.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Currently, the `tinytest` package is not documented by Meteor, but it is tiny,
+    which means it is very simple.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Basically, there are two functions, `Tinytest.add(test)` and `Tinytest.addAsync(test,
+    expect)`. They both run a simple test function, which we can pass or fail using
+    `test.equal(x, y)`, `test.isTrue(x)`, or `test.isUndefined(x)`.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: For our package tests, we will simply test whether `ReactiveTimer._intervalId`
+    is not null after we started the timer, and we will know whether the timer runs
+    or not.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Adding package tests
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The test is built by first describing what will be tested.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To test for `_intervalId`, we add the following lines of code to our `tests.js`
+    file:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: Then we start a timer and test whether its `_intervalId` property is not null
+    anymore. At the end, we stop the timer again to clean up the test.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The next test we will add to our `tests.js` file will be asynchronous, as we
+    need to wait for the timer to run at least once:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Let''s take a look at what is happening in this asynchronous test:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: First, we started the timer again with an interval of 1 second and created a
+    variable called `run`. We then switched this variable to `true` only when our
+    reactive `Tracker.autorun()` function ran. Note that we used `if(!c.firstRun)`
+    to prevent the `run` variable from being set when the function runs the first
+    it's executed, as we only want the "tick" after 1 second to count.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: We then used the `Meteor.setTimeout()` function to check whether `run` was changed
+    to `true`. The `expect()` tells `Tinytest.addAsync()` that the test is over and
+    outputs the result. Note that we also stopped the timer, as we always need to
+    clean up after each test.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Running the package tests
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'To finally run the test, we can run the following command from our app''s root
+    folder:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This will start a Meteor app and run our package tests. To see them, we navigate
+    to `http://localhost:3000`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Running the package tests](img/00035.jpeg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'We can also run a test for more than one package at the same time by naming
+    multiple packages separated by spaces:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'To see if the test works, we will deliberately make it fail by commenting out
+    `Meteor.setInterval()` in the `my-meteor-book/packages/reactive-timer/ReactiveTimer.js`
+    file, as shown in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Running the package tests](img/00036.jpeg)'
+  prefs: []
+  type: TYPE_IMG
+- en: We should always try to make our test fail, as a test could also be written
+    in a way that it never succeeds or fails (for example, when `expect()` was never
+    called). This would stop the execution of other tests, as the current one could
+    never finish.
+  prefs: []
+  type: TYPE_NORMAL
+- en: A good rule of thumb is to test functionality as if we are looking at a black
+    box. If we customize our tests too much depending on how a function is written,
+    we will have a hard time fixing tests as we improve our functions.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Testing our meteor app
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: To test the app itself, we can use Velocity Meteor's official testing framework.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Velocity itself doesn't contain tools for testing, but rather gives testing
+    packages such as Jasmine or Mocha a unified way to test Meteor apps and report
+    their output in the console or the apps interface itself using the `velocity:html-reporter`
+    package.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s quote their own words:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*Velocity watches your tests/ directory and sends test files to the correct
+    testing plugin. The testing plugin performs the tests and sends results for each
+    test back to Velocity as they complete. Velocity then combines the results from
+    all of the testing plugins and outputs them via one or more reporting plugins.
+    When the app or tests change, Velocity will rerun your tests and reactively update
+    the results.*'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: This is taken from [http://velocity.meteor.com](http://velocity.meteor.com).
+    Additionally, Velocity adds features such as Meteor stubs and automatic stubbing.
+    It can create mirror apps for isolated testing and run setup code (fixtures).
+  prefs: []
+  type: TYPE_NORMAL
+- en: We will now take a look at unit and integration tests using Jasmine and acceptance
+    tests using Nightwatch.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Testing using Jasmine
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: To use Jasmine with Velocity, we need to install the `sanjo:jasmine` package
+    along with the `velocity:html-reporter` package.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To do this, we''ll run the following command from inside our apps folder:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Then we install Jasmine for Meteor using the following command:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'In order that Velocity can find the tests, we need to create the following
+    folder structure:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: Now, when we start the Meteor server using `$ meteor`, we will see that the
+    Jasmine package has already created two files in the `/my-meteor-blog/tests/jasmine/server/unit`
+    folder, which contains stubs for our packages.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Adding unit tests to the server
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Now we can add unit tests to the client and the server. In this book, we will
+    only add a unit test to the server and later add integration tests to the client
+    to stay within the scope of this chapter. The steps to do so are as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'First, we create a file called `postSpecs.js` within the `/my-meteor-blog/tests/jasmine/server/unit`
+    folder and add the following command:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: This will create a test frame describing what the test inside will be about.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Inside the test frame, we call the `beforeEach()` and `afterEach()` functions,
+    which will run before and after each test, respectively. Inside, we will create
+    stubs for all Meteor functions using `MeteorStubs.install()` and clean them afterwards
+    using `MeteorStubs.uninstall()`:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Note
+  prefs:
+  - PREF_IND
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: A stub is a function or object that mimics its original function or object,
+    but doesn't run actual code. Instead, a stub can be used to return a specific
+    value that the function we test depends on.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Stubbing makes sure that a unit test tests only a specific unit of code and
+    not its dependencies. Otherwise, a break in a dependent function or object would
+    cause a chain of other tests to fail, making it hard to find the actual problem.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Now we can write the actual test. In this example, we will test whether the
+    `insertPost` method we created previously in the book inserts the post, and makes
+    sure that no duplicate slug will be inserted:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: First, we create stubs for all the functions we are using inside the `insertPost`
+    method to make sure that they return what we want.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Especially, take a look at the `spyOn(Posts, "findOne")` call. As we can see,
+    we call a fake function and return a fake document with just a title. Actually,
+    we can return anything as the `insertPost` method only checks whether a document
+    with the same slug was found or not.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Next, we actually call the method and give it some post data:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Inside the callback of the method, we add the actual tests:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: First, we check whether the error object is null. Then we check whether the
+    resultant slug of the method contains the `'my-title'` string. Because we returned
+    a fake document in the `Posts.findOne()` function earlier, we expect our method
+    to add some random number to the slug such as `'my-title-fotvadydf4rt3xr'`. Therefore,
+    we check whether the length is bigger than the eight characters of the original
+    `'my-title'` string.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: At last, we check whether the `Post.insert()` function was called with the expected
+    values.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_IND
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: To fully understand how you can test Jasmine, take a look at the documentation
+    at [https://jasmine.github.io/2.0/introduction.html](https://jasmine.github.io/2.0/introduction.html).
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: You can also find a good cheat sheet of Jasmine functions at [http://www.cheatography.com/citguy/cheat-sheets/jasmine-js-testing](http://www.cheatography.com/citguy/cheat-sheets/jasmine-js-testing).
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Finally, we close the `describe(...` function at the beginning:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: If we now start our Meteor app again using `$ meteor`, after a while we'll see
+    a green dot appearing in the top-right corner.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Clicking on this dot gives us access to Velocity''s `html-reporter` and it
+    should show us that our test has passed:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Adding unit tests to the server](img/00037.jpeg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'To make our test fail, let''s go to our `my-meteor-blog/methods.js` file and
+    comment out the following lines:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This will prevent the slug from getting changed, even if a document with the
+    same slug already exists, and fail our test. If we go back and check in our browser,
+    we should see the test as failed:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Adding unit tests to the server](img/00038.jpeg)'
+  prefs: []
+  type: TYPE_IMG
+- en: We can add more tests by just adding a new `it('should be xyz', function() {...});`
+    function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Adding integration tests to the client
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Adding integration tests is as simple as adding unit tests. The difference is
+    that all the test specification files go to the `my-meteor-blog/tests/jasmine/client/integration`
+    folder.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Integration tests, unlike unit tests, run in the actual app environment.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Adding a test for the visitors
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: In our first example test, we will test to ensure that visitors can't see the
+    **Create Post** button. In the second test, we will log in as an administrator
+    and check whether we are able to see it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let's create a file named `postButtonSpecs.js` in our `my-meteor-blog/tests/jasmine/client/integration`
+    folder.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Now we add the following code snippet to the file and save it:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here we add the `home` template to a `div` again, but this time we log in as
+    an admin user, using our admin credentials. After we have logged in, we call `Tracker.afterFlush()`
+    to give Meteor time to re-render the template and then check whether the button
+    is now present.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Because this test runs asynchronously, we need to call the `done()` function,
+    which we passed as an argument to the `it()` function, telling Jasmine that the
+    test is over.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Our credentials inside the test file are secure, as Meteor doesn't bundle files
+    in the `tests` directory.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'If we now go back to our browser, we should see the two integration tests as
+    passed:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Adding a test for the admin](img/00040.jpeg)'
+  prefs: []
+  type: TYPE_IMG
+- en: After creating a test, we should always make sure we try to fail the test to
+    see whether it actually works. To do so, we can simply comment out the `a.createNewPost`
+    link in `my-meteor-blog/client/templates/home.html`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'You can run Velocity tests using PhantomJS as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs: []
+  type: TYPE_PRE
+- en: You first need to install PhantomJS globally with `$ npm install -g phantomjs`.
+    Be aware that this feature is experimental at the time of writing this book and
+    might not run all your tests.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Acceptance tests
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Though we can test client and server code separately with these tests, we can't
+    test the interaction between the two. For this, we need acceptance tests, which,
+    if explained in detail, would go beyond the scope of this chapter.
+  prefs: []
+  type: TYPE_NORMAL
+- en: At the time of this writing, there is no acceptance testing framework that is
+    implemented using Velocity, though there are two you can use.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Nightwatch
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The `clinical:nightwatch` package allows you to run an acceptance test in a
+    simple way as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs: []
+  type: TYPE_PRE
+- en: Though the installation process is not as straightforward as installing a Meteor
+    package, you need to install and run MongoDB and PhantomJS yourself before you
+    can run the tests.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If you want to give it a try, check out the package on atmosphere-javascript
+    website at [https://atmospherejs.com/clinical/nightwatch](https://atmospherejs.com/clinical/nightwatch).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Laika
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: If you want to test the communication between the server and the client, you
+    can use Laika. Its installation process is similar to Nightwatch, as it requires
+    separate MongoDB and PhantomJS installations.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Laika spins up a server instance and connects multiple clients. You then can
+    set up subscriptions or insert and modify documents. You can also test their appearance
+    in the clients.
+  prefs: []
+  type: TYPE_NORMAL
+- en: To install Laika, go to [http://arunoda.github.io/laika/](http://arunoda.github.io/laika/).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: At the time of this writing, Laika is not compatible with Velocity, which tries
+    to run all the files in the test folder in Laika's environment, causing errors.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this final chapter, we learned how to write simple unit tests using the `sanjo:jasmine`
+    package for Meteor's official testing framework, Velocity. We also took a brief
+    look at possible acceptance test frameworks.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'If you want to dig deeper into testing, you can take a look at the following
+    resources:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[http://velocity.meteor.com](http://velocity.meteor.com)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[http://jasmine.github.io](http://jasmine.github.io)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[http://www.cheatography.com/citguy/cheat-sheets/jasmine-js-testing](http://www.cheatography.com/citguy/cheat-sheets/jasmine-js-testing)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[http://doctorllama.wordpress.com/2014/09/22/bullet-proof-internationalised-meteor-applications-with-velocity-unit-testing-integration-testing-and-jasmine/](http://doctorllama.wordpress.com/2014/09/22/bullet-proof-internationalised-meteor-applications-with-velocity-unit-testing-integration-testing-and-jasmine/)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[http://arunoda.github.io/laika/](http://arunoda.github.io/laika/)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[https://github.com/xolvio/velocity](https://github.com/xolvio/velocity)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: You can find this chapter's code files at [https://www.packtpub.com/books/content/support/17713](https://www.packtpub.com/books/content/support/17713)
+    or on GitHub at [https://github.com/frozeman/book-building-single-page-web-apps-with-meteor/tree/chapter12](https://github.com/frozeman/book-building-single-page-web-apps-with-meteor/tree/chapter12).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now that you have read the whole book, I assume you know a lot more about Meteor
+    than before and are as excited about this framework as I am!
+  prefs: []
+  type: TYPE_NORMAL
+- en: If you have any questions concerning Meteor, you can always ask them at [http://stackoverflow.com](http://stackoverflow.com),
+    which has a great Meteor community.
+  prefs: []
+  type: TYPE_NORMAL
+- en: I also recommend reading through all Meteor subprojects at [https://www.meteor.com/projects](https://www.meteor.com/projects),
+    and study the documentation at [https://docs.meteor.com](https://docs.meteor.com).
+  prefs: []
+  type: TYPE_NORMAL
+- en: I hope you had a great time reading this book and you're now ready to start
+    making great apps using Meteor!
+  prefs: []
+  type: TYPE_NORMAL
+- en: Appendix A. Appendix
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: This appendix contains a list of Meteor's command-line tool commands and a short
+    description of `iron:router` hooks.
+  prefs: []
+  type: TYPE_NORMAL
+- en: List of Meteor's command-line tool commands
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: '| Option | Description |'
+  prefs: []
+  type: TYPE_TB
+- en: '| --- | --- |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `run` | Using `meteor run` is the same as using `meteor`. This will start
+    a Meteor server for our app and watch file changes. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `create <name>` | This will initialize a Meteor project by creating a folder
+    with the same name with some initial files. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `update` | This will update our current Meteor app to the latest release.
+    We can also use `meteor update --release xyz` to fix our Meteor app to a specific
+    release. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `deploy <site name>` | This will deploy our Meteor app to`<site name>.meteor.com`.We
+    can pass the `--delete` option to remove a deployed app |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `build <folder_name>` | This will create a folder with our bundled app(s)
+    code ready to be deployed on our own server. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `add/remove <package name>` | This will add or remove a Meteor core package
+    to/from our project. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `list` | This will list all Meteor packages our app is using. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `mongo` | This will give us access to our local MongoDB shell. We need to
+    also have our application started with `meteor run` at the same time.If we need
+    access to the mongo database of a app deployed on [meteor.com](http://meteor.com),
+    use `$ meteor mongo yourapp.meteor.com --url`But be aware that these credentials
+    are only valid for 1 minute. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `reset` | This will reset our local development database to a fresh state.
+    This won''t work when our application is running. Be aware that this will remove
+    all our data stored in our local database. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `logs <site name>` | This will download and display the logs for an app we
+    deployed at `<site name>.meteor.com` |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `search` | This searches for Meteor packages and releases, whose names contain
+    the specified regular expression. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `show` | This shows more information about a specific package or release:
+    name, summary, the usernames of its maintainers, and, if specified, its home page
+    and Git URL. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `publish` | This publishes our packages. We must before go to the package
+    folder using the cd command, log in to our Meteor account using `$ meteor login`.To
+    publish a package for the first time, we use `$ meteor publish --create`. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `publish-for-arch` | This publishes a build of an existing package version
+    from a different architecture. *Our machine must have the right architecture to
+    be able to publish for a specific one.*Currently, the supported architectures
+    for Meteor are 32-bit Linux, 64-bit Linux, and Mac OS. The servers for Meteor
+    `deploy` run with a 64-bit Linux. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `publish-release` | This publishes a release of Meteor. This takes in a JSON
+    configuration file.For more detail, visit [https://docs.meteor.com/#/full/meteorpublishrelease](https://docs.meteor.com/#/full/meteorpublishrelease).
+    |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `claim` | This claims a site deployed with an old Meteor version with our
+    Meteor developer account. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `login` | This logs us in to our Meteor developer account. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `logout` | This logs us out of our Meteor developer account. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `whoami` | This prints the username of our Meteor developer account. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `test-packages` | This will run tests for one or more packages. For more
+    information, refer to [Chapter 12](part0094_split_000.html#page "Chapter 12. Testing
+    in Meteor"), *Testing with Meteor*. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `admin` | This catches for miscellaneous commands that require authorization
+    to use.Some example uses of meteor `admin` include adding and removing package
+    maintainers and setting a home page for a package. It also includes various help
+    functions for managing a Meteor release. |'
+  prefs: []
+  type: TYPE_TB
+- en: The iron:router hooks
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'The following table contains a list of router controller hooks:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '| `action` | This function can overwrite the default behavior of the route.
+    If we define this function, we have to manually render the template using `this.render()`.
+    |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `onBeforeAction` | This function runs before the route gets rendered. Here,
+    we can put extra custom actions. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `onAfterAction` | This function runs after the route gets rendered. Here,
+    we can put extra custom actions. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `onRun` | This function runs once when the route is first loaded. This function
+    doesn''t run again on a hot code reloads or when the same URL is navigated again.
+    |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `onRerun` | This function will be called every time the route is called.
+    |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `onStop` | This function runs once when leaving the current route to a new
+    route. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `subscriptions` | This function can return subscription(s) that affect `this.ready()`
+    in the action hooks |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `waitOn` | This function can return subscription(s), but will automatically
+    render the `loadingTemplate` until those are ready. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `data` | The return value of this function will be set as the data context
+    of this routes template. |'
+  prefs: []
+  type: TYPE_TB
+- en: 'A full explanation of these hooks can be found at the following resources:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[https://github.com/EventedMind/iron-router/blob/devel/Guide.md#layouts](https://github.com/EventedMind/iron-router/blob/devel/Guide.md#layouts)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[https://github.com/EventedMind/iron-router/blob/devel/Guide.md#hooks](https://github.com/EventedMind/iron-router/blob/devel/Guide.md#hooks)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[https://github.com/EventedMind/iron-router/blob/devel/Guide.md#rendering-templates-with-data](https://github.com/EventedMind/iron-router/blob/devel/Guide.md#rendering-templates-with-data)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL

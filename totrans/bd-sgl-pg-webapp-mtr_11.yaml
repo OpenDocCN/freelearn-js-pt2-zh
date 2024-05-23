@@ -1,0 +1,515 @@
+- en: Chapter 11. Building Our Own Package
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this chapter, we will learn how to build our own package. Writing packages
+    allows us to create closed-functionality components that can be shared between
+    many apps. In the second half of the chapter, we will publish our app on Atmosphere,
+    Meteor's third-party package repository, at [https://atmospherejs.com](https://atmospherejs.com).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In this chapter, we will cover the following topics:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Structuring a package
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Creating a package
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Publishing your own package
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_IND
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: In this chapter, we will package the `ReactiveTimer` object that we built in
+    [Chapter 9](part0081_split_000.html#page "Chapter 9. Advanced Reactivity"), *Advanced
+    Reactivity*. To follow the examples in this chapter, download the previous chapter's
+    code examples from either the book's web page at [https://www.packtpub.com/books/content/support/17713](https://www.packtpub.com/books/content/support/17713)
+    or from the GitHub repository at [https://github.com/frozeman/book-building-single-page-web-apps-with-meteor/tree/chapter10](https://github.com/frozeman/book-building-single-page-web-apps-with-meteor/tree/chapter10).
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: The structure of a package
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: A package is a bundle of JavaScript files that exposes only specific variables
+    to a Meteor app. Other than in a Meteor app, package files will get loaded in
+    the loading order we specify.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Every package needs a `package.js` file that contains the configuration of that
+    package. In such a file, we can add a name, description, and version, set the
+    loading order, and determine which variables should be exposed to the app. Additionally,
+    we can specify unit tests for our packages to test them.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'An example of a `package.js` file can look like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We can structure the files and folders in our package as we wish, but a good
+    basis is the following arrangement:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![The structure of a package](img/00031.jpeg)'
+  prefs: []
+  type: TYPE_IMG
+- en: '`tests`: This contains the package''s unit tests and the `tests.js` file'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`lib`: This contains third-party libraries used by the package'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`README.md`: This contains simple instructions on how to use the package'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`package.js`: This contains the package''s metadata'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`myPackage.js`: These are one or more files that contain the package code'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'To test a package, we can use Meteor''s `tinytest` package, which is a simple
+    unit testing package. If we have tests, we can run them using the following command:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: This will start a Meteor app at `http://localhost:3000`, which runs our package
+    tests. To see how to write a package, take a look at the next chapter.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Creating our own package
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'To create our own package, we will use our `ReactiveTimer` object, which we
+    built in [Chapter 9](part0081_split_000.html#page "Chapter 9. Advanced Reactivity"),
+    *Advanced Reactivity*:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We go to our terminal, in our app''s folder and run the following command:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: This will create a folder named `packages` with a `reactive-timer` folder inside
+    it. Inside the `reactive-timer` folder, Meteor has already created a `package.js`
+    file and some example package files.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Now we can delete all the files inside the `reactive-timer` folder, except the
+    `package.js` file.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Then we move the `my-meteor-blog/client/ReactiveTimer.js` file, which we created
+    in [Chapter 9](part0081_split_000.html#page "Chapter 9. Advanced Reactivity"),
+    *Advanced Reactivity*, to our newly created `reactive-timer` package folder.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Lastly, we open the copied `ReactiveTimer.js` file and remove the following
+    lines:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Later, we'll instantiate the `timer` object inside the app itself and not in
+    the package file.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: We should now have a simple folder with the default `package.js` file and our
+    `ReactiveTimer.js` file. This is almost it! We just need to configure our package
+    and we are ready to use it in our app.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Adding the package metadata
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'To add the package''s metadata, we open the file called `package.js` and add
+    the following lines of code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: This adds a name to the package as well as a description and a version.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note that the package name is namespaced with the author's name. This exists
+    so that packages with the same name can be made distinct through the names of
+    their authors. In our case, we choose `meteor-book`, which is not a real username.
+    To publish the package, we need to use our real Meteor developer username.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'After the `Package.describe()` function come the actual package dependencies:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Here, we define the version of the Meteor core packages this package should
+    use:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: With `api.use()`, we define an additional package (or packages) this package
+    depends on. Note that these dependencies won't be accessible to the app itself,
+    which uses this package.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_IND
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Additionally, there exists `api.imply()`, which not only makes another package
+    available in the package's files, but also adds it to the Meteor app itself so
+    that it can be accessed by the app's code.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'If we use a third-party package, we must specify the minimum package version
+    as follows:'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Note
+  prefs:
+  - PREF_IND
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'We can also pass in a third parameter, `{weak: true}`, to specify that the
+    dependent package will only be used if it is already added to the app by the developer.
+    This can be used to enhance a package when other packages are present.'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'In the second parameter of the `api.use()` function, we can specify whether
+    to load it on the client, server, or both, using an array:'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Tip
+  prefs:
+  - PREF_IND
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: We don't really need to import the `Tracker` package, as it's already a part
+    of Meteor's core `meteor-platform` package (added by default to any Meteor app);
+    we do this here for the sake of an example.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'We then use `api.export(''ReactiveTimer'')` to define which variable of the
+    package should be exposed to the Meteor app using this package. Remember that
+    we created the `ReactiveTimer` object inside the `ReactiveTimer.js` file using
+    the following lines of code:'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Note
+  prefs:
+  - PREF_IND
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Note that we didn't use `var` to create the variable. This way, it is accessible
+    in all the other files of the package and can also be exposed to the app itself.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Lastly, we tell the package system which files belong to the package, using
+    `api.addFiles()`. We can have multiple calls of `api.addFiles()` one after the
+    other. This order will then specify the loading order of the files.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Here, we can again tell Meteor where to load the file—on the client, the server,
+    or both—using `['client', 'server']`.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: In this case, we only provide the `ReactiveTimer` object on the client, as Meteor's
+    reactive functions exist only on the client side.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_IND
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: If you want to see a full list of methods on the `api` object, take a look at
+    Meteor's documentation at [http://docs.meteor.com/#packagejs](http://docs.meteor.com/#packagejs).
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Adding the package
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Copying a package folder to the `my-meteor-blog/packages` folder is not enough
+    to tell Meteor to use the package. There are additional steps that we need to
+    follow:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To add the package, we need to go to our app''s folder from the terminal, quit
+    any currently running `meteor` instance, and run the following command:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'We then need to instantiate the `ReactiveTimer` object in our app. To do this,
+    we add the following lines of code to our `my-meteor-blog/main.js` file:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Now we can start the Meteor app again using `$ meteor` and open our browser
+    at `http://localhost:3000`.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: We shouldn't see any difference, as we just replaced the `ReactiveTimer` object
+    that was already there in our app with the `ReactiveTimer` object from our `meteor-book:reactive-timer`
+    package.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To see the timer run, we can open our browser''s console and run the following
+    code snippet:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: This should log `timer run` every 10 seconds, showing us that the package is
+    actually working.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Releasing our package to the public
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: It's very easy to release a package to the world, but for people to use our
+    package, we should add a readme file so they can know how to use our package.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Create a file called `README.md` in the package folder we created earlier and
+    add the following code snippet:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: As we can see, this file uses the markdown syntax. This way, it will look good
+    on GitHub and [http://atmospherejs.com](http://atmospherejs.com), which is the
+    website where you can browse all the available Meteor packages.
+  prefs: []
+  type: TYPE_NORMAL
+- en: With this readme file, we will make it easy for other people to use the package
+    and appreciate our work.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Publishing our package online
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'After we have saved the readme file, we can push the package to GitHub or any
+    other online Git repository, and add the repository''s URL to the `Package.describe({git:
+    …})` variable of `package.js`. Keeping the code on GitHub keeps it safe and allows
+    others to fork and improve it. Let''s perform the following steps to push our
+    package online:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To publish our package, we can simply run the following command from inside
+    the `pages` folder in the terminal:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: This will build and bundle the package and upload it to Meteor's package servers.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'If everything goes fine, we should be able to find our package by typing the
+    following command:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'This is illustrated in the following screenshot:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '![Publishing our package online](img/00032.jpeg)'
+  prefs:
+  - PREF_IND
+  type: TYPE_IMG
+- en: 'We can then show all of the information about the found package using the following
+    command:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'This is illustrated in the following screenshot:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '![Publishing our package online](img/00033.jpeg)'
+  prefs:
+  - PREF_IND
+  type: TYPE_IMG
+- en: To use the package version from the Meteor server, we can simply move the `packages/reactive-timer`
+    folder somewhere else, remove the `package` folder, and run `$ meteor` to start
+    the app.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Now Meteor won't find any package with that name in the `packages` folder and
+    will look online for that package. Since we published it, it will be downloaded
+    and used in our app.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Should we want to use a specific version of our package in the app, we can
+    run the following command from inside our app''s folder in the terminal:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Now our package is released and we can see it on Atmosphere at `http://atmospherejs.com/meteor-book/reactive-timer`,
+    as shown in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Publishing our package online](img/00034.jpeg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Note that this is just an example of a package and was never actually released.
+    However, a published version of this package under my name can be found at [http://atmospherejs.com/frozeman/reactive-timer](http://atmospherejs.com/frozeman/reactive-timer).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Updating our package
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'If we want to release a new version of our package, we can simply increase
+    the version number in the `package.js` file and publish a new version using the
+    following command from inside the `packages` folder:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'To make our app use the latest version of our package (as long as we didn''t
+    specify a fixed version), we can simply run the following command from inside
+    our app''s folder:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'If we want to update all packages, we can run the following command:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs: []
+  type: TYPE_PRE
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this chapter, we created our own package from our `ReactiveTimer` object.
+    We also learned how simple it is to publish a package on Meteor's official packaging
+    system.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To dig deeper, read the documentations at the following resources:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[https://docs.meteor.com/#/full/writingpackages](https://docs.meteor.com/#/full/writingpackages)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[https://docs.meteor.com/#packagejs](https://docs.meteor.com/#packagejs)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[https://www.meteor.com/services/package-server](https://www.meteor.com/services/package-server)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[https://www.meteor.com/isobuild](https://www.meteor.com/isobuild)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: You can find this chapter's code examples at [https://www.packtpub.com/books/content/support/17713](https://www.packtpub.com/books/content/support/17713)
+    or on GitHub at [https://github.com/frozeman/book-building-single-page-web-apps-with-meteor/tree/chapter11](https://github.com/frozeman/book-building-single-page-web-apps-with-meteor/tree/chapter11).
+  prefs: []
+  type: TYPE_NORMAL
+- en: This code example contains only the package, so in order to add it to the app,
+    use the code example of the previous chapter.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the next chapter, we will take a look at testing our app and package.
+  prefs: []
+  type: TYPE_NORMAL

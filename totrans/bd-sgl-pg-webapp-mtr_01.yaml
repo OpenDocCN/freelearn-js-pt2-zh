@@ -1,0 +1,725 @@
+- en: Chapter 1. Getting Started with Meteor
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Welcome to this book on Meteor. Meteor is an exciting new JavaScript framework,
+    and we will soon see how easy it is to achieve real and impressive results with
+    less code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this chapter, we will learn what the requirements are and what additional
+    tools we need to get started. We will see how simple it is to get our first Meteor
+    application running and what a good basic folder structure for a Meteor app could
+    be. We will also learn about Meteor's automatic build process and its specific
+    way of loading files.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We will also see how to add packages using Meteors official packaging system.
+    At the end of the chapter, we will take a short look at Meteor's command-line
+    tool and some of its functions.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To bring it together, we will cover the following topics:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The full-stack framework of Meteor
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Meteor's requirements
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Installing Meteor
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Adding basic packages
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Meteor's folder conventions and loading order
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Meteor's command-line tool
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The full-stack framework of Meteor
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Meteor is not just a JavaScript library such as jQuery or AngularJS. It's a
+    full-stack solution that contain frontend libraries, a Node.js-based server, and
+    a command-line tool. All this together lets us write large-scale web applications
+    in JavaScript, on both the server and client, using a consistent API.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Even with Meteor being quite young, already a few companies such as [https://lookback.io](https://lookback.io),
+    [https://respond.ly](https://respond.ly), and [https://madeye.io](https://madeye.io)
+    use Meteor in their production environment.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If you want to see for yourself what's made with Meteor, take a look at [http://madewith.meteor.com](http://madewith.meteor.com).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Meteor makes it easy for us to build web applications quickly and takes care
+    of the boring processes such as file linking, minifying, and concatenating of
+    files.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Here are a few highlights of what is possible with Meteor:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: We can build complex web applications amazingly fast using templates that automatically
+    update themselves when data changes
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: We can push new code to all clients on the fly while they are using our app
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Meteor core packages come with a complete account solution, allowing a seamless
+    integration of Facebook, Twitter, and more
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Data will automatically be synced across clients, keeping every client in the
+    same state in almost real time
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Latency compensation will make our interface appear super fast while the server
+    response happens in the background.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: With Meteor, we never have to link files with the `<script>` tags in HTML. Meteor's
+    command-line tool automatically collects JavaScript or CSS files in our application's
+    folder and links them in the `index.html` file, which is served to clients on
+    initial page load. This makes structuring our code in separate files as easy as
+    creating them.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Meteor's command-line tool also watches all files inside our application's folder
+    for changes and rebuilds them on the fly when they change.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Additionally, it starts a Meteor server that serves the app's files to the clients.
+    When a file changes, Meteor reloads the site of every client while preserving
+    its state. This is called a **hot code reload**.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In production, the build process also concatenates and minifies our CSS and
+    JavaScript files.
+  prefs: []
+  type: TYPE_NORMAL
+- en: By simply adding the `less` and `coffee` core packages, we can even write all
+    styles in LESS and code in CoffeeScript with no extra effort.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The command-line tool is also the tool for deploying and bundling our app so
+    that we can run it on a remote server.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Sounds awesome? Let's take a look at what's needed to use Meteor.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Meteor's requirements
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Meteor is not just a JavaScript framework and server. As we saw earlier, it
+    is also a command-line tool that has a whole build process for us in place.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Currently, the operating systems that are officially supported are as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Mac OS X 10.6 and above
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Linux x86 and x86_64 systems
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Windows
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_IND
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The Windows installer is still in development at the time of writing this book.
+    Please follow the wiki page at [https://github.com/meteor/meteor/wiki/Preview-of-Meteor-on-Windows](https://github.com/meteor/meteor/wiki/Preview-of-Meteor-on-Windows).
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: This book and all examples use *Meteor 1.0*.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using Chrome's developer tools
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We will also need Google Chrome or Firefox with the Firebug add-on installed
+    to follow examples that require a console. The examples, screenshots, and explanations
+    in this book will use Google Chrome's developer tools.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using Git and GitHub
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: I highly recommend using **GitHub** when working with web projects, such as
+    the one we will work on in this book. Git and GitHub help us to back up our progress
+    and let us always go back to previous states while seeing what we've changed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Git is a version control system, which was created in 2005 by the inventor of
+    Linux, Linus Torvalds.
+  prefs: []
+  type: TYPE_NORMAL
+- en: With Git, we can *commit* any state of our code and later go back to that exact
+    state. It also allows multiple developers to work on the same code base and merge
+    their results together in an automated process. If conflicts appear in this process,
+    the merging developer is able to resolve those *merge conflicts* by removing the
+    unwanted lines of code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: I also recommend registering an account at [http://github.com](http://github.com),
+    as this is the easiest way to browse our code history. They have an easy to use
+    interface as well as a great Windows and Mac app.
+  prefs: []
+  type: TYPE_NORMAL
+- en: To follow the code examples in this book, you can download all code examples
+    for each chapter from the book's web page at [https://www.packtpub.com/books/content/support/17713](https://www.packtpub.com/books/content/support/17713).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Additionally, you will be able to clone the book's code from [http://github.com/frozeman/book-building-single-page-web-apps-with-meteor](http://github.com/frozeman/book-building-single-page-web-apps-with-meteor).
+    Every tag in this repository equals to one chapter of the book and the commit
+    history will help you to see the changes, which were made in each chapter.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Installing Meteor
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Installing Meteor is as easy as running the following command in the terminal:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: That's it! This will install the Meteor command-line tool (`$ meteor)`, the
+    Meteor server, MongoDB database, and the Meteor core packages (libraries).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: All command-line examples are run and tested on Mac OS X and can differ on Linux
+    or Windows systems.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Installing Git
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: To install Git, I recommend installing the GitHub app from [https://mac.github.com](https://mac.github.com)
+    or [https://windows.github.com](https://windows.github.com). We can then simply
+    go inside the app to **Preferences** and click on the **Install Command Line Tools**
+    button inside the **Advanced** tab.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If we want to install Git manually and set it up via the command line, we can
+    download the Git installer from [http://git-scm.com](http://git-scm.com) and follow
+    this great guide at [https://help.github.com/articles/set-up-git](https://help.github.com/articles/set-up-git).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Now, we can check whether everything was installed successfully by opening
+    the terminal and running the following command:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '**Downloading the example code**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: You can download the example code files for all Packt books you have purchased
+    from your account at [http://www.packtpub.com](http://www.packtpub.com). If you
+    purchased this book elsewhere, you can visit [http://www.packtpub.com/support](http://www.packtpub.com/support)
+    and register to have the files e-mailed directly to you.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This should return us a list of Git options. If we get `command not found:
+    git`, we need to check whether the `git` binary was correctly added to our `PATH`
+    environment variable.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: If everything is fine, we are ready to create our first Meteor app.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Creating our first app
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'To create our first app, we open the terminal, go to the folder where we want
+    to create our new project, and enter the following commands:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Meteor will now create a folder named `my-meteor-blog`. The HTML, CSS, and
+    JavaScript files that Meteor created for us inside this folder are already a fully
+    working Meteor app. To see it in action, run the following commands:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: Meteor will now start a local server for us on port `3000`. Now, we can open
+    our web browser and navigate to `http://localhost:3000`. We will see the app running.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This app doesn''t do much, except showing a simple reactive example. If you
+    click on the **Click Me** button, it will increase the counter:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Creating our first app](img/00003.jpeg)'
+  prefs: []
+  type: TYPE_IMG
+- en: For later examples, we will need Google Chrome's developer tools. To open the
+    console, we can press *Alt* + *command* + *I* on Mac OS X or click on the menu
+    button on the upper-right corner of Chrome, select **More tools,** and then **Developer
+    tools**.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The **Developer tools** allow us to inspect the DOM and CSS of our website,
+    as well as having a console where we can interact with our website's JavaScript.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Creating a good folder structure
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: For this book, we will build our own app from scratch. This also means we have
+    to set up a sustainable folder structure, which helps us to keep our code organized.
+  prefs: []
+  type: TYPE_NORMAL
+- en: With Meteor, we are very flexible concerning our folder structure. This means
+    we can put our files wherever we want, as long as they are inside the app's folder.
+    Meteor treats specific folders differently, allowing us to expose files only on
+    the client, the server, or both. We will take a look at those specific folders
+    later.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'But, first let''s get our hands dirty by deleting all preadd files in our newly
+    created application folder and creating the following folder structure:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: Preadd style files
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: To fully focus on the Meteor code but still have a pretty-looking blog, I strongly
+    recommend to download the code that accompanies this chapter from the book's web
+    page at [http://packtpub.com/books/content/support/17713](http://packtpub.com/books/content/support/17713).
+    They will contain already two drop-in-place style files (`lesshat.import.less`
+    and `styles.less`), which will let your example blog look pretty in the upcoming
+    chapters.
+  prefs: []
+  type: TYPE_NORMAL
+- en: You can also download these files directly from GitHub at [https://github.com/frozeman/book-building-single-page-web-apps-with-meteor/tree/chapter1/my-meteor-blog/client/styles](https://github.com/frozeman/book-building-single-page-web-apps-with-meteor/tree/chapter1/my-meteor-blog/client/styles)
+    and copy them to the `my-meteor-blog/client/styles` folder manually.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Next, we need to add some basic packages so that we can start building our app.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Adding basic packages
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Packages in Meteor are libraries that can be added to our projects. The nice
+    thing about Meteor packages is that they are self-contained units, which run out
+    of the box. They mostly add either some templating functionality or provide extra
+    objects in the global namespace of our project.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Packages can also add features to Meteor's build process such as the `stylus`
+    package, which lets us write our app's style files with the `stylus` preprocessor
+    syntax.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'For our blog, we will need two packages at first:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`less`: This is a Meteor core package and will compile our style files on the
+    fly to CSS'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`jeeeyul:moment-with-langs`: This is a third-party library for date parsing
+    and formatting'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Adding a core package
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'To add the `less` package, we can simply open the terminal, go to our projects
+    folder, and enter the following command:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: Now, we are able to use any `*.less` files in our project, and Meteor will automatically
+    compile them in its build process for us.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Adding a third-party package
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: To add a third-party package, we can simply search for packages on either [https://atmospherejs.com](https://atmospherejs.com),
+    which is the frontend for Meteors packaging system, or use the command-line tool,
+    `$ meteor search <package name>`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: For our blog, we will need the `jeeeyul:moment-with-langs` package that allows
+    us later to simply manipulate and format dates.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Packages are namespaced with the authors name followed by a colon.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To add the `moment` package, we simply enter the following command:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: After the process is done, and we restarted our app using `$ meteor`, we will
+    have the `moment` object available in our app global namespace and we can make
+    use of it in the upcoming chapters.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Should we ever want to add only specific version of a package, we can use the
+    following command:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'If you want a version in the 1.0.0 (but not the 2.0.0) range use the following
+    command:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'To update only packages we can simply run the following command:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Additionally, we can update only a specific package using the following command:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: That's it! Now we are fully ready to start creating our first templates. You
+    can jump right into the next chapter, but make sure you come back to read on,
+    as we will now talk about Meteor's build process in more detail.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Variable scopes
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: To understand Meteor's build process and its folder conventions, we need to
+    take a quick look at variable scopes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Meteor wraps every code files in an anonymous function before serving it. Therefore,
+    declaring a variable with the `var` keyword will make it only available in that
+    file''s scope, which means these variables can''t be accessed in any other file
+    of your app. However, when we declare a variable without this keyword, we make
+    it a globally available variable, which means it can be accessed from any file
+    in our app. To understand this, we can take a look at the following example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'After Meteor''s build process, the preceding lines of code will be as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: This way, the variable created with *var* is a local variable of the anonymous
+    function, while the other one can be accessed globally, as it could be created
+    somewhere else before.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Meteor's folder conventions and loading order
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Though Meteor doesn't impose restrictions concerning our folder names or structure,
+    there are naming conventions that help Meteor's build process to determine the
+    order in which the files need to be loaded.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The following table describes the folder and their specific loading order:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '| Folder name | Load behavior |'
+  prefs: []
+  type: TYPE_TB
+- en: '| --- | --- |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `client` | This is loaded only on the client. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `client/compatibility` | This will not be wrapped in an anonymous function.
+    This is made for libraries that declare top-level variables with `var`. Additionally,
+    files in this folder will be loaded before other files on the client. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `server` | Files in this folder will only be served on the server. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `public` | This folder can contain assets used on the client, such as images,
+    `favicon.ico`, or `robots.txt`. Folders and files inside the public folder are
+    available on the client from root, `/`. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `private` | This folder can contain assets that will only be available on
+    the server. These files are available through `Assets` API. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `lib` | Files and subfolders inside a `lib` folder will be loaded before
+    other files, where `lib` folders in deeper folders will be loaded before the files
+    in `lib` folders of their parent folders. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `tests` | Files inside this folder won''t be touched or loaded by Meteor
+    at all. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `packages` | When we want to use local packages, we can add them to this
+    folder and Meteor will use those packages, even if one with the same name exists
+    in Meteor''s official package system. (However, we still have to add the packages
+    using `$ meteor add ....`) |'
+  prefs: []
+  type: TYPE_TB
+- en: 'The following table describes filenames that have created a specific loading
+    order:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '| Filename | Load behavior |'
+  prefs: []
+  type: TYPE_TB
+- en: '| --- | --- |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `main.*` | Files with this name are loaded last, whereas files in deeper
+    folders are loaded before the files of their parent folders |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `*.*` | Files outside of the former mentioned folders in this table are loaded
+    on both the client and server |'
+  prefs: []
+  type: TYPE_TB
+- en: So, we see that Meteor gathers all files except the ones inside `public`, `private`,
+    and `tests`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Additionally, files are always loaded in the alphabetical order, and files in
+    subfolders are loaded before the ones in parent folders.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'If we have files outside the `client` or `server` folder and want to determine
+    where the code should be executed, we can use the following variables:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We also see that code inside a `main.*` file is loaded last. To make sure a
+    specific code only loads when all files are loaded and the DOM on the client is
+    ready, we can use the Meteor''s `startup()` function:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: Loading assets on the server
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'To load files from inside the `private` folder on the server, we can use the
+    `Assets` API as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here, `assetPath` is a file path relative to the `private` folder, for example,
+    '`subfolder/data.txt'`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'If we provide a callback function as the second parameter, the `Assets()` method
+    will run asynchronously. So, we have two ways of retrieving the content of an
+    assets file:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: If the first example returns an error, our current server code will fail. In
+    the second example, our code will still work, as the error is contained in the
+    `error` parameter.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now that we understand Meteor's basic folder structure, let's take a brief look
+    at the Meteor's command-line tool.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Meteor's command-line tool
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Now that we know already about Meteor's build process and folder structure,
+    we will take a closer look at what we can do with the command-line tool that Meteor
+    provides.
+  prefs: []
+  type: TYPE_NORMAL
+- en: As we saw when using the `meteor` command, we need to be inside a Meteor project
+    so that all actions will be performed on this project. For example, when we run
+    `meteor add xxx`, we add a package to the project where we are currently in.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Updating Meteor
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'If Meteor releases a new version, we can simply update our project by running
+    the following command:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'If we want to go back to a previous version, we can do this by running the
+    following command:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: This would set our project back to release version 0.9.1.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Deploying Meteor
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Deploying our Meteor app to a public server is as easy as running the following
+    command:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs: []
+  type: TYPE_PRE
+- en: This would ask us to register a Meteor developer account and deploy our app
+    at [http://my-app-name.meteor.com](http://my-app-name.meteor.com).
+  prefs: []
+  type: TYPE_NORMAL
+- en: For a full introduction on how to deploy a Meteor app, refer to [Chapter 10](part0086_split_000.html#page
+    "Chapter 10. Deploying Our App"), *Deploying Our App*.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the [Appendix](part0099_split_000.html#page "Appendix A. Appendix"), you
+    can find a full list of Meteor commands and their explanations.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this chapter, we learned what Meteor requires to run, how to create a Meteor
+    application, and how the build process works.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We understand that Meteor's folder structure is rather flexible, but that there
+    are special folders such as the `client`, `server`, and `lib` folder, which are
+    loaded in different places and order. We also saw how to add packages and how
+    to use the Meteor command-line tool.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'If you want to dig deeper into what we''ve learned so far, take a look at the
+    following parts of the Meteor documentation:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[https://www.meteor.com/projects](https://www.meteor.com/projects)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[https://www.meteor.com/tool](https://www.meteor.com/tool)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[https://docs.meteor.com/#/full/whatismeteor](https://docs.meteor.com/#/full/whatismeteor)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[https://docs.meteor.com/#/full/structuringyourapp](https://docs.meteor.com/#/full/structuringyourapp)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[https://docs.meteor.com/#/full/usingpackages](https://docs.meteor.com/#/full/usingpackages)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[https://docs.meteor.com/#/full/assets](https://docs.meteor.com/#/full/assets)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[https://docs.meteor.com/#/full/commandline](https://docs.meteor.com/#/full/commandline)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: You can find this chapter's code examples at [https://www.packtpub.com/books/content/support/17713](https://www.packtpub.com/books/content/support/17713)
+    or on GitHub at [https://github.com/frozeman/book-building-single-page-web-apps-with-meteor/tree/chapter1](https://github.com/frozeman/book-building-single-page-web-apps-with-meteor/tree/chapter1).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now that we've set up our project's basic folder structure, we are ready to
+    start with the fun part of Meteor—templates.
+  prefs: []
+  type: TYPE_NORMAL

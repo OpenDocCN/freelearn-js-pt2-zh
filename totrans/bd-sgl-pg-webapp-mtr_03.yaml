@@ -1,0 +1,435 @@
+- en: Chapter 3. Storing Data and Handling Collections
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In the previous chapter, we learned how to build templates and display data
+    in them. We built the basic layout of our app and listed some post examples on
+    the front page.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this chapter, we will add post examples persistently to our database on the
+    server. We will learn how we can access this data later on the client and how
+    Meteor syncs data between clients and the server.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In this chapter, we''ll cover the following topics:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Storing of data in Meteor
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Cresting collections
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Adding data to a collection
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Querying data from a collection
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Updating data in a collection
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: What "database everywhere" means
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The difference between the server's and the client's databases
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_IND
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: If you've jumped right into the chapter and want to follow the examples, download
+    the previous chapter's code examples from either the book's web page at [https://www.packtpub.com/books/content/support/17713](https://www.packtpub.com/books/content/support/17713)
+    or from the GitHub repository at [https://github.com/frozeman/book-building-single-page-web-apps-with-meteor/tree/chapter2](https://github.com/frozeman/book-building-single-page-web-apps-with-meteor/tree/chapter2).
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: These code examples will also contain all the style files, so we don't have
+    to worry about adding CSS code along the way.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Meteor and databases
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Meteor currently uses MongoDB by default to store data on the server, although
+    there are drivers planned for use with relational databases too.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: If you are adventurous, you can try one of the community-built SQL drivers,
+    such as the `numtel:mysql` package from [https://atmospherejs.com/numtel/mysql](https://atmospherejs.com/numtel/mysql).
+  prefs: []
+  type: TYPE_NORMAL
+- en: MongoDB is a NoSQL database. This means it is based on a flat document structure
+    instead of a relational table structure. Its document approach makes it ideal
+    for JavaScript as documents are written in BJSON, which is very similar to the
+    JSON format.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Meteor has a *database everywhere* approach, which means that we have the same
+    API to query the database on the client as well as on the server. Yet, when we
+    query the database on the client, we are only able to access the data that we
+    *published* to a client.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'MongoDB uses a data structure called **collection**, which is the equivalent
+    of a table in a SQL database. Collections contain documents, where each document
+    has its own unique ID. These documents are JSON-like structures and can contain
+    properties with values, even with multiple dimensions, as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: These collections are used to store data in the server's MongoDB as well as
+    the client-side `minimongo` collection, which is an in-memory database mimicking
+    the behavior of the real MongoDB.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: We'll discuss more about `minimongo` at the end of this chapter.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The MongoDB API allows us to use a simple JSON-based query language to get documents
+    from a collection. We can pass additional options to only ask for *specific fields*
+    or *sort* the returned documents. These are very powerful features, especially
+    on the client side, to display data in various ways.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Setting up a collection
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: To see all this in action, let's get right on it by creating our first collection.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We create a file called `collections.js` inside our `my-meteor-blog` folder.
+    We need to create it in the root folder so that it will be available on both the
+    client and the server. Now let''s add the following line of code to the `collections.js`
+    file:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: This will make the `Posts` variable globally available, as we haven't used the
+    `var` keyword, which would restrict it to the scope of this file.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`Mongo.Collection` is the API used to query the database and it comes with
+    the following basic methods:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`insert`: This method is used to insert documents into the database'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`update`: This method is used to update documents or parts of them'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`upsert`: This method is used to insert or update documents or parts of them'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`remove`: This method is used to delete documents from the database'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`find`: This method is used to query the database for documents'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`findOne`: This method is used to return only the first matched document'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Adding post examples
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'To query the database for posts, we need to add some post examples. This has
+    to be done on the server, as we want to add them persistently. To add an example
+    post, perform the following steps:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: We create a file called `main.js` inside our `my-meteor-blog/server` folder.
+    Inside this file, we will use the `Meteor.startup()` function to execute the code
+    on the start of the server.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'We then add the post example, but only when the collection is empty. So to
+    prevent this, we add them every time we restart the server, as follows:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Now, when check out the terminal, we should see something similar to the following
+    screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Adding post examples](img/00007.jpeg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: We can also add dummy data using the Mongo console instead of writing it in
+    our code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: To use the Mongo console, we start the Meteor server using `$ meteor`, and then
+    in a second terminal we run `$ meteor mongo`, which brings us to a Mongo shell.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Here, we can simply add documents using MongoDB''s syntax:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: Querying a collection
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The server did restart when we saved our changes. At this point, Meteor added
+    five post examples to our database.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: If the server didn't restart, it means that we made a mistake in the syntax
+    somewhere in our code. When we manually reload our browser or check out the terminal,
+    we will see the error that Meteor gives us and we can fix it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In case we messed up something in the database, we can always reset it using
+    the `$ meteor reset` command in the terminal.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We can see these posts by simply opening up the console in our browser and
+    typing the following command:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: This will return an array with five items, each of them being one of our example
+    posts.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To list these newly inserted posts in our front page, we need to replace the
+    content of our `postsList` helper in the `home.js` file with the following lines
+    of code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: As we can see, we returned the collections cursor directly in the helper. This
+    return value then gets passed to the `{{#each}}` block helper in our `home` template,
+    which will then iterate over each post while rendering the `postInList` template.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Note that `Posts.find()` returns a cursor, which is more efficient when used
+    in an `{{#each}}` block helper, whereas `Posts.find().fetch()` will return an
+    array with the document objects. Using `fetch()`, we can manipulate the documents
+    before returning them.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We pass an options object as the second parameter to the `find()` function.
+    The option we are passing will sort the result based on `timeCreated` and `-1`.
+    The `-1` value means it will be sorted in descending order (`1` means ascending
+    order).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Now, when we check out our browser, we will see that all of our five posts
+    are listed, as shown in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Querying a collection](img/00008.jpeg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Updating a collection
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Now that we know how to insert and fetch data, let's take a look at how to update
+    data in our database.
+  prefs: []
+  type: TYPE_NORMAL
+- en: As we've already seen before, we can use the console of our browser to play
+    with the database. For our next examples, we will use only the console to see
+    how Meteor reactively changes the templates when we change data.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To be able to edit a post in our database, we first need to know the `_id`
+    field of its entry. To find this out, we need to type the following command:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: This will return us all the documents in the `Posts` collection, as we are not
+    passing any specific query object.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the returned array, we need to take a look at the last item, with the **My
+    Fifth entry** title, and copy the `_id` field to the clipboard using *Cmd* + *C*
+    (or *Ctrl* + *C* if we're on Windows or Linux).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: We can also simply use `Posts.findOne()`, which will give us the first document
+    it finds.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Now that we have `_id`, we can simply update the title of our fifth post by
+    typing the following command:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: As soon as we execute this command, we will notice that the title of the fifth
+    post has changed to our new title, and if we now reload the page we will see that
+    the title stays the same. This means the change was persistently made to the database.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To see Meteor''s reactivity across clients, open up another browser window
+    and navigate to `http://localhost:3000`. When we now change our title again by
+    executing the following command, we will see that all the clients get updated
+    in real time:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: Database everywhere
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In Meteor, we can use the browser console to update data, which means that we
+    can update the database from the client. This works because Meteor automatically
+    syncs these changes to the server and updates the database accordingly.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This happens because we have the `autopublish` and `insecure` core packages
+    added to our project by default. The `autopublish` package automatically publishes
+    all documents to every client, whereas the `insecure` package allows every client
+    to update database records by its `_id` field. Obviously, this works well for
+    prototyping but is infeasible for production, as every client can manipulate our
+    database.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If we remove the `insecure` package, we will need to add "allow and deny" rules
+    to determine what a client is allowed to update and what they are not; otherwise,
+    all updates will get denied. We will take a look at setting these rules in a later
+    chapter, but for now this package serves us well, as we can immediately manipulate
+    the database.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the next chapter, we will see how to manually publish only certain documents
+    to a client. We will start that by removing the `autopublish` package.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Differences between client and server collections
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Meteor has a *database everywhere* approach. This means it provides the same
+    API on the client as well as on the server. The data flow is controlled using
+    a publication subscription model.
+  prefs: []
+  type: TYPE_NORMAL
+- en: On the server sits the real MongoDB database, which stores data persistently.
+    On the client, Meteor has a package called `minimongo`, which is a pure in-memory
+    database mimicking most of MongoDB's query and update functions.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Every time a client connects to its Meteor server, Meteor downloads the documents
+    that the client has subscribed to and stores them in its local `minimongo` database.
+    From here, they can be displayed in a template or processed by functions.
+  prefs: []
+  type: TYPE_NORMAL
+- en: When the client updates a document, Meteor syncs it back to the server, where
+    it is passed through any allow/deny functions before being persistently stored
+    in the database. This also works the other way; when a document in the server-side
+    database changes, it will automatically sync to every client that is subscribed
+    to it, keeping every connected client up to date.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this chapter, we learned how to store data persistently in Meteor's MongoDB
+    database. We also saw how we can query collections and update documents. We understood
+    what the "database everywhere" approach means and how Meteor keeps every client
+    up to date.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To dig deeper into MongoDB and to query and update collections, take a look
+    at the following resources:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[https://www.meteor.com/full-stack-db-drivers](https://www.meteor.com/full-stack-db-drivers)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[https://www.meteor.com/mini-databases](https://www.meteor.com/mini-databases)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[https://docs.meteor.com/#/full/collections](https://docs.meteor.com/#/full/collections)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[http://docs.mongodb.org/manual/core/crud-introduction/](http://docs.mongodb.org/manual/core/crud-introduction/)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[http://docs.mongodb.org/manual/reference/operator/query/](http://docs.mongodb.org/manual/reference/operator/query/)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: You can find this chapter's code examples either at [https://www.packtpub.com/books/content/support/17713](https://www.packtpub.com/books/content/support/17713)
+    or on GitHub at [https://github.com/frozeman/book-building-single-page-web-apps-with-meteor/tree/chapter3](https://github.com/frozeman/book-building-single-page-web-apps-with-meteor/tree/chapter3).
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the next chapter, we will see how to control the data flow using publications
+    and subscriptions so that we send only the necessary documents to the clients.
+  prefs: []
+  type: TYPE_NORMAL

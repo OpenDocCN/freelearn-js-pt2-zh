@@ -1,0 +1,26 @@
+- en: 'Section 3: Testing and Deploying'
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this section, you will be creating meaningful integration and unit tests
+    that enable the application to grow, and will also learn how to containerize and
+    deploy Deno applications in the cloud.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This section contains the following chapters:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[*Chapter 8*](B16380_08_Final_JM_ePub.xhtml#_idTextAnchor178), [*Testing –
+    Unit and Integration*](https://epic.packtpub.com/index.php?module=oss_Chapters&action=DetailView&record=825fa87f-4618-2790-1a60-5f32422b4c47)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[*Chapter 9*](B16380_09_Final_JM_ePub.xhtml#_idTextAnchor190), [*Deploying
+    a Deno Application*](https://epic.packtpub.com/index.php?module=oss_Chapters&action=DetailView&record=98b91ae7-2855-39f3-f6b4-5f32426d1b76)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[*Chapter 10*](B16380_10_Final_JM_ePub.xhtml#_idTextAnchor201), [*What''s Next?*](https://epic.packtpub.com/index.php?module=oss_Chapters&action=DetailView&record=6128cca6-e773-f0c6-9ca0-5f3242cf7f1e)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL

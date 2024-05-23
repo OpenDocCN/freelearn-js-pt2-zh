@@ -1,0 +1,698 @@
+- en: Chapter 1. HTML5 Structure
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: HTML5 introduced new elements and attributes for a neater structure, smarter
+    forms, and richer media; this make the life of a developer much easier. HTML5
+    features are classified into several groups based on their function, and the new
+    structural elements fall under the group semantics, which include structural elements,
+    media elements, attributes, form types, link relation types, semantics for internationalization,
+    and microdata for additional semantics. There is a big list of additions and enhancements
+    in HTML5, all with the aim of better presenting the content on the web. You will
+    use many of these when developing apps for Windows 8; the difference and, moreover,
+    the advantage of using it for Windows 8 development is that you do not have to
+    worry about the browser's compatibility, at least at the level of Windows Store
+    apps, since Windows 8 is an HTML5 platform that uses the most recent web standards.
+    Everything that you use from HTML5 and CSS3 is provided for you in your code and
+    is guaranteed to work in the application. And the latest version of Visual Studio
+    (VS 2012) includes a new HTML and CSS editor that offers full support for HTML5
+    and CSS3 elements and snippets.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In this chapter we will be covering the following topics:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Semantic elements
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Media elements
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Form elements
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Custom data attributes
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Understanding semantic elements
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'HTML5 markup is more semantic than its predecessors due to the new semantic
+    elements for describing the structure of the page content. The list of semantic
+    elements includes the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `<header>` tag defines a header for the document or section. It wraps the
+    heading or a group of headings in a page or a section, and it can also contain
+    information such as logos, banners, and main navigation links. You can have multiple
+    `<header>` tags in a page.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The `<nav>` tag represents the major navigation links. Typically it is bound
+    to the header.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The `<section>` tag wraps related content that can be grouped thematically.
+    A `<section>` tag can include a `<header>` and `<footer>` tag.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The `<footer>` tag represents content about a page or a section, for example,
+    related links, privacy terms, and copyright information. You can have more than
+    one `<footer>` in a page, and it is same as the `<header>` tag.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The `<article>` tag represents self-contained content that can be used independent
+    of the document as a whole, for example, a blog entry. `<article>` and `<section>`
+    are much alike because both are standalone tags and hold related content; however,
+    if it's content can be syndicated (via an atom or an RSS feed), then the `<article>`
+    element is more appropriate.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The `<aside>` tag represents the part of a page that is tangentially related
+    to the content around it, and also separate from that content, as it can be removed
+    without affecting the main content of the page. Typical usage can be a sidebar.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The `<address>` tag represents the contact information for the nearest `<article>`
+    parent element, if present, or the parent `<body>` element, which in that case
+    applies to the whole document.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Putting all these new elements together in a page would yield the following
+    markup:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: Introducing built-in media elements
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'HTML5 introduced new media elements such as `<audio>` and `<video>`, which
+    can be considered as a new revolution in media types after images in the earlier
+    versions of HTML. These two elements make it very easy to embed media in your
+    HTML page/document and provide built-in media support via the **HTML5 Media element
+    API**. According to the latest specs by W3C, we can define `<video>` and `<audio>`
+    as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `<video>` tag is a media element used for playing videos or movies and audio
+    files with captions
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The `<audio>` tag is a media element whose media data is audio, that is, a sound
+    or an audio stream
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The `<audio>` and `<video>` elements play audio and video files respectively.
+    The only difference between them is that the `<audio>` element does not have a
+    playback area for visual content, contrary to the `<video>` element.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Prior to HTML5, we needed a plugin in order to play an audio or a video file,
+    and that required writing a large chunk of markup. Without HTML5, embedding media
+    elements was never so easy; just by putting an `<audio>` tag resulting in two
+    lines of code you can get a media player with playback controls. It is almost
+    the same as the `<img />` tag before. Refer to the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The previous example results in a media player that will look like the following
+    screenshot on Internet Explorer 9 (IE9), and might differ from one browser to
+    another:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Introducing built-in media elements](img/7102EN_01_01.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'The previous code shows the `<audio>` tag in its simplest form, but the `<audio>`
+    tag has more attributes and options. Refer to the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: First, notice the content wrapped in a `<p>` tag inside the `<audio>` element.
+    This content is a fallback text and will only be used if the browser doesn't support
+    the `<audio>` tag. It provides a graceful fallback for older web browsers by informing
+    the user about this issue, and we can add a link to allow the download of this
+    audio file instead. This way, the user will not just stand there wondering what
+    has happened. This is the simplest way to fallback; you can use JavaScript for
+    the same purpose too.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The preceding code snippet also shows some of the attributes for the `<audio>`
+    element. According to the W3C specification, `src`, `controls`, `autoplay`, `loop`,
+    `preload`, `mediagroup`, and `muted` are common attributes to both the media elements,
+    namely `<audio>` and `<video>`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `controls` attribute displays the standard HTML5 controls for the audio
+    on the webpage, and the design of the controls varies between browser agents.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The `autoplay` attribute plays the audio file automatically as soon as the DOM
+    finishes loading.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The `loop` attribute enables repetition automatically.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The `mediagroup` attribute links multiple media elements together using a media
+    controller.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The `muted` attribute sets a default state of the audio file to mute.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The `preload` attribute provides a hint to the user agent about what the author
+    thinks will lead to the best user experience. Its values can be `none`, `metadata`,
+    or `auto`.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`none`: This value hints to the browser that the web page doesn''t expect users
+    to need the media resource.'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`metadata`: This value hints to the browser to fetch the resource metadata
+    (dimensions, track list, duration, and so on).'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`auto`: This value hints to the browser to put the user''s needs first without
+    any risk to the server. An empty value, as in just adding the attribute `preload`,
+    maps to the `auto` value.'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: You can specify a value for the attributes as in `controls="controls"`, which
+    would have the same behavior. But for simplicity and less code, you can simply
+    leave out the value for this attribute; the same can be applied for `loop`, `autoplay`,
+    and `muted`. You can specify the media resource by either using the `src` attribute
+    or the `<source>` elements.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The attribute overrides the elements.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The media resource (audio or video) has a MIME type and additionally a codec
+    as in the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: Setting the value for the `type` attribute has to be done within the `<source>`
+    element. The browser/user agent will avoid downloading the resource if it does
+    not support its type. You can add multiple formats of your audio/video in order
+    to ensure playback support across different browsers. The browser agent will go
+    over the `<source>` elements; if it cannot render the first type, it will skip
+    to the next `<source>` to validate its type, and so on. For this purpose, you
+    will have to check the list of MIME types supported by the `<audio>` and `<video>`
+    elements in different browsers. The browser not only checks for the MIME types
+    but also for the specified codec. So, even if the browser agent can render the
+    resource type, the video/audio will not load if the codec is not supported.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The following table lists the support for the 3 main video formats across the
+    major browsers:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '| Format | IE9+ | Chrome | Firefox | Opera | Safari |'
+  prefs: []
+  type: TYPE_TB
+- en: '| --- | --- | --- | --- | --- | --- |'
+  prefs: []
+  type: TYPE_TB
+- en: '| WebM (VP8 CODEC) | Yes | Yes | Yes | Yes | No |'
+  prefs: []
+  type: TYPE_TB
+- en: '| MP4 (H.264 CODEC) | Yes | Yes | No | No | Yes |'
+  prefs: []
+  type: TYPE_TB
+- en: '| OGV (OGG THEORA CODEC) | No | Yes | Yes | Yes | No |'
+  prefs: []
+  type: TYPE_TB
+- en: 'From the listing in the previous table, we can conclude that providing a media
+    resource with both WebM and MP4 formats in your HTML5 video will guarantee it
+    to load in the latest versions of all major browsers. This theory is reinforced
+    in Visual Studio 2012, which offers full Intellisense support for HTML5 tags.
+    When you insert the following snippet for an HTML5 `<video>` element, it lists
+    3 `<source>` elements within the `<video>` tag:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The `<video>` element also includes a `poster` attribute, which is used to
+    specify a path for an image to be displayed in the visual content area when no
+    video data is available or until the user clicks on the play button. For advertising
+    purposes, you can use an image or a frame from the video that gives the user an
+    idea of what the video is like. If you do not specify a poster image and if the
+    `autoplay` attribute is not set, the browser may just display a black box filling
+    the dimensions of the `<video>` element. For example, the following code shows
+    the difference between code samples for two similar videos, with a poster specified
+    for the second video:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The output of this markup will produce the following on the screen:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Introducing built-in media elements](img/7102EN_01_02.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: You might have noticed that we specified a `width` value of `400` for the two
+    videos in the previous example. The `<video>` element accepts standard HTML `width`
+    and `height` attributes. If there is no value set for `width` and `height`, the
+    visual content area stretches to the native size of video. It is recommended to
+    set the `width` and `height` attributes on the `<video>` element, thus avoiding
+    stretching to full size, and to encode the video at the desired viewing dimensions.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The values for the width and height attributes do not accept units. The value
+    indicates CSS pixels, for example, `width=400` is the same as `width=400px`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There are JavaScript methods, properties, and DOM events that are part of the
+    HTML5 standard that is associated with these new elements. You can read and set
+    properties programmatically, such as the `src` path and the dimensions (`width`
+    and `height`) of the `<video>` tag. You can use JavaScript methods to load the
+    audio and video, and then play and pause the media resource. You can also write
+    code to handle different DOM events raised by media elements, such as `onplaying`,
+    `onprogress` (load progress), `onplay`, and `onpause`. For example, you disable
+    the default controls displayed by the element by removing the `controls` attribute
+    and by calling the functions that play and pause the media resource from separate
+    buttons.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The following code listing shows how we can play and pause the video using
+    JavaScript. We first need to detect the current state of the video file by calling
+    the Boolean property `.paused`, and if true, we then call the methods `play()`
+    or `pause()` accordingly:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: In the preceding code, we declare a variable `testVideo` and assign it to the
+    `myVideo` element from DOM. Assuming that the element was assigned an ID, you
+    can use the name, tag name, or the element's place in the DOM hierarchy to retrieve
+    the elements.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Advanced media with JavaScript
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The media elements have a rich API to access with pure JavaScript. Using JavaScript,
+    we can add a lot of functionality to the media elements. You can manipulate the
+    media resource, style it, rotate a video, play two and more media elements in
+    sync, display a progress bar while the media resource loads, resize a video dynamically,
+    and so on.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The following is the code sample that adds functionality to the `timeupdate`
+    event, which fetches the current play time of the video in seconds and displays
+    it in a separate div.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The following is the HTML code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The following is the JavaScript code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The JavaScript `addEventListener` method is used to provide a handler for the
+    `timeupdate` event. It takes three parameters and has the basic syntax, which
+    is as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: The `type` parameter specifies the type of event to register, while `listener`
+    is the event handler function to associate with the event, and the third parameter
+    `capture` is a Boolean value that specifies whether the event handler is registered
+    for the capturing phase or not.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In addition, you can combine the capabilities of the `<video>` element with
+    a canvas, allowing you to manipulate video data in real time and add a variety
+    of visual effects.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Introducing feature-rich form elements
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Forms and `<form>` elements are an integral part of any application or website,
+    from a login form to a complete contact or registration form. In HTML4, the `<form>`
+    elements were very idle, and for any feature or advanced styling, JavaScript was
+    a necessity. And for any interaction, or data submission and validation, it demanded
+    server and client-side scripting, and its functionality was inhibited if the scripting
+    was disabled in the browser. HTML5 brought major improvements to the `<form>`
+    elements with new attributes and input types, and added features such as browser-based
+    validation and CSS styling that provide a better experience for the users filling
+    it, and all possible simplicity for the developers creating it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: An enriched <input> tag
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: New values for the `type` attribute are introduced to the `<input>` element.
+  prefs: []
+  type: TYPE_NORMAL
+- en: HTML5 adds 13 new `<input>` types to the ones we were already familiar with
+    in HTML4, such as `text` and `checkbox`. With this addition, the `<input>` control
+    now supports types such as `range`, `date`, `number`, `telephone`, `email`, and
+    `URL`. And these new `<input>` types add intelligent behavior to the element themselves.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The following is the table listing of these types:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '| `<input>` types | Description |'
+  prefs: []
+  type: TYPE_TB
+- en: '| --- | --- |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `tel` | It expects a telephone number. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `search` | It prompts the user to enter text that they want to search for,
+    and adds a search icon to the input element (on browsers that support it). |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `url` | It expects a single URL. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `email` | It expects a single e-mail address or a list of e-mail addresses
+    (separated by commas). |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `datetime` | It expects a date and time with UTC time zone. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `date` | It expects a date. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `month` | It expects a date with a year and a month, but no time zone. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `week` | It expects a date that consists of a week-year number and a week
+    number. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `time` | It expects a time-value such as hours, minutes, seconds, and fractional
+    seconds. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `datetime-local` | It expects date and time with no time zone. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `number` | It expects numerical input. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `range` | It expects a numerical input and displays a slider. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `color` | It expects color value and displays a color palette to choose from.
+    |'
+  prefs: []
+  type: TYPE_TB
+- en: Along with the addition to the `<input>` types, new features have been added
+    to the already existing ones such as the File input element, which now supports
+    multifile selection using the `multiple` attribute. The **browse** button will
+    display the file dialog and then you can select files from your local disk or
+    `SkyDrive`; the files can be sent to the server as part of the form data when
+    the form is submitted.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'You can also take advantage of the `progress` element that represents the progress
+    of a task, as specified by the W3C. It can be used to show the progress of a large
+    file being uploaded or a media resource that is being loaded. The progress of
+    a task is determined by two attributes of this element:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `value` attribute, which indicates how much progress has been made
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The `max` attribute, which indicates the total amount of work required till
+    task completion
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The following code uses a `progress` element and a button, and the script adds
+    the value specified in the JavaScript function parameter to its existing value.
+    When you load the sample and try it, you will see the progress bar visually updating
+    the completion progress.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The following is the HTML code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The following is the JavaScript code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: Easy validation
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: HTML5's new `<input>` types along with the validation attributes such as `required`
+    and `pattern`, and the pseudo CSS3 selectors allow browser-based validation, where
+    you can catch a form's input errors without a single line of code or script. This
+    was previously impossible and needed a custom JavaScript code or a JavaScript
+    library. Basically, it provides client-side form validation without JavaScript.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We'll start with the most trivial validation, filling a required field. In order
+    to achieve this, we need to add the `required` attribute to an `<input>` element.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `required` attribute can be set on the `<input>` elements with type `text`,
+    `URL`, `email`, `checkbox`, or `radio`, and on `select` and `textarea` elements.
+    It is a Boolean attribute and can only be set on an element.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We specify that filling a value for a field is mandatory by simply adding the
+    `required` attribute. In the following code listing, you will find a couple of
+    `<input>` elements with the `required` attribute:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: Once the `required` attribute is added, and then when you click on the **submit**
+    button, all the fields in the form will be validated; an error is returned if
+    any of the fields are incorrect. The required fields are highlighted, and moreover,
+    default messages are provided to notify the user that these fields are required
+    in the form.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'You can see the following screenshot displaying the output of the preceding
+    code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Easy validation](img/7102EN_01_03.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: We can apply one or more styles using the CSS3 pseudo-selector `required` (more
+    on that in the next chapter). For example, the following style adds a CSS3 pseudo-class
+    `required`, which will look for all the `input` elements in the document that
+    have the `required` attribute, and style it with the `yellow` `border-color`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: If you want to apply a style that affects all the non-required elements in the
+    form, well that's very easy; just add the `optional` pseudo-class and give it
+    a style just as we did with the `required` class. In the following code, we apply
+    a `LightGray` `border-color` to all the `input` elements that don't have a `required`
+    attribute.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: HTML5 forms not only validate for required fields, but they also check the content
+    of the field values and validate it either automatically, as in the URL and `email`
+    input types, or by using the `pattern` attribute. The `pattern` attribute uses
+    a regular expression to define the valid format that the element value must match,
+    for example, a telephone number or social security number.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The following example shows the syntax for a `password` field, which is both
+    required and must have a valid input with a minimum length of eight characters.
+    And here, the default validation message is replaced by the text provided in the
+    `title` attribute:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'There are more attributes that add to the validation technique, such as `placeholder`,
+    which provides the users with a hint message displayed in light text until the
+    user starts typing inside the element; the hint could be about the value they
+    should enter in the field. For example, you can add a demo e-mail address in the
+    `email` field such as:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: You can check for the maximum number of characters allowed in a `text` or a
+    `textarea` input using the `maxlength` attribute. Also, we have the `min`, `max`,
+    and `step` attributes used with the `range` element to validate the values entered
+    for that element. The `min` and `max` attributes check for the minimum and maximum
+    values that can be entered, while the `step` attribute checks for the allowed
+    values.
+  prefs: []
+  type: TYPE_NORMAL
+- en: You can also specify acceptable file MIME types with the `accept` attribute.
+    As you may have noticed in the preceding code listing, the `accept` attribute
+    was added to the `<input type="file" />` element, which is the only element to
+    be used with it. Once you add this to the file control, and then when you try
+    to browse for a file using Windows 8 File Explorer, only the types that are in
+    the `accept` list will be displayed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: HTML5 form validation is the default behavior; no code is needed to activate
+    it, but you can turn it off by adding the `formnovalidate` attribute to the **submit**
+    button or any `<input>` element. This attribute allows a form to be submitted
+    without being validated.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Assigning custom data attributes
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'With HTML5, we now have the ability to assign custom data attributes to any
+    HTML5 element. The W3C defines it as:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*Attribute that is intended to store custom data private to the page or application,
+    for which there are no more appropriate attributes or elements.*'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: 'These new custom data attributes consist of two parts:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Attribute name**: It must start with the prefix data- and should be followed
+    with at least one character and should not contain uppercase characters'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Attribute value**: It must be a string value'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Let''s add a custom attribute to a `<div>` tag as shown in the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'You can see the custom attribute name `data-category` and the attribute value
+    `TechnicalBooks` assigned to the `<div>` element. This data can be retrieved and
+    updated by your JavaScript code using the native `getAttribute` and `setAttribute`
+    methods, because the custom data attributes are considered to be part of the page
+    on which they are used. The following is the code sample that shows how to manipulate
+    the custom attributes using native JavaScript:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The HTML5 specification clearly states that the data attributes should not
+    be used to replace an existing attribute or an element that may be more semantically
+    appropriate. For example, it would be inappropriate to add a data-time attribute
+    to specify a time value in a `span` element as the following code shows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The most appropriate and more semantic element to use would be a `time` element,
+    as the following code shows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs: []
+  type: TYPE_PRE
+- en: When developing Windows 8 apps, we can use the Windows library for JavaScript
+    (`WinJS`) to achieve more advanced binding of data to HTML elements. The Win8
+    JavaScript library utilizes the HTML `data-*` attributes to provide an easy way
+    to programmatically implement data binding.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In HTML5, there are new semantically rich elements that can convey the purpose
+    of their use. There are media elements that allow you to easily add audio and
+    video to your application, and new input types and attributes that you can use
+    to create intelligent and interactive forms and bind them to data on-the-fly,
+    all with less markup and code than ever before.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the next chapter, we will have a look at the new and rich CSS3 features available
+    for us when developing for Windows 8, and how we can use them to style and apply
+    layouts to our HTML.
+  prefs: []
+  type: TYPE_NORMAL

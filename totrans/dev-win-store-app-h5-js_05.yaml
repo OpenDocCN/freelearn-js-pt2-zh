@@ -1,0 +1,424 @@
+- en: Chapter 5. Binding Data to the App
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this chapter we will learn how to implement data binding from different data
+    sources to the elements in the app. The Windows library for JavaScript provides
+    the data source objects that can be used to populate the `WinJS` controls such
+    as `ListView` or `FlipView` with different sorts of data. We have the `WinJS.Binding.List`
+    object that is used to access arrays and JSON data and the `StorageDataSource`
+    object that provides access to information about the filesystem. These two data
+    source objects enable us to query and bind to items in the data source. Additionally,
+    we will learn how to apply sorting and filtering on the data source and display
+    its data using the `ListView` control.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting the data
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The **Windows library for JavaScript binding** (`WinJS.Binding`) provides a
+    mechanism to bind data and styles to the HTML elements. The binding provided by
+    the Windows library for JavaScript is one-way by default, so the HTML elements
+    are updated when the data changes; however, any change in the HTML elements does
+    not reflect on the data being bound to. Let's see this in action, and we'll start
+    with the very basic kind of binding; that is, a declarative binding between an
+    HTML element and a simple JavaScript object that contains only data.
+  prefs: []
+  type: TYPE_NORMAL
+- en: First we will check for the `WinJS.Binding.optimizeBindingReferences` property,
+    and set it to `true` if not set already.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: It is important to always set the `WinJS.Binding.optimizeBindingReferences`
+    property to `true` while performing a declarative binding. This property determines
+    whether or not the binding should automatically set the ID of an element. This
+    property should be set to `true` in apps that use `WinJS.Binding`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We''ll create a sample `person` JavaScript object that contains two properties,
+    `name` and `badgeColor`, as shown in the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Now we''ll bind an HTML `span` element to the `person` object using the data
+    attribute `data-win-bind`, as shown in the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: In order for the binding to take place and consequently have the name appear
+    in the `span` element, we must call the `WinJS.Binding.processAll()` method and
+    pass it the DOM element and the `dataContext` object; it will start searching
+    for the `data-win-bind` attribute at this specified element and then go through
+    all the descendants of that element.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The following code retrieves the `span` element from the DOM and then passes
+    the parameters to the `WinJS.Binding.processAll()` method:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: If you are using the default.HTML page for this example, you will need to add
+    the code after the call to `args.setPromise(WinJS.UI.processAll())` has been made
+    so that all the controls have been initialized, as explained in [Chapter 3](ch03.html
+    "Chapter 3. JavaScript for Windows Apps"), *JavaScript for Windows Apps*.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Run the project and you will see the name **John** on the screen. The preceding
+    code implements only a static binding, which means the text is not affected by
+    the change in data. This is because a JavaScript object by itself is not capable
+    of notifying the application when it changes. We can use `WinJS.Binding.as` to
+    change this object to an observable object, which will enable the data source
+    to get notified when items in that object change. The following code snippet will
+    create a `bindingSource` object that manifests an observable instance of the `person`
+    object we created; hence, any change made to `bindingSource` will be reflected
+    in the HTML element it is bound to:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Let''s see this dynamic data binding in action. First, add an `input type`
+    element to enter name values and a `button` element, as shown in the following
+    code as shown in the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Then, we write the code that simulates a change in the `person` data object.
+    We do this by setting the `name` property in the `person` object to the new value
+    entered in the `input` element on the click event for the `setNameBtn` button,
+    as shown in the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: Run the project and try entering new values in the `input` element, and then
+    click on the button to see the names getting changed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Not only can we bind data to an HTML element but we can also apply binding
+    at the level of the style. Going back to the previous example, let''s add the
+    `style.background` value to the data attribute and bind it to the `badgeColor`
+    field of the `person` object, as shown in the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Make the preceding changes and refresh the app, and the name will be highlighted
+    in blue. When you run the app, the output should look like the following screenshot
+    (if you are referencing the `ui-light.css` style sheet, the output will be a darker
+    shade of blue):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Getting the data](img/7102EN_05_01.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: There are several other approaches for data access and storage in Windows Store
+    apps; the data sources can be either local or remote and your choice of storage
+    basically depends on the scenario at hand. For example, a Windows Store app that
+    needs to be connected and alive would require access to data from a remote online
+    source. The data might be fetched from the web URLs or RESTful services. The ideal
+    way to consume these web services is using the `WinJS.xhr` function that we were
+    introduced to in [Chapter 3](ch03.html "Chapter 3. JavaScript for Windows Apps"),
+    *JavaScript for Windows Apps*.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The `WinJS.xhr` function will make an asynchronous request to a web URL or
+    a service and return the data in response upon a successful call. Let''s assume
+    we need to get some tweets and parse the results; the call is pretty straightforward
+    in this case. To do this, provide the URL to the Twitter search service that will
+    search for all the tweets that contain `windows 8`, as shown in the following
+    code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The output will be all the tweets that match the query wrapped in a JSON string,
+    which is the data format provided by many websites. Windows 8 JavaScript has native
+    support for JSON; hence, we can simply deserialize the JSON string into an object
+    by calling `JSON.parse(jsonString)`. Let''s append the preceding code to get the
+    following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We can also read the data from a file by using the `Windows.Storage` API file
+    provided by Windows. If we have a readable file and an instance of `storageFile`
+    that represents it, we can read the text from the file or we can read bytes using
+    a buffer. In order to read text from a file, we can make use of the `readTextAsync(file)`
+    function of the `fileIO` class as shown in the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: When the preceding code runs successfully, this function returns the contents
+    of the file as a text string passed via the variable `fileContents`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Almost the same thing applies when reading a byte from a file; however, we
+    call the method `readTextAsync(file)` and pass it the file. We can then capture
+    the buffer data in the response after the async process completes using the `then()`
+    or `done()` method, as shown in the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: In the preceding code, we used the `DataReader` class to read from the buffer;
+    this class provides the functionality to read strings from an in-memory stream
+    and process the buffer.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Displaying the data
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'We have learned about the different sources of data and seen a couple of examples
+    on how to get the data. Now we will see how to format and display that data. In
+    the previous examples, we saw how we can bind data to any HTML element, but fortunately
+    there is a better way to do this. The better way is using the Windows library
+    for JavaScript, which provides controls and templates that make it easy to format
+    and display the data. The most famous controls are `ListView` and `FlipView`;
+    when it comes to binding and displaying data, the same technique applies for both
+    but we''ll use `ListView` in this chapter. It is not out of personal preference
+    but a question of taking advantage of the features of `ListView` control, since
+    it provides a flexible way to display data with built-in support for the cross-slide
+    (touch) gesture; also, it is performance-optimized. Moreover, it delivers an appearance
+    and a behavior that are consistent with Windows Store apps. The steps to do the
+    binding and displaying the data are as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Get the data.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Create a `WinJS.Binding.List` object to wrap the data.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Create a `ListView` element.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Set `itemDataSource` of the `ListView` element to the `WinJS.Binding.List` object.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Let''s continue with the example we used previously for getting tweets via
+    the web URL; the code returns a JSON string that is our data here, so the next
+    step is to create a `WinJS.Binding.List` object as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: We just did steps 1 and 2; step 3 involves creating a `ListView` element in
+    the DOM and getting an instance of it in the JavaScript code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In HTML, we use the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'In JavaScript, we use the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'In step 4, we set the `itemDataSource` attribute of the `ListView` object to
+    `dataSource` of the `bindingList` object and the complete code will look like
+    the following code snippet:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'If you are adding the `ListView` control or any other `WinJS.UI` control in
+    the `default.html` page, remember to add the previous code in a `then()` or `done()`
+    call on the function `WinJS.UI.ProcessAll()`, as shown in the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: The reason for adding that code is that this function processes the Windows
+    library for JavaScript controls and renders these controls in the DOM.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Now let''s build and run the project. The output will be a list containing
+    the tweets, each with its properties, as shown in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Displaying the data](img/7102EN_05_02.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'Although the `ListView` control does the job of binding the data automatically,
+    it looks messed up and needs formatting. The `WinJS` control provides templates
+    that can be used in combination with the `ListView` and `FlipView` objects to
+    specify how each item should be displayed and which data it will show. Templates
+    can be defined declaratively as a `WinJS` control and provide its structure and
+    styles, either by specifying the `div` element in which it should appear or by
+    using the `render` method to create its own `div` element. Let''s see this in
+    action. Inside the DOM, add a `div` element and assign it to `WinJS.Binding.Template`
+    via the `data-win-control` attribute as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Then create the internal structure of the template by first adding a root `div`
+    element and then adding the bound elements inside that root `div`, as shown in
+    the following code snippet:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: You may have noticed in the previous screenshot that the listed data items contained
+    properties marked with quotes and followed by a colon; for example, `"created_at":`
+    and `"from_user":`. These properties represent the data that was returned in the
+    `jsonData` object from the web call to Twitter and these properties are passed
+    as parameters to the `data-win-bind` attribute in the `listTemplate` element to
+    be rendered in the DOM.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Next, we should assign this newly created template to the `ListView` control
+    we created earlier, by specifying a value for `itemTemplate` in the `data-win-options`
+    attribute, as shown in the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Run the project and you will see something similar to the next screenshot.
+    Since live data is being fetched from Twitter, the values will change according
+    to the specific query:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Displaying the data](img/7102EN_05_03.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Sorting and filtering the data
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'We got the data and we used templates to display it and bind it to the `WinJS`
+    control. Now, what if we need to sort the data items or even filter out unwanted
+    items based on a certain criterion? The binding list API provided by the `WinJS`
+    library handles this seamlessly using built-in methods such as `createSorted`
+    and `createFiltered`. If we go back to the code we wrote earlier to fetch the
+    tweets and write the `bindingList` variable we created, which is an instance of
+    `WinJS.Binding.List`, and try to call the method `createSorted`, you will notice
+    the autocomplete feature lists the other two built-in functions provided for this
+    functionality, as shown in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Sorting and filtering the data](img/7102EN_05_04.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: These two methods will create a view over its data called "sorted projection".
+    The `createSorted` method will return a `SortedListProjection` object, which represents
+    a sorted view over the data it holds, and similarly the `createFiltered` method
+    will return a `FilteredListProjection` object representing a filtered view over
+    the data. The main advantage of these two projections is that they are fully observable,
+    which means that when the data in the list changes, its corresponding projection
+    will get a notification and update itself. Additionally, when the projection changes
+    itself, it will notify any listening object about its change.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We can sort this binding list by calling the `createSorted` method, which takes
+    the sorting function parameter that handles the sorting logic. Let''s sort the
+    tweets we fetched alphabetically by user name. Use the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs: []
+  type: TYPE_PRE
+- en: The `createSorted` function will do the sorting logic inside the sorter function
+    parameter that, in this case, compares the `from_user_name` field from the list
+    and returns the list that is sorted alphabetically. Note that the fields to compare
+    are fields from the data items in the list.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Once we are done with the sorting, the `itemDataSource` attribute of the `ListView`
+    control should now bind to the newly created `sortedList` method in order to see
+    the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Build and run the project and you will see a result similar to the following
+    screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Sorting and filtering the data](img/7102EN_05_05.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'The filtering is done by calling the `createFiltered` method that creates a
+    live filtered projection over this list. The filtered projection will react to
+    changes in the list and may also change accordingly. This method takes one parameter
+    of type `function`, and what this parameter basically does is execute a callback
+    method on each element in the list. For example, we want to apply a filter to
+    `bindingList` that will check if the `from_user_name` string has the character
+    `''a''` as the second character of its value and return only the matching items
+    in the list. The `createFiltered` parameter of type `function` will check for
+    each string in the list; if the condition returns true, include that string in
+    the filtered list. To use the filter, refer to the following code snippet:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE21]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Run the project and you will see that the list has been filtered accordingly
+    (you can change the filter criteria as you please in order to better see the effect
+    of the filter). The result will be something similar to the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Sorting and filtering the data](img/7102EN_05_06.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this chapter we have covered the basics for handling data in a JavaScript
+    app. We learned how to get the data from a local object and how to fetch data
+    from the web via a web service and handle the data that is coming back with the
+    response.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We then covered how to display the data we fetched and bind it to a `ListView`
+    control. Finally, we saw how we can add sorting and filtering to this data before
+    we display it on the app.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the next chapter we will learn how to make the app responsive to allow the
+    layout to change when the view state changes, so that the content always appears
+    to the user in a good format.
+  prefs: []
+  type: TYPE_NORMAL

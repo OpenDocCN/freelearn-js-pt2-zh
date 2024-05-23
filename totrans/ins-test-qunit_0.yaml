@@ -1,0 +1,227 @@
+- en: Preface
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: JavaScript was first released about 20 years ago. It had not been taken seriously
+    by a wide audience for many years. Today, it is a mature (and the most popular)
+    programming language. Whatever is done for the Web, one way or another, relies
+    on JavaScript. Furthermore, with the advent of HTML5-related technologies, the
+    development focus is shifting even more towards rich internet application architecture.
+    That means further expansion of sophisticated scalable solutions based on JavaScript.
+    The server-side JavaScript is rapidly gaining its momentum, thereby giving automated
+    testing of JavaScript.
+  prefs: []
+  type: TYPE_NORMAL
+- en: QUnit is a freakishly easy-to-use JavaScript testing framework at the same time,
+    it is quite powerful and flexible to be a good choice for unit and functional
+    testing of any scale projects.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This book provides a step-by-step guide to mastering QUnit. It shows how to
+    set up and use QUnit, how to automate cross-browser testing with QUnit, and how
+    to benefit from QUnit in cooperation with continous integration tools.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The goal of this book is to help the reader make the most of QUnit in a short
+    amount of time.
+  prefs: []
+  type: TYPE_NORMAL
+- en: What this book covers
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: '*Setting up QUnit (Simple)* explains setting up a testing environment and getting
+    acquainted with the QUnit framework.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*Testing assertions (Simple)* describes a tutorial on QUnit assertion methods
+    and popular QUnit assertion plugins.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*Writing a custom assertion plugin (Advanced)* explains leveraging QUnit callbacks
+    for a custom assertion plugin.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*Testing exceptions (Medium)* describes custom exceptions in JavaScript and
+    asserting exceptional behavior.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*Testing asynchronous calls (Medium)* describes asserting asynchronous callbacks
+    and mocking XHR for in-unit testing.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*Organizing test cases (Simple)* examines QUnit facilities to keep tests logically
+    organized.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*Using shared setup (Medium)* describes a way to share tasks among the tests
+    of a group and keeping the testing environment clean between test executions.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*Testing user actions (Medium)* explains exercising functional testing on a
+    simple calculator application by simulating end-user actions and asserting intended
+    behavior.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*Running QUnit in the console (Advanced)* explains running QUnit tests in the
+    command line by the PhantomJS headless browser. It also explains assigning QUnit
+    testing tasks to Grunt and automating testing with Travis CI.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*Cross-browser-distributed testing (Advanced)* explains automating client-side
+    cross-browser testing using the command-line tool Bunyip.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*Building a web project (Advanced)* explains adding QUnit testing tasks into
+    the project build script.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*QUnit and CI – setting up Jenkins (Advanced)* explains setting up Jenkins
+    continuous integration server to automate QUnit testing.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Who this book is for
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: This book would be handy for anyone working with JavaScript who is looking for
+    a powerful, but easy-to-use testing framework.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The reader doesn't need to know any particular framework but at least basic
+    principles of JavaScript and HTML.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The book will be most profitable if the reader has any background in automated
+    testing.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Conventions
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this book, you will find a number of styles of text that distinguish between
+    different kinds of information. Here are some examples of these styles, and an
+    explanation of their meaning.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Code words in text are shown as follows: "Setup the build script as `build.xml`
+    in the root of the project working directory."'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'A block of code is set as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'When we wish to draw your attention to a particular part of a code block, the
+    relevant lines or items are set in bold:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Any command-line input or output is written as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: '**New terms** and **important words** are shown in bold. Words that you see
+    on the screen, in menus or dialog boxes for example, appear in the text like this:
+    "Enter Jenkins Dashboard page and click on **Add new job** link".'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Warnings or important notes appear in a box like this.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Tips and tricks appear like this.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Reader feedback
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Feedback from our readers is always welcome. Let us know what you think about
+    this book—what you liked or may have disliked. Reader feedback is important for
+    us to develop titles that you really get the most out of.
+  prefs: []
+  type: TYPE_NORMAL
+- en: To send us general feedback, simply send an e-mail to `<[feedback@packtpub.com](mailto:feedback@packtpub.com)>`,
+    and mention the book title through the subject of your message.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If there is a topic that you have expertise in and you are interested in either
+    writing or contributing to a book, see our author guide on [www.packtpub.com/authors](http://www.packtpub.com/authors).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Customer support
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Now that you are the proud owner of a Packt book, we have a number of things
+    to help you to get the most from your purchase.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Downloading the example code
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: You can download the example code files for all Packt books you have purchased
+    from your account at [http://www.packtpub.com](http://www.packtpub.com). If you
+    purchased this book elsewhere, you can visit [http://www.packtpub.com/support](http://www.packtpub.com/support)
+    and register to have the files e-mailed directly to you.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Errata
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Although we have taken every care to ensure the accuracy of our content, mistakes
+    do happen. If you find a mistake in one of our books—maybe a mistake in the text
+    or the code—we would be grateful if you would report this to us. By doing so,
+    you can save other readers from frustration and help us improve subsequent versions
+    of this book. If you find any errata, please report them by visiting [http://www.packtpub.com/support](http://www.packtpub.com/support),
+    selecting your book, clicking on the **errata** **submission** **form** link,
+    and entering the details of your errata. Once your errata are verified, your submission
+    will be accepted and the errata will be uploaded to our website, or added to any
+    list of existing errata, under the Errata section of that title.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Piracy
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Piracy of copyright material on the Internet is an ongoing problem across all
+    media. At Packt, we take the protection of our copyright and licenses very seriously.
+    If you come across any illegal copies of our works, in any form, on the Internet,
+    please provide us with the location address or website name immediately so that
+    we can pursue a remedy.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Please contact us at `<[copyright@packtpub.com](mailto:copyright@packtpub.com)>`
+    with a link to the suspected pirated material.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We appreciate your help in protecting our authors, and our ability to bring
+    you valuable content.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Questions
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: You can contact us at `<[questions@packtpub.com](mailto:questions@packtpub.com)>`
+    if you are having a problem with any aspect of the book, and we will do our best
+    to address it.
+  prefs: []
+  type: TYPE_NORMAL

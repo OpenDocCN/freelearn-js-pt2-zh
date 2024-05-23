@@ -1,0 +1,216 @@
+- en: Preface
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: '*Developing Windows Store Apps with HTML5 and JavaScript* is a practical, hands-on
+    guide that covers the basic and important features of a Windows Store app along
+    with code examples that will show you how to develop these features, all the while
+    learning some of the new features in HTML5 and CSS3, which allows you to leverage
+    your web development skills.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: What this book covers
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: '[Chapter 1](ch01.html "Chapter 1. HTML5 Structure"), *HTML5 Structure*, presents
+    an introduction to the new Semantic elements, Media elements, Form elements, and
+    Custom data attributes in the new HTML5 specs.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[Chapter 2](ch02.html "Chapter 2. Styling with CSS3"), *Styling with CSS3*,
+    introduces the new enhancements and features introduced by CSS3 that will be frequently
+    needed when developing a Windows Store app with JavaScript. This chapter covers
+    the following topics: CSS3 Selectors, Grid and Flexbox, Animation and Transforms,
+    and Media Queries.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[Chapter 3](ch03.html "Chapter 3. JavaScript for Windows Apps"), *JavaScript
+    for Windows Apps*, covers the Windows Library for JavaScript and its features,
+    as well as highlighting the namespaces and controls used for developing the apps.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[Chapter 4](ch04.html "Chapter 4. Developing Apps with JavaScript"), *Developing
+    Apps with JavaScript*, covers the tools needed and the templates provided to get
+    started with developing a Windows 8 app using JavaScript.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[Chapter 5](ch05.html "Chapter 5. Binding Data to the App"), *Binding Data
+    to the App*, describes how to implement data binding in an app.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[Chapter 6](ch06.html "Chapter 6. Making the App Responsive"), *Making the
+    App Responsive*, describes how to make the app responsive so that it handles screen
+    sizes and view state changes and responds to zooming in and out.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[Chapter 7](ch07.html "Chapter 7. Making the App Live with Tiles and Notifications"),
+    *Making the App Live with Tiles and Notifications*, describes the concept of app
+    tiles and notifications, and how to create a simple notification for an app.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[Chapter 8](ch08.html "Chapter 8. Signing Users in"), *Signing Users in*, describes
+    the Live Connect API and how to integrate the apps with this API to enable user
+    authentication, and sign-on, and retrieve user profile information.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[Chapter 9](ch09.html "Chapter 9. Adding Menus and Commands"), *Adding Menus
+    and Commands*, describes the app bar, how it works, and where it is found on the
+    app. Moreover, we will learn how to declare an app bar and add controls to it.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[Chapter 10](ch10.html "Chapter 10. Packaging and Publishing"), *Packaging
+    and Publishing*, covers how we will get introduced to the Store and learn how
+    to get an app through all the stages into publishing. Also, we will see how we
+    can interact with the Store from within Visual Studio.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[Chapter 11](ch11.html "Chapter 11. Developing Apps with XAML"), *Developing
+    Apps with XAML*, describes the other platforms and programming languages that
+    are available for developers. We will also cover the basics of creating an app
+    with XAML/C#.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: What you need for this book
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'In order to implement what you will be learning in this book and start developing
+    Windows Store apps, you''ll first need Windows 8\. Additionally, you''ll require
+    the following development tools and toolkits:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Microsoft Visual Studio Express 2012 for Windows 8 is the tool to build Windows
+    apps. It includes the Windows 8 SDK, Blend for Visual Studio, and project templates.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Windows App Certification Kit
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Live SDK
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Who this book is for
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: This book is for all developers who want to start creating apps for Windows
+    8\. Also, it targets developers who want to get introduced to the advancements
+    in standards-based web technology with HTML5 and CSS3\. Additionally, the book
+    targets web developers who want to leverage their existing skills, code assets
+    in web development, and direct it to building JavaScript apps for the Windows
+    Store. In short, this book is for everyone who wants to learn the basics of developing
+    a Windows Store app.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Conventions
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this book, you will find a number of styles of text that distinguish between
+    different kinds of information. Here are some examples of these styles and an
+    explanation of their meanings.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Code words in text are shown as follows: "The `createGrouped` method creates
+    a grouped projection over a list and takes three function parameters."'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'A block of code is set as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: '**New terms** and **important words** are shown in bold. Words that you see
+    on the screen, in menus or dialog boxes for example, appear in the text like this:
+    "You will be able to set up options for the application UI; one of these options
+    is Supported rotations."'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Warnings or important notes appear in a box like this.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Tips and tricks appear like this.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Reader feedback
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Feedback from our readers is always welcome. Let us know what you think about
+    this book—what you liked or may have disliked. Reader feedback is important for
+    us to develop titles that you really get the most out of.
+  prefs: []
+  type: TYPE_NORMAL
+- en: To send us general feedback, simply send an e-mail to `<[feedback@packtpub.com](mailto:feedback@packtpub.com)>`
+    and mention the book title via the subject of your message.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If there is a topic that you have expertise in and you are interested in either
+    writing or contributing to a book, see our author guide on [www.packtpub.com/authors](http://www.packtpub.com/authors).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Customer support
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Now that you are the proud owner of a Packt book, we have a number of things
+    to help you to get the most from your purchase.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Errata
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Although we have taken every care to ensure the accuracy of our content, mistakes
+    do happen. If you find a mistake in one of our books—maybe a mistake in the text
+    or the code—we would be grateful if you would report this to us. By doing so,
+    you can save other readers from frustration and help us improve subsequent versions
+    of this book. If you find any errata, please report them by visiting [http://www.packtpub.com/submit-errata](http://www.packtpub.com/submit-errata),
+    selecting your book, clicking on the **errata submission form** link, and entering
+    the details of your errata. Once your errata are verified, your submission will
+    be accepted and the errata will be uploaded on our website or added to any list
+    of existing errata, under the Errata section of that title. Any existing errata
+    can be viewed by selecting your title from [http://www.packtpub.com/support](http://www.packtpub.com/support).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Piracy
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Piracy of copyright material on the Internet is an ongoing problem across all
+    media. At Packt, we take the protection of our copyright and licenses very seriously.
+    If you come across any illegal copies of our works, in any form, on the Internet,
+    please provide us with the location address or website name immediately so that
+    we can pursue a remedy.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Please contact us at `<[copyright@packtpub.com](mailto:copyright@packtpub.com)>`
+    with a link to the suspected pirated material.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We appreciate your help in protecting our authors and our ability to bring you
+    valuable content.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Questions
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: You can contact us at `<[questions@packtpub.com](mailto:questions@packtpub.com)>`
+    if you are having a problem with any aspect of the book, and we will do our best
+    to address it.
+  prefs: []
+  type: TYPE_NORMAL
