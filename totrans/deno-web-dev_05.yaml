@@ -1,4 +1,5 @@
 - en: '*Chapter 7*: HTTPS, Extracting Configuration, and Deno in the Browser'
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
@@ -7,6 +8,7 @@
     to a MongoDB instance. In this chapter, we''ll focus on some known best practices
     that are standard in production applications: basic security practices and dealing
     with configuration.'
+  id: totrans-1
   prefs: []
   type: TYPE_NORMAL
 - en: First, we'll add a couple of basic security features to our **application programming
@@ -15,6 +17,7 @@
     learn how to enable **HyperText Transfer Protocol Secure** (**HTTPS**) in our
     application so that it supports encrypted connections. This will allow users to
     perform requests to the API using a secure connection.
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
 - en: Until now, we've used a few secret values, but we weren't concerned about having
@@ -23,18 +26,21 @@
     have them safely stored and injected in the application. This way, we can be sure
     that those values are kept a secret and are not present in the code. By doing
     this, we'll also enable different deployments with different configurations.
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
 - en: 'Moving forward, we''ll explore the capabilities enabled by one specific Deno
     feature: the ability to compile and run code in the browser. By using Deno''s
     compatibility with ECMAScript 6 (supported by modern browsers), we''ll share code
     between the API and the frontend, enabling a whole new world of possibilities.'
+  id: totrans-4
   prefs: []
   type: TYPE_NORMAL
 - en: 'Leveraging this specific feature, we''ll explore one specific scenario: building
     a JavaScript client for the API. This client will be built using the same types
     and parts of code that also run on the server, and we''ll explore the benefits
     provided by that.'
+  id: totrans-5
   prefs: []
   type: TYPE_NORMAL
 - en: This chapter wraps up the *Building an application* section of this book, whereby
@@ -43,57 +49,71 @@
     was as close to real as possible for an introductory book. This enabled us to
     learn about Deno, many of its APIs, and some community packages while we created
     a functional application.
+  id: totrans-6
   prefs: []
   type: TYPE_NORMAL
 - en: 'By the end of this chapter, you''ll be familiar with the following topics:'
+  id: totrans-7
   prefs: []
   type: TYPE_NORMAL
 - en: Enabling CORS and HTTPS
+  id: totrans-8
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Extracting configuration and secrets
+  id: totrans-9
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Running Deno code in the browser
+  id: totrans-10
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Technical requirements
+  id: totrans-11
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 'All the code files needed for this chapter can be found at the following GitHub
     link:'
+  id: totrans-12
   prefs: []
   type: TYPE_NORMAL
 - en: '[https://github.com/PacktPublishing/Deno-Web-Development/tree/master/Chapter07/sections](https://github.com/PacktPublishing/Deno-Web-Development/tree/master/Chapter07/sections)'
+  id: totrans-13
   prefs: []
   type: TYPE_NORMAL
 - en: Enabling CORS and HTTPS
+  id: totrans-14
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: CORS protection and HTTPS support are two things considered critical in any
     running production application. This section will explain how can we add them
     to the application that we're building.
+  id: totrans-15
   prefs: []
   type: TYPE_NORMAL
 - en: There are many other security practices that can be added to any API. As those
     aren't Deno specifics and deserve a book by themselves, we decided to focus on
     these two elements.
+  id: totrans-16
   prefs: []
   type: TYPE_NORMAL
 - en: We'll begin by learning about CORS and how can we leverage `oak` and the middleware
     function feature we know in order to do it. Then, we'll learn how can we also
     use a self-signed certificate and make our API handle secure HTTP connections.
+  id: totrans-17
   prefs: []
   type: TYPE_NORMAL
 - en: Let's go, starting with CORS.
+  id: totrans-18
   prefs: []
   type: TYPE_NORMAL
 - en: Enabling CORS
+  id: totrans-19
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -101,10 +121,12 @@
     indicate to browsers which origins they should allow resource loading from. When
     the application is running on the same domain as the API, CORS is not even necessary,
     as the name directly makes explicit.
+  id: totrans-20
   prefs: []
   type: TYPE_NORMAL
 - en: 'I''ll provide you with the following quote from **Mozilla Developer Network**
     (**MDN**), explaining CORS:'
+  id: totrans-21
   prefs: []
   type: TYPE_NORMAL
 - en: '"Cross-Origin Resource Sharing (CORS) is an HTTP-header based mechanism that
@@ -114,160 +136,203 @@
     the cross-origin resource, in order to check that the server will permit the actual
     request. In that preflight, the browser sends headers that indicate the HTTP method
     and headers that will be used in the actual request."'
+  id: totrans-22
   prefs: []
   type: TYPE_NORMAL
 - en: To give you a more concrete example, imagine you have an API running at `the-best-deno-api.com`
     and you want to handle requests made from `the-best-deno-client.com`. Here, you'll
     want your server to have CORS enabled for the `the-best-deno-client.com` domain.
+  id: totrans-23
   prefs: []
   type: TYPE_NORMAL
 - en: 'If you don''t have it enabled, the browser will make a preflight request to
     your API (using the `OPTIONS` method), and the response to this request will not
     have an `Access-Control-Allow-Origin: the-best-deno-client.com` header, causing
     the request to fail and the browser to prevent further requests.'
+  id: totrans-24
   prefs: []
   type: TYPE_NORMAL
 - en: We'll learn how we can enable this mechanism in our application, allowing requests
     to be made from `http://localhost:3000` in the example that follows.
+  id: totrans-25
   prefs: []
   type: TYPE_NORMAL
 - en: As our application is using the `oak` framework, we'll learn how to do it with
     this framework. However, this is very similar to any other HTTP framework. We
     basically want to add a middleware function that handles requests and verifies
     their origins against a list of allowed domains.
+  id: totrans-26
   prefs: []
   type: TYPE_NORMAL
 - en: We'll use a community package called `cors` ([https://deno.land/x/cors@v1.2.1](mailto:https://deno.land/x/cors@v1.2.1)),
     but the implementation is quite simple. If you're curious about what it does,
     take a look at [https://deno.land/x/cors@v1.2.1/oakCors.ts](mailto:https://deno.land/x/cors@v1.2.1/oakCors.ts),
     as the code is quite straightforward.
+  id: totrans-27
   prefs: []
   type: TYPE_NORMAL
 - en: Important note
+  id: totrans-28
   prefs: []
   type: TYPE_NORMAL
 - en: 'We''ll use the code we created in the previous chapter to start this implementation.
     This is available at [https://github.com/PacktPublishing/Deno-Web-Development/tree/master/Chapter06/sections/4-connecting-to-mongodb/museums-api](https://github.com/PacktPublishing/Deno-Web-Development/tree/master/Chapter06/sections/4-connecting-to-mongodb/museums-api).
     You can also have a look at the finished code for this section here:'
+  id: totrans-29
   prefs: []
   type: TYPE_NORMAL
 - en: '[https://github.com/PacktPublishing/Deno-Web-Development/tree/master/Chapter07/sections/3-deno-on-the-browser/museums-api](https://github.com/PacktPublishing/Deno-Web-Development/tree/master/Chapter07/sections/3-deno-on-the-browser/museums-api)'
+  id: totrans-30
   prefs: []
   type: TYPE_NORMAL
 - en: Here, we'll add the `cors` package to our application, together with our own
     list of allowed domains. The end goal is that we can perform requests from a trusted
     website to this API.
+  id: totrans-31
   prefs: []
   type: TYPE_NORMAL
 - en: 'Let''s do it. Proceed as follows:'
+  id: totrans-32
   prefs: []
   type: TYPE_NORMAL
 - en: 'Install the `cors` module by updating the `deps` file (check [*Chapter 3*](B16380_03_Final_JM_ePub.xhtml#_idTextAnchor089),
     *The Runtime and Standard Library,* for reference on how to do this). The code
     can be seen in the following snippet:'
+  id: totrans-33
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: '[PRE0]'
+  id: totrans-34
   prefs:
   - PREF_IND
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: 'Next, run the `cache` command to update the `lock` file, as follows:'
+  id: totrans-35
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: '[PRE1]'
+  id: totrans-36
   prefs:
   - PREF_IND
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: 'Import `oakCors` on `src/web/index.ts` and register it on the application,
     before the router is registered, as follows:'
+  id: totrans-37
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: '[PRE2]'
+  id: totrans-38
   prefs:
   - PREF_IND
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: 'Change the `createServer` function parameters to receive an array of `string`
     named `allowedOrigins` inside `configuration` and later send it to the `oakCors`
     middleware creator function. The code for this is shown here:'
+  id: totrans-39
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: '[PRE3]'
+  id: totrans-40
   prefs:
   - PREF_IND
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: 'There''s one thing missing, though—we need to send this array of `allowedOrigins`
     from `src/index.ts`. Let''s do this, as follows:'
+  id: totrans-41
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: '[PRE4]'
+  id: totrans-42
   prefs:
   - PREF_IND
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: 'Let''s test this, starting by running the API, as follows:'
+  id: totrans-43
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: '[PRE5]'
+  id: totrans-44
   prefs:
   - PREF_IND
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: 'To test it, create an HTML file named `index.html` in the root folder (`museums-api`),
     with a script that performs a `POST` request to `http://localhost:8080/api/users/register`.
     The code for this is shown here:'
+  id: totrans-45
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: '[PRE6]'
+  id: totrans-46
   prefs:
   - PREF_IND
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: 'In the same folder we created the `index.html` file, let''s run Deno''s standard
     library web server, using the `-p` flag to set the port to `3000` and `--host`
     to set the host to `localhost`. The code for this is shown here:'
+  id: totrans-47
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: '[PRE7]'
+  id: totrans-48
   prefs:
   - PREF_IND
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: Access `http://localhost:3000` with your browser and you should see a **WORKING**
     message, as illustrated in the following screenshot:![Figure 7.1 – Testing that
     the CORS API is working
+  id: totrans-49
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: '](img/Figure_7.1_B16380.jpg)'
+  id: totrans-50
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
 - en: Figure 7.1 – Testing that the CORS API is working
+  id: totrans-51
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
 - en: 'If you want to test what happens when the origin is not in the `allowedOrigins`
     list, you can run the same command but with a different port (or host) and check
     the behavior. The code for this is shown here:'
+  id: totrans-52
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: '[PRE8]'
+  id: totrans-53
   prefs:
   - PREF_IND
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: You can now navigate to that new **Uniform Resource Locator** (**URL**) on the
     browser, and you should see a **NOT WORKING** message. If you look at the browser's
     console, you can also confirm that the browser is warning you that the CORS preflight
     request failed. That's the desired behavior.
+  id: totrans-54
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
 - en: And that's all we need to enable CORS on the API!
+  id: totrans-55
   prefs: []
   type: TYPE_NORMAL
 - en: The third-party module we used has a few more options you can explore—things
@@ -275,9 +340,11 @@
     with a different status code. At the moment, the default options are working for
     us. We'll now proceed and see how we can enable users to connect to the application
     via HTTPS, adding an extra layer of security and encryption.
+  id: totrans-56
   prefs: []
   type: TYPE_NORMAL
 - en: Enabling HTTPS
+  id: totrans-57
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -286,18 +353,21 @@
     making sure all connections are encrypted via a trusted certificate. Once again,
     we''ll not try to come up with a definition, instead using the following one from
     MDN ([https://developer.mozilla.org/en-US/docs/Glossary/https](https://developer.mozilla.org/en-US/docs/Glossary/https)):'
+  id: totrans-58
   prefs: []
   type: TYPE_NORMAL
 - en: '"HTTPS (HyperText Transfer Protocol Secure) is an encrypted version of the
     HTTP protocol. It uses SSL or TLS to encrypt all communication between a client
     and a server. This secure connection allows clients to safely exchange sensitive
     data with a server, such as when performing banking activities or online shopping."'
+  id: totrans-59
   prefs: []
   type: TYPE_NORMAL
 - en: By enabling HTTPS connections in our application, we're making sure that it's
     way harder to intercept and interpret requests. Without this a malicious user
     can, for instance, intercept a login request and have access to the user's password-and-username
     combination. We're protecting the user's sensitive data.
+  id: totrans-60
   prefs: []
   type: TYPE_NORMAL
 - en: 'As we''re using `oak` in our application, we''ll look for a solution on how
@@ -306,101 +376,131 @@
     the same one we previously used to send the `port` variable. There are other options,
     though, as we can see here: [https://doc.deno.land/https/deno.land/x/oak@v6.3.1/mod.ts#Application](mailto:https://doc.deno.land/https/deno.land/x/oak@v6.3.1/mod.ts#Application).
     That''s what we''ll use to enable HTTPS.'
+  id: totrans-61
   prefs: []
   type: TYPE_NORMAL
 - en: 'Let''s see how we can change `oak`''s configuration so that it supports secure
     connections, by following these steps:'
+  id: totrans-62
   prefs: []
   type: TYPE_NORMAL
 - en: 'Go to `src/web/index.ts` and add the `secure`, `keyFile`, and `certFile` options
     to the `listen` method call, as follows:'
+  id: totrans-63
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: '[PRE9]'
+  id: totrans-64
   prefs:
   - PREF_IND
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: 'To keep our code tidy and more configurable, let''s extract these options and
     send them as parameters to the `createServer` function, as follows:'
+  id: totrans-65
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: '[PRE10]'
+  id: totrans-66
   prefs:
   - PREF_IND
   type: TYPE_PRE
+  zh: '[PRE10]'
 - en: 'This is what the `CreateServerDependencies` parameter type should look like:'
+  id: totrans-67
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: '[PRE11]'
+  id: totrans-68
   prefs:
   - PREF_IND
   type: TYPE_PRE
+  zh: '[PRE11]'
 - en: 'And this is what the `createServer` function looks like afterward, with the
     destructured parameters:'
+  id: totrans-69
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: '[PRE12]'
+  id: totrans-70
   prefs:
   - PREF_IND
   type: TYPE_PRE
+  zh: '[PRE12]'
 - en: 'To wrap up, we will now send the paths to the certificate and key files from
     the `src/index.ts` file, as follows:'
+  id: totrans-71
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: '[PRE13]'
+  id: totrans-72
   prefs:
   - PREF_IND
   type: TYPE_PRE
+  zh: '[PRE13]'
 - en: Now, to keep the logs accurate, we need to fix the event listener we previously
     created, which logs that the application is running. This handler should now take
     into consideration that the application might run over HTTP or HTTPS, and log
     according to that.
+  id: totrans-73
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
 - en: 'Go back to `src/web/index.ts` and fix the event listener that is listening
     for the `listen` event so that it checks whether the connection is secure or not.
     The code for this is shown here:'
+  id: totrans-74
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: '[PRE14]'
+  id: totrans-75
   prefs:
   - PREF_IND
   type: TYPE_PRE
+  zh: '[PRE14]'
 - en: 'Let''s run the application and see if it works, as follows:'
+  id: totrans-76
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: '[PRE15]'
+  id: totrans-77
   prefs:
   - PREF_IND
   type: TYPE_PRE
+  zh: '[PRE15]'
 - en: You should now be able to access that URL and connect to the application.
+  id: totrans-78
   prefs: []
   type: TYPE_NORMAL
 - en: 'You might still be seeing security warnings, but no worries. You can click
     **Advanced** and **Proceed to localhost (unsafe)**, as illustrated in the following
     screenshot:'
+  id: totrans-79
   prefs: []
   type: TYPE_NORMAL
 - en: '![Figure 7.2 – Chrome security warning screen'
+  id: totrans-80
   prefs: []
   type: TYPE_NORMAL
 - en: '](img/Figure_7.2_B16380.jpg)'
+  id: totrans-81
   prefs: []
   type: TYPE_NORMAL
 - en: Figure 7.2 – Chrome security warning screen
+  id: totrans-82
   prefs: []
   type: TYPE_NORMAL
 - en: This is due to the certificate being self-signed and not signed by a trusted
     certificate authority. However, it shouldn't matter much, as the process is the
     exact same as if it were a production certificate.
+  id: totrans-83
   prefs: []
   type: TYPE_NORMAL
 - en: If you're still having problems, you might need to access the API URL directly
@@ -408,26 +508,32 @@
     follow the procedure on the following link (https://jasonmurray.org/posts/2021/thisisunsafe/)
     to enable communication with an API that isn't using a trusted certificate. After
     that, accessing `https://localhost:8080` will work.
+  id: totrans-84
   prefs: []
   type: TYPE_NORMAL
 - en: The moment you have a proper certificate, signed by a trusted certificate authority,
     you can use it the same way we're using this one and everything will keep working
     just fine.
+  id: totrans-85
   prefs: []
   type: TYPE_NORMAL
 - en: And that wraps it up for this section! We've added CORS and HTTPS support to
     our existing application, improving its security.
+  id: totrans-86
   prefs: []
   type: TYPE_NORMAL
 - en: In the next section, we'll see how we can extract the configuration and secrets
     from our code, enabling it to be a little more flexible and configurable from
     the outside.
+  id: totrans-87
   prefs: []
   type: TYPE_NORMAL
 - en: Let's go!
+  id: totrans-88
   prefs: []
   type: TYPE_NORMAL
 - en: Extracting configuration and secrets
+  id: totrans-89
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
@@ -435,6 +541,7 @@
     By looking at the application we've been building in the previous chapters, even
     if we look at the simplest version of them all—the *Hello World* web server—we'll
     find configuration values, such as the `port` value.
+  id: totrans-90
   prefs: []
   type: TYPE_NORMAL
 - en: It's also not a coincidence that we're sending a full object called `configuration`
@@ -442,178 +549,224 @@
     At the same time, we also have a couple of values that we know should be secret
     in the application. They're currently living in the code base, as it's been working
     for our purpose (which is learning), but we want to change it.
+  id: totrans-91
   prefs: []
   type: TYPE_NORMAL
 - en: We're thinking of things such as the **JSON Web Token** (**JWT**) encryption
     keys, or the MongoDB credentials. Those are definitely not things you want to
     check out into your version control system. This is what this section is about.
+  id: totrans-92
   prefs: []
   type: TYPE_NORMAL
 - en: We'll be looking at the configuration values and the secrets currently living
     in the code base. We will extract them so that they can be kept a secret and only
     passed to the application when it runs.
+  id: totrans-93
   prefs: []
   type: TYPE_NORMAL
 - en: Doing this process can be a tough job when you have an application in which
     the configuration values are scattered across multiple modules and files. However,
     as we're following some architecture best practices and thinking about keeping
     the code decoupled and configurable, we made our life a little easier.
+  id: totrans-94
   prefs: []
   type: TYPE_NORMAL
 - en: By having a look at `src/index.ts`, you can confirm that all the configuration
     values and secrets we're using are living there. This means that all the other
     modules are not aware of the configuration, and that's how it should be.
+  id: totrans-95
   prefs: []
   type: TYPE_NORMAL
 - en: We'll be doing this "migration" in two phases. First, we'll extract all the
     configuration values into a `configuration` module, and then we'll extract the
     secrets.
+  id: totrans-96
   prefs: []
   type: TYPE_NORMAL
 - en: Creating a configuration file
+  id: totrans-97
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: 'To start, let''s find out what hardcoded values we have in the code that should
     be living in a configuration file. The following snippet highlights the values
     we don''t want to have living in the code:'
+  id: totrans-98
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE16]'
+  id: totrans-99
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE16]'
 - en: 'By looking at this snippet from our application code, we can already identify
     a few things, as follows:'
+  id: totrans-100
   prefs: []
   type: TYPE_NORMAL
 - en: The cluster URL and database name (the username and password are secrets)
+  id: totrans-101
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: JWT algorithm, and expiration time (the key is a secret)
+  id: totrans-102
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: The web server port
+  id: totrans-103
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: CORS allowed origins
+  id: totrans-104
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: The HTTPS certificate and key file paths
+  id: totrans-105
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: These are the elements we're going to extract here. We'll start by creating
     what would be our configuration file with all these values.
+  id: totrans-106
   prefs: []
   type: TYPE_NORMAL
 - en: We'll use **YAML Ain't Markup Language** (**YAML**), since this is a commonly
     used file type for configuration. If you're not familiar with it, no worries—it's
     quite simple to grasp. You can get an overview of how it works on the official
     website, [https://yaml.org/](https://yaml.org/).
+  id: totrans-107
   prefs: []
   type: TYPE_NORMAL
 - en: We'll also make sure that we have different configuration files for different
     environments, thus creating a file that has the environment in its name.
+  id: totrans-108
   prefs: []
   type: TYPE_NORMAL
 - en: 'Next, we''ll implement a feature that will allow us to store our configurations
     in a file, starting by creating the file itself, as follows:'
+  id: totrans-109
   prefs: []
   type: TYPE_NORMAL
 - en: 'Create a `config.dev.yaml` file at the root of the project and add all the
     configurations there, like this:'
+  id: totrans-110
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: '[PRE17]'
+  id: totrans-111
   prefs:
   - PREF_IND
   type: TYPE_PRE
+  zh: '[PRE17]'
 - en: We now need a way of loading this file into our application. We'll be creating
     a module named `config` inside the `src` folder for that.
+  id: totrans-112
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
 - en: To read the configuration file, we'll use the filesystem functions we learned
     in [*Chapter 2*](B16380_02_Final_JM_ePub.xhtml#_idTextAnchor056), *The Toolchain*,
     together with the `encoding` package from Deno's standard library.
+  id: totrans-113
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
 - en: Create a `src/config` folder with a file named `index.ts` inside.
+  id: totrans-114
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: 'Here, we''ll define and export a function named `load`. This function will
     be responsible for loading the configuration file. The code for this is shown
     here:'
+  id: totrans-115
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
 - en: '[PRE18]'
+  id: totrans-116
   prefs:
   - PREF_IND
   type: TYPE_PRE
+  zh: '[PRE18]'
 - en: 'Since we''re using TypeScript, we''ll define the type of what will be our configuration
     file, adding that as a return type for the `load` function. This should match
     the structure of the configuration file we previously created. The code for this
     is shown here:'
+  id: totrans-117
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: '[PRE19]'
+  id: totrans-118
   prefs:
   - PREF_IND
   type: TYPE_PRE
+  zh: '[PRE19]'
 - en: 'Inside the `load` function, we should now try to load the configuration file
     we previously created, by using Deno filesystem APIs. As there can be multiple
     files depending on the environment, we''ll also add `env` as a parameter to the
     `load` function, with the default value of `dev`, as follows:'
+  id: totrans-119
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: '[PRE20]'
+  id: totrans-120
   prefs:
   - PREF_IND
   type: TYPE_PRE
+  zh: '[PRE20]'
 - en: 'Install the YAML encoder module from the Deno standard library, using `deno
     cache` to make sure we update the `lock` file (refer to [*Chapter* *3*](B16380_03_Final_JM_ePub.xhtml#_idTextAnchor089),
     *The Runtime and Standard Library*), and export it on `src/deps.ts`, as follows:'
+  id: totrans-121
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: '[PRE21]'
+  id: totrans-122
   prefs:
   - PREF_IND
   type: TYPE_PRE
+  zh: '[PRE21]'
 - en: 'Import it on `src/config/index.ts` and use it to parse the contents of the
     read file, as follows:'
+  id: totrans-123
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: '[PRE22]'
+  id: totrans-124
   prefs:
   - PREF_IND
   type: TYPE_PRE
+  zh: '[PRE22]'
 - en: Import the `config` module, call its `load` function, and use the configuration
     values, which previously were hardcoded values.
+  id: totrans-125
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: 'This is what the `src/index.ts` file should look like afterward:'
+  id: totrans-126
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
 - en: '[PRE23]'
+  id: totrans-127
   prefs:
   - PREF_IND
   type: TYPE_PRE
+  zh: '[PRE23]'
 - en: We should now be able to run our application as we did previously, with the
     difference that all our configuration is now living in a separate file.
+  id: totrans-128
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
@@ -621,13 +774,16 @@
     the code into a `config` file, making them easier to read and maintain. We've
     also created a module that abstracts all the configuration-file reading and parsing,
     making sure the rest of the application isn't concerned about that.
+  id: totrans-129
   prefs: []
   type: TYPE_NORMAL
 - en: Next, we'll learn how we can extend this `config` module so that it also incorporates
     secret values read from the environment.
+  id: totrans-130
   prefs: []
   type: TYPE_NORMAL
 - en: Accessing secret values
+  id: totrans-131
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -636,86 +792,110 @@
     environment to environment, and configuration we want to keep as a secret for
     security reasons. This requirement makes it impossible to have them checked out
     into version control, and thus they have to live somewhere else.
+  id: totrans-132
   prefs: []
   type: TYPE_NORMAL
 - en: One common practice to do this is to get these values from the environment,
     using environment variables. Deno provides an API that we'll use to read from
     environment variables. We'll be extending the `config` module so that it also
     includes secret values on its exported object of type `Configuration`.
+  id: totrans-133
   prefs: []
   type: TYPE_NORMAL
 - en: 'Here are the values that are supposed to be secrets and that are still living
     in the code:'
+  id: totrans-134
   prefs: []
   type: TYPE_NORMAL
 - en: MongoDB username
+  id: totrans-135
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: MongoDB password
+  id: totrans-136
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: JWT encryption key
+  id: totrans-137
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: 'Let''s get them out of the code, and add them to the `configuration` object
     by following these steps:'
+  id: totrans-138
   prefs: []
   type: TYPE_NORMAL
 - en: 'In `src/config/index.ts`, add the MongoDB username and password to the configuration
     and the key to JWT in the configuration type, as follows:'
+  id: totrans-139
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: '[PRE24]'
+  id: totrans-140
   prefs:
   - PREF_IND
   type: TYPE_PRE
+  zh: '[PRE24]'
 - en: 'Extend the `configuration` object to include the `username` and `password`
     missing properties on `mongoDb` and `key` on `jwt`, as follows:'
+  id: totrans-141
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: '[PRE25]'
+  id: totrans-142
   prefs:
   - PREF_IND
   type: TYPE_PRE
+  zh: '[PRE25]'
 - en: The only thing still to do is to get these values from the environment instead
     of having them hardcoded here. We'll use Deno's API for that, in order to access
     the environment (https://doc.deno.land/builtin/stable#Deno.env).
+  id: totrans-143
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
 - en: 'Use `Deno.env.get` to get the variables from the environment. We should also
     set a default value in case the `env` variable is not present. The code is shown
     in the following snippet:'
+  id: totrans-144
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: '[PRE26]'
+  id: totrans-145
   prefs:
   - PREF_IND
   type: TYPE_PRE
+  zh: '[PRE26]'
 - en: 'Let''s get back to `src/index.ts` and use the secret values that we just added
     to the `configuration` object, as follows:'
+  id: totrans-146
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: '[PRE27]'
+  id: totrans-147
   prefs:
   - PREF_IND
   type: TYPE_PRE
+  zh: '[PRE27]'
 - en: '[PRE28]'
+  id: totrans-148
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE28]'
 - en: Now, if we try to register and log in, we'll verify that everything is working.
     The application is connected to MongoDB and is retrieving the JWT token properly—the
     secrets are working!
+  id: totrans-149
   prefs: []
   type: TYPE_NORMAL
 - en: Note for Windows users
+  id: totrans-150
   prefs: []
   type: TYPE_NORMAL
 - en: In Windows systems, you can use the `set` command ([https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/set_1](https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/set_1))
@@ -723,35 +903,44 @@
     inline, and thus, you have to run these commands prior to running the API. Throughout
     the book, we'll use the *nix syntax, but you'll have to use the `set` command
     if you're using Windows, as the following code demonstrates.
+  id: totrans-151
   prefs: []
   type: TYPE_NORMAL
 - en: 'Following are the `set` commands for Windows:'
+  id: totrans-152
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE29]'
+  id: totrans-153
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE29]'
 - en: We just managed to have all the configurations and secrets extracted from the
     code! This step made the configurations easier to read and maintain by writing
     them to a file, and made the secrets more secure by sending them via the environment
     to the application, instead of having them on the code base.
+  id: totrans-154
   prefs: []
   type: TYPE_NORMAL
 - en: We're getting closer to an application that can easily be deployed and configured
     in different environments, something we'll do in [*Chapter 9*](B16380_09_Final_JM_ePub.xhtml#_idTextAnchor190),
     *Deploying a Deno Application*.
+  id: totrans-155
   prefs: []
   type: TYPE_NORMAL
 - en: In the next section, we'll leverage Deno's capabilities to bundle code for the
     browser, creating a very simple JavaScript client that connects to the API. That
     client can then be used by frontend clients so that the HTTP connection is abstracted;
     it will also share code and types with the API code.
+  id: totrans-156
   prefs: []
   type: TYPE_NORMAL
 - en: Get on board!
+  id: totrans-157
   prefs: []
   type: TYPE_NORMAL
 - en: Running Deno code in the browser
+  id: totrans-158
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
@@ -759,211 +948,269 @@
     as one of Deno's selling points is its full compatibility with ECMAScript6\. This
     makes it possible for Deno code to be compiled and run on the browser. This compilation
     is something made by Deno itself, and the bundler is included in the toolchain.
+  id: totrans-159
   prefs: []
   type: TYPE_NORMAL
 - en: This feature enables a whole load of possibilities. A lot of them are due to
     the capacity for sharing code between the API and the client, and that's what
     we'll explore in this section.
+  id: totrans-160
   prefs: []
   type: TYPE_NORMAL
 - en: We'll build a very simple JavaScript client to interact with the Museums API
     we just built. This client can then be used by any browser application that wants
     to connect to the API. We'll write that client in Deno and bundle it so that it
     can be used by a client, or even served by the application itself.
+  id: totrans-161
   prefs: []
   type: TYPE_NORMAL
 - en: The client we'll write will be a very rudimentary HTTP client, thus we'll not
     focus much on the code. We're doing this to demonstrate how can we reuse code
     and types from Deno to generate code that runs on the browser. At the same time,
     we'll also explain some advantages of keeping a client and its API together.
+  id: totrans-162
   prefs: []
   type: TYPE_NORMAL
 - en: 'Let''s start by creating a new module in the application, which we''ll call
     `client`, as follows:'
+  id: totrans-163
   prefs: []
   type: TYPE_NORMAL
 - en: Create a folder inside `src` named `client`, with a file named `index.ts` inside
     it.
+  id: totrans-164
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: 'Let''s create an exported method, `getClient`, which should return an instance
     of our API client with three functions: `login`, `register`, and `getMuseums`.
     The code for this is shown in the following snippet:'
+  id: totrans-165
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: '[PRE30]'
+  id: totrans-166
   prefs:
   - PREF_IND
   type: TYPE_PRE
+  zh: '[PRE30]'
 - en: Note how we're getting a `config` object that hosts `baseURL`.
+  id: totrans-167
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
 - en: Now, it's just a matter of implementing the HTTP logic to make requests to the
     API. We'll not do a step-by-step guide to implementing this as it is quite straightforward,
     but you can access the full client on the book files ([https://github.com/PacktPublishing/Deno-Web-Development/blob/master/Chapter07/sections/3-deno-on-the-browser/museums-api/src/client/index.ts](https://github.com/PacktPublishing/Deno-Web-Development/blob/master/Chapter07/sections/3-deno-on-the-browser/museums-api/src/client/index.ts)).
+  id: totrans-168
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: 'This is what the `register` method will look like:'
+  id: totrans-169
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
 - en: '[PRE31]'
+  id: totrans-170
   prefs:
   - PREF_IND
   type: TYPE_PRE
+  zh: '[PRE31]'
 - en: Note how we're importing types from the `users` module, adding them to our application.
     This will make our functions much more readable, and it will later allow us to
     have type-checking and completion when writing tests using the TypeScript client.
     We're also creating an object with `content-type` headers that will be used in
     all the requests.
+  id: totrans-171
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
 - en: By creating an HTTP client, we handle things such as authentication automatically.
     In this specific case, our client can automatically save the token and send it
     in future requests after the user logs in.
+  id: totrans-172
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
 - en: 'This is what the `login` method would look like:'
+  id: totrans-173
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
 - en: '[PRE32]'
+  id: totrans-174
   prefs:
   - PREF_IND
   type: TYPE_PRE
+  zh: '[PRE32]'
 - en: 'It''s currently setting the `token` variable that lives on the client instance.
     That token is later added to authenticated requests such as the `getMuseums` function,
     as demonstrated in the following snippet:'
+  id: totrans-175
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE33]'
+  id: totrans-176
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE33]'
 - en: After creating the client, we want to distribute it. We can use the Deno bundle
     command to do it, as we learned in [*Chapter 2*](B16380_02_Final_JM_ePub.xhtml#_idTextAnchor056)*,
     The Toolchain*.
+  id: totrans-177
   prefs: []
   type: TYPE_NORMAL
 - en: 'If we want to have it served by our web server, we can also do this by adding
     a handler that serves the bundled content of our client file. It would look something
     like this:'
+  id: totrans-178
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE34]'
+  id: totrans-179
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE34]'
 - en: 'You might need to go back to your `.vscode/settings.json` file and enable the
     `unstable` property so that it recognizes we''re using unstable APIs. This is
     demonstrated in the following snippet:'
+  id: totrans-180
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE35]'
+  id: totrans-181
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE35]'
 - en: Note how we're using the unstable `Deno.emit` API and setting the `content-type`
     as `application/javascript`.
+  id: totrans-182
   prefs: []
   type: TYPE_NORMAL
 - en: We're then sending the file emitted by Deno (`deno:///bundle.js`) as the request
     body.
+  id: totrans-183
   prefs: []
   type: TYPE_NORMAL
 - en: This way, if a client performs a `GET` request to `/api/client.js`, it will
     bundle and serve the content of the client we just wrote. The end result will
     be a bundled, browser- compatible JavaScript file that can then be used by an
     application.
+  id: totrans-184
   prefs: []
   type: TYPE_NORMAL
 - en: 'To finish, we''ll use this client in an HTML file that will authenticate and
     get the museums from the API. Proceed as follows:'
+  id: totrans-185
   prefs: []
   type: TYPE_NORMAL
 - en: 'Create an HTML file in the root of the project, named `index-with-client.html`,
     as illustrated in the following code snippet:'
+  id: totrans-186
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: '[PRE36]'
+  id: totrans-187
   prefs:
   - PREF_IND
   type: TYPE_PRE
+  zh: '[PRE36]'
 - en: 'Create a `script` tag and import the script directly from the API URL, as follows:'
+  id: totrans-188
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: '[PRE37]'
+  id: totrans-189
   prefs:
   - PREF_IND
   type: TYPE_PRE
+  zh: '[PRE37]'
 - en: 'Now, it''s just a matter of using the client we built. We''ll use it to log
     in (with a user you previously created) and get a list of museums. The code is
     illustrated in the following snippet:'
+  id: totrans-190
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: '[PRE38]'
+  id: totrans-191
   prefs:
   - PREF_IND
   type: TYPE_PRE
+  zh: '[PRE38]'
 - en: We'll use `window.prompt` to get the username and password when the user accesses
     the page, and then we'll log in with that data and use it to get museums. After
     this, we'll just add that to the **Document Object Model** (**DOM**), creating
     a list of museums.
+  id: totrans-192
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
 - en: 'Let''s spin up the application again, as follows:'
+  id: totrans-193
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: '[PRE39]'
+  id: totrans-194
   prefs:
   - PREF_IND
   type: TYPE_PRE
+  zh: '[PRE39]'
 - en: 'And then, serving the frontend application, this time adding the `–cert` and
     `--key` flags with paths to the respective files, to run the file server with
     HTTPS, as illustrated in the following snippet:'
+  id: totrans-195
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: '[PRE40]'
+  id: totrans-196
   prefs:
   - PREF_IND
   type: TYPE_PRE
+  zh: '[PRE40]'
 - en: 'We can now access the web page at https://localhost:3000/index-with-client.html,
     fill in the username and password, and get a list of museums on the screen, as
     illustrated in the following screenshot:'
+  id: totrans-197
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: '![Figure 7.3 – Web page with a JavaScript client getting data from the API'
+  id: totrans-198
   prefs: []
   type: TYPE_NORMAL
 - en: '](img/Figure_7.3_B16380.jpg)'
+  id: totrans-199
   prefs: []
   type: TYPE_NORMAL
 - en: Figure 7.3 – Web page with a JavaScript client getting data from the API
+  id: totrans-200
   prefs: []
   type: TYPE_NORMAL
 - en: 'To log in in the previous step, you need to use a user you previously registered
     on the application. If you don''t have one, you can create it using the following
     command:'
+  id: totrans-201
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE41]'
+  id: totrans-202
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE41]'
 - en: Make sure to replace `your-username` with the desired username, and `your-password`
     with the desired password.
+  id: totrans-203
   prefs: []
   type: TYPE_NORMAL
 - en: And with that, we've finished our section about using Deno on the browser!
+  id: totrans-204
   prefs: []
   type: TYPE_NORMAL
 - en: What we just did can be further explored, unlocking great amounts of potential;
@@ -972,15 +1219,18 @@
     wrote. Instead of having to deal with HTTP logic, clients would just have to call
     methods and receive their responses. As we saw, this client can also handle topics
     such as authentication and cookies automatically.
+  id: totrans-205
   prefs: []
   type: TYPE_NORMAL
 - en: 'This section explored one feature that Deno enables: compiling code for the
     browser.'
+  id: totrans-206
   prefs: []
   type: TYPE_NORMAL
 - en: We've applied it in the context of our application by creating an HTTP client
     that abstracts the user from the API. This feature can be used to do lots of things
     and is currently being used in writing frontend JavaScript code inside Deno.
+  id: totrans-207
   prefs: []
   type: TYPE_NORMAL
 - en: As we explained in [*Chapter 2*](B16380_02_Final_JM_ePub.xhtml#_idTextAnchor056),
@@ -988,15 +1238,18 @@
     code for the browser is not using functions from the `Deno` namespace. By following
     these restrictions, we can very easily write code in Deno using all its advantages
     and compile it to JavaScript for distribution.
+  id: totrans-208
   prefs: []
   type: TYPE_NORMAL
 - en: This was just an introduction to a very promising feature. This feature, as
     with Deno, is still in its initial stages, and many great uses for it will be
     discovered by the community. Now that you're also aware of it, I'm sure you'll
     also come up with great ideas.
+  id: totrans-209
   prefs: []
   type: TYPE_NORMAL
 - en: Summary
+  id: totrans-210
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
@@ -1005,6 +1258,7 @@
     basic security practices, adding the CORS mechanism and HTTPS to the API. These
     two features, which are pretty much standard in any application, are a big security
     improvement on what we already had.
+  id: totrans-211
   prefs: []
   type: TYPE_NORMAL
 - en: Also, thinking about deploying the application, we also abstracted the configuration
@@ -1014,6 +1268,7 @@
     we proceeded to using those values in our current code base, something that revealed
     itself to be quite easy. This step removed any configuration values from the code
     and moved them to a configuration file.
+  id: totrans-212
   prefs: []
   type: TYPE_NORMAL
 - en: Once done with configuration, we used the same abstraction created to deal with
@@ -1021,11 +1276,13 @@
     variables and adds them to the application configuration. Then, we used those
     secret values where they were needed, with things such as the MongoDB credentials,
     and token-signing keys.
+  id: totrans-213
   prefs: []
   type: TYPE_NORMAL
 - en: 'We finished the chapter by exploring a possibility offered by Deno since its
     first days: bundling code for the browser. Applying this feature to our application
     context, we decided on writing a JavaScript HTTP client to connect to the API.'
+  id: totrans-214
   prefs: []
   type: TYPE_NORMAL
 - en: 'This step explored part of the potential of sharing code between the API and
@@ -1035,6 +1292,7 @@
     chapter, where we''ll write unit and integration tests for our application. Part
     of those tests will use the HTTP client created here, leveraging one big advantage
     of this practice: having the client and server in the same code base.'
+  id: totrans-215
   prefs: []
   type: TYPE_NORMAL
 - en: In the next chapter, we'll focus deeply on testing. We'll write tests for the
@@ -1045,12 +1303,19 @@
     the use cases where they apply. We'll see the value added by tests when it comes
     to writing new features and maintaining old ones. Along the way, we'll learn about
     some new Deno APIs.
+  id: totrans-216
   prefs: []
   type: TYPE_NORMAL
+  zh: 在下一章，我们将深入探讨测试。我们将为书中剩余部分编写的逻辑编写测试，从业务逻辑开始。我们将学习如何通过添加测试来提高代码库的可靠性，以及我们创建的层次结构和架构在编写它们时的关键性。我们将编写的测试从单元测试到集成测试，并探索它们适用的用例。我们将看到测试在编写新功能和维护旧功能时所增加的价值。在这个过程中，我们将了解一些新的Deno
+    API。
 - en: The code isn't done until the tests are written, and thus we'll write them to
     conclude our API.
+  id: totrans-217
   prefs: []
   type: TYPE_NORMAL
+  zh: 代码没有编写测试就不算完成，因此我们将编写测试来结束我们的API。
 - en: Let's go!
+  id: totrans-218
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们开始吧！
