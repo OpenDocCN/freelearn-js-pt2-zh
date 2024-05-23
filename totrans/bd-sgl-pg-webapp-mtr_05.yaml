@@ -1,4 +1,5 @@
 - en: Chapter 5. Making Our App Versatile with Routing
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
@@ -6,6 +7,7 @@
     of Meteor's template system and how data synchronization between a server and
     clients works. After digesting this knowledge, let's get back to the fun part
     and make our blog a real website with different pages.
+  id: totrans-1
   prefs: []
   type: TYPE_NORMAL
 - en: You might ask, "What do pages do in a single-page app?" The term "single page"
@@ -15,69 +17,86 @@
     in the browser. There aren't any pages requested from the server itself anymore.
     A better term here would be "client-side web application," though **single page**
     is the current used name.
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
 - en: 'In this chapter, we will cover the following topics:'
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
 - en: Writing routes for our static and dynamic pages
+  id: totrans-4
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Changing subscriptions based on routes
+  id: totrans-5
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Changing the title of the website for each page
+  id: totrans-6
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: So let's not waste time and get started by adding the `iron:router` package.
+  id: totrans-7
   prefs: []
   type: TYPE_NORMAL
 - en: Note
+  id: totrans-8
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: If you've jumped right into the chapter and want to follow the examples, download
     the previous chapter's code examples from either the book's web page at [https://www.packtpub.com/books/content/support/17713](https://www.packtpub.com/books/content/support/17713)
     or from the GitHub repository at [https://github.com/frozeman/book-building-single-page-web-apps-with-meteor/tree/chapter4](https://github.com/frozeman/book-building-single-page-web-apps-with-meteor/tree/chapter4).
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
 - en: These code examples will also contain all the style files, so we don't have
     to worry about adding CSS code along the way.
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
 - en: Adding the iron:router package
+  id: totrans-11
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: Routes are the URLs of a specific page in our app. In a server-side-rendered
     app, routes are defined either by the server's/framework's configuration or the
     folder structure on the server.
+  id: totrans-12
   prefs: []
   type: TYPE_NORMAL
 - en: In a client-side app, routes are simply paths that the app will use to determine
     which pages to render.
+  id: totrans-13
   prefs: []
   type: TYPE_NORMAL
 - en: 'The steps to perform inside the client are as follows:'
+  id: totrans-14
   prefs: []
   type: TYPE_NORMAL
 - en: The website is sent down to the client.
+  id: totrans-15
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: The JavaScript file (or files) is loaded and parsed.
+  id: totrans-16
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: The router code will check which current URL it is on and run the correct route
     function, which will then render the right templates.
+  id: totrans-17
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: Tip
+  id: totrans-18
   prefs:
   - PREF_IND
   - PREF_H3
@@ -85,72 +104,92 @@
 - en: To use routes in our app, we will make use of the `iron:router` package, a router
     specifically written for Meteor, which makes it easy to set up routes and combine
     them with subscriptions.
+  id: totrans-19
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
 - en: 'To add the package, we cancel any running Meteor instance, go to our `my-meteor-blog`
     folder, and type the following command:'
+  id: totrans-20
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: '[PRE0]'
+  id: totrans-21
   prefs:
   - PREF_IND
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: If we are done with this, we can start Meteor again by running the `$ meteor`
     command.
+  id: totrans-22
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: 'When we go back to the console of our browser, we will see an error saying:
     `Error: Oh no! No route found for path: "/"`. Don''t worry; we will deal with
     this in the next section.'
+  id: totrans-23
   prefs: []
   type: TYPE_NORMAL
 - en: Setting up the router
+  id: totrans-24
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 'In order to use the router, we need to set it up. To keep our code organized,
     we will create a file called `routes.js` directly in the root of our `my-meteor-blog`
     folder with the following code:'
+  id: totrans-25
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE1]'
+  id: totrans-26
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: 'The router configuration allows you to define the following default templates:'
+  id: totrans-27
   prefs: []
   type: TYPE_NORMAL
 - en: '| `layoutTemplate` | The layout template will be used as the main wrapper.
     Here, subtemplates will be rendered in the `{{> yield}}` placeholder, which has
     to be placed somewhere in the template. |'
+  id: totrans-28
   prefs: []
   type: TYPE_TB
 - en: '| `notFoundTemplate` | This template will be rendered if the current URL has
     no defined route. |'
+  id: totrans-29
   prefs: []
   type: TYPE_TB
 - en: '| `loadingTemplate` | This template will be shown when subscriptions for the
     current route are loading. |'
+  id: totrans-30
   prefs: []
   type: TYPE_TB
 - en: For our blog, we will just define the `layoutTemplate` property for now.
+  id: totrans-31
   prefs: []
   type: TYPE_NORMAL
 - en: 'Perform the following steps to set up the router:'
+  id: totrans-32
   prefs: []
   type: TYPE_NORMAL
 - en: 'To create our first route, we need to add the following lines of code to the
     `route.js` file:'
+  id: totrans-33
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: '[PRE2]'
+  id: totrans-34
   prefs:
   - PREF_IND
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: Note
+  id: totrans-35
   prefs:
   - PREF_IND
   - PREF_H3
@@ -158,11 +197,13 @@
 - en: You can also name the `Home` route as `home` (in lowercase). Then we can leave
     the manual template definition out, as `iron:router` will look automatically for
     a template called `home` for that route.
+  id: totrans-36
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
 - en: For simplicity, we define the template manually to keep all routes consistent
     throughout the book.
+  id: totrans-37
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
@@ -170,200 +211,255 @@
     template rendered twice. This happens not because `iron:router` adds `layoutTemplate`
     by default to the body of our app, but because we added it manually as well as
     by using `{{> layout}}` in `index.html`, it gets rendered twice.
+  id: totrans-38
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: To prevent the double appearance of the `layout` template, we need to remove
     the `{{> layout}}` helper from the `<body>` tag inside our `index.html` file.
+  id: totrans-39
   prefs: []
   type: TYPE_NORMAL
 - en: When we check out the browser, we will now see the `layout` template rendered
     only once.
+  id: totrans-40
   prefs: []
   type: TYPE_NORMAL
 - en: Switching to a layout template
+  id: totrans-41
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 'Even though we passed a template to our `Home` route using `template: home`,
     we are not rendering this template dynamically; we are just showing the layout
     template with its *hardcoded* subtemplates.'
+  id: totrans-42
   prefs: []
   type: TYPE_NORMAL
 - en: To change this, we need to replace the `{{> home}}` inclusion helper inside
     our layout template with `{{> yield}}`.
+  id: totrans-43
   prefs: []
   type: TYPE_NORMAL
 - en: The `{{> yield}}` helper is a placeholder helper provided by `iron:router`,
     where route templates get rendered.
+  id: totrans-44
   prefs: []
   type: TYPE_NORMAL
 - en: 'After doing this, when we check out the browser, we shouldn''t see any change,
     as we are still rendering the `home` template, but this time dynamically. Then
     we proceed as follows:'
+  id: totrans-45
   prefs: []
   type: TYPE_NORMAL
 - en: 'In order to see whether this is true, we will add a not found template to our
     app, by adding the following template to our `layout.html` file after the layout
     template:'
+  id: totrans-46
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: '[PRE3]'
+  id: totrans-47
   prefs:
   - PREF_IND
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: 'Now we need to add the `notFoundTemplate` property to the `Router.configure()`
     function of `route.js`:'
+  id: totrans-48
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: '[PRE4]'
+  id: totrans-49
   prefs:
   - PREF_IND
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: 'When we now navigate to `http://localhost:3000/doesntexist` in our browser,
     we will see the `notFound` template being rendered instead of our `home` template:'
+  id: totrans-50
   prefs: []
   type: TYPE_NORMAL
 - en: '![Switching to a layout template](img/00013.jpeg)'
+  id: totrans-51
   prefs: []
   type: TYPE_IMG
 - en: If we click on the **Home** link in the main menu, we will get back to our front
     page, as this link was navigating to "`/`"`.` We have successfully added our first
     route. Now let's move on to create the second route.
+  id: totrans-52
   prefs: []
   type: TYPE_NORMAL
 - en: Adding another route
+  id: totrans-53
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: Having a front page doesn't make a real website. Let's add a link to our **About**
     page, which has been in our drawer since [Chapter 2](part0024_split_000.html#page
     "Chapter 2. Building HTML Templates"), *Building HTML Templates*.
+  id: totrans-54
   prefs: []
   type: TYPE_NORMAL
 - en: 'To do this, just duplicate the `Home` route and change the values to create
     an `About` route, as follows:'
+  id: totrans-55
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE5]'
+  id: totrans-56
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: That's it!
+  id: totrans-57
   prefs: []
   type: TYPE_NORMAL
 - en: 'Now, when we go back to our browser, we can click on the two links in the main
     menu to switch between our **Home** and **About** pages, and even typing in `http://localhost:3000/about`
     will bring us straight to the corresponding page, as shown in the following screenshot:'
+  id: totrans-58
   prefs: []
   type: TYPE_NORMAL
 - en: '![Adding another route](img/00014.jpeg)'
+  id: totrans-59
   prefs: []
   type: TYPE_IMG
 - en: Moving the posts subscription to the Home route
+  id: totrans-60
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: In order to load the right data for each page, we need to have the subscription
     in the routes instead of keeping it in the separate `subscriptions.js` file.
+  id: totrans-61
   prefs: []
   type: TYPE_NORMAL
 - en: The `iron:router` has a special function called `subscriptions()` , which is
     ideal for that purpose. Using this function, we can reactively update subscriptions
     belonging to a specific route.
+  id: totrans-62
   prefs: []
   type: TYPE_NORMAL
 - en: 'To see it in action, add the `subscriptions()` function to our `Home` route:'
+  id: totrans-63
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE6]'
+  id: totrans-64
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: 'The **Session.setDefault(''lazyloadLimit'', 2)** line from the **subscriptions.js**
     file needs to be placed at the start of the `routes.js` file and before the `Router.configure()`
     function:'
+  id: totrans-65
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE7]'
+  id: totrans-66
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: This has to wrapped inside the `if(Meteor.isClient){}` condition, as the session
     object is only available on the client.
+  id: totrans-67
   prefs: []
   type: TYPE_NORMAL
 - en: The `subscriptions()` function is *reactive* like the `Tracker.autorun()` function
     we used before. This means it will rerun and change the subscription when the
     `lazyloadLimit` session variable changes.
+  id: totrans-68
   prefs: []
   type: TYPE_NORMAL
 - en: In order to see it working, we need to delete the `my-meteor-blog/client/subscriptions.js`
     file, so there are not two points where we subscribe to the same publication.
+  id: totrans-69
   prefs: []
   type: TYPE_NORMAL
 - en: When we now check the browser and refresh the page, we will see the `home` template
     still shows all the example posts. Clicking on the lazy-load button increases
     the number of posts listed, though this time everything happens through our reactive
     `subscriptions()` function.
+  id: totrans-70
   prefs: []
   type: TYPE_NORMAL
 - en: Note
+  id: totrans-71
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: The `iron:router` comes with more hooks, which you can find as a short list
     in the [Appendix](part0099_split_000.html#page "Appendix A. Appendix").
+  id: totrans-72
   prefs: []
   type: TYPE_NORMAL
 - en: To complete our routes, we only need to add the post routes, so we can click
     on a post and read it in full detail.
+  id: totrans-73
   prefs: []
   type: TYPE_NORMAL
 - en: Setting up the post route
+  id: totrans-74
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: To be able to show a full post page, we need to create a post template, which
     can be loaded when the user clicks on a post.
+  id: totrans-75
   prefs: []
   type: TYPE_NORMAL
 - en: 'We create a file called `post.html` inside our `my-meteor-blog/client/templates`
     folder with the following template code:'
+  id: totrans-76
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE8]'
+  id: totrans-77
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: This simple template displays all the information of a blog post and even reuses
     our `{{formatTime}}` helper we created earlier in this book from our `template-helper.js`
     file. We used this to format at the time the post was created.
+  id: totrans-78
   prefs: []
   type: TYPE_NORMAL
 - en: We can't see this template yet, as we first have to create a publication and
     route for this page.
+  id: totrans-79
   prefs: []
   type: TYPE_NORMAL
 - en: Creating a single-post publication
+  id: totrans-80
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: In order to show the full post's data in this template, we need to create another
     publication that will send the complete post document to the client.
+  id: totrans-81
   prefs: []
   type: TYPE_NORMAL
 - en: 'To do so, we open our `my-meteor-blog/server/publication.js` file and add the
     following publication:'
+  id: totrans-82
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE9]'
+  id: totrans-83
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: The `slug` parameter, which has been used here, will be later provided from
     our subscription method so that we can use the `slug` parameter to reference the
     correct post.
+  id: totrans-84
   prefs: []
   type: TYPE_NORMAL
 - en: Note
+  id: totrans-85
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
@@ -371,102 +467,129 @@
     URL. Slugs are better than just appending the document ID to the URL, as they
     are readable and understandable by visitors. They are also an important part of
     a good SEO.
+  id: totrans-86
   prefs: []
   type: TYPE_NORMAL
 - en: So that we can use slugs, every slug has to be unique. We will take care of
     that when we create the posts.
+  id: totrans-87
   prefs: []
   type: TYPE_NORMAL
 - en: Assuming that we pass the right slug such as `my-first-entry`, this publication
     will send down the post containing this slug.
+  id: totrans-88
   prefs: []
   type: TYPE_NORMAL
 - en: Adding the post route
+  id: totrans-89
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: In order for this route to work, it needs to be dynamic because every linked
     URL has to be different for each post.
+  id: totrans-90
   prefs: []
   type: TYPE_NORMAL
 - en: 'We will also render a loading template until the post is loaded. To start,
     we add the following template to our `my-meteor-blog/client/templates/layout.html`:'
+  id: totrans-91
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE10]'
+  id: totrans-92
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE10]'
 - en: 'Additionally, we have to add this template as the default loading template
     to our `Router.configure()` call in the `routes.js`:'
+  id: totrans-93
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE11]'
+  id: totrans-94
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE11]'
 - en: 'We then add the following lines of code to our `Router.map()` function to create
     a dynamic route:'
+  id: totrans-95
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE12]'
+  id: totrans-96
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE12]'
 - en: The `'/posts/:slug'` path is a dynamic route, where `:slug` can be anything
     and will be passed to the routes functions as `this.params.slug`. This way we
     can simply pass the given slug to the `single-post` subscription and retrieve
     the correct document for the post matching this slug.
+  id: totrans-97
   prefs: []
   type: TYPE_NORMAL
 - en: The `waitOn()` function works like the `subscriptions()` function, though will
     automatically render `loadingTemplate`, we set in the `Router.configure()` until
     the subscriptions are ready.
+  id: totrans-98
   prefs: []
   type: TYPE_NORMAL
 - en: The `data()` function in this route will set the data context of the `post`
     template. We basically look in our local database for a post containing the given
     slug from the URL.
+  id: totrans-99
   prefs: []
   type: TYPE_NORMAL
 - en: Note
+  id: totrans-100
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: The `findOne()` method of the `Posts` collection works like `find()`, but returns
     only the first found result as a JavaScript object.
+  id: totrans-101
   prefs: []
   type: TYPE_NORMAL
 - en: 'Let''s sum up what happens here:'
+  id: totrans-102
   prefs: []
   type: TYPE_NORMAL
 - en: The route gets called (through a clicked link or by reloading of the page).
+  id: totrans-103
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: The `waitOn()` function will then subscribe to the right post identified by
     the given `slug` parameter, which is a part of the URL.
+  id: totrans-104
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: Because of the `waitOn()` function, the `loadingTemplate` will be rendered until
     the subscription is ready. Since this will happen very fast on our local machine,
     so we probably won't see the loading template at all.
+  id: totrans-105
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: As soon as the subscription is synced, the template gets rendered.
+  id: totrans-106
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: The `data()` function will then rerun, setting the data context of the template
     to the current post document.
+  id: totrans-107
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: Now that the publication and the route are ready, we can simply navigate to
     `http://localhost:3000/posts/my-first-entry` and we should see the `post` template
     appear.
+  id: totrans-108
   prefs: []
   type: TYPE_NORMAL
 - en: Linking the posts
+  id: totrans-109
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -475,85 +598,109 @@
     posts already contains a `slug` property, we just have to add them to the links
     to our posts in the `postInList` template. Open the `my-meteor-blog/client/templates/postInList.html`
     file and change the link as follows:'
+  id: totrans-110
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE13]'
+  id: totrans-111
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE13]'
 - en: 'Finally, when we go to our browser and click on the title of a blog post, we
     get redirected to a page that shows the full post entry, like the entry shown
     in the following screenshot:'
+  id: totrans-112
   prefs: []
   type: TYPE_NORMAL
 - en: '![Linking the posts](img/00015.jpeg)'
+  id: totrans-113
   prefs: []
   type: TYPE_IMG
 - en: Changing the website's title
+  id: totrans-114
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: Now that we have the routes of our posts working, we are only missing the right
     titles being displayed for each page.
+  id: totrans-115
   prefs: []
   type: TYPE_NORMAL
 - en: Sadly, `<head></head>` is not a reactive template in Meteor, where we could
     let Meteor do the work of changing titles and meta tags.
+  id: totrans-116
   prefs: []
   type: TYPE_NORMAL
 - en: Note
+  id: totrans-117
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: It is planned to make the `head` tag a reactive template, but probably not before
     version 1.0.
+  id: totrans-118
   prefs: []
   type: TYPE_NORMAL
 - en: To change the document title, we need to come up with a different way of changing
     it, based on the current route.
+  id: totrans-119
   prefs: []
   type: TYPE_NORMAL
 - en: 'Luckily, `iron:router` has the `onAfterAction()` function, which can also be
     used in the `Router.configure()` function to run before every route. In this function,
     we have access to the data context of the current route, so we can simply set
     the title using native JavaScript:'
+  id: totrans-120
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE14]'
+  id: totrans-121
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE14]'
 - en: 'Using **Posts.findOne({slug: this.params.slug})**, we get the current post
     of the route. We then check whether it''s an object; if so, we add the post title
     to the `title` metatag. Otherwise, we just take the route name.'
+  id: totrans-122
   prefs: []
   type: TYPE_NORMAL
 - en: Doing this in `Router.configure()` will call the **onAfterAction** for every
     route.
+  id: totrans-123
   prefs: []
   type: TYPE_NORMAL
 - en: 'If we now take a look at our browser''s tab, we will see that the title of
     our website changes when we move throughout the website:'
+  id: totrans-124
   prefs: []
   type: TYPE_NORMAL
 - en: '![Changing the website''s title](img/00016.jpeg)'
+  id: totrans-125
   prefs: []
   type: TYPE_IMG
 - en: Tip
+  id: totrans-126
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: 'If we want to make our blog cooler, we can add the `mrt:iron-router-progress`
     package. This will add a progress bar at the top of our pages when changing routes.
     We just need to run the following command from our app''s folder:'
+  id: totrans-127
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE15]'
+  id: totrans-128
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE15]'
 - en: Summary
+  id: totrans-129
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: That's it! Our app is now a fully working website with different pages and URLs.
+  id: totrans-130
   prefs: []
   type: TYPE_NORMAL
 - en: In this chapter, we learned how to set up static and dynamic routes. We moved
@@ -561,15 +708,23 @@
     route's needs. We also used slugs to subscribe to the right posts and displayed
     them in the `post` template. Finally, we changed our website's title so that it
     matches the current route.
+  id: totrans-131
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本章中，我们学习了如何设置静态和动态路由。我们将我们的订阅移到了路由中，这样它们就可以根据路由的需要自动更改。我们还使用了slugs来订阅正确的文章，并在`post`模板中显示它们。最后，我们更改了网站的标题，使其与当前路由相匹配。
 - en: To learn more about `iron:router`, take a look at its documentation at [https://github.com/EventedMind/iron-router](https://github.com/EventedMind/iron-router).
+  id: totrans-132
   prefs: []
   type: TYPE_NORMAL
+  zh: 要了解更多关于`iron:router`的信息，请查看其文档在[https://github.com/EventedMind/iron-router](https://github.com/EventedMind/iron-router)。
 - en: You can find this chapter's code examples either at [https://www.packtpub.com/books/content/support/17713](https://www.packtpub.com/books/content/support/17713)
     or on GitHub at [https://github.com/frozeman/book-building-single-page-web-apps-with-meteor/tree/chapter5](https://github.com/frozeman/book-building-single-page-web-apps-with-meteor/tree/chapter5).
+  id: totrans-133
   prefs: []
   type: TYPE_NORMAL
+  zh: 你可以在这个章节的代码示例在[https://www.packtpub.com/books/content/support/17713](https://www.packtpub.com/books/content/support/17713)找到，或者在GitHub上找到[https://github.com/frozeman/book-building-single-page-web-apps-with-meteor/tree/chapter5](https://github.com/frozeman/book-building-single-page-web-apps-with-meteor/tree/chapter5)。
 - en: In the next chapter, we will take a deeper look at Meteor's session object.
+  id: totrans-134
   prefs: []
   type: TYPE_NORMAL
+  zh: 在下一章中，我们将深入探讨Meteor的会话对象。
