@@ -1,0 +1,612 @@
+- en: Chapter 4. Detecting Performance
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this chapter, we'll cover our work environment and the tools needed; we will
+    also cover the features and JavaScript optimization tools found in the Google
+    Chrome Web Inspector, and create some test samples that show us how to use and
+    test JavaScript and HTML page code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We will cover the following topics in the chapter:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Web Inspectors in general
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The Elements panel
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The Network panel
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The Timeline panel
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The Profile panel
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The Resources panel
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The Audits panel
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The Console panel
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Web Inspectors in general
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Before diving in to an in-depth exploration of Chrome's Web Inspector, it's
+    important to note that there are many different Web Inspectors for different web
+    browsers, typically developed by the browser's vendor for debugging a web page's
+    application content and performance.
+  prefs: []
+  type: TYPE_NORMAL
+- en: It's important to understand that, for developers to properly debug a web application,
+    they should use the inspector designed for the browser with a detected issue.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The Safari Web Inspector
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Apple's Web Inspector is a WebKit-based inspector built for Safari. The Web
+    Inspector is built pretty similar to Chrome's Web Inspector. We will cover more
+    on the Safari **Web Inspector** later in [Chapter 9](ch09.html "Chapter 9. Optimizing
+    JavaScript for iOS Hybrid Apps"), *Optimizing JavaScript for iOS Hybrid Apps*,
+    mainly because Safari's **Web Inspector** can debug web content in iOS development.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Apple has pretty comprehensive documentation on its tools at [https://developer.apple.com/safari/tools/](https://developer.apple.com/safari/tools/)
+    and shown in the next screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![The Safari Web Inspector](img/7296OS_04_01.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Firefox Developer tools
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Mozilla's Firefox web browser also has its own inspector. Originally Firefox
+    was the only browser with an inspector; it was called Firebug, was developed as
+    a plugin, and was not included with the main browser.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Since the advent of Firefox 3, Mozilla developed its own browser inspector not
+    just for their own browser but also as a debug tool for Firefox OS, Mozilla's
+    mobile OS that uses HTML5 for application development. Firefox **Developer** tools
+    also allow debugging for fairly new and even experimental forms of HTML5 and JavaScript
+    development.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We can check out more information on the types of developers that the Firefox
+    **Developer** tools allow for at Mozilla''s Developer Network at [https://developer.mozilla.org/en-US/docs/Tools](https://developer.mozilla.org/en-US/docs/Tools),
+    as shown in the next screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Firefox Developer tools](img/7296OS_04_02.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Internet Explorer developer tools
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In the past, Internet Explorer was considered the black sheep in the web developer's
+    toolbox. Before the advent of Internet Explorer 11, Microsoft offered a simple
+    DOM inspector plugin for Internet Explorer version 6 and above; though it was
+    very helpful for Internet Explorer's browser issue, its feature set lacked behind
+    other vendors' inspector tools.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Since the release of Internet Explorer 11, Microsoft is positioning itself
+    to support HTML development more than it did in the past, and its new **F12 developer
+    tools** do just that. Most of the features found in the **F12 developer tools**
+    are found just as good as Chrome''s **Developer tools** and Safari''s **Web Inspector**,
+    with more releases anticipated in future. We can read more on how to use those
+    tools at [http://msdn.microsoft.com/en-us/library/ie/bg182326(v=vs.85).aspx](http://msdn.microsoft.com/en-us/library/ie/bg182326(v=vs.85).aspx),
+    as shown in the next screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Internet Explorer developer tools](img/7296OS_04_03.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Chrome's Developer tools
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Chrome's Inspector was originally developed using the open-source WebKit browser's
+    Web Inspector, which was also used at one point in Apple's Safari. Later, when
+    Chrome decided to fork WebKit into their own browser runtime called Blink, Google
+    rebuilt the Inspector for Blink from the ground up, optimizing the user interface
+    and adding features not found in the open source Webkit Inspector.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Another reason for rebuilding the inspector was the introduction of Chrome for
+    Android and Chrome OS applications. This allows developers to access JavaScript-based
+    console objects specific to development on those platforms. It also features tools
+    to optimize responsive content, and debug mobile content without being on a device.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Because of the rich features mentioned here, we will cover how to use the Web
+    Inspector for Chrome. If you're concerned about knowing a feature on another inspector,
+    refer to the previously mentioned links and research a topic listed in this chapter.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Lastly, Chrome''s update cycle for new features is pretty frequent and even
+    more so for its beta version of Chrome called Chrome Canary, which is essentially
+    Chrome with experimental features enabled including any early speed improvements
+    for Blink. You can download Canary at [https://www.google.com/intl/en/chrome/browser/canary.html](https://www.google.com/intl/en/chrome/browser/canary.html),as
+    shown in the next screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Chrome''s Developer tools](img/7296OS_04_04.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Chromium's **Developer tools** include many more advanced features typically
+    found in Firefox **Developer** tools. For this chapter, I'll be using the default
+    Chrome **Developer tools**, but please check out Chromium's **Developer tools**
+    as well to stay informed on what's available in the future.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Check out [https://developer.chrome.com/devtools](https://developer.chrome.com/devtools)
+    for **Chrome DevTools Overview**, as shown in the next screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Chrome''s Developer tools](img/7296OS_04_05.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Getting familiar with Chrome's Developer tools
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: To install Chrome's **Developer tools**, download chrome from [http://www.chrome.com/](http://www.chrome.com/),
+    and that's it! Chrome's **Developer tools** are included with Chrome with no extra
+    installation needed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'First, open a new window in Chrome and type `about:blank` in the omnibox (or
+    the address bar). Next, let''s open up the **Developer tools** by using the keystrokes
+    *Ctrl* + *Shift* + *I* (or *Command* + *Option* + *I* on the Mac). We should see
+    a blank screen with **Developer tools** showing up, as shown in the next screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Getting familiar with Chrome''s Developer tools](img/7296OS_04_06.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: By default, Chrome's **Developer tools** will either be displayed in dock mode,
+    as shown before, or in its own window; if you want to undock or redock the **Developer
+    tools**, select the dock button.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Holding down the dock button allows us to dock the **Developer tools** to the
+    side of the browser window. You can find the dock button flagged in the following
+    screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Getting familiar with Chrome''s Developer tools](img/7296OS_04_07.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: The **Developer tools** are broken up into different panels, that are shown
+    at the top of the window, each panel containing different features and debugging
+    options for a web application. We will focus on the JavaScript-specific panels,
+    but we will cover each panel briefly for anyone who's not so familiar with them.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The Elements panel
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: 'The **Elements** panel displays both the HTML page''s source code and DOM Explorer,
+    allowing developers to inspect changes in the DOM. We can highlight elements by
+    either placing the mouse over the DOM tree, or by using the magnifying lens as
+    indicated in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![The Elements panel](img/7296OS_04_08.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: The Network panel
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: 'The **Network** panel displays page download speeds of all the resources and
+    the code it contains. Let''s test this out by going to [http://www.packtpub.com/](http://www.packtpub.com/)
+    and opening the **Network** panel (located right next to **Elements**). Click
+    the record button on the top left of the panels as shown in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![The Network panel](img/7296OS_04_09.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Now, let's refresh the page with the record button on. We can see which page
+    resources are taking longer to load in our web page. This is important when considering
+    loading resources in JavaScript. If we target an element or a script that doesn't
+    yet exist in our DOM, an error could occur.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If we take a look at the following screen, we can see that the `blog-banner.png`
+    graphic is taking the longest time to load on [http://www.packtpub.com/](http://www.packtpub.com/).
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![The Network panel](img/7296OS_04_10.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: We can also select a resource as well; let's click on one of the image resources.
+    (I'll choose `blog-banner.png`, this may or may not exist on your page. If you
+    are testing on first load, give the site a few moments to load). When we select
+    it, we can see a new sub-panel appear showing a preview of the image if it's a
+    graphic or the source code if it's a JavaScript or JSON file.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We also have tabs in the subpanel, one of which is called **Response**. This
+    gives information to POST event resources found by DevTools. We also have a tab
+    called **Headers**. The **Headers** tab displays request information for that
+    file, including (more importantly) whether the image uses any server-side caching.
+    In this case, our `blog-banner.png` file has a `Cache-control: max-age` value
+    indicating a maximum cache age of `3153600000` seconds or ten years. We can also
+    see the full `Request URL` noting that it''s using a `cloudfront.net` URL, so
+    we can infer that the image is using Amazon S3 for caching and distribution, as
+    shown for both in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![The Network panel](img/7296OS_04_11.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: The Sources panel
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: 'Here we are going to learn about the **Sources** panel, with the help of the
+    following aspects:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Debugger basic usage
+  prefs:
+  - PREF_H5
+  type: TYPE_NORMAL
+- en: 'The **Sources** panel is home to most JavaScript developers; it''s where we
+    debug our JavaScript applications. Using it is pretty simple; click the pause
+    button up on the top left section right near the **Watch Expressions** option,
+    as shown in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Debugger basic usage](img/7296OS_04_12.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Testing the debugger
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+- en: 'Let''s try out the debugger. Open the `01` folder inside the `Chapter_4` folder,
+    in our `Exercise_Files` folder in the code bundle provided by Packt Publishing''s
+    website. Inside it, we can see a very simple code sample, and we also have an
+    HTML5 `index.html` page, which looks like the following screenshot in our source
+    view:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Testing the debugger](img/7296OS_04_13.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: We can see that we have a very empty web page with some styling added for the
+    body tag; we've also added a `main.js` external JavaScript file handling all of
+    our page logic. What we are going to do here is inspect a function with a `while`
+    loop inside.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The loop will append the `document.body` tag with the `paragraphTag` variable,
+    each with an index variable called as a global variable named `my_integer` outside
+    the `while` loop, which is contained in a `loopingTo5k()` function`.` This is
+    called on line 14, where it is being triggered by a `window.onload` event, as
+    shown in the next screenshot displaying the `main.js` source view:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Testing the debugger](img/7296OS_04_14.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: With our source code in place, let's go ahead and run our page in Chrome with
+    our **Sources** panel open. If we look at the screen, we can see a set of numbers
+    moving down the page in a sequential order ending at **5000** on the last line
+    of the document.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s select the `main.js` file in our **Sources** panel, add a breakpoint
+    to line 8 of our source code, and see what the **Sources** panel can do. Now with
+    our breakpoint set, let''s refresh the page. When we do this, we can see the page
+    graying out with a note in yellow at the top indicating that we are paused in
+    our debugger, and line #8 in our `main.js` file is highlighted in blue, noting
+    where the debugger paused.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: We can also see the **Scope Variables** option, which shows all the properties
+    and objects of a given scope at the time of execution; in this case, the scope
+    is inside the `loopingTo5k()` function. To get more information, we can refer
+    to the right section of the **Sources** panel and look at the Local tree for information,
+    or we can mouse over the objects in our code file for more information. As shown
+    in the following screenshot, I've highlighted the `document.body` object in my
+    function's scope, creating a new paragraph object in JavaScript.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Testing the debugger](img/7296OS_04_15.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: When we're finished with debugging, we can press the play button highlighted
+    blue in the **Sources** panel, or we can **Step Over** our function via the control
+    next to the play button and move on to our next function. Keep in mind that, if
+    we have any further breakpoints, they will break further down the source file
+    in our web page. To remove breakpoints, we can drag them off our line number column
+    and press play to resume without debugging.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using the debugger keyword
+  prefs:
+  - PREF_H6
+  type: TYPE_NORMAL
+- en: A little known feature in JavaScript programming is the **debugger** keyword;
+    it's a very simple helper function. When running code, it will trigger the **Sources**
+    panel or another JavaScript debugger connected to break automatically; this is
+    helpful when going over large code bases or having trouble breaking on a certain
+    line.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let's say that, in our example code thus far, we had a while loop, causing an
+    issue with our code at the `555` iteration of `my_integer`. If we had to step
+    through this, it would take 555 presses of the play button to get there. However,
+    there is a way around this.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To demonstrate this, I''ve set up a copy of these source files and saved them
+    in the `02` folder in the code bundle provided to you through Packt Publishing''s
+    website under the `Chapter_03` folder in the `Exercise_Files` folder. I''ve only
+    made one change here in the code: adding a conditional `if` statement on lines
+    12 through 14, ensuring `my_integer` is equal to `555`. If that is applied, I
+    would call the debugger by simply writing `debugger` with a semicolon to end the
+    line, as shown in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Using the debugger keyword](img/7296OS_04_16.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'Now calling `debugger` is easy. Let''s load our `index.html` file again with
+    our debugger code, and here we can see that, without setting a breakpoint, our
+    **Sources** panel automatically detects the line and sets the breakpoint without
+    iterating through each loop (as shown in the following screenshot):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Using the debugger keyword](img/7296OS_04_17.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: The Timeline panel
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: 'Here, we are going to learn about the **Timeline** panel with the help of the
+    following aspects:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using the Timeline panel
+  prefs:
+  - PREF_H5
+  type: TYPE_NORMAL
+- en: The **Timeline** panel allows us to detect the overall web page performance
+    with respect to JavaScript; it also allows us to inspect browser rendering events.
+    To use the **Timeline** panel, all we need to do is click the record button and
+    reload the page in Chrome.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In the **Timeline** inspector, there are four types of events that the **Timeline**
+    panel shows. These are **Loading**, **Scripting**, **Rendering**, and **Painting**
+    events. I''ve loaded the example file (`02`), discussed in an earlier section,
+    showing the events running through the **Timeline** panel, as seen in the following
+    screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Using the Timeline panel](img/7296OS_04_18.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: The Loading event
+  prefs:
+  - PREF_H5
+  type: TYPE_NORMAL
+- en: The **Loading** event handles requests and responses; typically these are loading
+    external scripts and files as well as `POST` requests for data leaving the page.
+    Loading events also include the initial parsing of HTML code. In Google Chrome's
+    **Timeline**, these show up in blue.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The Scripting event
+  prefs:
+  - PREF_H5
+  type: TYPE_NORMAL
+- en: The **Scripting** event occurs when the browser reads and interprets JavaScript
+    code. In the **Timeline** panel, you can expand a **Scripting** event and see
+    at what point a function was received in the browser. **Scripting** events appear
+    as yellow lines in Google Chrome.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The Rendering event
+  prefs:
+  - PREF_H5
+  type: TYPE_NORMAL
+- en: The **Rendering** event occurs when image files and scripts affect the DOM;
+    this can be when an image is loaded without a size specified in an `image` tag,
+    or if a JavaScript file updates the CSS of a page after the page is loaded.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The Painting event
+  prefs:
+  - PREF_H5
+  type: TYPE_NORMAL
+- en: The **Painting** event is the last type of events and typically is used in updating
+    the UI. Unlike **Rendering** event, the **Painting** event occurs when the browser
+    redraws an image on the screen. For desktop JavaScript development, **Painting**
+    events aren't usually a concern, but become strongly concerning when we start
+    looking at mobile web browsers.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Typically the **Painting** event is forced when an element's display is updated
+    from its original. They can also be triggered by updates to an element, such as
+    an element's `top` or `left` positioning.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The Profile panel
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: The **Profile** panel helps a developer analyze a web page's CPU profile and
+    take heap snapshots of the JavaScript used. A CPU profile snapshot is helpful
+    when it comes to checking large complex applications to see what files may cause
+    issues in terms of object size.
+  prefs: []
+  type: TYPE_NORMAL
+- en: A JavaScript heap snapshot is a compiled list of objects found in the page's
+    overall JavaScript. This includes not only the code written by us, but also the
+    code built into the browser, such as the document or console objects, giving an
+    overall list of all possible objects in an application.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Using the **Profile** panel is similar to the **Timeline** panel; select either
+    the **Take Heap Snapshot** or the **Collect JavaScript CPU Profile** option, and
+    then click **Start**, followed by reloading the page. In the following screenshot,
+    I have selected the **Collect JavaScript CPU Profile** option:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![The Profile panel](img/7296OS_04_19.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: The Resources panel
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: The **Resources** panel lists all files associated with the web page being viewed
+    in the **Developer tools** option, each of which can be sorted by the type of
+    file; developers can individually view each file. It also shows images on the
+    page along with their information such as **Dimensions**, **File size**, **MIME
+    type**, and source **URL**.
+  prefs: []
+  type: TYPE_NORMAL
+- en: More importantly, the **Resources** panel is home to any browser data storage,
+    which includes **Web SQL**, **IndexedDB, Local Storage**, **Session Storage**,
+    and **Cookies**. Users can look at a page's **Key**-**Value** pair values in the
+    browser's storage data. This is helpful in testing storage state and store values
+    in JavaScript code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Viewing the Key-Value pairs is easy; in the **Resources** panel, select the
+    storage type and take a look at the key values table, as shown in the following
+    screenshot using Packt Publishing''s website while viewing local storage:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![The Resources panel](img/7296OS_04_20.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: The Audits panel
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: Here, we are going to learn about the **Audits** panel, with the help of the
+    following aspects.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Interacting with the Audits panel
+  prefs:
+  - PREF_H5
+  type: TYPE_NORMAL
+- en: 'The **Audits** panel *audits* the full web page''s application **Network Utilization**
+    and overall **Web Page Performance**; this is one of the easier to use and more
+    straightforward panels in the **Developer tools** options provided by the browser.
+    Using the **Audits** panel is easy as well. First, open up Packt Publishing''s
+    website again, select the **Audits** panel using the **Developer tools** option,
+    and then check the **Select All** option; this will test network speeds and the
+    overall web page performance. Lastly, be sure to set the radio button **Reload
+    Page and Audit on Load**, prior to clicking the **Run** button. This will ensure
+    that the audit test checks for network usage properly rather than a cached state,
+    just as its shown in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Interacting with the Audits panel](img/7296OS_04_21.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Getting Suggestions for JavaScript quality
+  prefs:
+  - PREF_H5
+  type: TYPE_NORMAL
+- en: 'If we''re only checking for JavaScript performance, uncheck the **Network Utilization**
+    option and run the test as well; we need to keep this in mind if we''re testing
+    for a specific point in our application. We will need to switch the radio button
+    to **Audit Present State**, and click **Run** to get suggestions for the current
+    state of the web application. Let''s run the test on [https://www.packtpub.com/](https://www.packtpub.com/),
+    and then select the file under **Results**. Let''s take a look at the performance
+    improvement suggestions as shown in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Getting Suggestions for JavaScript quality](img/7296OS_04_22.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: If we look closely, we can see very readable suggestions, with respect to our
+    page's JavaScript code, affecting the overall page performance. In this case,
+    the audit has detected 3 inline scripts and recommends moving the inline scripts
+    to improve performances. There is also feedback on how many CSS rules included
+    in the page are not used (on this page at least). It also tells us whether vendor
+    prefixes are being used in CSS and not web standard properties. All of these suggestions
+    are very helpful.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The Console panel
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: 'The last out-of-the-box panel is the **Console** panel. It''s the simplest
+    panel here, but it''s also where developers on JavaScript spend most of their
+    time. Now my assumption is that we''re fairly familiar with the **Console** panel
+    at this point, so I won''t deep dive into this panel too much. We can test code
+    in the console and search for objects, DOM elements, and attributes in a page.
+    For instance, let''s say I type the following into the console while on Packt
+    Publishing''s website:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This should return a JavaScript array on the next line showing all the classes
+    available to us, and it does show one having `with-logo` as the class name, as
+    shown in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![The Console panel](img/7296OS_04_23.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: The **Console** panel and the **Console** API in Chrome are constantly evolving
+    in terms of features in Chrome's **Developer tools**. To keep up with some of
+    the newer tools, check out the Chrome's DevTools Console API page available at
+    [https://developer.chrome.com/devtools/docs/console](https://developer.chrome.com/devtools/docs/console),
+    which shows how to use the console for custom outputs such as `console.table()`
+    and `console.profile()` to make developing in the console much easier.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this chapter, we explored the base panels that come with the consumer version
+    of the Google Chrome **Developer tools**; many of these tools carry over to other
+    inspectors and developer tools (this was also covered earlier in the chapter).
+    I encourage you to read up on each and see where and how the code is inspected
+    in other inspectors as well as in Chrome's **Developer tools**.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the next chapter, we'll get into JavaScript performance coding without any
+    help.
+  prefs: []
+  type: TYPE_NORMAL

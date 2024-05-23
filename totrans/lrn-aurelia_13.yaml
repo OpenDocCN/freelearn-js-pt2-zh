@@ -1,0 +1,267 @@
+- en: Appendix B. Using Webpack
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: '**Webpack** ([https://webpack.github.io/](https://webpack.github.io/)) is yet
+    another module bundler for the web that has gained a lot of popularity in the
+    last year. Aurelia already offers application skeletons that use Webpack, for
+    both ES next and Typescript.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Additionally, there are plans to add support for Webpack-based projects to the
+    CLI. At the moment, however, the skeletons are the best starting point for creating
+    an Aurelia project based on Webpack.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this appendix, we will see the differences between a CLI-based project that
+    uses `requirejs` at the moment of writing, and a Webpack-based project started
+    from the skeleton.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The purpose of this appendix is not to cover Webpack itself. As such, I strongly
+    suggest that you get familiar with Webpack, if you are not already, before reading
+    on.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Our contact management application, rebuilt using the Webpack skeleton, can
+    be found at `appendix-b\using-webpack` in the book's assets and can be used as
+    a reference throughout this appendix.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting started
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In order to create a Webpack-based application, the first step is to download
+    the skeletons from [https://github.com/aurelia/skeleton-navigation/releases/latest](https://github.com/aurelia/skeleton-navigation/releases/latest) 
+    and to unzip the file. The root folder contains a distinct directory for each
+    available skeleton. The one we aim to keep here is named `skeleton-esnext-webpack`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The Webpack skeleton uses NPM as its package manager. As such, we need to install
+    the project''s dependencies by opening a console in the project directory and
+    running the following command:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: Once this is done, the sample application is ready to run.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Running tasks
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'The Webpack skeleton doesn''t use Gulp as its build system, but simply relies
+    on NPM tasks. If you have a look at the `scripts` section in the `package.json`
+    file, you''ll see the list of tasks along with their corresponding command that
+    can be run for the project. Here are the most common:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`start`: Launches a development web server. When `index.html` is accessed for
+    the first time, the application is bundled and served, and the process then watches
+    the source files so it can recreate the bundles and refresh the browser when it
+    detects a change. The `start` command is an alias for `server`, which is itself
+    an alias for `server:dev`.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`test`: Runs the unit tests. Code coverage is enabled using Istanbul ([https://github.com/gotwarlost/istanbul](https://github.com/gotwarlost/istanbul)).'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`e2e`: Runs the end-to-end tests. This task will launch both the application,
+    which will run on port 19876, and the E2E test suite.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`build:prod`: Bundles the application for production. The bundles and the `index.html`
+    file will be optimized for production and will be generated in the `dist` folder.
+    Additionally, the production build will add a content-based hash to the name of
+    each bundle, in order to version them. This has the same effect as enabling bundle
+    revision by setting the `rev` option in `aurelia_project/aurelia.json` in CLI-based
+    projects.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`server:prod`: Launches a web server to serve the production bundle. It must
+    be run after `build:prod`.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Adding libraries
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: External libraries are added using NPM, just like with CLI-based projects. However,
+    in order for files to be included in bundles, external libraries must be referenced
+    in JS files, because Webpack determines what must be included in bundles by analyzing
+    the `import` statements of every JS module in the application.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'You can see an example of this by checking the skeleton''s `main` module:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`src/main.js`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: In the skeleton's sample application, all global resources such as the application's
+    stylesheet, Font Awesome, Bootstrap's stylesheet, and the Bootstrap JS file are
+    imported in the `main.js` file. These imports will tell Webpack to include these
+    resources in the application bundle. Additionally, Webpack is smart enough to
+    analyze CSS files for their dependencies. This means it knows how to handle imported
+    CSS files, images, and font files.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Bundling
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'The bundles themselves are configured in the `webpack.config.js` file. By default,
+    the skeleton defines three entry bundles:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`aurelia-bootstrap`: Contains Aurelia''s bootstrapper, the default polyfills,
+    Aurelia''s browser platform abstraction, and the Bluebird Promise library'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`aurelia`: Contains all Aurelia''s default libraries'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`app`: Contains all application modules'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: In addition to the modules listed as its direct content, a bundle will contain
+    all its contents' dependencies which are not included in another bundle. For example,
+    in the skeleton's sample, the Bootstrap JS files are included in the `app` bundle,
+    because it is not included in any other bundle, and modules included in the `app`
+    bundle import it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'If you would like, for example, the `aurelia` bundle to contain all external
+    libraries, you should add `bootstrap` to the list of modules included in it:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`webpack.config.js`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: If you run the sample application at this point, Bootstrap's JS files should
+    now be included in the `aurelia` bundle instead of the `app` bundle.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Lazy-loading bundles
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: All bundles defined in the skeleton's sample application are entry bundles,
+    which means those bundles are loaded directly by the `index.html` file. All this
+    code is loaded upfront, before the application starts.
+  prefs: []
+  type: TYPE_NORMAL
+- en: As discussed in [Chapter 10](ch10.html "Chapter 10. Bundling for Production")
+    , *Bundling for Production*, depending on your application's usage patterns and
+    how it is structured, it may be better performance-wise to have different parts
+    of the application bundled separately, and to have some of those bundles loaded
+    only when needed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Configuration of lazy-loaded bundles is done in the `package.json` file:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: In this example, we bundle all components and models from the `contacts` feature
+    of our contacts management application in a distinct, lazy-loaded bundle. With
+    this configuration, the `contacts` bundle would be loaded from the server only
+    when a user navigates to one of the contacts' route components.
+  prefs: []
+  type: TYPE_NORMAL
+- en: As for dependency inclusion, a lazy-loaded bundle will behave just like an entry
+    bundle. In addition to the modules listed in its configuration, a lazy-loaded
+    bundle will also contain all dependencies that were not already included in any
+    of the entry bundles. This means that if you `import` stuff from an external library
+    only inside a module that is included in a given bundle and nowhere else in your
+    application, and if you don't include this external library in one of the entry
+    bundles, the library will be included in your lazy-loaded bundle. This is an important
+    thing to consider when optimizing your application's bundling.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Environment-based configuration
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The Webpack skeleton uses an environment variable named `NODE_ENV` in order
+    to customize the bundling process based on the context. This environment variable
+    is set to either `development`, `test`, or `production` by the tasks described
+    in `package.json`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If you take a look in the `webpack.config.js` file, you will see a `switch`
+    statement which generates a Webpack configuration object based on the environment.
+    This is where you can customize bundling depending on the environment.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'For example, if you use the `aurelia-i18n` plugin, you may want to copy the
+    `locales` directory to the `dist` directory when you build your application. The
+    simplest way to do this is to add the following line to both production and development
+    configurations:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`webpack.config.js`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Additionally, if you want to use the `aurelia-testing` plugin, either to use
+    the component tester in your unit tests or to use the `view-spy` and `compile-spy`
+    attributes for debugging purposes, you should install it using NPM and add it
+    to the `aurelia` bundle for both `test` and `development` environments:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`webpack.config.js`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: Configuring Webpack can be complicated and intimidating at first. The Webpack
+    skeleton uses `easy-webpack` ([https://github.com/easy-webpack/core](https://github.com/easy-webpack/core))
+    to simplify this configuration process. Another huge advantage of using `easy-webpack`
+    is that it enforces community standards, and it makes reusing complex snippets
+    of configuration pretty easy.
+  prefs: []
+  type: TYPE_NORMAL
+- en: As such, you can use one of the many configuration modules available at [https://github.com/easy-webpack](https://github.com/easy-webpack) 
+    or others, or even your own, to customize further Webpack's configuration.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Even though it is not the preferred bundler for Aurelia, Webpack is already
+    well supported. Moreover, whether it is bundled using Webpack or the CLI, an Aurelia
+    application doesn't change much itself, it is mostly the infrastructure code around
+    that changes. This makes migrating from one bundler to another much simpler.
+  prefs: []
+  type: TYPE_NORMAL

@@ -1,0 +1,1022 @@
+- en: Chapter 8. Internationalization
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: When it comes to internationalization in JavaScript, `i18next` is one of the
+    most well-known, widely used libraries. It offers a rich set of features, such
+    as pluggable translation loaders, caching, user language detection, and pluralization.
+    That's probably why the Aurelia team built the `aurelia-i18n` library on top of
+    it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The purpose of this chapter is not to explain `i18next` in detail, but more
+    to explore the `aurelia-i18n` layer itself. As for the details of `i18next`, the
+    official website has extensive documentation, and I strongly suggest you look
+    it up if you are not familiar with it: [http://i18next.com/](http://i18next.com/).'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Setting things up
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The `aurelia-i18n` library and the underlying `i18next` library both need to
+    be installed and configured before they can be used. Let's see how this goes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Installing the libraries
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The first thing to do is to install `aurelia-i18n` and `i18next` by opening
+    a console in the project''s directory and running the following command:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: The `i18next` library uses an abstraction layer to load translation data. In
+    `i18next` terminology, this is named a backend. This abstraction layer allows
+    for different translation-loading strategies.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The most common way to store and retrieve translation data is in JSON files,
+    somewhere among the application''s files. As such, we''ll install the `i18next-xhr-backend`
+    implementation, which uses `XMLHttpRequest`s to fetch JSON files containing the
+    translations from the server:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Of course, the bundler needs to know about those new libraries. As such, in
+    the `aurelia_project/aurelia.json` file, in the `build` section, under `bundles`,
+    let''s add the following entries to the `dependencies` of the bundle named `vendor-bundle.js`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: Configuring the plugin
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'We also need to load and configure the plugin in our main `configure` function:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`src/main.js`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here we start by importing the `Backend` class from the `i18next-xhr-backend`
+    library. Next, we add a call to the `plugin` function to load `aurelia-i18n` and
+    configure it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The configuration function receives as a parameter the single instance of `I18N`
+    class of `aurelia-i18n`, which acts as a facade, grouping and standardizing the
+    API. It starts by telling `i18next` to use the `Backend` class of `i18next-xhr-backend`,
+    which will be responsible for fetching the JSON translation files from the server.
+    Next, it calls the `I18N` class's `setup` method with a bunch of options. Those
+    options will be used to configure the plugin, but will also be used behind the
+    scenes to configure `i18next`. This means that any option you would normally pass
+    to the `init` method of `i18next`, you can pass to this `setup` method.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Here are the most important options:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`backend.loadPath`: The path used to load the translation files. The `{{lng}}`
+    placeholder will be replaced by the language for which the translations must be
+    loaded, and the `{{ns}}` placeholder will be replaced by the namespace for which
+    the translations must be loaded.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`lng`: The default language.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`fallbackLng`: The language to fall back to in case a given key doesn''t exist
+    in the current language.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`debug`: When set to `true`, the logs in the browser console will be more verbose.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Creating the translation file
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The `i18next` library allows us to segregate translations with namespaces,
+    which are logical groups of translations. Its default namespace is named `translation`.
+    If we look at the `backend.loadPath` option, we can easily see where our translation
+    files should live:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`locales/en/translation.json`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here, we simply create a JSON file containing an empty object. We'll add translations
+    to it later on.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Polyfilling the Intl API
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The `aurelia-i18n` plugin uses `i18next` for translations, but relies on the
+    native Intl API for some other tasks, such as number and date formatting. However,
+    some browsers, mostly mobile ones, don't support this API yet. As such, you may
+    need to add a polyfill if you want to support those browsers. [https://github.com/andyearnshaw/Intl.js/](https://github.com/andyearnshaw/Intl.js/)
+    is the one recommended in the official documentation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting and setting the current locale
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In addition to various view resources, which we'll see later in this chapter,
+    the `aurelia-i18n` exports an `I18N` class, which acts as a facade over various
+    APIs such as `i18next` and the native Intl API.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s see how we can use this API to get and set the current locale by creating
+    a `locale-picker` custom element, which will allow the user to change the current
+    locale:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`src/resources/elements/locale-picker.html`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: In this template, we start by adding a `select` element, whose value will be
+    bound to the `selectedLocale` property, and which will be disabled when the `isChangingLocale`
+    property is `true`. In the `select` element, we render one `option` for each value
+    in the `locales` array. The `value` of each `option` is bound to its `locale`
+    value, and the text of each option will be the `locale` itself, rendered using
+    a string interpolation expression.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Next, we need to add the view-model, which will bridge this template with the
+    `I18N` API:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`src/resources/elements/locale-picker.js`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: First, this class's constructor starts by receiving the `I18N` instance, then
+    uses its `getLocale` method to retrieve the current locale and initialize the
+    `selectedLocale` property. This property being `bindable`, the template declaring
+    an instance can, however, data-bind to it to override its default value.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Next, the property change handler `selectedLocaleChanged`, which will be called
+    by the templating engine when the `selectedLocale` property changes, sets the
+    `isChangingLocale` to `true` so the `select` element is disabled, then calls the
+    `setLocale` method of `I18N`. This method is asynchronous because it may have
+    to load a new translation file from the server, so it returns a `Promise`, which
+    we listen for completion to set `isChangingLocale` back to `false`, so the `select`
+    element is re-enabled.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Since our locale picker supports English and French by default, we need to
+    add another translation file for French, containing an empty object:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`locales/fr/translation.json`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We can now use this custom element in the `app` component:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`src/app.html`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: Of course, if you run the application at this point, nothing gets translated
+    when you change the current locale; text translations must be added to the templates
+    first.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Translating
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The `aurelia-i18n` library offers many different ways to translate texts. In
+    this section, we will see what our options are.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using attributes
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The simplest way to translate text in a template is to use the translation attribute,
+    named `t`. Let's illustrate this by translating our **Not Found** page.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We will start by moving the texts to the translation files:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`locales/en/translation.js`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: '`locales/fr/translation.js`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: As you can see, with translations being JSON structures, we can use nested keys
+    without any problem.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To statically display a translated text inside an element, you just need to
+    add the `t` attribute to the element and set its value to the path of the translation
+    key:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`src/not-found.html`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Upon rendering, the attribute will look the key up in the translation file
+    for the current locale and will assign the translated value to the element''s
+    text content. After rendering, the DOM will look like this if the current locale
+    is English:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'It is also possible to translate the value of an attribute using `t`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: By prefixing the key with the name of an attribute between square brackets,
+    the `t` attribute will assign the translated value to this attribute and not to
+    the element's text content. Here, the value of the translation key, `contacts.firstName,`
+    will be assigned to the `placeholder` attribute of `input`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Additionally, it is possible to translate to multiple targets on a single element,
+    by separating the instructions with semicolons:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here, the value of the `help` key will be assigned to the `title` attribute,
+    and the value of `text` will be assigned to the element's text content. Of course,
+    it is also possible to translate multiple attributes using the same technique.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Finally, the `t` attribute monitors the current locale. When it changes, the
+    output will be automatically updated using the new locale.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Passing parameters
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Since `i18next` supports passing parameters to a translation, you can bind to
+    the `t-params` attribute to pass an object containing parameters for the translation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s imagine the following translation:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Passing the `name` parameter to this translation using attributes would look
+    like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: After rendering, the `p` element would contain the text `Hi Chuck, welcome back!`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using the value converter
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'An alternative to the `t` attribute is the `t` value converter. It can be used
+    in any binding expression, including string interpolations, so in some circumstances
+    it can be more convenient than the attribute:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here, the `t` value converter will look the `explanation` translation key up
+    in the translation file and will output its value.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Its usage is not limited to string interpolation. It also works in other binding
+    expressions:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here, the `title` attribute will contain the translation of the `explanation`
+    key.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Passing parameters
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The value converter accepts an object containing parameters for the translation
+    as its first parameter.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s imagine the following translation:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Using this translation with the value converter would look like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs: []
+  type: TYPE_PRE
+- en: After rendering, the `p` element would contain the text `Hi Chuck, welcome back!`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using the binding behavior
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The value converter is, however, not useful at all if your application allows
+    you to change the language during its life cycle. Because of how value converters
+    work, the `t` value converter can't know that it must reevaluate its value, because
+    it can't be notified when the current locale changes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: That's where the `t` binding behavior comes in. The `t` binding behavior simply
+    decorates its binding instruction with the `t` value converter when it is applied.
+    So, why not simply use the value converter?
+  prefs: []
+  type: TYPE_NORMAL
+- en: Remember the `signal` binding behavior we saw in [Chapter 3](ch03.html "Chapter 3. Displaying
+    Data"), *Displaying Data*? Well, the `setLocale` method of `I18N` actually triggers
+    the `aurelia-translation-signal` binding signal, and the `t` binding behavior
+    listens for it. When the current locale changes, all active `t` binding behaviors
+    force their binding expression to reevaluate, so the underlying value converter
+    for each binding expression can be applied using the new locale.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Passing parameters
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Any parameter object passed to the binding behavior will be passed to the underlying
+    value converter, so the value converter example also works with the binding behavior:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE21]'
+  prefs: []
+  type: TYPE_PRE
+- en: Using code
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Of course, all those various ways to translate a key rely on the same `I18N`
+    method:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE22]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'For example, given that `i18n` is an instance of `I18N`, translating the same
+    `message` key in JS code would look like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE23]'
+  prefs: []
+  type: TYPE_PRE
+- en: Choosing one technique over another
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We just saw four different ways to do the same thing. It may prove difficult
+    at first to decide in what circumstances one technique fits best over the others.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `t` attribute is an artefact coming from `i18next`. When used on its own,
+    outside of Aurelia, `i18next` uses this attribute to translate texts within a
+    DOM tree. The `aurelia-i18n` library probably supports it just so people experienced
+    with `i18next` can keep using it like they always did. However, inside an Aurelia
+    application, it cannot be used in every scenario; for example, it doesn't work
+    well on custom elements, as it overwrites the element's content.
+  prefs: []
+  type: TYPE_NORMAL
+- en: As a rule of thumb, when translating inside a template, I always go with the
+    binding behavior technique. Since the `t` attribute and the `t` value converter
+    have such important limitations, this technique is the most flexible one, and
+    I can be consistent by using the same technique across the whole application.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If the application has only one language, or if the user cannot change the current
+    language once the application is started, then one could use the value converter
+    technique. However, I don't see the real benefits. Although its memory footprint
+    is probably a little smaller than the binding behavior's, the gain won't be major,
+    and if the context changes and the application suddenly needs to support locale
+    changes, every single instance of the value converter will have to be replaced
+    by the binding behavior, everywhere. As such, using the value converter can be
+    a somewhat reckless gamble in most cases.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Finally, I directly use the API when I need to translate texts in JS code, in
+    which case the `I18N` instance can easily be injected in the class needing it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Those guidelines apply for translation, but also for the formatting features
+    described in the following sections.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Formatting numbers
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: As mentioned previously, `aurelia-i18n` also relies on the native Intl API to
+    offer number formatting.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Since the library uses the Intl API, I strongly suggest you look it up if you
+    are not familiar with it. The Mozilla Developer Network has an extensive documentation
+    on the subject: [https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using the value converter
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The simplest way to format a number is to use the `nf` value converter:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE24]'
+  prefs: []
+  type: TYPE_PRE
+- en: It simply creates an `Intl.NumberFormat` instance using the current locale and
+    calls its `format` method, passing the `1234` value to it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'It can also be passed an `Intl.NumberFormat` instance directly:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE25]'
+  prefs: []
+  type: TYPE_PRE
+- en: In such a case, the passed `Intl.NumberFormat` instance will be used directly
+    to `format` the value.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Finally, it can be passed an options object and, optionally, a locale or an
+    array of locales:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE26]'
+  prefs: []
+  type: TYPE_PRE
+- en: In such a case, an `Intl.NumberFormat` instance will be created to `format`
+    the value using the options and the locale(s). If no locale is passed, the current
+    locale will be used.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using the binding behavior
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The `nf` value converter has the same problem that the `t` value converter
+    has: if the current locale changes, it has no way of being notified. As such,
+    if the application allows you to change the language during its life cycle, the
+    `nf` binding behavior should be used instead:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE27]'
+  prefs: []
+  type: TYPE_PRE
+- en: It works the exact same way as the `t` binding behavior, listening for the `aurelia-translation-signal`
+    binding signal and forcing its binding expression to reevaluate when the signal
+    is emitted.
+  prefs: []
+  type: TYPE_NORMAL
+- en: It also works the same way by decorating its binding instruction with an `nf`
+    value converter behind the scenes, and passing all its parameters back to it,
+    so it supports the same parameters as the value converter.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using code
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Behind the scenes, the value converter relies on the `nf` method of `I18N`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE28]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This method simply creates an `Intl.NumberFormat` instance using the provided
+    options and locale(s), and returns it. If no locale is passed, the current locale
+    is used:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE29]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here, we call the `nf` method to create an `Intl.NumberFormat` instance using
+    the provided options and the current locale, then we call the resulting `Intl.NumberFormat`
+    object's `format` method.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Formatting dates
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The Intl API also includes date formatting features. As such, `aurelia-i18n`
+    encapsulates those features to make it simpler to work with the current locale.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using the value converter
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The `df` value converter works pretty much the same as the `nf` value converter:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE30]'
+  prefs: []
+  type: TYPE_PRE
+- en: The value on which it applies is expected to be either a `Date` object or a
+    `string`, which will be transformed into a `Date` object using the `Date(string)`
+    constructor.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The `df` value converter works just like `nf` behind the scenes, except that
+    it works with the `Intl.DateTimeFormat` class. This means that it can accept an
+    instance of `Intl.DateTimeFormat` as a parameter:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE31]'
+  prefs: []
+  type: TYPE_PRE
+- en: In such a case, the `format` method will be called directly on the provided
+    `Intl.DateTimeFormat` instance.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'It can also accept an options object and, optionally, a locale or an array
+    of locales:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE32]'
+  prefs: []
+  type: TYPE_PRE
+- en: In such a case, an `Intl.DateTimeFormat` instance will be created to `format`
+    the value using the options and the locale(s). If no locale is passed, the current
+    locale will be used.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using the binding behavior
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The `df` value converter has the same issue as the `t` and the `nf` value converters:
+    it cannot know when the current locale changes, so it cannot re-evaluate its output.
+    As such, the `df` binding behavior should be used when the locale can be changed
+    during the life cycle of the application:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE33]'
+  prefs: []
+  type: TYPE_PRE
+- en: It works the same way as the `t` and the `nf` binding behaviors, it decorates
+    its binding expression with the `df` value converter, and forces it to re-evaluate
+    its value when the `aurelia-translation-signal` is emitted.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Additionally, it passes its parameters to its underlying value converter, so
+    it supports the same signatures as the `df` value converter.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using code
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The value converter relies on the `I18N` class''s `df` method to format dates:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE34]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Similarly to the `nf` method, it simply creates an instance of `Intl.DateTimeFormat,`
+    using the provided options and locale(s), and returns it. If no locale is provided,
+    the current locale is used:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE35]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here, we call the `df` method to create an `Intl.DateTimeFormat` instance using
+    the provided options and the current locale, then we call the resulting `Intl.DateTimeFormat`
+    object's `format` method.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Formatting relative time
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The `aurelia-i18n` library also provides a service to format time relatively
+    to the current system time. It allows you to output human-friendly time deltas
+    such as `now`, `5 seconds ago`, `2 days ago`, and so on.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using the value converter
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The simplest way to display a human-friendly time delta is to use the `rt`
+    value converter:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`src/contacts/components/details.html`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE36]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here, the output could be something like `5 days ago`, depending on the value
+    of `contact.modifiedAt` and the current system time.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The value on which the converter applies is expected to be either a `Date` object
+    or a `string`, which will be transformed into a `Date` object using the `Date(string)`
+    constructor.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Periodically refreshing the value
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'The previous example has a little problem: the output of `rt` is relative to
+    the current time but never gets updated. It will seem kind of strange to the user
+    to see `5 seconds ago` displayed forever.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Typically, the `rt` value converter will be used with the `signal` binding
+    behavior:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`src/contacts/components/details.html`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE37]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Of course, this means that we need to emit the `rt-update` signal somewhere,
+    probably from the view-model:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`src/contacts/components/details.js`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE38]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here, we start by having a `BindingSignaler` instance injected in the view-model.
+    Then, once the contact is loaded, we start emitting an `rt-update` signal every
+    second using the `setInterval` function. Each time the signal is emitted, the
+    `signal` binding behavior in the view will refresh the binding and reapply the
+    `rt` value converter to `contact.modifiedAt`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We also prevent a memory leak by stopping the emission of the signal when the
+    component is deactivated using the `clearInterval` function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This code still has a problem: the binding will be refreshed with a delay if
+    the current locale changes. This is easy to fix:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`src/contacts/components/details.html`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE39]'
+  prefs: []
+  type: TYPE_PRE
+- en: We simply need to listen for the `aurelia-translation-signal` in addition to
+    the `rt-update` signal. The former signal is emitted by `I18N` every time the
+    current locale changes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now the displayed time delta for `contact.modifiedAt` will be refreshed every
+    second, and will also be updated when the current locale changes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using code
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The value converter relies on a distinct class, named `RelativeTime`, which
+    is exported by `aurelia-i18n` and offers the following method:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE40]'
+  prefs: []
+  type: TYPE_PRE
+- en: This method simply calculates the difference between the provided `time` and
+    the current system time, and uses a built-in set of translations to return a human-friendly
+    text using the current locale.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If for some reason you need to transform a date in a human-friendly relative
+    time from some JS code, you can easily inject an instance of `RelativeTime` in
+    your class and use its `getRelativeTime` method.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Translating our contact management application
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: At this point, you have all the tools needed to completely internationalize
+    our contact management application except for the validation messages and document
+    titles, which require integration with `aurelia-validation` and `aurelia-router`
+    and are covered in the following sections.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Showing how to internationalize every template in the application would take
+    too long and be pretty tedious, so I'll leave it as an exercise to the reader.
+    As usual, this chapter's sample application can be used as a reference.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The following section assumes that you have internationalized everything that
+    can be in your working copy of the application. If you skip doing this manually,
+    I strongly suggest that you get an up-to-date copy of the code from the `chapter-8/samples/app-translated`
+    directory in the book's assets.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Integrating with validation
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: If you add internationalization to an application that uses `aurelia-validation`,
+    you'll want to translate the error messages. This section explains how to integrate
+    both libraries together to achieve that.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Overriding ValidationMessageProvider
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The validation library uses a `ValidationMessageProvider` class to retrieve
+    error messages. Let''s extend this class and use `I18N` to get messages from a
+    translation file:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`src/validation/i18n-validation-message-provider.js`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE41]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here, we start by having a `ValidationParser` instance, which is needed by the
+    `ValidationMessageProvider` base class, and an `I18N` instance injected in the
+    constructor. We also define as `options` the prefixes to use when building the
+    key before performing a translation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Next, we override the `getMessage` method, in which we build a translation key,
+    then ask the `I18N` instance to translate it. Since the `tr` method ultimately
+    falls back to returning the key if no translation was found for it, we use the
+    translation only if one was found by comparing the result to the key. Otherwise,
+    we fall back to using the base implementation of `getMessage`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: When building the translation key, if the key doesn't contain any dot or colon,
+    we prefix it with the default prefix of `options`, because we consider that the
+    key will be the name of the validation rule, which is the default behavior. However,
+    our `getMessage` implementation allows for validation rules to define a custom
+    message key, which can be a custom translation path to get the message text from
+    another area or namespace in the translation files.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The `getDisplayName` method follows a similar process: we prefix the key with
+    the default prefix of `options`, translate it, then use the translation, if one
+    is found, or fall back to the base implementation if not.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: By default, we'll consider that all validation translations will live under
+    a common `validation` object, which will contain all error messages under a `messages`
+    object, and all property display names in a `properties` object. Those path prefixes
+    are the default values stored on the `options` object.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This `options` object could prove useful if some part of the application needs
+    to look its validation keys up in a different part of the translation files; in
+    such a case, this area in the application could define its own, customized instance
+    of `I18nValidationMessageProvider`, using different `options` values.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The next step is to tell the validation system to use this class instead of
+    the default `ValidationMessageProvider`. The best place to do this is in the `validation`
+    feature''s `configure` function:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`src/validation/index.js`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE42]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here, we simply tell the DI container that an instance of `I18nValidationMessageProvider`
+    should be used in place of `ValidationMessageProvider`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Adding the translations
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Now that the validation system knows where to get the translated error messages
+    and property display names, let''s add the proper translations:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`locales/en/translation.json`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE43]'
+  prefs: []
+  type: TYPE_PRE
+- en: The keys under `messages` are the standard rules supported natively by `aurelia-validation`
+    at the time of writing, along with the messages for the custom rules we defined
+    in our `validation` feature. Those under `properties` are the display names of
+    each property used in the application. As for the French translations, you can
+    get them from this chapter's sample application.
+  prefs: []
+  type: TYPE_NORMAL
+- en: At this point, if you run the application, click the **New** button, and, for
+    example, put gibberish in the **Birthday** textbox then try to save, you should
+    see a translated error message appear. However, if you change the current locale
+    using the locale picker at the top right of the viewport, the validation error
+    won't be refreshed with the new locale.
+  prefs: []
+  type: TYPE_NORMAL
+- en: To achieve this, the `ValidationController` instance needs to be told to revalidate
+    when the current locale changes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Refreshing validation errors
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In order to refresh the validation errors, the contact creation view-model must
+    subscribe to an event named `i18n:locale:changed`, which is published through
+    the application's event aggregator by the `I18N` instance when the current locale
+    is changed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The event aggregator, being part of Aurelia''s default configuration, is already
+    installed and loaded, so we don''t need to do anything more to use it in our application.
+    We can directly update our `creation` view-model:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`src/contacts/components/creation.js`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE44]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here, we simply subscribe to the proper event and trigger validation when the
+    current locale changes. Of course, we also dispose the subscription when the component
+    is deactivated, to prevent a memory leak.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If you again try to save a new contact with invalid data, then change the locale
+    while validation errors are displayed, you should see the messages be refreshed
+    with the new locale on the fly.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Integrating with the Router
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: You may have noticed that we have completely overlooked translation of the document
+    title, the one displayed in the browser's top bar. Since this title is controlled
+    by the `aurelia-router` library, we need to find some way to integrate the routers
+    with the `I18N` service.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In fact, this is pretty easy to do. The `Router` class offers an integration
+    point specifically designed for this kind of scenario:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`src/main.js`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE45]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here, we first import the `Router` class from the `aurelia-router` library and
+    the `EventAggregator` class from the `aurelia-event-aggregator` library. Next,
+    when the `Promise` returned by the `setup` method of `I18N` resolves, we retrieve
+    the application's root router instance and we set its `transformTitle` property
+    to a function that will take a route's title in and translate it using `tr` method
+    of `I18N`. We also retrieve the event aggregator and subscribe to the `i18n:locale:changed`
+    event. When this event is published, we call the router's `updateTitle` method.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Of course, we need to replace all of the titles with translation keys and add
+    those to the translation files. I''ll leave this as an exercise for the reader;
+    however, here''s a quick list of where those titles must be changed:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The application's main title, set in the `app` component's `configureRouter`
+    method (in `src/app.js`)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The title of the `contacts` feature's main route, added to the router in the
+    contact's `configure` function (in `src/contacts/index.js`)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The title of the first two routes defined in the contacts `main` component (in
+    `src/contacts/main.js`)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: This chapter's completed sample can be used as a reference.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If you go ahead and test this, the document title should be correctly translated.
+    It should also be updated accordingly when changing the current locale.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Segregating translations by feature
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Since the beginning of the book, one of our goals was to keep the features in
+    our application as decoupled as possible. The way we internationalized our application
+    in this chapter completely violates that rule.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There are ways to split the translation files by feature using namespaces, which
+    are an `i18next` feature. However, this adds another layer of complexity to our
+    application. This should make us reevaluate our architectural choices. Are the
+    benefits we get from having decoupled features worth the continuously increasing
+    complexity they add? The question is very much worth asking.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If the answer to that question is still yes, and if you are curious about how
+    this can be done, you can take a look at the sample application under `chapter-8/samples/app-translations-by-feature`
+    in the book's assets, which implements this segregation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Internationalization is often overlooked as being a simple topic, but as we
+    have seen in this chapter, it has impacts at many levels in an application. It
+    can force a team to rethink some architectural decisions if translation is added
+    late in a project.
+  prefs: []
+  type: TYPE_NORMAL
+- en: However, a well-designed and powerful internationalization library can greatly
+    help with those tasks. Building on a renowned translation library, `i18next,`
+    and on a new web standard, the Intl API, `aurelia-i18n`, is such a library.
+  prefs: []
+  type: TYPE_NORMAL

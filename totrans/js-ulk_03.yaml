@@ -1,0 +1,554 @@
+- en: Chapter 3. DOM Scripting and AJAX
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: When it comes to **Document Object Model** (**DOM**) manipulation and AJAX,
+    the first instinct could be to use jQuery or Zepta. But doesn't it bother you
+    that you load a weighty third-party library for common tasks, when a browser provides
+    everything that you need? Some people pulled in jQuery for cross-browser compatibility.
+    Well, the library is known to fix the *broken DOM API*. This was really helpful
+    when we supported browsers as old as IE7\. However, today we hardly need to care
+    about legacy browsers when their usage share is less than 0.1 percent ([http://www.w3schools.com/browsers/browsers_explorer.asp](http://www.w3schools.com/browsers/browsers_explorer.asp)).
+    Modern browsers are quite consistent in the support of Web API. By and large,
+    cross-browser compatibility is not an issue anymore.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The second and the most common excuse is that the library simplifies the amount
+    of code you have to write to query and manipulate the DOM. It really simplifies
+    the code to some degree, but the drawback is that nowadays we have a generation
+    of developers who don't know JavaScript and Web API, but only jQuery. Many of
+    them cannot solve a simple task without the library and have no idea what actually
+    happens when they call the library methods. Good code means portability and high
+    performance. One can hardly achieve this without a knowledge of native API.
+  prefs: []
+  type: TYPE_NORMAL
+- en: So in this chapter, we will examine the native way of dealing with DOM and AJAX
+    with a focus on high-performance.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This chapter will cover the following topics:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: High-speed DOM operations
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Communication with the server
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: High-speed DOM operations
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In order to deal with the DOM efficiently, we need to understand its nature.
+    The DOM is a tree structure that represents the document that is open in the browser.
+    Every element of the DOM is an object that is called node.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![High-speed DOM operations](img/00007.jpeg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'Every node being an object has properties and methods ([https://developer.mozilla.org/en/docs/Web/API/Node](https://developer.mozilla.org/en/docs/Web/API/Node)).
+    There are different types of node. In the preceding image, you can see a document
+    node, element nodes, and text nodes. In reality, the tree may also contain specific
+    node types such as comment nodes, doctype nodes, and others. To illustrate the
+    relationships within the tree, we can say that HTML has two child nodes **HEAD**
+    and **BODY**, which relate to each other as siblings. Obviously, HTML is the parent
+    node to HEAD and BODY. We can use these relations that are accessible via node
+    properties to navigate through the tree:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This part is clear, but if we request the next sibling to be HEAD instead of
+    BODY. we will get a text node with whitespaces in the content (`nodeValue`):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: In HTML, we usually separate elements with spaces, TABs, and LineFeeds for better
+    readability and these also form a part of DOM. So to access elements, we rather
+    use document and element methods.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Traversing the DOM
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Surely you know how to find an element by ID (`document.getElementById`) or
+    by tag name (`document.getElementsByTagName`). You can also search for an element
+    by a CSS selector (`document.querySelector`):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'A selector builds from one or many type (tag) selectors, class selectors, ID
+    selectors, attribute selectors, or pseudo-class/element selectors ([http://www.w3.org/TR/CSS21/selector.html%23id-selectors](http://www.w3.org/TR/CSS21/selector.html%23id-selectors)).
+    Considering the combinations (to match a group, descendants, or siblings), this
+    gives quite a number of possible options. So it can be hard to pick a strategy
+    to bind HTML elements from JavaScript. My advice would be to always use the `data-*`
+    attribute selectors:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: This way we are independent from the HTML structure. If we change tags, for
+    example for better semantics, nothing breaks on the JavaScript side. We are independent
+    from CSS classes and this means that we can safely refactor CSS. And we are not
+    limited by ID, which is supposed to be unique per document.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'While `querySelector` takes the first element in the DOM to match the selector,
+    `querySelectorAll` retrieves all of them:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The found elements are represented as a `NodeList`. It looks like an array,
+    but it''s not. It''s a live collection that is being updated with every DOM reflow.
+    Consider the following example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: The preceding code causes an infinite loop, because whenever we access the next
+    element of the collection, one new element is appended to the collection, `divs.length`
+    incremented, and we never meet the loop condition.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'It''s important to know that an iteration through a live collection (`NodeList`,
+    `HTMLCollection`) is slow and considerably resource-expensive. If you don''t need
+    it to be live, just convert the collection into an array such as `[].slice.call(
+    nodeList )`, as covered in [Chapter 1](part0014_split_000.html#DB7S2-f4ff6b81796e4f78aa983a623fb95daf
+    "Chapter 1. Diving into the JavaScript Core"), *Diving into JavaScript Core*.
+    In ES6, this can be done with the `[...nodeList]spread` operator:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'In addition to querying, we can test whether a found element matches a given
+    selector:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: Changing the DOM
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Well, now we know how to find elements in the DOM. Let''s see how we can dynamically
+    insert new elements into the DOM tree. There are different ways. We can simply
+    set new HTML content with the `el.innerHTML` method:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Otherwise, we can create a node (`document.createElement`) and inject it into
+    the DOM (`el.appendChild`):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here you should remember that every time we change `el.innerHTML` or append
+    a child to an element, we cause DOM reflow. When this happens repeatedly in a
+    loop, it can slow down the application.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'When we pass HTML via `el.innerHTML`, the browser first has to parse the string.
+    It''s a resource-consuming operation. However, this will go much faster if we
+    create elements explicitly. If we are producing a batch of similar elements, the
+    flow can be optimized further. Instead of creating every element in a loop, we
+    can clone the one created originally (`el.cloneNode`), which is way faster:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: On the other hand, we can create a document fragment (`document.createDocumentFragment`)
+    and during the loop append the created nodes to the fragment. Document fragment
+    is a sort of a virtual DOM, which we manipulate instead of the real one. Once
+    we're done, we can inject the document fragment as a branch to the real DOM. By
+    combining this technique and cloning, we are supposed to gain in terms of performance.
+    In effect, this is not certain ([http://codepen.io/dsheiko/pen/vObVOR](http://codepen.io/dsheiko/pen/vObVOR)).
+    For example, in WebKit browsers, virtual DOM (`document.createDocumentFragment`)
+    runs slower than the real one.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'As we''ve done with performance, let''s focus on accuracy. If we need to inject
+    an element to an exact position (for example, between the `foo` and `bar` nodes),
+    `el.appendChild` isn''t the right method. We have to go with `el.insertBefore`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'To remove a particular element from the DOM, we do the following trick:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'In addition, we can reload an element, for example, to reset all the subscribed
+    listeners:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: Styling the DOM
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'When it comes to styling, we have to go with CSS classes wherever it is possible.
+    This provides better maintainability—inheritance, composition, and concern separation.
+    You surely know how to assign intended classes to an element via the `el.className`
+    property. However, in the real world, the `el.classList` object is much more useful:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here, in addition to the obvious add/remove/contains methods, we also use `toggle`.
+    This method either adds or removes the specified class depending on the Boolean
+    passed as the second argument.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Sometimes we need to manipulate styles explicitly. A part of DOM that is called
+    **CSS Object Model** (**CSSOM**) provides an interface to manipulate the CSS.
+    Thus, we can read or set dynamic styling information on an element using the `el.style`
+    property:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'A lesser known technique is to change the actual text of the style rule:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: As you can see, the second approach is not that flexible. You cannot change
+    or access a single declaration, but only the entire rule. However, styling this
+    way is substantially faster ([http://codepen.io/dsheiko/pen/qdvWZj](http://codepen.io/dsheiko/pen/qdvWZj)).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'While `el.style` comprises explicit styles of an element, `window.getComputedStyle`
+    returns inherited (computed) styles:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The cases we''ve just examined refer to inline styles. In fact, we can access
+    external or internal stylesheets as well:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Why would we do so? There are special cases. For example, if we want to modify,
+    let''s say, pseudo-element style, we have to involve stylesheets:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs: []
+  type: TYPE_PRE
+- en: Making use of attributes and properties
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'HTML elements have attributes and we can access them from JavaScript:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'While element attributes are defined by HTML, the properties are defined by
+    DOM. And this makes a difference. For example, if you have an input, initially
+    both attribute and property (`el.value`) has the same value. However, when a user
+    or a script changes the value, the attribute is not affected but the property
+    is:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE21]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'As you may likely know, in addition to global attributes, there is a special
+    type—custom data attributes. These attributes are meant to provide an exchange
+    of proprietary information between the HTML and its DOM representation, which
+    is used by scripts. The general idea is that you define a custom attribute such
+    as `data-foo` and set a value to it. Then from a script, we access and change
+    the attribute using the `el.dataset` object:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE22]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'If you define a multipart attribute such as `data-foo-bar-baz`, the corresponding
+    `dataset` property will be `fooBarBaz`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE23]'
+  prefs: []
+  type: TYPE_PRE
+- en: Handling DOM events
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Plenty of events happen in the browser. It can be device events (for example,
+    the device changes position or orientation), window events (for example, window
+    size), a process (for example, page loading), media events (for example, video
+    paused), network events (connection status changed), and of course, user interaction
+    events (click, keyboard, mouse, and touch). We can make our code listen to these
+    events and call the subscribed handler functions when the events occur. To subscribe
+    for an event on a DOM element, we use the `addEventListener` method:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE24]'
+  prefs: []
+  type: TYPE_PRE
+- en: In the preceding code, `EventTarget` can be a window, document, an element,
+    or other objects such as `XMLHttpRequest`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`useCapture` is a Boolean by which you can specify the way you want the event
+    to propagate. For example, a user clicks a button, which is in a form, and we
+    have subscribed handlers to both elements for this click event. When `useCapture`
+    is `true`, the handler of the form element (`ancestor`) will be called first (`capturing
+    flow`). Otherwise, forms handler will be called after the button''s handler (`bubbling
+    flow`).'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`callback` is a function that is called when an event fires. It receives the
+    `Event` object as an argument, which has the following properties:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`Event.type`: This is the name of the event'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`Event.target`: This is the event target on which the event occurred'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`Event.currentTarget`: This is the event target to which the listener was attached
+    (`target` and `currentTarget` may differ when we attach the same event handler
+    to multiple elements as mentioned at [https://developer.mozilla.org/en-US/docs/Web/API/Event/currentTarget](https://developer.mozilla.org/en-US/docs/Web/API/Event/currentTarget))'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`Event.eventPhase`: This indicates which phase of the event flow is being evaluated
+    (none, capturing, at target, or bubbling)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`Event.bubbles`: This indicates whether or not the event is a bubbling one'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`Event.cancelable`: This indicates whether or not the default action for the
+    event can be prevented'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`Event.timeStamp`: This specifies the event time'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Event also has the following methods:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`Event.stopPropagation()`: This stops further propagation of the event.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`Event.stopImmediatePropagation()`: If we have multiple listeners subscribed
+    to the same event target, after calling this method none of remaining listeners
+    will be called.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`Event.preventDefault()`: This prevents the default action. For example, if
+    it''s a click event on a button of the submit type, by calling this method we
+    prevent it from submitting the form automatically.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Let''s try it now in practice:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE25]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here, we subscribed an `onClick` listener to a click event on a button element.
+    When the button is clicked, it shows in the JavaScript console the button element
+    that the form isn't submitted.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'If we want to subscribe for keyboard events, we can do this as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE26]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The most common example of process events is the document ready status change.
+    We can listen to the `DOMContentLoaded` or `load` events. The first one is fired
+    when the document has been completely loaded and parsed. The second one also waits
+    for stylesheets, images, and subframes to finish loading. Here, there is a quirk.
+    We have to check `readyState`, because if we register a listener to an event after
+    it has been probably fired, the callback will be never invoked:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE27]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Well, we know how to subscribe to DOM events with the `EventTarget.addEventListener`
+    method. The `EventTarget` objects also have a method to unsubscribe from the listeners.
+    For example, see the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE28]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'If we want to trigger a DOM event, for instance to emulate a button click,
+    we have to create a new `Event` object, set it up, and dispatch on the element
+    when we want the event to fire:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE29]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'In the same way, we can create our custom event:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE30]'
+  prefs: []
+  type: TYPE_PRE
+- en: Communicating with the server
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Many people use third-party libraries to make any request to a server. But do
+    we need these libraries? Let's examine in the following how AJAX can be used natively
+    and what will be the next communication API.
+  prefs: []
+  type: TYPE_NORMAL
+- en: XHR
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '**XMLHttpRequest** (**XHR**) is the main API in JavaScript to exchange data
+    between client and server. XHR was firstly presented by Microsoft in IE5 via ActiveX
+    (1999) and had a proprietary syntax in IE browser until version 7 (2006). This
+    led to compatibility issues that called forth the rise of *AJAX-libraries* such
+    as Prototype and jQuery. Today, support for XHR is consistent across all the major
+    browsers. In general, to perform an HTML or HTTPS request, we have to do a number
+    of tasks. We create an instance of XHR, initialize a request via open method,
+    subscribe listeners to request-dependent events, set request headers (`setRequestHeader`),
+    and eventually call the send method:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE31]'
+  prefs: []
+  type: TYPE_PRE
+- en: More options are available. For example, we can leverage the `progress` and
+    `abort` events to control file uploading ([https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/Using_XMLHttpRequest](https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/Using_XMLHttpRequest)).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'It occurs to me that for a simple call, this interface is overcomplicated.
+    There are a plenty of implementations for XHR wrappers on the Internet. One of
+    the most popular implementations can be found at [https://github.com/Raynos/xhr](https://github.com/Raynos/xhr).
+    It makes the usage of XHR this simple:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE32]'
+  prefs: []
+  type: TYPE_PRE
+- en: Besides, the library provides a mock object that can be used to replace real
+    XHR in unit tests.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Fetch API
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'We just examined the XHR API. This looked fine 15 years ago, but now looks
+    clumsy. We have to use wrappers to make it more friendly. Luckily, the language
+    has evolved and nowadays we have a new built-in method called Fetch API. Just
+    consider how easy it is to make a call with it:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE33]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'In spite of the apparent simplicity, the API is pretty powerful. The `fetch`
+    method expects in the first mandatory argument either a string with a remote method
+    URL or a `Request` object. Request options can be passed in the second optional
+    argument:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE34]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Similar to our previous snippet, the fetch method returns **Promise**. Promises
+    are becoming a common practice for asynchronous or deferred operations. The function
+    called on the Promise-fulfilled event (see then) receives a `Response` object.
+    This function has a number of properties and methods ([https://developer.mozilla.org/en-US/docs/Web/API/Response](https://developer.mozilla.org/en-US/docs/Web/API/Response)).
+    So we can convert the response into JSON, text, blob, or stream with corresponding
+    methods, and we can obtain request-relative information:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE35]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'What about `POST` requests? Fetch has a mixin called `body` that represents
+    the body of the `Response`/`Request`. We can pass the `POST` data through this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE36]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'It accepts not only key-value pairs, but also, for example, `FormData`, so
+    you can submit the whole form including attached files as it is:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE37]'
+  prefs: []
+  type: TYPE_PRE
+- en: At the moment, some of the major browsers (for example, IE/Edge, Safari) don't
+    support this API. However, if you intend to use Fetch API, you can go with the
+    Fetch polyfill ([https://github.com/github/fetch](https://github.com/github/fetch)).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In the past, every browser's vendors had custom DOM implementations that were
+    largely incompatible. However, this has changed, and we have W3C DOM well supported
+    among browsers at least for a decade. Today, we can safely use JavaScript native
+    API to access, manipulate, and style the DOM.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In JavaScript, XHR is still the main API to communicate between a client and
+    a server. It's not quite developer friendly though. So, we usually write custom
+    wrappers for it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: However, a new API called Fetch is proposed and already implemented in Chrome,
+    Firefox, and Opera. This new API is much easier to use, and compared to XHR, it
+    provides a more impressive and flexible features.
+  prefs: []
+  type: TYPE_NORMAL

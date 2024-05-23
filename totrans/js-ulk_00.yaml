@@ -1,0 +1,263 @@
+- en: Preface
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'JavaScript was born as a scripting language at the most inappropriate time—the
+    time of browser wars. It was neglected and misunderstood for a decade and endured
+    six editions. And look at it now! JavaScript has become a mainstream programming
+    language. It has advanced literally everywhere: in large-scale client-side development,
+    server scripting, desktop applications, native mobile programming, game development,
+    DB querying, hardware control, and OS automating. JavaScript acquired a number
+    of subsets such as Objective-J, CoffeeScript, TypeScript, and others. JavaScript
+    is marvelously concise and an expressive language. It features prototype-based
+    OOP, object composition and inheritance, variadic functions, event-driven programming,
+    and non-blocking I/O. However, to exploit the true power of JavaScript, we need
+    to have a deep understanding of language quirks. Moreover, while developing in
+    JavaScript, we will become aware of its numerous pitfalls, and we will need a
+    few tricks to avoid them. The project formerly known as EcmaScript Harmony, was
+    just recently finalized in the specification named EcmaScript 2015, which is more
+    often referred to as ES6\. This not only brought the language to the next level,
+    but also introduced a number of new technologies that require attention.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: This book aims to guide the reader in understanding the upcoming and existing
+    features of JavaScript. It is fully packed with code recipes that address common
+    programming tasks. The tasks are supplied with solutions for classical JavaScript
+    (ES5) as well as for the next generation language (ES6-7). The book doesn't focus
+    only on in-browser language, but also provides the essentials on writing efficient
+    JavaScript for desktop applications, server-side software, and native module apps.
+    The ultimate goal of the author is not just to describe the language, but also
+    to help the reader to improve their code for better maintainability, readability,
+    and performance.
+  prefs: []
+  type: TYPE_NORMAL
+- en: What this book covers
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: '[Chapter 1](part0014_split_000.html#DB7S2-f4ff6b81796e4f78aa983a623fb95daf
+    "Chapter 1. Diving into the JavaScript Core"), *Diving into the JavaScript Core*,
+    discusses the techniques to improve the expressiveness of the code, to master
+    multi-line strings and templating, and to manipulate arrays and array-like objects.
+    The chapter explains how to take advantage of JavaScript prototype without harming
+    the readability your code. Further, the chapter introduces the "magic methods"
+    of JavaScript and gives a practical example of their use.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[Chapter 2](part0021_split_000.html#K0RQ2-f4ff6b81796e4f78aa983a623fb95daf
+    "Chapter 2. Modular Programming with JavaScript"), *Modular Programming with JavaScript*,
+    describes the modularity in JavaScript: what modules are, why they are important,
+    the standard approaches for asynchronously and synchronously loaded modules, and
+    what ES6 modules are. The chapter shows how CommonJS modules are used in server-side
+    JavaScript and how to pre-compile them for in-browser use. It elaborates how asynchronous
+    and synchronous approaches can be combined to achieve a better application performance.
+    It also explains how one can polyfill ES6 modules for production by the means
+    of Babel.js.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[Chapter 3](part0027_split_000.html#PNV62-f4ff6b81796e4f78aa983a623fb95daf
+    "Chapter 3. DOM Scripting and AJAX"), *DOM Scripting and AJAX*, introduces Document
+    Object Model (DOM), shows the best practices to minimize browser reflow, and enhance
+    application performance while operating with the DOM. The chapter also compares
+    two client-server communication models: XHR and Fetch API.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[Chapter 4](part0030_split_000.html#SJGS2-f4ff6b81796e4f78aa983a623fb95daf
+    "Chapter 4. HTML5 APIs"), *HTML5 APIs*, considers the persistence APIs of the
+    browser such as Web Storage, IndexDB, and FileSystem. It introduces Web Components
+    and gives a walk-through of the creation of a custom component. The chapter describes
+    server-to-browser communication APIs such as SSE and WebSockets.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[Chapter 5](part0035_split_000.html#11C3M2-f4ff6b81796e4f78aa983a623fb95daf
+    "Chapter 5. Asynchronous JavaScript"), *Asynchronous JavaScript*, explains the
+    nonblocking nature of JavaScript, elaborates the event loop and the call stack.
+    The chapter considers the popular styles of chaining asynchronous calls and handling
+    errors. It presents the async/await technique of ES7 and also gives examples of
+    running tasks in parallel and in sequence using the Promise API and the Async.js
+    library. It describes throttling and debouncing concepts.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[Chapter 6](part0042_split_000.html#181NK2-f4ff6b81796e4f78aa983a623fb95daf
+    "Chapter 6. A Large-Scale JavaScript Application Architecture"), *A Large-Scale
+    JavaScript Application Architecture*, focuses on code maintainability and architecture.
+    The chapter introduces the MVC paradigm and its derivatives, MVP and MVVM. It
+    also shows, with examples, how concern separation is implemented in popular frameworks
+    such as Backbone.js, AngularJS, and ReactJS.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[Chapter 7](part0046_split_000.html#1BRPS2-f4ff6b81796e4f78aa983a623fb95daf
+    "Chapter 7. JavaScript Beyond the Browser"), *JavaScript Beyond the Browser*,
+    explains how to write command-line programs in JavaScript and how to build a web
+    server with Node.js. It also covers the creation of desktop HTML5 applications
+    with NW.js and guides the development of native mobile applications with Phongap.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[Chapter 8](part0051_split_000.html#1GKCM1-f4ff6b81796e4f78aa983a623fb95daf
+    "Chapter 8. Debugging and Profiling"), *Debugging and Profiling*, dives into bug
+    detection and isolation. It examines the capacities of DevTools and the lesser-known
+    features of the JavaScript console API.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: What you need for this book
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: It's enough if you have a modern browser and a text editor to run the examples
+    from the book. It maybe helpful, however, to use a browser tool similar to Firefox
+    Scratchpad ([https://developer.mozilla.org/en-US/docs/Tools/Scratchpad](https://developer.mozilla.org/en-US/docs/Tools/Scratchpad))
+    to edit the sample code directly in the browser. The books also contains ES6/ES7
+    code examples that rely on features not yet available in browsers. You can run
+    these examples in Babel.js's online sandbox available at [https://babeljs.io/repl/](https://babeljs.io/repl/).
+  prefs: []
+  type: TYPE_NORMAL
+- en: You will find detailed instructions of how to set up your development environment
+    and install the required tools and dependencies in the chapters where we refer
+    to Node.js, NW.js, PhoneGap, JavaScript frameworks, and NPM packages.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Who this book is for
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: This book is for the developers who are already familiar with JavaScript and
+    want to level up their skills to get the most out of the language. The book is
+    practice-oriented and would be helpful for those who are used to the "learn by
+    doing" approach, as the topics are thoroughly covered with real-life examples
+    and tutorials.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Conventions
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this book, you will find a number of text styles that distinguish between
+    different kinds of information. Here are some examples of these styles and an
+    explanation of their meaning.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Code words in text, database table names, folder names, filenames, file extensions,
+    pathnames, dummy URLs, user input, and Twitter handles are shown as follows: "We
+    can include other contexts through the use of the `include` directive."'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'A block of code is set as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'When we wish to draw your attention to a particular part of a code block, the
+    relevant lines or items are set in bold:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Any command-line input or output is written as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: '**New terms** and **important words** are shown in bold. Words that you see
+    on the screen, for example, in menus or dialog boxes, appear in the text like
+    this: "As soon as *Enter* is pressed, the console outputs **I''m running**."'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Warnings or important notes appear in a box like this.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Tips and tricks appear like this.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Reader feedback
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Feedback from our readers is always welcome. Let us know what you think about
+    this book—what you liked or disliked. Reader feedback is important for us as it
+    helps us develop titles that you will really get the most out of.
+  prefs: []
+  type: TYPE_NORMAL
+- en: To send us general feedback, simply e-mail `<[feedback@packtpub.com](mailto:feedback@packtpub.com)>`,
+    and mention the book's title in the subject of your message.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If there is a topic that you have expertise in and you are interested in either
+    writing or contributing to a book, see our author guide at [www.packtpub.com/authors](http://www.packtpub.com/authors).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Customer support
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Now that you are the proud owner of a Packt book, we have a number of things
+    to help you to get the most from your purchase.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Downloading the example code
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: You can download the example code files from your account at [http://www.packtpub.com](http://www.packtpub.com)
+    for all the Packt Publishing books you have purchased. If you purchased this book
+    elsewhere, you can visit [http://www.packtpub.com/support](http://www.packtpub.com/support)
+    and register to have the files e-mailed directly to you.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Errata
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Although we have taken every care to ensure the accuracy of our content, mistakes
+    do happen. If you find a mistake in one of our books—maybe a mistake in the text
+    or the code—we would be grateful if you could report this to us. By doing so,
+    you can save other readers from frustration and help us improve subsequent versions
+    of this book. If you find any errata, please report them by visiting [http://www.packtpub.com/submit-errata](http://www.packtpub.com/submit-errata),
+    selecting your book, clicking on the **Errata Submission Form** link, and entering
+    the details of your errata. Once your errata are verified, your submission will
+    be accepted and the errata will be uploaded to our website or added to any list
+    of existing errata under the Errata section of that title.
+  prefs: []
+  type: TYPE_NORMAL
+- en: To view the previously submitted errata, go to [https://www.packtpub.com/books/content/support](https://www.packtpub.com/books/content/support)
+    and enter the name of the book in the search field. The required information will
+    appear under the **Errata** section.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Piracy
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Piracy of copyrighted material on the Internet is an ongoing problem across
+    all media. At Packt, we take the protection of our copyright and licenses very
+    seriously. If you come across any illegal copies of our works in any form on the
+    Internet, please provide us with the location address or website name immediately
+    so that we can pursue a remedy.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Please contact us at `<[copyright@packtpub.com](mailto:copyright@packtpub.com)>`
+    with a link to the suspected pirated material.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We appreciate your help in protecting our authors and our ability to bring you
+    valuable content.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Questions
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: If you have a problem with any aspect of this book, you can contact us at `<[questions@packtpub.com](mailto:questions@packtpub.com)>`,
+    and we will do our best to address the problem.
+  prefs: []
+  type: TYPE_NORMAL

@@ -1,0 +1,429 @@
+- en: Chapter 1. The Need for Speed
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this chapter, we will learn about the need for executing JavaScript more
+    rapidly, discuss why JavaScript code is traditionally slow, and see what kind
+    of code editors can make us write faster JavaScript without changing our coding
+    style.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Weren't websites always fast?
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: It seems not too long ago that website performance was important but not really
+    required for most web sites. Even during the early days of the Web, it wasn't
+    uncommon to have a really slow website—not because of connection speeds or server
+    locations or which browser was used, no. In many cases, it was because the JavaScript
+    used to render or create functionality for the pages was slow, *very* slow. Mostly,
+    this was done because of a lack of minification tools and debuggers for JavaScript
+    and a lack of knowledge of common JavaScript practices used today.
+  prefs: []
+  type: TYPE_NORMAL
+- en: It was acceptable to the user that the page content was always slow, mainly
+    because most users used a 56 K modem dialing up to their **Internet Service Provider**
+    (**ISP**). The screech of beeps alerted the user to the connection process. Then,
+    suddenly, the user was notified on their desktop that a connection had been made
+    and then promptly opened the default web browser, depending on whether it was
+    Internet Explorer 4 on Windows 95 or Netscape Navigator on a NeXTStep machine.
+    The process was the same, as was the 2 minutes and 42 seconds it took to make
+    a sandwich, waiting for HotBot to load.
+  prefs: []
+  type: TYPE_NORMAL
+- en: As time moved on, users experienced Google, and then suddenly, page speed and
+    load times seemed to grab more users' attention, though, even today, the plain
+    Google theme on the main Google search site allows for speedy download of the
+    full site's code. This was regardless of the Internet connection, a whole 1.36
+    seconds, as indicated by Safari's Timeline tool, shown in the following screenshot,
+    giving us a clear indication of which resources were downloaded the fastest and
+    which ones were the slowest.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Part of the reason for this was that the tools used in modern browsers today
+    didn't exist for Internet Explorer or Netscape Navigator. In the early days of
+    debugging, JavaScript results were debugged using JavaScript alerts, giving feedback
+    to developers since the modern tools weren't around then. Also, developer tool
+    sets today are much more advanced than just simple text editors.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In the following screenshot, we show you a website''s download speed using
+    Safari''s Web Inspector:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Weren''t websites always fast?](img/7296OS_01_01.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Getting faster
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: JavaScript, by nature, is a pretty easy language to build. One advantage that
+    JavaScript has is that JavaScript is an interpreted language, which means that
+    the code developed can still be deployed, and even work, according to a project's
+    specifications.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Non-compiling code is both good and bad. Without the need to compile, a developer
+    can quickly build a web page on a full web application in a very short amount
+    of time. Also, it's very approachable for new- or intermediate-level developers
+    in general, making staffing for web projects a bit easier.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now, what's bad about not using a compiled language is that JavaScript doesn't
+    compile and common errors tend to get missed by the developers involved; even
+    if the code appears to be working, it may not be working efficiently. During the
+    days where developer tools were most likely to be Notepad on Windows and a web
+    browser, any errors were apparent to a user only, leaving out any issues with
+    regard to code performance.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Today, we have various tool sets and build systems on top of our JavaScript
+    skills. It's important to understand that having deep JavaScript knowledge can
+    help you write and review better JavaScript code but, in many cases, we as developers
+    are only human, and we make common mistakes that affect our JavaScript code—not
+    adding spaces after a function's starting brackets or forgetting a semicolon at
+    the end of our code statements, for example.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Choosing a proper editor for a given project that includes basic error-checking
+    before writing a single line of JavaScript can improve the performance and quality
+    of our codebase dramatically, without learning anything new in terms of the inner
+    workings of JavaScript.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Selecting an effective editor
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Picking a good editor can greatly affect your code quality as well as your
+    productivity in terms of how fast a project can be coded. As noted in the preceding
+    section, we developers are human, we make mistakes, and it''s easy for us to write
+    bad JavaScript, no matter what the skill level of the developer is. So, it''s
+    important for us to know when it is appropriate to use one editor over the other.
+    To cover this, I will be breaking up different JavaScript code editors into one
+    of four categories as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Integrated Development Environments
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Mid-range editors
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Lightweight editors
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Cloud-based editors
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Each type of editor has its own strengths and weaknesses, and we will review
+    when to use one over the other, starting with the biggest. The intent is to show
+    when it's appropriate to move from a larger code editor to a smaller editor in
+    terms of JavaScript development.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Integrated Development Environments
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '**Integrated Development Environments** (**IDEs**) are very high-end software
+    tools that not only provide code editing, but also code-organization tools, built-in
+    testing tools, code-optimization scripts, source-control integration, and usually
+    deep code hinting and completion support.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The downside of using an IDE is that the IDE is designed to constantly check
+    the code as the file is being updated while code is being written. This causes
+    the editor to be sluggish and unresponsive at times and painful to use on slower
+    systems. Typically, JavaScript developers tend to dislike the sluggishness of
+    these IDEs and move on to other faster editors.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This can cause issues when large projects kick off, and users use an editor
+    that is ill-suited to structure JavaScript in a proper manner. It's usually recommended
+    that you start with an IDE and work down when a project only requires minor tweaks.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Some popular IDEs for JavaScript are discussed in the upcoming sections.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The Microsoft Visual Studio IDE
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: 'If any software is directly associated with the term "IDE", Visual Studio is
+    one. Microsoft Visual Studio IDE can be seen in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![The Microsoft Visual Studio IDE](img/7296OS_01_02.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: It handles multiple languages, including HTML, CSS, and JavaScript, while handling
+    other language such as C#, Visual Basic, Python, and so forth. In terms of JavaScript,
+    Visual Studio will check deeply within a project's JavaScript code flow and look
+    for minor errors that many lighter editors won't find.
+  prefs: []
+  type: TYPE_NORMAL
+- en: For JavaScript developers, the Visual Studio Express Edition for Web should
+    be powerful enough for any JavaScript projects.
+  prefs: []
+  type: TYPE_NORMAL
+- en: JetBrain's WebStorm IDE
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: 'For the JavaScript developer not fond of ASP.NET and looking for a dedicated
+    JavaScript IDE, and/or requiring a Mac or Linux solution, look any further than
+    JetBrain''s WebStorm IDE shown in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![JetBrain''s WebStorm IDE](img/7296OS_01_03.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'This IDE is targeted at JavaScript development, and it handles *any* JavaScript
+    technology you can throw at it: node, AngularJS, jQuery… the list goes on and
+    on with WebStorm. It also has full code hinting and error checking support, similar
+    to Visual Studio, and it has very strong source control support, including Git,
+    SVN, and even Microsoft''s Team Foundation Server.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Now sidebar on JetBrains, WebStorm is a lower-tier IDE when compared to IntelliJ
+    IDEA, which is JetBrain''s flagship editor for *every* language. The user interface
+    of the IntelliJ IDEA editor can be seen in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![JetBrain''s WebStorm IDE](img/7296OS_01_03a.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Typically, IDEA is known best as a Java-focused IDE, but it includes the same
+    tools as WebStorm plus many more. Like Visual Studio, it can handle multiple languages,
+    but that comes at the cost of performance. For example, if we started working
+    in both environments on a slower system, we might notice more lag on IDEA than
+    WebStorm when working day-to-day on JavaScript projects.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Again, this is due to the large number of features the IDEs require to be running
+    in the background to make our code better, which is more marked on IDEA; so, again,
+    starting off in an IDE is great to build a well-structured code base early on,
+    but as time progresses and we work repeatedly in a slow editor, we will need something
+    faster with a good base already set up.
+  prefs: []
+  type: TYPE_NORMAL
+- en: With that in mind, many developers who don't see performance issues with an
+    IDE tend to stick with the IDE they've chosen; other developers, however, move
+    on to editors such as the ones in the next section.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Mid-range editors
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Mid-range editors work very well with projects already past the early phases
+    of development or projects that are very small. An exception to using an IDE early
+    on is small projects. These are typically content-management system-based sites,
+    such as WordPress, Joomla, Drupal, and so on, where most of the JavaScript is
+    written for the developer and tested already.
+  prefs: []
+  type: TYPE_NORMAL
+- en: They are also useful for light code hinting, and some can connect to either
+    a source repository or an FTP to push code up. The real differences between these
+    and an IDE are the speed of the editor and the lack of code quality features.
+    Many of these editors only look for glaringly obvious errors in the code, such
+    as missing a semi colon in JavaScript. Nevertheless, they are very useful all-round
+    editors.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Panic's Coda editor
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: 'Coda is a Mac-only editor, but it supports HTML, CSS, and JavaScript coding.
+    The following screenshot shows you the user interface of Coda:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Panic''s Coda editor](img/7296OS_01_04a.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: It also has some support for Python and PHP, but it's not dedicated to running
+    non-web code on its own. It also features a manual validation checker of JavaScript
+    rather than one that's continuous so, again, there's some support to improve your
+    JavaScript and web code, but it does not always check for errors fully while you
+    code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The Microsoft WebMatrix editor
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: 'WebMatrix is Microsoft''s lighter website editor in this mid-range category.
+    It has Git and Team Foundation Server support as well as support for ASP.NET projects,
+    PHP, and NodeJS. The user interface of WebMatrix can be seen in the following
+    screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![The Microsoft WebMatrix editor](img/7296OS_01_04_.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: WebMatrix is an example of a mid-range editor where you may want to consider
+    an editor's features when choosing which editor you want to use for your project.
+  prefs: []
+  type: TYPE_NORMAL
+- en: For example, if you needed Mac support with Python, then Coda is a good fit,
+    while WebMatrix gives a different set of features, including ASP.NET support.
+    This is a common theme in mid-range editors, where many of them are really designed
+    to do certain things and give just about the minimum support for a code base while
+    keeping the editor as speedy as possible.
+  prefs: []
+  type: TYPE_NORMAL
+- en: With any editors of this type, we can see that they allow us to connect to an
+    existing project easily and perform some code-checking while working on a fairly
+    fast editor.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Lightweight editors
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: There are times where we as JavaScript developers *just don't care* about the
+    backend platform a project is using and only need a simple text editor to write
+    a bit of JavaScript code or update an HTML file. This is where lightweight editors
+    come in.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The Sublime Text editor
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: 'Sublime Text is a very popular, cross-platform, lightweight editor. Its user
+    interface can be seen in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![The Sublime Text editor](img/7296OS_01_05.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: It is well known for its start-up and usage speeds as well as some basic editing
+    features, such as language color hinting and basic code-hinting with multiple
+    language support.
+  prefs: []
+  type: TYPE_NORMAL
+- en: It also has its own package manager called **Package Control**, which allows
+    you to augment Sublime Text to automate some common code-editing and compiling
+    processes. Freshly downloaded, though, it's extremely lightweight and allows developers
+    to add in common plugins required for their development workflow.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The Notepad++ editor
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: 'The user interface of the Notepad++ editor is shown in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![The Notepad++ editor](img/7296OS_01_06.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: On Windows, a JavaScript editor that is exclusive to the Windows platform and
+    that's actually an editor and not an IDE is Notepad++. Similar to Sublime Text,
+    Notepad++ is mostly used as a text editor and has plugin support but doesn't use
+    a package manager such as Sublime Text, so the application runs extremely fast
+    even with plugin support. It also has code-hinting support for some project files,
+    including JavaScript.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the case of either of these editors, or any other lightweight editor, as
+    they typically don't have code validation included, they make code updates easily
+    and quickly with validation running in the background, at the risk of writing
+    slow or broken code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Cloud-based editors
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Lastly, cloud- or web-based editors are the shiny new tools new to the web developer's
+    tool belt. They allow a developer to work on a code base inside a browser either
+    as a plugin to a web browser or purely online, and it allows a developer to work
+    on any OS platform, Chrome OS, iPad, or Android operating systems that you might
+    not consider writing JavaScript in!
+  prefs: []
+  type: TYPE_NORMAL
+- en: The advantage of writing code in a browser is that the project code is hosted
+    online, either in Git or simply in the editor's hosted service. Some plugin editors
+    allow you to work from your computer's hard drive like any other editor but are
+    written in HTML and JavaScript with a backend (such as Python, PHP, or ASP.NET)
+    like any other website.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Typically, these editors fit inside the mid-range editor space in terms of features.
+    However, some of them can offer very little in terms of features beyond being
+    online without installing an editor to a computer, which is why they fall in this
+    category. The upcoming sections give a few examples of popular cloud editors.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The Cloud9 editor
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: 'Cloud9 editor, available at [http://c9.io/](http://c9.io/), is a general web
+    application IDE but is a cloud app with HTML5, PHP, Node.js, Rails, Python/Django,
+    and WordPress support. The following screenshot displays the user interface of
+    the Cloud9 editor:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![The Cloud9 editor](img/7296OS_01_07.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: It also allows you to clone from a Git URL or from a GitHub project, so you
+    can choose to have your code hosted in Cloud9 or synced to your own Git repository.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Another feature of Cloud9 is virtual-machine support from the browser for iOS
+    simulator testing as well as console support for Node.js — again, in a browser.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The Codenvy editor
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: 'Another online IDE—Codenvy—is available at [http://codenvy.com/](http://codenvy.com/).
+    Its user interface can be seen in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![The Codenvy editor](img/7296OS_01_08.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: This editor is pretty similar to Cloud9, but it hosts cloud service projects,
+    such as Google's App Engine. It can also build apps for Android while having full
+    JavaScript support for popular libraries in AngularJS or jQuery.
+  prefs: []
+  type: TYPE_NORMAL
+- en: An issue with cloud editors is that, when JavaScript libraries are involved
+    in a project, an online editor may not be able to recognize library-specific JavaScript
+    or HTML tag conventions used, so it's important to consider features when selecting
+    a cloud editor.
+  prefs: []
+  type: TYPE_NORMAL
+- en: For cloud editors, you can see that they follow a mid-range editor feature-set
+    but allow for quick connection and updates for existing projects.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this chapter, we looked at the history of JavaScript's performance and learned
+    how it became a focus for developers and businesses. We also reviewed the four
+    types of JavaScript code editors, and we now understand how to move away from
+    large IDEs for brand new projects, working down to lightweight editors for small
+    updates and changes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the next chapter, we will look at how we can keep our code's performance
+    quality high when using a lightweight editor.
+  prefs: []
+  type: TYPE_NORMAL

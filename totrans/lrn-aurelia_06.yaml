@@ -1,0 +1,1542 @@
+- en: Chapter 6. Design Concerns - Organizing and Decoupling
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Organizing a large application can be complicated. Depending on how the application
+    is structured and on how its parts must depend on each other, deciding how to
+    organize the code is not always obvious. It's even truer when working with a framework
+    you are not familiar with.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There are many ways to organize an Aurelia application. Like anything related
+    to design and architecture, choosing an organizational model is a matter of juggling
+    with a lot of criteria. Obviously, selecting one model over another means benefiting
+    from its advantages, but dealing with its downsides and limitations.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this chapter, we will first see the different ways to organize an application,
+    along with the various features of the framework that can help us do that. Of
+    course, we will refactor our contact management application toward a more scalable
+    structure. We will play with different ideas until we settle on a stable structure.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Secondly, having a framework based on components is pointless if the components
+    forming our application are tightly coupled. In the second half of this chapter,
+    we will see different ways to decouple components, using either data binding,
+    shared services, or Aurelia's event aggregator.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Re-organizing our application
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Before starting to explore an application's structural possibilities, we first
+    need to decide what we are aiming for. We won't be able to make an enlightened
+    decision if we don't know what properties we are striving for in an organizational
+    model.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Of course, those properties will be absolutely arbitrary here. In a real project,
+    with a real client, real stakeholders, and real users, we would have at least
+    some clues as to what those properties could be. In the case of our contact management
+    application, we will stick with the properties that are most commonly needed in
+    typical, medium to large-scaled projects.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Firstly, we will assume that our application is destined to grow. For now, it
+    only manages contacts, but we can imagine that our product owner has big plans
+    for the application, and that we will eventually add some completely unrelated
+    features.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The current structure, or the absence of it, fits a small application. For a
+    larger application, with more distinct features, the project must be structured
+    in such a way that the developers do not get lost in the code. In the context
+    of our application, we need to choose a structure that will minimize the odds
+    of it needing to be re-organized after a while because its structure doesn't scale.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Secondly, we will strive for an architecture that allows features to be as decoupled
+    and independent as possible. The goal is to make including and excluding features
+    of the application as easy as possible. This requirement is not typical for most
+    applications, but in this case it will allow us to see how Aurelia can help to
+    do that when needed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Refactoring the structure
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: At the moment, our application has mostly no structure at all, except for the
+    global resources and validation setup, which are grouped as features in their
+    own directory. All files related to the contact management feature sit at the
+    root of the `src` directory, and the components are mixed with the API gateway
+    and the models. Let's put some order in there.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The sample found at `chapter-6/samples/app-reorganized` illustrates the application
+    after being restructured as depicted in the following section. It can be used
+    as a reference.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let's first group all code related to contact management in a `contacts` directory.
+    This moves toward isolating each feature in its own directory. Additionally, to
+    reduce redundancy, let's rename the files starting with `contact-` and remove
+    the prefix.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The project structure should look like this afterwards:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Refactoring the structure](img/image_06_001.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'This is already better. However, we could enhance cohesion by creating subdirectories
+    to group files according to their types of responsibilities. Here, we first have
+    the components `creation`, `details`, `edition`, `list`, and `photo`. We also
+    have a service: the `gateway`. Lastly, we have some `models`, which are all grouped
+    inside the same file.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Breaking the models down
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Let''s start by breaking down the models into a new `models` directory and
+    by exploding the `models.js` file, moving each model class to its own file inside
+    this new directory. It should look like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Breaking the models down](img/image_06_007.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Now, with a simple glimpse at the `models` directory, a developer can see that
+    we have multiple models and what their names are.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Of course, this means that we must perform some changes to those classes. First,
+    we must add an `import` statement for validation at the top of `address.js`, `email-address.js`,
+    `phone-number.js`, and `social-profile.js`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Next, `import` statements for the other model classes must be added at the
+    top of `contact.js`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: Isolating the gateway
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The `gateway` is a different beast from the rest of the files, it is a service.
+    Generally, services are singletons that provide some functionalities to other
+    parts of the application. Here, we only have this one service, but it is still
+    worth putting it in its own directory, so it is easier to find.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s create a `services` directory and move the `gateway` there:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Isolating the gateway](img/image_06_003.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'The first thing that needs to be changed for the `gateway` to work as before
+    is to make the path of the `environment import` statement absolute, by removing
+    the `./` prefix:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We also need to change the path from which we import the `Contact` class:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: Grouping the components
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Lastly, we could group the visual components inside their own directory. Let''s
+    create a `components` directory and move the rest of the files inside it:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Grouping the components](img/image_06_004.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'At this point, the application is broken. We need to do two things: fix the
+    `import` and `require` statements for the model classes and the gateway in the
+    components, and fix the route declarations in the `app` component.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'First, inside `creation.js`, `details.js`, `edition.js`, `list.js`, and `photo.js`,
+    the `import` statement for the gateway must be fixed:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Additionally, the `import` statement for the `Contact` model must also be fixed
+    in `creation.js`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Lastly, we need to change the `require` statement in `creation.html` and `edition.html`
+    by fixing the path and adding an alias, so the `form.html` template is still loaded
+    as the `contact-form` custom element:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'At this point, our `contacts/components` are ready to work. We simply need
+    to fix the component path of all route declarations inside the `app` component:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: The file structure is now much cleaner. If you run the application now, everything
+    should work as before.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There is no silver bullet
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The structure we just refactored toward is not a universal truth. Taste and
+    opinions always play a part in such decisions, and there are no right or wrong
+    answers to this kind of question.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'However, the rationale behind this structure is simple and can be boiled down
+    to a few principles:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: General-purpose or application-wide resources are in the `resources` feature.
+    Things such as the `order-by` value converter or the `file-picker` custom element
+    belong there.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Similarly, services and models that don't belong to a specific feature, but
+    are used application-wide, should sit in their own directories, located at the
+    root of the `src` directory; for example, in `src/services` and `src/models`.
+    We don't have any of those in our application.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Each domain feature sits in its own directory, such as the `contacts` directory.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Technical features can also exist, such as the `validation` feature. The purpose
+    of those features is to provide some general behaviors or extend other features.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Inside a feature's directory, files are grouped by type of responsibility. Components,
+    whether they are route components such as `creation`, `details`, `edition`, `list`,
+    and `photo`, or specialized widgets or custom elements such as the `form.html`
+    template, are grouped inside the `components` subdirectory. Services and models
+    are also in their own directory. If specialized value converters or binding behaviors
+    exist for a given feature, they should also sit in their own directory inside
+    the feature directory.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Those are the guidelines I use when structuring an Aurelia application. Of course,
+    there are often cases that need reflection, either because they don't fall right
+    into an existing slot or because blindly applying those rules would make a mess.
+  prefs: []
+  type: TYPE_NORMAL
+- en: For example, it might be a good idea to split the `components` directory in
+    two, named something like `screens` and `widgets`, if we have a lot of route components
+    and specialized widgets. This way, it will be easier to identify which components
+    are route components and which are feature-specific custom elements or composable
+    widgets.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Additionally, it is sometimes better to add another level of classification
+    to the structure, whether it is to group features by sub-domain or category, or
+    to group services, models, or components by more specific purposes. The real guideline
+    here is to try to make the structure communicate intent and implicit knowledge,
+    as well as to make understanding where each part sits as easy as possible.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Another guideline I try to follow is to make the domain features directories
+    mirror the navigation menu structure. Of course, this is not doable when the menu
+    structure is too complicated, although this might be a sign that it needs to be
+    rethought. When possible, it obviously makes navigating the code and the application
+    much easier and intuitive for developers.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Leveraging child routers
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: At this point, all code related to contact management is located in the `contacts`
+    directory. But is it really? Actually, no. Route definitions still sit in the
+    `app` component. How can we move those inside the `contact` directory?
+  prefs: []
+  type: TYPE_NORMAL
+- en: The first possibility would be to leverage a child router. This way, we could
+    declare a `main` component inside `contacts`, which would be responsible for declaring
+    the routes to the various contact management components, such as `list`, `creation`,
+    and `edition`. Then, the `app` component would need a single route leading to
+    the contact's `main` component, and would not need to know about the more specialized
+    `contacts` routes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: In the following sections, we will try different things. To make it easier to
+    restore the code to be as it was before each try, I recommend that you somehow
+    backup your application at this point, either by simply copying and pasting the
+    project directory, or by creating a branch on your source control if you cloned
+    the code from GitHub. Additionally, the sample found at `chapter-6/samples/app-using-child-router`
+    illustrates the application modified as depicted in the following section. It
+    can be used as a reference.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Changing the root routes
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Let''s start by changing the root router configuration:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`src/app.js`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here, we remove all the routes leading to the various contact management components,
+    and replace them with a single route mapped to the `contacts` URL prefix. This
+    route leads to the `main` component of `contacts`. Of course, we keep the default
+    route redirecting to this `contacts` route.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Configuring the contacts child router
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Next, we need to create the `main` component of `contacts`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`src/contacts/main.js`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here, we first use the `inlineView` decorator to declare a template that simply
+    uses the `router-view` element to render the child router's active component.
+    This child router is configured using the `configureRouter` method, which declares
+    the `contacts` routes that were in the `app` component before.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Of course, the route declarations need to change a little. First, the `contacts/`
+    prefix must be removed from the `route` property of each route, since it is handled
+    by the parent router now. As such, the route leading to the `list` component is
+    now the child router's default route, as its pattern matches an empty string.
+    Additionally, the `moduleId` property can be made relative instead of absolute,
+    like it was before. This will reduce the amount of changes to be made if we ever
+    rename or move the `contacts` directory. Lastly, since this child router's navigation
+    model is not used to render any menu, we can remove the `nav` property from the
+    route leading to the list.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Implications
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: If you run the application and play around with it, you may notice that the
+    **contacts** top menu item stays highlighted when we navigate through the `creation`,
+    `details`, `edition`, and `photo` components now, whereas it was previously only
+    highlighted when the `list` component was active.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This is because this menu item is rendered using the route leading to the `main`
+    component of `contacts`, which stays activated when we are on any child route.
+    This is an interesting side effect that increases feedback to the user and makes
+    the behavior of the top menu more consistent.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Additionally, using a child router moves the responsibility of declaring the
+    module's routes inside the module itself. If the need arises to change the module's
+    routes, the changes would be made within the boundaries of the module, and would
+    have no impact on the rest of the application.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There are, however, some limitations to child routers. Typically, at the time
+    of writing, a router only has access to its own routes when generating a URL.
+    This means that you cannot use the `route-href` attribute, nor the `Router` class'
+    `generate` or `navigateToRoute` methods for routes defined in other routers, whether
+    they are parents, children, or siblings. This can be problematic when modules
+    need to have direct links between each other. The route must be generated manually,
+    meaning that the route pattern could be defined in more than one place, which
+    increases the risk of introducing a bug if a route pattern ever changes and the
+    developer updates only some of the pattern instances.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Declaring root routes in a feature
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Another tool that could be helpful here is Aurelia's `feature` system. We could
+    leverage a `configure` function to register the contact management routes directly
+    on the root router.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let's roll things back to how they were before plugging in the child router
+    and seeing how this can turn out.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The sample found at `chapter-6/samples/app-using-feature` illustrates the application
+    modified as depicted in the following section. It can be used as a reference.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Creating the feature
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'We first need to create the `index.js` file to `configure` our new feature:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`src/contacts/index.js`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here, the `configure` function simply retrieves the root router from the DI
+    container, then registers the routes using the `Router` class' `addRoute` method.
+    Since there is no child router here, the routes are mapped using their full URLs,
+    including the `contacts/` prefix, and they use absolute paths to refer to their
+    components because they are relative to the component declaring the root `configureRouter`
+    method, which is the `app` here.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Of course, this means we need to load this feature into the application''s
+    main `configure` function:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`src/main.js`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: Changing the root routes
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Lastly, we need to remove the contact management routes from the `app` component:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`src/app.js`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here, we simply remove all the routes leading to the various contact management
+    components, except for the default route redirecting to the `contacts` route,
+    which displays the `list` component.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Reducing coupling on the feature
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'The application still depends on the `contacts` feature in two ways: it loads
+    it into the main `configure` function, and the default route redirects to one
+    of its routes in the `app` component. If we want to remove this feature, we now
+    have two places to update. How can we remove the dependency from the `app` component?'
+  prefs: []
+  type: TYPE_NORMAL
+- en: One first possibility is to simply add a `home` component, or some kind of Welcome
+    dashboard, and to use it as the default route. This way, the user accessing the
+    root of the application will always be welcomed at the same place, even if the
+    application features the change. We also won't have any reference to the `contacts`
+    feature except in the main `configure` function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Alternatively, we could dynamically select the route to which the default route
+    redirects. Since the `app` component''s `configureRouter` method is called during
+    the component''s activation lifecycle, the feature has already been configured
+    at that time and its routes have already been added to the root router. We could
+    simply take the router''s first navigation model entry and have the default route
+    redirect to it:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`src/app.js`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: The advantage of this solution is that the default route will always redirect
+    to the first route displayed in the top menu, which is a reasonable behavior in
+    most applications without a distinct home screen.
+  prefs: []
+  type: TYPE_NORMAL
+- en: However, if all features are removed from the application, the navigation model
+    will be empty and this code will break. In such a case, having a distinct home
+    page could save the day, although an application without any features but a simple
+    home page would be pointless in most cases.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Implications
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: One of the main advantages of defining all application routes on the root router,
+    via features or the `app` component, is that all routes are known to the root
+    router, which means it can generate URLs for any route in the application.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This distinction is not negligible when there are a lot of links across components
+    and features. In such a case, using child routers and not being able to rely on
+    the routers to generate most of the URLs is painful.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Why not both?
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The two solutions we just explored both have their pros and cons. Using a child
+    router feels like the right thing to do, mostly because it fixes an inconsistent
+    behavior in the top menu, which bothers me maybe more than it deserves, but makes
+    linking across features complicated. Additionally, it requires the declaration
+    of a route leading to the contact's `main` component in the `app` component.
+  prefs: []
+  type: TYPE_NORMAL
+- en: On the other hand, using a feature also feels right. Features have been designed
+    specifically for such use cases.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s try to merge both strategies: declaring a child router to handle the
+    contact''s routes in a `main` component, and using a feature to add the route
+    leading to this `main` component on the root router.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The following code snippets are excerpts from this chapter's completed sample
+    application, which can be found at `chapter-6/app`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'If we keep the modifications we did when introducing a `contacts` feature in
+    the previous section, this means we need to add a `main` component just like we
+    did when we played with the child router:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`src/contacts/main.js`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Next, the feature''s `configure` function must be changed so it adds the route
+    leading to the `main` component of `contacts`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`src/contacts/index.js`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: Using this pattern, a new feature can easily be added without having to change
+    anything other than loading it into the main `configure` function. The only case
+    when you also need to change the `app` component is when changing the feature
+    to which the default route redirects if you don't use the dynamic approach.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: I'm not advocating the use of this pattern in every Aurelia application. It
+    adds complexity and, as such, should be used only when really needed. The main
+    goal here was to show the possibilities the framework offers.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Decoupling components
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Deciding how components of a program depend on each other and communicate with
+    one another is what design is all about. Designing an Aurelia application is no
+    different. However, in order to make enlightened design choices, you need to know
+    what techniques the framework offers.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'There are typically four ways to make components communicate in an Aurelia
+    application: using data binding, using remote services, using shared services,
+    and using events.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Up to now, our application has mostly relied on data binding and on a remote
+    service, our backend. The route components don't directly communicate with each
+    other, but do so via the backend. Each route component retrieves the data it needs
+    from the backend each time it is activated, then delegates any action performed
+    by the user back to the backend. Additionally, route components are composed of
+    other reusable components, and communicate with them using data binding.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In the following sections, we will start by quickly summarizing the techniques
+    we have already used, then we will discuss the other techniques: events and shared
+    services. In doing so, we will also heavily refactor our contact management application,
+    so we can try a whole different architecture based on those techniques.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: As an experiment, we will first refactor our application so we can listen for
+    and locally dispatch events sent by the backend when things happen. This way,
+    any component that needs to react to such events can simply subscribe to the local
+    event.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Once this is done, we will use those local events to refactor our application
+    further, this time toward real-time, multi-user synchronization. We will create
+    a service that will load the list of contacts and then listen for change events
+    to keep its contacts synchronized. We will refactor all route components so they
+    retrieve their data from this local list of contacts instead of fetching it from
+    the backend at each activation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The flow will be similar to this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Decoupling components](img/image_06_005.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: When a user performs an action, such as creating a new contact or updating an
+    existing one, a command will be sent to the backend. This doesn't change. However,
+    instead of reloading the whole dataset from the backend each time the contact
+    list component is displayed, the application will simply display its local copy
+    of the data because it will keep it up-to-date by listening for change events,
+    which are emitted by the backend every time a command is sent.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This new design borrows some concepts from the **CQRS/ES** patterns. One advantage
+    of this pattern is that the application will be notified instantly each time any
+    user makes a change to the data, so the application is constantly synchronized
+    with the state of the server.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'CQRS stands for Command and Query Responsibility Segregation, and ES stands
+    for Event Sourcing. Defining those patterns being way outside the scope of this
+    book, you can check what Martin Fowler has to say about them if you are curious:
+    [http://martinfowler.com/bliki/CQRS.html](http://martinfowler.com/bliki/CQRS.html) and [http://martinfowler.com/eaaDev/EventSourcing.html](http://martinfowler.com/eaaDev/EventSourcing.html).'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Of course, this whole synchronization mechanism would require some form of conflict
+    management in a production-ready application. Indeed, when a user is editing a
+    contact, if another user makes a change to the same contact, the first user will
+    see the form being updated on the fly and the new values overwrite his own changes.
+    That would be bad. However, we will not go this far. Let's consider this as a
+    proof of concept and an experiment on ways to make components communicate.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using data binding
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The most common and simple way to make components communicate is through data
+    binding. We have already seen plenty of examples of this; when we bound the `edit`
+    component's `contact` property with the `form` component's `contact` bindable
+    property, we made them communicate.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Data binding allows the loose coupling of components within a template. Of
+    course, it has some intrinsic limitations: binding is declared by the parent component
+    and communication is limited to a single layer of components in the application
+    tree. Making the communication go more than one level requires each component
+    in the tree to be data-bound to its children. We can see this in the `photo` component,
+    whose `files` property is bound to the `files` property of `file-picker`, which
+    is in turn bound to the `file-drop-target` attribute, enabling communication across
+    multiple layers of components.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: It is also the more flexible way to make components communicate because it is
+    extremely easy to change and because the dependency lies within the template,
+    where the components themselves are declared and composed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using remote services
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Another way to make components communicate is via a remote service. We have
+    also used this technique a lot in our application. The application stores very
+    little state; the backend is the actual repository of state.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In order to display a contact for modification, the `edition` component queries
+    the backend for the contact''s data. When the user saves the contact''s modifications,
+    an update command is sent to the backend, which applies the changes to its internal
+    state. Then, when the application brings the user back to the contact''s details,
+    the component queries a fresh copy of the contact''s data. The same happens when
+    navigating to the contacts list: the backend is queried each time and the whole
+    list of contacts is fetched every time.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: This technique is very common. In such cases, an application considers its backend
+    to be the sole source of the truth, and relies on it for everything. Such applications
+    can be much simpler because things like business rules and the complex side effects
+    of commands can be completely handled by the backend. The application is simply
+    a rich user interface sitting on top of the backend.
+  prefs: []
+  type: TYPE_NORMAL
+- en: However, the downside of this technique is that the application is useless if
+    the communication line goes down. In situations of network failure, or when the
+    backend is irresponsive for some reason, the application doesn't work anymore.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using events
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: One design technique widely used to reduce coupling is the **publish**/**subscribe**
+    pattern. When applying this pattern, components can subscribe to a message bus
+    so they are notified when specific types of messages are sent. Other components
+    can then use this same message bus to send messages, without knowing which components
+    will handle them.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using this pattern, the various components don't have any dependency on each
+    other. Instead, they all depend on the message bus, which acts like a kind of
+    abstraction layer between them. Additionally, this pattern greatly increases the
+    flexibility and extensibility of the design, as new components can very easily
+    subscribe to existing message types without any need to change other components.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Aurelia offers, through its `aurelia-event-aggregator` library, an `EventAggregator`
+    class, which can act as such a message bus. We will see how we can benefit from
+    this class in the following section.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The event aggregator
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The `aurelia-event-aggregator` library is part of the default configuration,
+    so, by default, we don't need to install or load anything to use it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This library exports the `EventAggregator` class, which exposes three methods:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`publish(name: string, payload?: any): void`: Publishes a named event along
+    with an optional payload.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`subscribe(name: string, callback: function): Subscription`: Subscribes to
+    a named event. The `callback` function will be called each time an event is published
+    with the subscribed `name`. The `payload` passed to the `publish` method will
+    be passed to the `callback` function as its first argument.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`subscribeOnce(name: string, callback: function): Subscription`: Subscribes
+    to a named event, but only once. The subscription will be automatically disposed
+    the first time the event is published. The subscription is returned, so it can
+    even be disposed manually before the event is ever published.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The `Subscription` object returned by the `subscribe` and `subscribeOnce` methods
+    has a single method, named `dispose`. This method simply removes the `callback`
+    function from the registered handlers so it won't be called anymore when the event
+    is published.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'For example, some component could publish an event named `something-happened`
+    using the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here, the component's constructor will be injected with an `EventAggregator`
+    instance, which is then stored on the component. Then, when the `doSomething`
+    method is called, an event named `something-happened` is published on the event
+    aggregator. The event's payload is an object with an `args` property, which contains
+    the `args` parameter that was passed to the `doSomething` method.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In order to react to this event, another component could subscribe to it:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here, the other component's constructor is also injected with the event aggregator,
+    which is stored on the component. When activated, the component starts listening
+    for `something-happened` events, so it can write a log to the browser's console
+    each time one is published. It also keeps a reference to the subscription, so
+    it can `dispose` it and stop listening for the event when deactivated.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Such a pattern is very common when working with the event aggregator in a component.
+    Using it makes sure that components listen for events only when they are active.
+    It also prevents memory leaks; indeed, a component cannot be garbage-collected
+    if the event aggregator still holds a reference to it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Extending an object with events
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: In addition to the `EventAggregator` class, the `aurelia-event-aggregator` library
+    also exports a function named `includeEventsIn`. It expects an object as its single
+    argument.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This function can be used to extend an object with the event aggregator's functionality.
+    It will create an `EventAggregator` instance internally and add to the object
+    a `publish`, a `subscribe`, and a `subscribeOnce` method, all delegating to this
+    new `EventAggregator` instance's corresponding method.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'For example, by calling this function in a class constructor, you can make
+    all instances of the class have their own local events. Let''s imagine the following
+    class:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The `something-happened` event can be subscribed directly on a `SomeModel`
+    instance:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs: []
+  type: TYPE_PRE
+- en: Since each instance has its own private `EventAggregator` instance, the events
+    won't be shared across the whole application or even across multiple instances.
+    Instead, the events will be scoped to each instance individually.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using event classes
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'The `publish`, `subscribe`, and `subscribeOnce` methods can be used with named
+    events, but they also support typed events. As such, the following signatures
+    are also valid:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`publish(event: object): void`: Publishes an event object. Uses the prototype
+    of the object as the key to select the callback functions to call.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`subscribe(type: function, callback: function): Subscription`: Subscribes to
+    a type of event. The `callback` function will be called each time an event that
+    is an instance of the subscribed `type` is published. The published event object
+    itself will be passed to the `callback` function as its single argument.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`subscribeOnce(type: function, callback: function): Subscription`: Subscribes
+    to a type of event, but only once.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'As an example, let''s imagine the following event class:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Publishing such an event would be done this way:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE21]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here, we can imagine that the `eventAggregator` variable contains an instance
+    of an `EventAggregator` class, and that the `newContact` variable contains some
+    object representing a newly created contact.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Subscribing to this event would be done like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE22]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here, the callback will be called each time a `ContactCreated` event is published,
+    and its `e` argument will be the `ContactCreated` instance that was published.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Moreover, the `EventAggregator` supports inheritance when working with event
+    classes. This means that you can subscribe to an event base class and the callback
+    function will be called each time any event class inheriting from this base class
+    is published.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s go back to our previous example and add some event classes:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE23]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here, we define a class named `ContactEvent`, from which the `ContactCreated`
+    class inherits.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Now let''s imagine the two following subscriptions:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE24]'
+  prefs: []
+  type: TYPE_PRE
+- en: After this code is executed, if an instance of `ContactEvent` is published,
+    the text `Something happened to a contact` will be logged to the console.
+  prefs: []
+  type: TYPE_NORMAL
+- en: However, if an instance of `ContactCreated` is published, both texts `A contact
+    was created` and `Something happened to a contact` will be logged to the console
+    because the event aggregator will go up the prototype chain and try to find subscriptions
+    for all ancestors. This feature can be pretty powerful when dealing with complex
+    hierarchies of events.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Class-based events add some structure to messaging, as they force an event payload
+    to respect a predefined contract. Depending on your style of programming, you
+    may prefer using strongly-typed events instead of named events with untyped payloads.
+    It fits particularly well for typed JS supersets such as TypeScript.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Creating an interactive connection
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The following being some kind of experiment, or proof of concept, I suggest
+    that you somehow backup your application at this point, either by simply copying
+    and pasting the project directory, or by creating a branch on your source control
+    if you cloned the code from GitHub. This way, you'll be able to start back at
+    the current point when you go on to the next chapter.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Additionally, the sample found at `chapter-6/samples/app- using-server-events`
+    illustrates the application modified as depicted in the following sections. It
+    can be used as a reference.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The backend we use accepts interactive connections in order to dispatch events
+    to client applications. Using such an interactive connection, it can notify connected
+    clients every time a contact is either created, updated, or deleted. To dispatch
+    those events, the backend relies on the **WebSocket** protocol.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The WebSocket protocol allows for long-lived, two-way connections between a
+    client and a server. As such, it allows the server to send event-based messages
+    to the connected clients.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this section, we will create a service named `ContactEventDispatcher`. This
+    service will create a WebSocket connection with the backend and will listen for
+    change events from the server to locally dispatch them through the application's
+    event aggregator.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In order to create an interactive connection to the server, we will use the
+    **socket.io** library.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The socket.io library offers a client implementation and a node.js server for
+    interactive connections, both supporting WebSocket and offering fallback implementations
+    when WebSocket is not supported. The backend already uses this library to handle
+    interactive connections from the application. It can be found at [http://socket.io/](http://socket.io/).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s first install the `socket.io` client. Open a console in the project''s
+    directory and run the following command:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE25]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Of course, the new dependency must be added to the application''s bundle. In
+    `aurelia_project/aurelia.json`, under `build`, then `bundles`, in the `dependencies`
+    section of the bundle named `vendor-bundle.js`, add the following entry:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE26]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We can now create the `ContactEventDispatcher` class. This class being a service,
+    we will create it in the `contacts` feature''s `services` directory:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`src/contacts/services/event-dispatcher.js`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE27]'
+  prefs: []
+  type: TYPE_PRE
+- en: This class requires an `EventAggregator` instance to be passed to its constructor
+    and declares an `activate` method, which uses the `io` function imported from
+    the `socket.io` client library to create a `connection` with the server using
+    the `contactUrl` of `environment`. It then creates a new `Promise`, which is assigned
+    to the `connecting` property and returned by the `activate` method. This `Promise`
+    allows the monitoring of the state of the connection process to the backend, so
+    callers can hook into it to react when the connection is established. In addition,
+    the method also makes sure that only one `connection` to the backend is opened
+    at any given time. If `activate` is called multiple times, the `connecting``Promise`
+    is returned.
+  prefs: []
+  type: TYPE_NORMAL
+- en: When the backend receives a new connection, it sends the current list of contacts
+    as an event named `contacts.loaded`. As such, once the `activate` method initializes
+    the connection, it listens for this event to republish it on the event aggregator.
+    In doing so, it also transforms the initial list of objects received from the
+    server in an array of `Contact` objects. It finally resolves the `connecting``Promise`
+    to notify the caller that the `activate` operation is completed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The class also exposes a `deactivate` method, which closes and clears the connection.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'At this point, the dispatcher publishes a `contacts.loaded` event containing
+    the current list of contacts when it starts. However, the backend can additionally
+    send up to three types of events:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`contact.created`, when a new contact is created'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`contact.updated`, when a contact is updated'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`contact.deleted`, when a contact is deleted'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The payload of each of those events has a `contact` property containing the
+    contact on which the command was executed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Based on this information, we can modify the dispatcher so it listens for those
+    events and republishes them locally:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`src/contacts/services/event-dispatcher.js`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE28]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here, we add event handlers, so that, when the backend sends either a `contact.created`
+    event, a `contact.updated` event, or a `contact.deleted` event, the impacted contact
+    is transformed into a `Contact` object, and the event is republished on the application's
+    event aggregator.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Once this is ready, we need to `activate` the event listener. We will do this
+    in the `contacts` feature's `configure` function. However, the dispatcher uses
+    the `Contact` class to transform the list of objects received from the backend
+    into `Contact` instances when initiating the connection. Since the `Contact` class
+    relies on the `aurelia-validation` plugin to be loaded, and since we can't be
+    sure that the plugin is indeed loaded when our `configure` function is called,
+    we can't use `Contact` here, otherwise an error could be thrown when initializing
+    the validation rules of `Contact`. How can we do it, then?
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The Aurelia framework configuration process supports post-configuration tasks.
+    Such tasks are simply functions that will be called after all plugins and features
+    are loaded, and can be added using the `postTask` method of the framework''s configuration
+    object, which is passed to the `configure` function:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`src/contacts/index.js`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE29]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here, we add a post-configuration task, which activates the dispatcher once
+    all plugins and features have been loaded. Additionally, since post-configuration
+    tasks support `Promise`s, we can return the `Promise` returned by `activate`,
+    so we are sure that the interactive connection with the backend is completed and
+    that the initial contacts are loaded when the framework's bootstrapping process
+    completes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Adding notifications
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: At this point, our `main` component of `contacts` listens for server events,
+    and dispatches them locally. However, we still don't do anything with those events.
+    Let's add some notifications that tell the user when something happens on the
+    server.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We will add a notification system that will let the user know every time the
+    backend sends a change event. As such, we will use a library called `humane.js`,
+    which can be found at [http://wavded.github.io/humane-js/](http://wavded.github.io/humane-js/).
+    You can install it by opening a console window in the project directory and by
+    running the following command:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE30]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Once it''s completed, you must also let the bundler know about this library.
+    In `aurelia_project/aurelia.json`, under `build`, then `bundles`, in the `dependencies`
+    section of the bundle named `vendor-bundle.js`, add the following snippet:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE31]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'In order to isolate usage of this library, we will create a custom element
+    around it:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`src/contacts/components/notifications.js`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE32]'
+  prefs: []
+  type: TYPE_PRE
+- en: This custom element first requires an `EventAggregator` instance and a `Humane`
+    object to be injected into its constructor. When it is `attached` to the DOM,
+    it subscribes to the `contact.created`, `contact.updated`, and `contact.deleted`
+    events to display proper notifications when they are published. It also stores
+    the subscriptions returned by the `subscribe` method of `EventAggregator` calls
+    in an array, so it is able to `dispose` those subscriptions when it is `detached`
+    from the DOM.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In order to use this custom element, we need to modify the template of the feature's
+    `main` component by adding a `require` statement and an instance of this element.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'However, the `main` template is growing larger, so let''s remove the `inlineView`
+    decorator from the view-model class and move the template to its own file:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`src/contacts/main.html`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE33]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Lastly, we need to add the stylesheet for one of themes of `humane.js`, so
+    the notifications are correctly styled:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`index.html`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE34]'
+  prefs: []
+  type: TYPE_PRE
+- en: If you run the application at this point and modify a contact, you'll see that
+    the notification doesn't show. What did we miss?
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting out of the pitfall
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: This is one tricky gotcha that I've experienced a couple of times now when integrating
+    libraries with Aurelia. It is caused by the `aurelia-app` attribute being on the
+    `body` element.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Indeed, some libraries add elements to the `body` when they are loaded. This
+    is what `humane.js` does. When it is loaded, it creates a DOM subtree, which it
+    will use as a container to display notifications, and appends it to the `body`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: However, when Aurelia's bootstrapping process ends and the application gets
+    rendered, the content of the element hosting the `aurelia-app` attribute gets
+    replaced by the rendered view of the `app` component. This means that the DOM
+    element's `humane.js` will try to use to display notifications that won't be on
+    the DOM anymore. Oops.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Fixing this is pretty simple. We need to move the `aurelia-app` attribute to
+    another element, so the content of the `body` element won''t be wiped out when
+    our application is rendered:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`index.html`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE35]'
+  prefs: []
+  type: TYPE_PRE
+- en: Now, if you refresh your browser and then perform some action, such as updating
+    a contact, you should see a notification being displayed for a couple of seconds
+    at the top of the viewport.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: As a rule of thumb, I never put the `aurelia-app` attribute directly in the
+    `body`. I learnt this lesson by spending too much time, on multiple occasions,
+    trying to figure out why an external library I had integrated into my project
+    didn't work.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Simulating a multi-user scenario
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: At this point, our application is able to notify the user when a change occurs
+    on the server, even when this is done by another user. Let's test a multi-user
+    scenario. To do this, the application must be run using something other than Aurelia's
+    CLI because, at the time of writing, the browser sync feature interferes with
+    our synchronization mechanism.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The simplest solution is to install the `http-server` node module, if you don''t
+    already have it installed, by running the following command:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE36]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Then you can build our application:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE37]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Once this command has completed, you can launch a plain HTTP server:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE38]'
+  prefs: []
+  type: TYPE_PRE
+- en: You can then open the application in two browser windows and put them side by
+    side. In one, perform actions such as creating a new contact or updating an existing
+    one. You should see the notification pop up in both windows.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using shared services
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: At the moment, our application is mostly stateless, since every route component
+    loads its data from the server. There is no route component that depends on a
+    global state, outside of its own scope.
+  prefs: []
+  type: TYPE_NORMAL
+- en: However, sometimes an application needs to store a global state. This state
+    is typically managed by some kind of service, which can either be propagated through
+    components using data binding or injected into them using the dependency injection
+    system, in which case the dependency is declared and controlled in the JS code,
+    not in a template.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There are plenty of scenarios where locally storing the state is beneficial,
+    or even required. It can allow the saving of bandwidth and reducing the number
+    of calls to the backend. If you want to make your app available offline, you'll
+    probably need to locally store a state at some point.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this section, we will refactor our application by creating a service that
+    will be shared among all route components and that will allow them to access the
+    same local data. This service will act as a local data store, and will rely on
+    the events published by the dispatcher we created in the previous section to both
+    initialize its state and stay synchronized with the server's state.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Creating an in-memory store
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'We will start our refactoring by creating a new service that we''ll call `ContactStore`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`src/contacts/services/store.js`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE39]'
+  prefs: []
+  type: TYPE_PRE
+- en: This store first declares a `contacts` property, which is assigned an empty
+    array. This array will contain the local list of contacts. Next, the class expects
+    an `EventAggregator` instance to be injected into its constructor, which is then
+    stored on the `eventAggregator` property.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The class then defines an `activate` method, which will subscribe to some events
+    on the aggregator, and a `deactivate` method, which disposes of the subscriptions.
+    This is the same pattern we implemented when we wrote the notifications component
+    earlier.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `ContactStore` also exposes a `getById` method, which expects a contact
+    `id` as its argument, and which either returns a rejected `Promise` if the contact
+    is not found or a `Promise` resolved using a copy of the contact if it is. This
+    method will be used by some route components in place of the gateway's `getById`
+    method, so it mimics its signature to minimize the amount of changes we have to
+    do.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Now the `activate` method needs to have some event subscriptions added so it
+    can react to them:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`src/contacts/services/store.js`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE40]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Here, the `activate` method subscribes to the various events published by the
+    dispatcher so it can keep its list of contacts up-to-date:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: When it receives a `contacts.loaded` event, it resets the `contacts` array using
+    the new list of contacts contained in the event's payload
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: When it receives a `contact.created` event, it first makes sure that the contact
+    doesn't already exist in the array using its `id` and, if not, adds it
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: When it receives a `contact.updated` event, it retrieves the local copy of the
+    updated contact still using its `id` and updates all of its properties
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: When it receives a `contact.deleted` event, it finds the contact's index in
+    the array, always using its `id`, and splices it out
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: This store is now able retrieve a local copy of the list of contacts from the
+    server, and then keep itself up-to-date.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using the store
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: We can now modify all the route components that perform read operations so they
+    use this store instead of the gateway. Let's walk through them.
+  prefs: []
+  type: TYPE_NORMAL
+- en: First, the `creation` component doesn't need to change.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Next, the `details`, the `edition`, and the `photo` components must be modified.
+    For each of them, we need to:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Import the `ContactStore` class
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Add the `ContactStore` class to the `inject` decorator so it is injected in
+    the constructor
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Add a `store` argument to the constructor
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: In the constructor, assign the `store` argument to a `store` property
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: In the `activate` method, replace the call to the `getById` method of `gateway`
+    with a call to the `store`
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Here''s what the `details` component looks like after those changes:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`src/contacts/components/details.js`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE41]'
+  prefs: []
+  type: TYPE_PRE
+- en: Notice how the `delete` operation is still called on the `gateway`. Indeed,
+    all write operations are still performed using the `ContactGateway` class. However,
+    all read operations will now be performed using the `ContactStore` service, as
+    it keeps a synchronized, local copy of the server's state.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'As such, and lastly, the `list` component must also be modified. We need to:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Replace the `ContactGateway` import for a `ContactStore` import
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Replace the dependency on the `ContactGateway` class with a dependency on the
+    `ContactStore` class on the `inject` decorator
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Remove the `contacts` property declaration and initialization
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Replace the constructor's `gateway` argument with a `store` argument
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: In the constructor, remove the assignation of the `gateway` property by assigning
+    the `store` argument's `contacts` property to `this.contacts`
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Remove the `activate` callback method
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'The new `list` component is now stripped down to its minimum:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`src/contacts/components/list.js`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE42]'
+  prefs: []
+  type: TYPE_PRE
+- en: We can see here the state sharing at its core. The `contacts` property of `store`
+    contains an array that is the actual state holder. It is this array that, being
+    shared among components through the `ContactStore` instance, allows the same data
+    to be accessed from the different screens. As such, this array should never be
+    overwritten, only mutated, so Aurelia's binding system can work with it seamlessly.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'However, we still need to `activate` the `ContactStore` instance somewhere,
+    so it can start listening for change events. Let''s do this in the feature''s
+    `configure` function, just before we activate the event dispatcher:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`src/contacts/index.js`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE43]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here, we force the DI container to initialize the single `ContactStore` instance
+    by retrieving it, then we simply `activate` it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Lastly, we could go and delete the `getAll` and `getById` methods from the `ContactGateway`
+    class, since they are not used anymore.
+  prefs: []
+  type: TYPE_NORMAL
+- en: At this point, if you run the application, everything should still work as before.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Designing a valuable application is almost never simple. It is always a matter
+    of juggling many factors, deciding what pros are beneficial and what cons are
+    acceptable:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: A child router makes the top menu's active item behave better, while root routes
+    do not.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: A child router makes it difficult to have links across features, while root
+    routes make it easy.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Features help to isolate and integrate a domain or technical feature in an Aurelia
+    application.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Data binding is the simplest way to connect components together. However, it
+    has limitations.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using a remove service to communicate data is another very simple way to make
+    components communicate. It can, however, be bandwidth intensive, can put some
+    load on the remote service, and makes the remote server a single point of failure,
+    rendering the application unusable if the user has no network connection or if
+    the remote service goes down.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Sharing services between components to make them communicate is versatile, but
+    adds complexity.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using events to make components communicate increases extensibility and decoupling,
+    but also increases complexity. Discipline is required in order to make events
+    easily discoverable in a large application.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Some of those pros and cons may seem trivial, and I would tend to agree that
+    a menu item not highlighted all the time is no big deal in most cases, but on
+    some projects it may be unacceptable. The best I can do is to give you the tools
+    to make your own informed decisions.
+  prefs: []
+  type: TYPE_NORMAL

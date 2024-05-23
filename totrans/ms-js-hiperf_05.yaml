@@ -1,0 +1,411 @@
+- en: Chapter 5. Operators, Loops, and Timers
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In previous chapters, we reviewed the basic tools used in JavaScript development.
+    We looked at IDEs, code editors, and *JSLint*, a JavaScript code validator that
+    not only showed us where our code contained issues, but it also gave us warnings
+    and suggestions on how to improve our code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We also learned about the `console.time` and `console.timeEnd` methods that
+    allowed us to quickly test our code execution performance. Finally, we learned
+    about creating a basic build system to ensure our final code base is optimized
+    and bug-free.
+  prefs: []
+  type: TYPE_NORMAL
+- en: It's important to say that all of these tools and techniques are essential to
+    write high-performance code, not because of the JavaScript you know, but because
+    of the JavaScript you don't know. JavaScript is a language that anyone can pick
+    up and start writing code without knowing object-oriented programming or knowing
+    a pattern such as **Model View Controller** (**MVC**); over the years, however
+    it's been modified to accommodate these higher-level programming concepts (hacked
+    or otherwise).
+  prefs: []
+  type: TYPE_NORMAL
+- en: The flip side of an easy-to-use language is that it's very easy to write bugs
+    or even nonoptimized code; this effect is doubled and even tripled if we're writing
+    complex JavaScript. As mentioned in past chapters, one characteristic of JavaScript
+    developers in general is that *we are human, and we make mistakes*. Much of this
+    is just a lack of awareness on the part of the developer, which is why using build
+    systems and code checkers such as JSLint is so important, long before we write
+    perfect high-performance JavaScript; if we don't, these tools have us covered.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In this chapter, we are leaving tools and build systems behind and are getting
+    into JavaScript performance concepts head-on, breaking up the subject matter across
+    two chapters, starting with following topics:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Operators
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Loops
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Timers
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Operators
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this section, we are going to learn efficient ways to create `for` loops
+    using the comparison operator.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The comparison operator
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The comparison operator, `==`, is an operator that's common in JavaScript development
+    (typically in `if` statements); it equates one object with another and returns
+    a boolean, (`true` or `false`) value. It's pretty straightforward and is very
+    common in C-based languages.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Because of this, it's easy to take advantage of this operator and use it across
+    a large code base. The reality of this is that the equals operator is slow compared
+    to using the `===` strict comparison operator, which also compares object types
+    as well as the object's value. As the JavaScript interpreter doesn't have to confirm
+    the type before checking the equality, it operates faster than using the double
+    equals operator.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Is strict faster?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Let''s test this using the `console.time` method. In the following screenshot
+    we have a `05_01.js` code sample; we can also see this sample in the example files
+    of this book, provided on the Packt Publishing''s website:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Is strict faster?](img/7296OS_05_01.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Here, we have three variables on lines 5, 6, and 7; two of these variables are
+    floats referencing the pi value, and the last variable is a string with the same
+    pi value. We then have an anonymous function with a `test` variable on line number
+    12, which equates both our floats with a double equals operator. Wrapped around
+    the function, we have `console.time` and `console.timeEnd` functions on lines
+    9 and 14, respectively.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s run this in the Chrome browser; open up Chrome followed by **Developer
+    tools** from the **More tools** option on an `about:blank` tab, and then open
+    the **Snippets** tab in the right-hand side column under the **Sources** panel.
+    The **Snippets** tab is like a scratchboard built to test JavaScript code; right-click
+    in the tab content area, and select **New**. Save your snippet with a name and
+    copy the code from the example, as shown in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Is strict faster?](img/7296OS_05_02.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'Next, right-click on the code snippet in the left-hand side rail and click
+    on **Run**. You''ll notice the console appear at the bottom of the **Developer
+    tools** window. We can also see a `Check PI: 0.016ms` console message. This shows
+    us that running the comparison operator on this simple evaluation takes 0.016
+    ms to complete. What if we changed the comparison operator to a strict comparison
+    operator to see what the result would be?'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'On changing the operator, we can see that our second `console.time` message
+    is `Check PI: 0.007ms`. This is a simple example, sure, but it proves that the
+    code runs faster using strict type checking with strict comparison operators.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Is strict faster?](img/7296OS_05_03.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Loops
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this section, we are going to learn efficient ways to create `for` loops
+    in detail.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How loops affect performance
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Loops are a very common way to iterate through large blobs of data or objects
+    and iterating through each instance of a DOM object or a piece of data. Let''s
+    say we have a simple loop that generates a `p` paragraph tag and appends the page
+    with an inner text value of the `i` integer in the loop, with a maximum limit
+    of `9000`. Let''s take a look at the following code sample and see how this is
+    done. I''ve created a simple HTML5 page with a `script` tag that includes the
+    code on line 10, as shown next:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How loops affect performance](img/7296OS_05_04.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'So, how is this code process-intensive? For starters, if we look at line number
+    17, we can see a variable called `ptag` that was created to create a blank paragraph
+    tag in our DOM. We then apply the integer''s current value in the loop to the
+    `innerText` property of the `ptag` variable; and lastly, we apply the newly created
+    paragraph tag into the DOM with the value we specified at that point in the loop.
+    For performance testing, we also wrapped the `for` loop in a `console.time` wrapper
+    method to check the performance speed. If we run this in Chrome, we should get
+    a page with a line for each number created in the `for` loop along with a `console.time`
+    method with a `process time` label, as shown in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How loops affect performance](img/7296OS_05_05.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'Looking at our `process time` label, we can see that processing this block
+    of code about takes 18 milliseconds to complete. This is not great, but we can
+    make it better; let''s update our code and move the `ptag` variable and our `i`
+    integer variable outside the `for` loop so that they don''t get recreated with
+    each iteration of the `for` loop. Let''s see what this looks like by updating
+    our code, as in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How loops affect performance](img/7296OS_05_06.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'Notice that, on line number 16, we''ve moved the `i` and `ptag` variables outside
+    the loop, and we are reassigning values and objects created in the loop rather
+    than creating a unique scope for each loop pass. If we rerun our page, we should
+    see the same body tag get updated with a slightly smaller performance number than
+    before; in the following case, it should run in the range 15–17 milliseconds:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How loops affect performance](img/7296OS_05_07.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: The reverse loop performance myth
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: A new idea that seems to have appeared in JavaScript developer circles is the
+    concept of a reverse `for` loop. A reverse `for` loop is written just like a loop,
+    but the loop counts backward rather than forward.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The idea behind a reverse loop is that, by counting backward, some JavaScript
+    interpreters run loops faster. Let's test this and see whether this actually improves
+    the speed of a `for` loop. First, let's create a `for` loop, counting forward
+    from `9000`; we won't include any logic in the `for` loop, with the exception
+    of adding an external variable called `result`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using our `result` variable with an increment, we can determine whether we are
+    counting as we should and triggering a line of code at the end of `9000` in both
+    a *reverse* loop and a standard `for` loop. In our case, a `console.timeEnd` function,
+    as shown in the following code, is in its own HTML page, with a script tag at
+    the bottom.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![The reverse loop performance myth](img/7296OS_05_08.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Let's take a look at the code sample. On line 13, we can see that we declare
+    our `result` variable before starting our `for` loop while, on line number 14,
+    we start the `console.time` wrapper method that has a label called `Time Up`.
+    On line 15, we start our `for` loop and increment `result` on line 16\. Finally,
+    on line 18, we have a condition where we ask whether the result is equal to 9000,
+    and we execute our `timeEnd` function on line 19.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'If we load the page with our `for` loop script inside the `body` tag, our console
+    in **Developer tools** should output the following information:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![The reverse loop performance myth](img/7296OS_05_09.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: So, our `console.time` object tells us that our standard `for` loop with a maximum
+    value of `9000` takes roughly 0.15 milliseconds to process in Google Chrome. Having
+    nothing else included on the HTML page, which isn't hosted on a server, ensures
+    that network lag isn't a factor. This is a good baseline with which we can compare
+    a reverse loop.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Now, let''s test a reverse `for` loop; here, we''ve created an updated version
+    of the `for` loop, including our `result` variable. This is similar to the previous
+    process, but let''s take a look at the code sample in the next screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![The reverse loop performance myth](img/7296OS_05_10.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: If we look at line number 15 in this code sample, we can see that we've altered
+    this line a bit so that the loop counts backward rather than forward. We start
+    by setting the increment variable, `i` in this case, with a value of `9000`, and
+    then we test whether `i` is greater than `0`. If it is, we decrease the `i` value
+    by one.
+  prefs: []
+  type: TYPE_NORMAL
+- en: On line 17, we still increment our `result` variable as we did previously. This
+    way, rather than using the `for` loop's decrement variable `i`, the `result` variable
+    exists as our count outside the loop, counting up. This is called by the *reverse*
+    loop. When the `result` equals `9000` on line 18, then on line 19 the `console.timeEnd`
+    function is executed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s test this in the **Developer tools** option in our Chrome browser and
+    see what value we get, as shown here:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![The reverse loop performance myth](img/7296OS_05_11.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: So, we can see our result in **Developer tools**, and our reverse loop's processing
+    time is around 0.16 milliseconds, which isn't too much of a difference when comparing
+    it with a `for` loop. In many cases, a reverse `for` loop isn't necessary for
+    most JavaScript projects unless we need to count backward for a project.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Timers
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Here, we are going to learn about optimizing JavaScript timers in detail.
+  prefs: []
+  type: TYPE_NORMAL
+- en: What are timers and how do they affect performance?
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Timers are built-in functions of JavaScript that allow the execution of either
+    inline JavaScript code or permit functions to be called at a specific point of
+    time after, or repeatedly during, the life cycle of a JavaScript application.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Timers are a great tool in a JavaScript developer's toolbelt, but they have
+    their own issues when it comes to performance. Consider the fact that the JavaScript
+    language is single-threaded, which means that every line of code in our application
+    cannot be fired at the exact same time as another piece of code in our application.
+    To get around this, we use a built-in function called `setTimeout`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `setTimeout` method takes two parameters to delay a block of code from executing;
+    the first is either the name of a function with our code or a line of JavaScript
+    code by itself, followed by an integer specifying the extent by which we want
+    to delay code execution which is in milliseconds.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'On the surface, the `setTimeout` function may seem harmless, but consider this.
+    Let''s say we have two functions, both being triggered by one `setTimeout` function
+    each with a `for` loop that prints an incremented value of the `for` loop to the
+    console window. Each function will have a different maximum value and the lower
+    count function will be called slightly after the first larger functions of the
+    `for` loop. Let''s take a look at the code sample here:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![What are timers and how do they affect performance?](img/7296OS_05_12.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'We can see that this is an empty HTML5 page with a script tag with our code
+    on line number 9\. On lines 13 and 20, we have the start of two similar functions:
+    one called `delay300000()` and another called `delay3000()`, with each function
+    containing a `for` loop that prints each step of the loop to the console using
+    the `console.info` statement. The `console.info` statement is a type of console
+    print that simply formats the console line to indicate information.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Now, on line 27, we will trigger both functions inside a `window.onload` function,
+    with the larger delay function called 50 milliseconds after the page load and
+    the shorter function called slightly later at 150 milliseconds. Let''s try this
+    in Chrome and see what happens in Dev Tools, as shown next:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![What are timers and how do they affect performance?](img/7296OS_05_13.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Here, we can notice quite a bit of lag as we print all these lines to the console.
+    We can also see that we triggered both in a given timeout. In the preceding screenshot,
+    we can see that our `delay3000()` isn't triggered until after our larger function,
+    `delay300000()`, is completed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Working around single-threading
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Sadly, with plain JavaScript, we simply can''t "multithread" a function like
+    these two at the same time, but we can incorporate something like a `callback`
+    method in our code. A `callback` method is simply a JavaScript function that''s
+    triggered when a function is completed. Let''s set up our `delay300000()` function
+    to call back our `delay3000()` method once it''s completed. Here''s what it would
+    look like:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Working around single-threading](img/7296OS_05_14.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Looking at our code sample, we can see on line number 13 that we've added a
+    parameter with the name `callback`. It's important to know that here, the naming
+    of our `callback` method isn't important but including a placeholder parameter
+    for a function is. Our placeholder function that will serve as our callback function
+    is `Delay3000()`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Notice how we renamed `Delay3000` on line 22, capitalizing the *d*. The purpose
+    of this is to indicate to the JavaScript interpreter that this is a **constructor**,
+    a function that requires it to be initialized in memory. This is done by capitalizing
+    the first letter in the function's name. You may recall from [Chapter 2](ch02.html
+    "Chapter 2. Increasing Code Performance with JSLint"), *Increasing Code Performance
+    with JSLint*, if we use a capitalized function name JSLint will return a warning
+    that it "thinks" a constructor is being used even if it's a plain function. To
+    keep our interpreter from second-guessing itself, we want to ensure we are writing
+    our functions and objects as we intended.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Finally, we have updated our `onload` function's logic by removing the extra
+    `setTimeout` for `delay3000`, and we added the newly renamed `Delay3000` (without
+    parentheses) as a parameter inside our `delay300000()` function in the `setTimeout`
+    function. Let's run this again in our browser, and take a look at our console's
+    output.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If we scroll down near the bottom of the console log (after processing the initial
+    `delay300000()` function call), we can see that our `Delay3000` log message appears
+    after completing the initial function. Using callbacks is a great way to efficiently
+    manage your application's thread and ensure proper load stacking of a heavy application,
+    allowing you to pass parameters after an initial function is completed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Closing the loop
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Lastly, as we can see in this `callback` method example, it's usually not a
+    great idea to use large hundred thousand scaled loops for performance reasons.
+    Always look for better and more efficient ways to break up large loops and call
+    other functions to help balance out the workload.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Also, I encourage you to check out JavaScript **promises**, an EcmaScript 6
+    feature. While not quite ready for discussion yet in this book, as at the time
+    of writing, promises are still experimental. I encourage you, dear reader, to
+    follow up and learn about what will be a successor to callbacks in JavaScript
+    when it's finalized. You can learn more about promises on Mozilla's Developer
+    Network site at [https://developer.mozilla.org/en-US/](https://developer.mozilla.org/en-US/).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this chapter, we learned about conditionals and how efficient strict comparisons
+    help our JavaScript perform better at runtime. We also learned about loops and
+    how to optimize loops, preventing objects that are not required for our code base
+    from being repeated over and over in a `for` loop and thus, keeping our code as
+    efficient as possible.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Lastly, we also learned about timers and single-threading in JavaScript applications
+    and how we can use callbacks to keep our code running as smoothly as possible
+    even when we overload it. Next, we cover arrays and prototype creation performance
+    and find out how best to work with them in JavaScript.
+  prefs: []
+  type: TYPE_NORMAL

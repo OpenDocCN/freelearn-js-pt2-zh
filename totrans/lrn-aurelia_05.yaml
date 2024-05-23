@@ -1,0 +1,2587 @@
+- en: Chapter 5. Making Reusable Components
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Aurelia was built with reusability and composability in mind. As such, its templating
+    engine supports not only the composition of components, but also custom HTTP elements
+    and attributes, called HTML behaviors in Aurelia's terminology. In fact, the resources
+    we use in templates, such as `if`, `repeat`, `show`, `focus`, `compose`, and `router-view`,
+    are not special constructs baked into the framework, but are actual HTML behaviors
+    written using the same API we will use to write our own custom HTML behaviors.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this chapter, we will see how composition differs from custom elements, what
+    the pros and cons are for each technique, and in which scenarios one is better
+    suited than the other. We will next look at how to create custom attributes and
+    custom elements, and what we can do with them. Lastly, we will see how we can
+    customize Aurelia's view location convention.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Composition
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Composition is the simplest way to assemble components in an Aurelia application.
+    It is also the most limited way to do so. Its purpose is mainly to reuse existing
+    components and templates in other contexts. Composition suits only simple reusing
+    scenarios, where the situation does not differ too much from the intended usage.
+    The flexibility of composition is very limited when compared to HTML behaviors.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the following sections, we will see the various possibilities and limitations
+    of composition by refactoring our contact management application. We will extract
+    the contact creation behavior from our `contact-edition` component into a new
+    `contact-creation` component. By doing this, we strive for a cleaner design, so
+    our new components will have more focused responsibilities. However, since the
+    contact form by itself is the same in both contexts, we will see various ways
+    to extract this common template and behavior and to reuse them within those two
+    components.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Splitting the contact edition component
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Let''s first start by removing all references to contact creation from the
+    `contact-edition` component:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`src/contact-edition.js`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here, we simply remove the `isNew` property, the `if` statements that used it
+    in the `activate` and `save` methods, and the related code branches.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The same thing goes for the template:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`src/contact-edition.html`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here, we simply remove the static title and the **Cancel** button displayed
+    when creating a new component, so basically all template parts that were displayed
+    when `isNew` was `true`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Next, let''s create our new `contact-creation` component:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`src/contact-creation.js`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: In the view-model of this new component, we simply initialize a `contact` property
+    with a new `Contact` instance. Additionally, we define a `save` method which,
+    if there are no validation errors, delegates to the `create` method of `ContactGateway`
+    and, when the returned `Promise` resolves, navigates back to the contact list.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'For the template, we''ll start with the frame around the form fields themselves:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`src/contact-creation.html`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: Except for the form fields, which we have omitted for now, this template is
+    almost identical to the template of `contact-edition`. The main differences are
+    highlighted, the title is a static `New contact` string, and the **Cancel** button
+    navigates back to the contact list instead of the contact's details.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Reusing templates
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'One of the possibilities composition offers is reusing a template in multiple
+    contexts. We will illustrate this by extracting the form fields from the `contact-edition.html`
+    template into its own template, so we can use it in both `contact-edition.html`
+    and `contact-creation.html`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`src/contact-form.html`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Here, we extracted the set of fields and list editors from `contact-edition.html`
+    into its own template. We can now use composition to render this template where
+    the fields were before:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`src/contact-edition.html`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: Additionally, the `contact-form.html` template must be composed in the `contact-creation.html`
+    template. I'll let you replace the comment in the template with the same `compose`
+    instruction as in the previous snippet.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Do not forget to update the `contact-creation` route in `src/app.js`, by changing
+    its `moduleId` property to `'contact-creation'`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Once this is done, you can run the application and test that everything still
+    works unchanged.
+  prefs: []
+  type: TYPE_NORMAL
+- en: When using composition to render a template, this template will inherit the
+    surrounding binding context. This means that, in order to compose the `contact-form.html`,
+    the template rendering it must have a contact object stored as a `contact` property
+    on its context. That's because the `contact-form.html` template expects the presence
+    of a context property named `contact`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The whole point about composability is that a component should be independent
+    from its surrounding context. This example breaks this rule. We need a way to
+    inject the `contact` object into the component.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'If our component is just a template and has no view-model, we can inject the
+    `contact` object in an untyped view-model:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here, the templating engine will create an object and assign its `contact` property
+    the `contact` object from the surrounding binding context, then the composition
+    engine will data-bind this dynamic view-model with the `contact-form.html` template.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Reusing components
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: If our component has behaviors, it means that it has a view-model class. As
+    such, the previous technique can't work, because it would override the component's
+    view-model with an anonymous object and the component would lose its behaviors.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Even though it doesn''t have any behavior for now, let''s create an empty view-model
+    for our `contact-form` component so we can illustrate this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`src/contact-form.js`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This will allow us to change the `compose` instruction in both `contact-creation.html`
+    and `contact-edition.html` so the `contact-form` component is used instead of
+    the template alone. To do this, we will use the `view-model` attribute of the
+    `compose` element instead of its `view` attribute:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: Notice how the `compose` element now has a `view-model` attribute instead of
+    a `view` attribute, and how the `.html` file extension in the path has been removed,
+    so it now refers to the whole component instead of the template alone.
+  prefs: []
+  type: TYPE_NORMAL
+- en: However, composed like this our component is back to relying on the surrounding
+    context's `contact` property. We need to inject the `contact` into it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The composition engine supports passing a model to a composed component. As
+    such, the `compose` element supports a `model` attribute:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'In order for the view-model to receive this model, it must implement a callback
+    method named `activate`, which will be called by the composition engine, and pass
+    the value bound to the `model` property:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`src/contact-form.js`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: At this point, the `contact-form.html` template is data-bound using the `contact`
+    property of the `ContactForm` view-model, which overrides the surrounding context's
+    `contact`. This allows for much more flexibility. For example, you can inject
+    a different object than the one named `contact` on the surrounding context, or
+    you can change the name of the property in the `contact-form` component without
+    breaking anything. It is the same kind of difference between passing a parameter
+    to a function and using a variable from the outer scope in the same function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Of course, in this case, since the `model` attribute is bound to the `contact`
+    property of the surrounding context, the component will be re-composed if this
+    `contact` property is assigned a new value. This means that the component's `activate`
+    method will be recalled with the new value of `contact`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using a template as a custom element
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Since our `contact-form.html` template has a single parameter, which is a contact
+    object, composition is absolutely enough. However, if our component needs to have
+    multiple arguments which can be bound separately, composition cannot be used,
+    unless we aggregate all arguments in a single parameter object, which can quickly
+    become ugly. Custom elements, on the other hand, are designed specifically for
+    this kind of scenario.
+  prefs: []
+  type: TYPE_NORMAL
+- en: For the sake of the example, let's transform our `contact-form` component into
+    a custom HTML element. With Aurelia's templating engine supporting template-only
+    custom elements, we can delete the `contact-form.js` view-model, since our `contact-form`
+    has no behavior other than rendering a template at the moment.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Next, we simply need to tell our template which parameters should be exposed
+    on the element as attributes:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`src/contact-form.html`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here, we use the `bindable` attribute on the `template` element to tell Aurelia's
+    templating engine that this template, when used as a custom element, exposes a
+    `contact` attribute, which the template using the custom element can bind to.
+  prefs: []
+  type: TYPE_NORMAL
+- en: To define multiple bindable attributes, simply separate them with a comma. For
+    example, `bindable="title, contact"` will define two bindable attributes named
+    `title` and `contact`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Then, in both `contact-creation.html` and `contact-edition.html`, we start
+    by loading the template as a resource:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: The `require` statement tells the templating engine that `contact-form` elements
+    are rendered using the `contact-form.html` template only, without any view-model.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Next, we can replace the `compose` instruction with our new `contact-form`
+    element:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here, we bind the `contact` property of the `contact-creation` or `contact-edition`
+    component to the `contact` attribute of our `contact-form` custom element. This
+    will inject the `contact` in the template. Additionally, the properties will be
+    bound, which means that if the surrounding context's `contact` is assigned as
+    a new value, the `contact` property in the context of `contact-form.html` will
+    be synchronized, and all bindings depending on it will be updated.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This allows us to create custom elements with just templates when the elements
+    have no behaviors. It limits to a strict minimum the code we need to write in
+    such scenarios.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Understanding HTML behaviors
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: HTML behaviors allow us to enrich standard HTML with custom elements and attributes.
+    When compared to composition, they not only offer many more possibilities and
+    far more flexibility, but they also have much more semantical meaning than `compose`
+    instructions inside a template.
+  prefs: []
+  type: TYPE_NORMAL
+- en: An HTML behavior is made up of at least a view-model JS class. Additionally,
+    a custom element can declare a template as its view. Of course, an attribute cannot
+    declare a view, as it is intended to simply enhance or change the behavior of
+    an element.
+  prefs: []
+  type: TYPE_NORMAL
+- en: HTML behaviors, whether they are elements or attributes, use the same basic
+    concepts and follow the same general rules.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Injecting the DOM element
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: HTML behaviors will often need to use a reference on their DOM element, especially
+    custom attributes. The templating engine is aware of this. When evaluating an
+    HTML element in a template, it exposes this element in the current DI container.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Thanks to this, if the element is an Aurelia custom element, its view-model
+    can declare a dependency on the `Element` class, and see this DOM element being
+    injected in its constructor.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Similarly, a custom attribute that declares a dependency on the `Element` class
+    will see the DOM element it is declared on injected in its constructor when instantiated.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Relying on browser globals should be avoided. As such, the `Element` class should
+    be retrieved from the `DOM` interface exposed by the `aurelia-pal` library. This
+    way, if your application needs to be made isomorphic, it will be able to run on
+    the server by using a different implementation of the PAL.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Declaring bindable properties
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: An HTML behavior can declare bindable properties. Such properties are exposed
+    to the outside world by the templating engine, so an instance of a custom element
+    or attribute can bind to those properties. The `bindable` decorator allows us
+    to identify a property as such.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'For example, let''s imagine a custom element called `text-block`, which would
+    expose a bindable property named `text` and would be used like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'In order to expose the `text` property as an attribute, the element''s view-model
+    would need to decorate it with `bindable`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The `bindable` decorator can be passed an options object, which can have the
+    following properties:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`defaultBindingMode`: The binding mode chosen by the `.bind` command when used
+    on the property. The `bindingMode` enumeration should be used to set this value.
+    If omitted, one-way is used by default.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`changeHandler`: The name of the change handler method. If omitted, the name
+    of the property, followed by `Changed`, is used by default. For example, the change
+    handler method for a property named `title` would be `titleChanged`.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`attribute`: The name of the attribute used to expose the property to the outside
+    world. If omitted, the name of the property, transformed to dash-case, will be
+    used. For example, the `defaultText` property would be exposed as the `default-text`
+    attribute.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_IND
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Dash-case is a case pattern where all words are lower-case and separated by
+    a hyphen. Even though there is no clear consensus in the community about this
+    name (it is also referred to as *kebab-case*), I will stick to it through the
+    book to use a consistent vocabulary.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'For example, let''s imagine that we want the `text` property of the `text-block`
+    custom element from the previous example to be bound two-way by default and to
+    have a change handler method named `onTextChanged` instead of the default `textChanged`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: If, for some reason, you can't or don't want to declare the bindable properties
+    inside the class, the `bindable` decorator can be put directly on the class. In
+    such a case, the options object passed to `bindable` should have a `name` property,
+    which will be used, as you might have guessed, as the name of the bindable property.
+    In such a case, you can also specify the default value of the property using the
+    additional `defaultValue` property on the options object.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To illustrate this, let''s refactor the previous example to declare the property
+    by putting the `bindable` decorator on the class itself:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here, we can clearly see that the `text` property has completely disappeared
+    from the `TextBlockCustomElement` class. Its whole declaration is handled by the
+    `bindable` decorator on the class.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Change handler methods
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: A HTML behavior can have a change handler method for any of its bindable properties.
+    Change handler methods are automatically called by the templating engine when
+    the value of the property changes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Unless an explicit method name is specified using the `changeHandler` option
+    of `bindable`, the name of the change handler method for a given property is the
+    name of the property, followed by `Changed`. For example, the default name of
+    the change handler method for a property named `firstName` is `firstNameChanged`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Change handler methods are called with two parameters, the first being the
+    new value of the property, and the second being the previous value. Of course,
+    since a handler is called after its property has changed, the property itself
+    can be used inside the change handler method instead of the first parameter:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: Life cycle
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'All HTML behaviors follow the same life cycle. A behavior''s view-model can
+    implement any of the following callback methods, which will be called by the templating
+    engine at specific moments during the behavior''s life cycle:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`created(owningView: View, view?: View)`: This is called right after the creation
+    of the behavior. The `owningView`, being the `View` instance inside which the
+    behavior was declared, is passed as the first parameter. Additionally, if the
+    behavior is a custom element having a view, the `View` instance of the behavior
+    is passed as the second parameter.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`bind(bindingContext: Object, overrideContext: Object)`: This is called right
+    after the view and the view-model have been bound together. The surrounding binding
+    context will be passed as the first parameter. An override context, which exposes
+    the ancestor contexts and can be used to add contextual properties by the view-model,
+    is passed as the second parameter.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_IND
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: If the behavior does not declare a `bind` callback method, the change handlers
+    for the view-model's bindable properties will all be called at this stage, in
+    order to allow the view-model to initialize its state according to the instance's
+    binding instructions. However, if `bind` is implemented, the change handlers won't
+    be called automatically by the templating engine during binding, the `bind` method
+    is considered to be responsible for initializing the state of the behavior in
+    such a case.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '`attached()`: This is called right after the bounded view has been attached
+    onto the DOM.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`detached()`: This is called right after the bounded view has been detached
+    from the DOM. This occurs when beginning the process of disposing the behavior.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`unbind()`: This is called right after the view-model has been unbound from
+    its view. This signals the end of the behavior''s life. Normally, if `unbind`
+    does its job correctly and does not omit to release any references and resources,
+    the view-model instance can be garbage-collected after this method returns.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: In addition to those life cycle callback methods, changed handler methods for
+    any bindable property can be implemented. Each time the value of a bindable property
+    changes during the life of the behavior instance, the templating engine will call
+    the corresponding changed handler method, if implemented.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Actually, those life cycle callback methods are not limited to HTML behaviors.
+    They can be added to any Aurelia component, such as router components or composed
+    components.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Custom attributes
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Custom attributes are HTML behaviors that can be attached to any HTML element,
+    whether a native element or a custom element, by adding the corresponding HTML
+    attribute to it. Aurelia's standard templating resources comprise many custom
+    attributes we have already covered, such as `focus`, `show`, or `hide`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Custom attributes are purely behavioral, meaning that they have no view.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'There are typically four types of custom attributes:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Attributes with a single value
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Attributes with multiple properties
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Attributes with dynamic properties
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: We will detail these types of attributes in the following sections.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Declaring a custom attribute
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: There are two ways to identify a class as a custom attribute. The first one
+    is to respect the naming convention and make the custom attribute's class name
+    end with `CustomAttribute`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In such a case, the rest of the class name will be transformed into dash-case
+    and used as the name of the attribute in templates. For example, a class named
+    `MySuperAttributeCustomAttribute` will be made available as the `my-super-attribute`
+    attribute in the templates.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'As an alternative to the naming rule, the `customAttribute` decorator can be
+    applied to a class so it is identified as a custom attribute by the templating
+    engine. In such a case, the name under which the attribute will be made available
+    to the templates must be passed as the first parameter of the decorator. For example,
+    the following attribute would be available as the `file-drop-target` attribute
+    in templates:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs: []
+  type: TYPE_PRE
+- en: When using the `customAttribute` decorator and passing an explicit attribute
+    name, a recognized good practice among the community is to stick with the dash-case
+    pattern, and to prefix the name of all your HTML behaviors with a two-letter identifier
+    common to your application, plugin, framework, or company.
+  prefs: []
+  type: TYPE_NORMAL
+- en: For example, the `aurelia-dialog` plugin, which was intended to be part of a
+    bigger Aurelia interface project, now redefined and rescoped as Aurelia UX, uses
+    the `ai-` prefix. We have already seen this in [Chapter 4](ch04.html "Chapter 4. Forms,
+    and How to Validate Them"), *Forms, and How to Validate Them*, with elements such
+    as `ai-dialog` and `ai-dialog-body`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Attributes with a single value
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: By default, a custom attribute has an implicit `value` property, which is where
+    the value of the attribute will be assigned. Of course, a change handler method
+    named `valueChanged` can be implemented in order to react to changes of the `value`
+    property.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Obviously, an attribute can be used without any value:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs: []
+  type: TYPE_PRE
+- en: In such a case, the `value` property will be assigned an empty string.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Lastly, when declaring a single-value attribute, the `customAttribute` decorator
+    can accept a second parameter, which is the attribute's default binding mode.
+    By default, a custom attribute is bound one-way. However, using the decorator,
+    this convention can be overridden.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'For example, let''s imagine a `file-drop-target` attribute that would be bound
+    two-way by default:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE21]'
+  prefs: []
+  type: TYPE_PRE
+- en: Adding an image preview
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: To illustrate how a single-value custom attribute works, let's create one.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In our contact application, we will add a preview of the selected image in the
+    contact photo upload component. To do this, we will leverage the browser's `URL.createObjectURL`
+    function, which takes a `Blob` object as a parameter and returns a special URL
+    leading to this resource. Our custom attribute, which will be used essentially
+    on `img` elements, will be bound to a `Blob` object, will generate an object URL
+    from it, and will assign this URL to the `img` element's `src` attribute.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The `URL.createObjectURL` function is supported by most major browsers, but
+    is still an experimental feature of the File API. The Mozilla Developer Network
+    has a good documentation about it, which can be found at [https://developer.mozilla.org/en-US/docs/Web/API/URL/createObjectURL](https://developer.mozilla.org/en-US/docs/Web/API/URL/createObjectURL).
+  prefs: []
+  type: TYPE_NORMAL
+- en: You could say that a value converter would be a better fit for this type of
+    feature, and I would absolutely agree. A value converter could take as an input
+    a `Blob` object and return the object URL. It could then be used on a binding
+    between an `img` element's `src` attribute and a property containing a `Blob`
+    object.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'However, in this particular case, each object URL must be released after usage
+    in order to prevent memory leaks, and value converters offer no mechanism to be
+    notified when a value is no longer used. On the contrary, HTML behaviors offer
+    a much richer workflow and a wider set of extension points. That''s why we will
+    create a custom attribute instead:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`src/resources/attributes/blob-src.js`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE22]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here, we rely on the naming convention to identify our class as a custom attribute,
+    and we inject in the constructor the HTML element the attribute is on.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We retrieve the `URL` object and the `Blob` class for the `PLATFORM` constant's
+    `global` values. When running in the browser and using the `aurelia-pal-browser`
+    implementation, this `global` property will reference the `window` object. It
+    will allow us to check the availability of those values before calling methods
+    on it. This way, if the application is executed server-side to render its HTML
+    and the PAL implementation used on the server does not provide those APIs, this
+    custom attribute won't raise any error and will simply leave the `src` attribute
+    untouched.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We also use `valueChanged` to release the previous object URL, if any, then
+    create a new one and assign it to the `src` attribute of the element our custom
+    attribute is on.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Lastly, the `unbind` method, which will be called by the templating engine when
+    our custom attribute is unbound from the view, just releases the current object
+    URL, if any.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Do not forget to load this new attribute in the `resources` feature's `configure`
+    function, or to add a `require` statement in the next template to load the attribute
+    before using it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Next, let''s use this custom attribute in our contact photo upload component.
+    First, we want to display a preview only when a valid image file has been selected.
+    This will prevent displaying a broken image. To do so, we will use the `aurelia-validation`
+    library''s `validation-errors` attribute to assign the current validation errors
+    on a new `errors` property:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`src/contact-photo.html`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE23]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Next, we will add computed properties on the view-model to get the `File` object
+    for the preview:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`src/contact-photo.js`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE24]'
+  prefs: []
+  type: TYPE_PRE
+- en: We first create an `areFilesValid` property, which uses the new `photoErrors`
+    property and ensures that the `photo` property has no validation errors. Next,
+    we add a `preview` property, which returns the first file in `photo` only if `photo`
+    contains at least one item and is valid. Otherwise, it returns `null`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Now, using the new `preview` property and our `blog-src` attribute, we can
+    display a preview of the selected image file:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`src/contact-photo.html`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE25]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here, we simply add a `div` element, which will be displayed only when a `preview`
+    is available. Inside this `div`, we add an `img` element with our `blob-src` custom
+    attribute on it, bound to the `preview` property.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If you test at this point, you should be able to see a preview after selecting
+    a valid image file. Additionally, the preview should hide itself when either no
+    image is selected or the selection is invalid.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Adding a file drop target
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'In an upcoming section, we will add a custom element that will act as a file
+    picker, supporting both file selection using a dialog and dragging and dropping
+    an image file. In order to prepare for this, let''s create a second custom attribute
+    that will listen for drag and drop events on its element and will assign any dropped
+    file to its value:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`src/resources/attributes/file-drop-target.js`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE26]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here, we first declare our custom attribute, making it use two-way binding by
+    default. This way, when a user drops files on an element having our attribute,
+    the file list assigned to the value will be also assigned to the expression bound
+    to it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Saying this attribute uses two-way binding is stretching the truth a little.
+    In fact, this attribute never actually reads the value it is bound to; it just
+    writes to it. But because Aurelia doesn't support such an outside only binding
+    mode, we have to use two-way binding. You may have noticed that the `validation-errors`
+    attribute from the `aurelia-validation` plugin works in the same way.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We also declare a dependency on its DOM element and retrieve it through the
+    constructor.
+  prefs: []
+  type: TYPE_NORMAL
+- en: When our attribute gets `attached` to the document, we add the proper event
+    listeners on its element. When a `drop` event occurs, we assign the dropped `files`
+    to our attribute's `value` property.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Lastly, when our attribute gets `detached` from the document, we remove the
+    event listeners on its element.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Attributes with multiple properties
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Custom attributes can declare bindable properties. In such a case, the attribute
+    no longer has a single `value` property, but has any number of explicitly named
+    properties.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Of course, such an attribute can define change handler methods, which will be
+    called by the templating engine when the value of their respective property changes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'For example, the `route-href` attribute exported by the `aurelia-router` library
+    may be defined like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE27]'
+  prefs: []
+  type: TYPE_PRE
+- en: Using a custom attribute with multiple properties
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'When using a custom attribute with multiple properties, the syntax is similar
+    to that of the `style` attribute, the name of the property is followed by a colon
+    then by its value, and properties are separated from one another by a semicolon:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE28]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here, the `route` property of the attribute instance would be assigned the `'my-route'`
+    string, and its `params` property would be bound to an object with an `id` property
+    equal to 1.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Obviously, on such an attribute, binding is not applied to the attribute itself,
+    but instead on its properties. We can see this in the previous example, where
+    the `params` property is bound to an object.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Attributes with dynamic properties
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In cases where an attribute needs to have dynamic properties whose names are
+    not statically known, the attribute class should be decorated with `dynamicOptions`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Value changes of dynamic properties are not notified using the standard change
+    handler methods. Instead, the attribute must implement a `propertyChanged` method,
+    which will be called each time the value of any of the dynamic properties changes
+    and will be passed three parameters: the name of the property, its new value,
+    and its previous value:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE29]'
+  prefs: []
+  type: TYPE_PRE
+- en: Using a custom attribute with dynamic properties
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Using a custom attribute with dynamic properties is identical to using an attribute
+    with multiple static properties:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE30]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here, the `Book` attribute instance would have a `title` property, which would
+    be assigned the `'Learning Aurelia'` string, and a `lastUpdated` property, which
+    would be bound to the `now` property of the outer context.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Custom elements
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Custom elements are a much more complex subject than custom attributes. A custom
+    HTML element has the following properties:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: It can have bindable properties
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: It can have its own template to control how it's rendered
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: It can support content projection, so users can inject bound view fragments
+    or custom templates into it
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: It can define its own behaviors
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: It can interface with the native DOM API
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Additionally, custom elements can be customized in many different ways, mostly
+    using various decorators provided by `aurelia-templating`. We will cover those
+    possibilities and extension points in the following sections.
+  prefs: []
+  type: TYPE_NORMAL
+- en: One important thing to grasp is that custom elements are not handled using a
+    templating trick that replaces them with their rendered template. A custom element
+    is a real DOM element, which means that it inherits all the properties and behaviors
+    of a DOM element, and that it can be used as such with any API targeting DOM elements.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Declaring a custom element
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The declaration of a custom element is very similar to that of a custom attribute.
+    By convention, a class whose name ends with `CustomElement` is considered a custom
+    element, and the rest of the name will be transformed into dash-case and used
+    as the name of the element in the templates.
+  prefs: []
+  type: TYPE_NORMAL
+- en: For example, a class named `TextBlockCustomElement` will be made available as
+    the `text-block` element in the templates.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Similarly to custom attributes, the `customElement` decorator can be applied
+    to a class as an alternative to the naming rule. In such a case, the name under
+    which the element will be made available to the templates must be passed as the
+    first parameter of the decorator.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'For example, the following element would be available as the `text-block` element
+    in the templates:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE31]'
+  prefs: []
+  type: TYPE_PRE
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Even though Aurelia supports single word names for custom elements, it is recommended
+    to stick to the dash-case pattern and to use at least two words in custom element
+    names. This is because the web component specification reserves all single-word
+    names for native browser elements, so in the future it won't be possible to export
+    such an Aurelia custom element as a standard web component. Additionally, a recognized
+    good practice among the community is to prefix the name of all your HTML behaviors
+    with a two-letter identifier common to your application, plugin, framework, or
+    company.
+  prefs: []
+  type: TYPE_NORMAL
+- en: However, this is all just conventions, because any resource without a decorator
+    identifying its type such as `valueConverter`, `bindingBehavior`, or `customAttribute`,
+    and not matching any of the resource naming rules, such as the class name ending
+    with `ValueConverter`, `BindingBehavior`, or `CustomAttribute`, will be considered
+    as custom elements by the templating engine. In such a case, the full name of
+    the class will be transformed into dash-case and used as the name of the element
+    in the templates.
+  prefs: []
+  type: TYPE_NORMAL
+- en: For example, a class loaded as a resource and named `TextBlock` would be made
+    available as the `text-block` element to the templates. It is, however, considered
+    best practice to follow the naming rule or to use the decorator.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Creating a file picker
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Let's dive right in by creating our first custom element, named `file-picker`,
+    in our contact management application. This element will encapsulate a `file input`
+    and will use the `file-drop-target` custom attribute we created in a previous
+    section so users can either open a file selection dialog or drag and drop files
+    on the element.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Declaring the custom element
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'We will start by adding some CSS for our custom element:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`src/resources/elements/file-picker.css`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE32]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here, we simply hide `file input` and style the `label` inside our element.
+    The `label` will be linked to the hidden `file input` using the `for` attribute,
+    so clicking on it will open the input's file selection dialog, even if the `input`
+    is not visible. This allows us to display a sexier UI in place of the browser's
+    `file input`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Next, let''s create the JS class:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`src/resources/elements/file-picker.js`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE33]'
+  prefs: []
+  type: TYPE_PRE
+- en: This class simply defines some bindable properties that will be used in the
+    template. Additionally, as the `files` property is being used to gather user input,
+    it will be bound two-way by default. This is the main reason why this class exists.
+    Indeed, without the need to make `files` use two-way binding by default, this
+    could have been a template-only custom element, without any JS class, similar
+    to what we did at the start of the chapter with our `contact-form`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Lastly, we need to build the template:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`src/resources/elements/file-picker.html`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE34]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here, we first `require` the element's CSS file. Next, we add a `file input`,
+    which will bind some of its attributes to the view-model's properties. This allows
+    the user of our element to specify the `id` of `input` and its `accept` and `multiple`
+    attributes. Most of all, as the `files` property is bound to the `files` attribute
+    of `input`, the files selected by the user will be synchronized with the expression
+    from the outer scope bound to the `files` property.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Instead of leaving the `inputId` property empty by default, this element could
+    implement some ID generation algorithm. This would make using the element a little
+    simpler for other developers.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Next, we add a `label` with a `for` attribute also bound to the `inputId` property.
+    This will link the `label` and the `input` together, so a click on the `label`
+    will open the file selection dialog of `input`. Additionally, we add our `file-drop-target`
+    attribute to this `label` and bind it to the `files` property, so the files dragged
+    and dropped on this `label` will be assigned to the `files` property.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Lastly, we add a `slot` inside the `label`. A `slot` is a mechanism that is
+    part of the shadow DOM specification and that allows for content projection. We
+    will go over content projection more in details in a later section; the point
+    to remember for now is that this `slot` element will be replaced with the content
+    of the `file-picker` element instance.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using the custom element
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Our new `file-picker` element is now ready to be used. Of course, it needs
+    to be either globally loaded in the `resources` feature''s `configure` function,
+    or `require`d in the template where we use it:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`src/contact-photo.html`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE35]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here, we replace the previous `file input` with our new `file-picker`. We specify
+    the `input-id` as `photo`, which links the `file input` and the `label` encapsulated
+    in our `file-picker` with the other `label`, two lines above.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We also specify that the selection dialog of `file-picker` should display only
+    image files, using the `accept` attribute, and we bind the `files` attribute to
+    the `photo` property. Additionally, this binding instruction is decorated with
+    the `validate` binding behavior, so the selected or dropped file(s) will be properly
+    validated.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Lastly, we leverage content projection to inject inside our `file-picker` a
+    `strong` line of text, which is displayed only when no `preview` is available,
+    and an `img` element, which is visible only when a `preview` is available and
+    displays the preview using our `blob-src` custom attribute. This content will
+    be projected in place of the `slot`, inside the DOM tree of `file-picker`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If you run the application at this point, you should be able to either click
+    on the `file-picker` to select a file using the selection dialog or drag and drop
+    an image file on the element, and the selected or dropped file should show up
+    in the preview area if it is valid.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Validating custom elements
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Since the `aurelia-validation` library validates any two-way binding, the `validate`
+    binding behavior can be used on custom element bindings without any problem. We
+    actually used it in the previous section to validate our `file-picker`, in case
+    you didn't notice. However, the reason the validation of `file-picker` works correctly
+    is because our `contact-photo` component uses `change` as the `validateTrigger`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In order to have a custom element work seamlessly with the `blur``validateTrigger`,
+    the custom element must publish `blur` events. Additionally, in order to respect
+    the API implemented by all native form-related elements, it is considered good
+    practice to implement a `focus` method, which will delegate the focus on any form-related
+    element it contains if your element's purpose is user input.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To illustrate this, let''s imagine a `my-widget` custom element encapsulating
+    an `input` element such as this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE36]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Let''s also imagine a very basic view-model:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE37]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'In order to comply with the `aurelia-validation` requirements, this template
+    must be modified:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE38]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here, we first create a new property named `input` on the view-model, which
+    will contain a reference of the `input` element. Next, we add a delegate event
+    handler for the `blur` event, which will call the `blur` method when triggered.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Next, let''s modify the view-model to implement the new requirements:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE39]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here, we first declare a dependency on the DOM element itself and have it injected
+    in the constructor. Additionally, we define a `focus` method on the `my-widget`
+    element, which calls the `input`'s `focus` method when called. Lastly, we create
+    a `blur` method, which creates and dispatches a `blur` event on the `my-widget`
+    element when called.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now the `my-widget` element can be used with the default `blur``validateTrigger`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: As for our `file-picker`, in order to have it working with the `blur``validateTrigger`,
+    it should be modified so it publishes a `blur` event when the files are either
+    selected or dropped. Even though the element has no focusable content because
+    the `file input` is invisible, publishing such an event every time its value changes
+    will basically force it to be revalidated using the `change validateTrigger` even
+    if the validation controller's trigger is `blur`. This can easily be done by implementing
+    a `filesChanged` change handler method dispatching a `blur` event.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Implementing a `focus` method is less straightforward. Since it does not contain
+    any focusable element, what should it do? One possibility would be to open the
+    file selection dialog when the `file-picker` is focused, even though it would
+    be a little intrusive from the user's perspective. Doing this is only a matter
+    of calling the `click` method of `file input.`
+  prefs: []
+  type: TYPE_NORMAL
+- en: Once this is done, the validation controller's assigned `validateTrigger` can
+    be removed from the `contact-photo` component, so it is reverted back to the default
+    `blur` trigger.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Since it doesn't add much except consistency and better reusability of the `file-picker`,
+    I'll leave it as an exercise to the reader to apply those changes. The chapter's
+    completed application sample can be used as a reference.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Surrogate behaviors
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Surrogate behaviors allow a custom element to declare attributes, event handlers,
+    and bindings on itself. This is achieved by adding those surrogate behaviors to
+    the custom element's `template` element, which will be projected by the templating
+    engine to the element itself. It can be particularly useful to define `aria` attributes
+    on an element, in order to add accessibility to it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The following code snippets are excerpts from the `chapter-5/samples/surrogate-behaviors`
+    sample.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'For example, let''s imagine a custom element named `tree-view`, which renders
+    a tree structure. In its template, we could define a surrogate `role` attribute
+    such as this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE40]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'When using a `tree-view` element in a template, this `role="tree"` attribute
+    will be added to every instance of the element:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE41]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'When used as depicted in the previous example, the element will look like the
+    following, once rendered in the DOM:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE42]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Surrogate behaviors can also be event handlers. For example, `tree-view` could
+    declare a surrogate `click` handler such as this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE43]'
+  prefs: []
+  type: TYPE_PRE
+- en: In such a case, the `click` handler would be called when the `tree-view` element
+    itself is clicked.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'As this example hinted, surrogate attributes can also use data-binding:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE44]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here, the `role` attribute projected on the `tree-view` element would be bound
+    to the `role` property on the custom element's binding context.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Content projection
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Content projection is the action of injecting content into a custom element.
+    By defining projection points, a custom element allows instances to inject external
+    DOM sub-trees into its own DOM. This mechanism is described as part of the Shadow
+    DOM 1.0 specification, and is part of the growing standard for larger web components.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The default slot
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'A projection point in a custom element is called a slot. Slots are defined
+    using the `slot` element. We have already used one, when we built the `file-picker`
+    element in our contact management application earlier:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`src/resources/elements/file-picker.html`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE45]'
+  prefs: []
+  type: TYPE_PRE
+- en: A custom element can define a single, unnamed slot, which is the default slot.
+    When using this element, the content of the element is projected on this default
+    slot.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We used the `file-picker` in our `contact-photo` component like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE46]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The resulting DOM, after the projection, would look like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE47]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here, we can clearly see that the content, of the `file-picker` instance, the
+    `strong` and `img` elements have been injected inside the element's DOM and have
+    replaced the `slot` element.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Named slots
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: A custom element can declare multiple projection points, by defining multiple
+    `slot` elements with different names.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'For example, let''s imagine that we want to create a `submit-button` custom
+    element, whose template would look like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE48]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'When using this element, we would now have two slots, named respectively `icon`
+    and `label`, into which we could project content:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE49]'
+  prefs: []
+  type: TYPE_PRE
+- en: To project content into a named slot, you simply need to add a `slot` attribute
+    to the element you want to project, with the name of the slot as its value. Here,
+    we project an `i` element on the `icon` slot, and a `span` containing the button's
+    label on the `label` slot.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Additionally, if multiple content elements use the same value for the `slot`
+    attribute, they will all be projected into this slot, in the same order they are
+    declared in the custom element''s instance:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE50]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here, the two `span` elements would both be projected in the `label` slot, in
+    the same order.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Data-binding projected content
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The templating engine will first process the content before projecting it, so
+    using string interpolation or binding commands on or inside projected elements
+    is perfectly legal. The previous example illustrates this, by using string interpolation
+    to render the `fullName` of `contact` before the span is projected on the `label`
+    slot.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The content is data-bound before projection occurs. This means that the content
+    is bound using the context surrounding the element instance. It does not have
+    access to the custom element's inner context.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the previous example, the view-model of the `submit-button` knows nothing
+    about any `contact` property. This property exists only in the outer context,
+    where the `submit-button` instance is declared.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Default content
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: When defining a slot, a custom element can provide a default content for it.
+    This way, if no content is projected on the slot, it won't be left empty.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To illustrate this, let''s transform the `submit-button` custom element from
+    the previous section:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE51]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here, we simply add a check icon in the `icon` slot and the `Submit` text in
+    the `label` slot. This way, if a `submit-button` instance does not project content
+    on any slot, the button will show a default icon and label.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The default slot content is displayed only when no content is projected on
+    the slot. This means that, in order to override the default content and force
+    an empty slot, you simply need to project an empty element on the slot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE52]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here, an empty span would be projected on the `icon` slot, which would override
+    the default icon.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Slots in slots
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: One interesting possibility is to define slots in the default content of another
+    slot. In such a case, it is possible to either project content on the first slot
+    to override it completely, or to project content on the sub-slot to override only
+    this one and keep the rest of the default content of the first slot.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s illustrate this by modifying the `submit-button` element from the previous
+    examples:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE53]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Here, we surrounded the slots we defined previously with a new slot named `content`.
+    All previous usage examples would still work the same; however, it is now possible
+    to override the whole content of the `submit-button` using the `content` slot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE54]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here, we simply override the whole content with a `span` containing the text
+    `Save`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Mixing named slots with a default slot
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: It is also possible, inside a given custom element, to define named slots along
+    with a default unnamed slot. In such a case, all content projected outside of
+    a named slot will be projected in the default slot.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s illustrate this by making the `label` slot the default unnamed slot
+    in the `submit-button`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE55]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'After this change, we can still override the `content` or `icon` slots, like
+    we did previously. However, to override the `label`, we now simply have to project
+    content inside the element instance, without any slot name:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE56]'
+  prefs: []
+  type: TYPE_PRE
+- en: This `submit-button` instance overrides the label of the button, which is defined
+    by the default, unnamed slot.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'It is possible to mix projection on named slots and on the default slot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE57]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here, we project an `I` element with a different icon on the `icon` slot, and
+    project the text `Save` on the default slot.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Slot-ception
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'What about a custom element that declares slots, which are projected in another
+    custom element declaring its own slots? This is totally possible. Let''s imagine
+    a `form-button-bar` component, which would encapsulate a `submit-button`, along
+    with a **Cancel** button:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE58]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here, the `form-button-bar` element declares two slots, named `submit-label`
+    and `cancel-label`, with the `Save` and `Cancel` texts as their respective default
+    content. Additionally, the `submit-label` slot is in turn projected on the `label`
+    slot of the `submit-button`. When used, if the `form-button-bar` instance does
+    not project any content on the `submit-label` slot, its default content will be
+    projected on the `label` slot of the `submit-button`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This means that the default content of the `label` slot for the `submit-button`
+    will always be overridden, either by the default content of the `submit-label`
+    slot for the `form-button-bar` or by its projected content.
+  prefs: []
+  type: TYPE_NORMAL
+- en: It also means that, when using the `form-button-bar` element, there is no way
+    to project content in the `icon` slot of the `submit-button`, because it is not
+    exposed on a slot from the `form-button-bar`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Limitations
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The implementation of the slots mechanism has a couple of important limitations.
+    The `name` attribute on a slot declaration cannot be bound to, neither can the
+    `slot` attribute in an element's instance. This includes string interpolation.
+    The values of these attributes must be static.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Additionally, `slot` definitions cannot be modified by template controllers,
+    such as the `if` and `repeat` attributes. The limitations of the `if` attribute
+    can be somehow worked around by putting a `show` attribute on another element
+    surrounding the `slot`. However, the `repeat` attribute just does not work because,
+    since the slot name is not bindable and must be static, repeating a slot would
+    mean having multiple slots with the same name, which is not supported.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The Aurelia team announced that they intend to lift at least some of those limitations
+    in the future, but at the time of writing they still stand.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Template injection
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: There is yet another way to extend the rendering of a custom element. In addition
+    to content projection, it is also possible for a custom element to declare replaceable
+    template parts in its own template. Such replaceable parts can then be overridden
+    by instances.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This technique is completely different from slots mainly because of the way
+    binding is performed. While content injected on a slot is bound before projection
+    and as such is bound using the outer context, injected templates are bound after
+    injection. This means that an injected template is bound using the inner context
+    of a custom element. As such, injected templates can be repeated without any problem.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Creating a group list
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Let''s illustrate this by extracting a reusable component from the contact
+    list. We will create a `group-list` custom element, which will group and sort
+    its bounded items to render groups of items. It will define a replaceable part,
+    which will be used to render a single item within a group:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`src/resources/elements/group-list.html`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE59]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here, we first define bindable properties on the `template` element. This means
+    that the `group-list` element will be made of this template only; it won't have
+    any view-model.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The bindable properties are the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`items`: The items to render'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`groupBy`: The name of the property used to group the items'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`orderBy`: The name of the property used to sort the items of a group'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Next, we simply reuse the same template from the `contact-list` component to
+    render groups of items. The main difference is that, instead of hardcoding the
+    properties passed to the `groupBy` and `orderBy` value converters, we use the
+    appropriate bindable properties.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Lastly, at the place in the template where we rendered a contact, we put a replaceable
+    template part named `item`. When using this custom element, we will be able to
+    inject a template that will replace this part. This injected template will have
+    access to the surrounding context, which means it will be able to use the current
+    `item`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using the group list
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Let''s see how we can use a custom element with replaceable parts by refactoring
+    the `contact-list` component to use this new `group-list` element:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`src/contact-list.html`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE60]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here, we first use the `group-list` custom element. Do not forget to load it
+    as a resource and bind its `items` property with the `contacts` array, filtered
+    according to the user search. We also specify the properties to use for grouping
+    and sorting using the `group-by` and `order-by` attributes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Next, we define a template to replace the part named `item`. In this template,
+    we keep the view used to render a single contact item. As you can see, the template
+    part is able to use the `item` property, which comes from the `repeat.for` attribute
+    in the custom element's own template.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Default template part
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: At this point, the user of `group-list` needs to replace the `item` part, otherwise
+    items don't get rendered at all. When declaring a replaceable template part, it
+    is possible to define its default content, which will be used when the part is
+    not replaced.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s change our `group-list` template to render each item as a string by
+    default:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`src/resources/elements/group-list.html`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE61]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here, we define the default content of the replaceable `item` part, which will
+    simply render the current `item` using its `toString` method. This way, if no
+    `item` part is injected, at least the user will see something, even if it's just
+    `[object Object]` which is the default result for an object that doesn't override
+    a `toString` method.
+  prefs: []
+  type: TYPE_NORMAL
+- en: You can try it by adding to the `Contact` class a `toString` method returning
+    the `fullName` property, and by commenting out the injected `item` template part
+    inside the `group-list` element in the `contact-list` component. The group list
+    should now simply render the `fullName` of each contact, without any link.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Re-scoping binding context
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'As it is right now, the user of our `group-list` custom element needs to know
+    that the current item is named `item` on the binding context. One possibility
+    to make things easier is to use the `with` attribute and re-scope the binding
+    context within `repeat.for` to the current `item`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`src/resources/elements/group-list.html`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE62]'
+  prefs: []
+  type: TYPE_PRE
+- en: We cannot put a `with` attribute on the `li`, as it already hosts a `repeat`
+    attribute. Indeed, a single element cannot host more than one template controller.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We need to surround the replaceable template with another `template` element
+    hosting the `with` attribute, which we bind to the current `item`. Inside the
+    replaceable `item` template, we replace the `item` reference in the string interpolation
+    with a reference to `$this`. The `$this` keyword refers to the current context
+    itself, which is the current `item` thanks to `with`. This last part is optional,
+    because the current context still inherits from the parent context, which means
+    that `item` is still available through context inheritance. Actually, `$this`
+    and `item` both refer to the current item. That is, unless the current item has
+    its own `item` property. In such a case, `$this` would refer to the current item,
+    and `item` would refer to the current item's `item` property.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Since `item` is still available on the binding context and `Contact` objects
+    have no `item` property, we don''t need to change anything in the `contact-list`
+    template. It still works. However, using `with` on the repeated `li` means that
+    we can now remove all references to `item` in the injected template in `contact-list`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`src/contact-list.html`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE63]'
+  prefs: []
+  type: TYPE_PRE
+- en: Now, our `group-list` custom element is easier to use. Developers using it don't
+    need to know about an `item` property on the context. They can simply assume that
+    the replaceable template part's binding context is the current item.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Of course, this is mostly a matter of taste, but it is also a matter of consistency.
+    If you start using `with` in such scenarios in an application or a plugin, you
+    should make it consistent and keep using it in all other similar cases.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Creating a list editor
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Let''s see another example. We will create a reusable list editor, which we
+    can use in the `contact-form` component to edit phone numbers, e-mail addresses,
+    addresses, and social profiles:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`src/resources/elements/list-editor.js`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE64]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Here, we start by creating the view-model, on which we define two bindable
+    properties:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`items`: The array of items to edit'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`addItem`: A function used to add a new item to the array'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: After refactoring `contact-form`, we will be able to delete the `removePhoneNumber`,
+    `removeEmailAddress`, `removeAddress`, and `removeSocialProfile` methods from
+    the `Contact` class, since they will be replaced by the `removeItem` method from
+    the `list-editor`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The template for `list-editor` looks like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`src/resources/elements/list-editor.html`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE65]'
+  prefs: []
+  type: TYPE_PRE
+- en: The global layout of this template reuses the same frame as all the list editors
+    we created in [Chapter 4](ch04.html "Chapter 4. Forms, and How to Validate Them"),
+    *Forms, and How to Validate them*. We start by repeating a block for each `item`,
+    and use `with` to scope the context within this block on the current `item`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Inside the repeated item block, we first declare a replaceable `item` part,
+    which encapsulates the whole template for a single item. As the default content
+    of this part, we use the same columns setup as the rest of the contact form. The
+    first column contains an empty replaceable part named `label`. The second column
+    contains a replaceable part named `value`, which renders the current item as a
+    string if it is not replaced. The third column contains a replaceable part named
+    `remove-btn`, which contains by default a **Remove** button splicing the item
+    out of the array when clicked.
+  prefs: []
+  type: TYPE_NORMAL
+- en: What we can see here is that, just like slots can define sub-slots in their
+    default content, replaceable parts can define other replaceable parts as their
+    default content. In `list-editor`, it allows us to either replace the whole item
+    template, or to replace only parts of it. It is a very powerful feature.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We can even use replaceable parts along with slots in the same custom element.
+    This is what we do here, the last block, outside the repeated items, contains
+    an **Add** button, which calls the `addItem` function when clicked. This button
+    contains a first slot named `add-button-content`. Its default content is an icon,
+    along with another slot named `add-button-label`, whose default content is the
+    text `Add`. This allows us to project content to customize either the whole content
+    of the **Add** button, or only its label.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Lastly, we `show` the whole block containing the **Add** button only if the
+    `addItem` property is bound to something, which we expect is a function. This
+    means that, if an instance of `list-editor` binds no `add-item` attribute, the
+    **Add** button won't be visible.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using the list editor
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'We can now use this `list-editor` element in our `contact-form` component:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`src/contact-form.html`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE66]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here, we start by refactoring the phone numbers editor to use our new `list-editor`
+    element. We bind its `items` property to the `phoneNumbers` property of `contact`.
+    We also bind the `add-item` property to `call` the `addPhoneNumber` method of
+    `contact`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Next, we replace the `label` template part with the `select` element bound to
+    the item's `type`. Of course, this binding is decorated with `validate`, so the
+    item's `type` is properly validated.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We also replace the `value` template part with the `tel input` bound to the
+    item's `number`. Again, this binding is decorated with `validate`, so the item's
+    `number` is validated.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Lastly, we project the text `Add a phone number` on the `add-button-label` slot.
+  prefs: []
+  type: TYPE_NORMAL
+- en: At this point, if you run the application, the phone numbers editor should have
+    the same look and the same behavior as before. I'll leave it as an exercise to
+    the reader to refactor the editors for the e-mail addresses, addresses, and social
+    profiles using the `list-editor`. The completed application sample for this chapter
+    can be used as a reference.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using the customization decorators
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The `aurelia-templating` library offers many decorators that can be used to
+    customize the behavior of custom elements and how they are processed by the templating
+    engine.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Most of the following code snippets are excerpts from the `chapter-5/samples/element-decorators`
+    sample.
+  prefs: []
+  type: TYPE_NORMAL
+- en: viewResources
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The `viewResources` decorator can be used to declare view dependencies. It acts
+    just like the `require` element, but from a component's view-model instead of
+    its template.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'For example, we could refactor the `contact-edition` component from our contact
+    management application by removing the `require` statement from its template:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`src/contact-edition.html`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE67]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Then, we would need to decorate the `ContactEdition` class with `viewResources`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`src/contact-edition.js`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE68]'
+  prefs: []
+  type: TYPE_PRE
+- en: The `contact-edition` component would still work the same way as before.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The `viewResource` decorator expects an array of dependencies. Each dependency
+    can be one of the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: A string, which must be the path of the resource to load
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: An object with a `src` property, which must contain the path of the resource
+    to load, and an optional `as` property, which if present will act as an alias
+    for the resource name in the template, just like the `require` element's `as`
+    attribute
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: A function, which must be the class of the resource to load
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: I can't really think of any good use case for this decorator, other than wanting
+    to put all dependencies in the view-model instead of in the view. However, since
+    loading dependencies is a template-related matter, it feels much more natural
+    to me to do it in the views using `require` statements.
+  prefs: []
+  type: TYPE_NORMAL
+- en: useView
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The `useView` decorator can be used to explicitly specify the path of the custom
+    element's template.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'For example, let''s update the `file-picker` element from our contact management
+    application so it uses this decorator:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`src/resources/elements/file-picker.js`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE69]'
+  prefs: []
+  type: TYPE_PRE
+- en: This can be pretty useful if multiple elements share the same view. Additionally,
+    it is considered good practice to explicitly specify an element's template when
+    it is intended to be distributed in a reusable library or plugin. Indeed, as we
+    will see toward the end of this chapter, developers using your element can change
+    the convention for view location. In such a case, an element that relies on the
+    standard convention would be broken.
+  prefs: []
+  type: TYPE_NORMAL
+- en: inlineView
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'The `inlineView` decorator allows us to completely replace a component''s template
+    file with an inline template declared within the JS file:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE70]'
+  prefs: []
+  type: TYPE_PRE
+- en: This custom element would have no `.html` file, because its template is declared
+    inline, beside the JS class.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This is pretty useful for custom elements that act only as containers and that
+    mostly rely on content projection, because it lifts the need to have a separate
+    template file containing very few lines.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'For example, this is the code of the `ai-dialog` element, from the `aurelia-dialog`
+    library:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE71]'
+  prefs: []
+  type: TYPE_PRE
+- en: This element's sole purpose is to act as a container around the `ai-header`,
+    `ai-body`, and `ai-footer` elements, so it is much simpler when the template sits
+    beside the view-model.
+  prefs: []
+  type: TYPE_NORMAL
+- en: noView
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The `noView` decorator tells the templating engine that a given custom element
+    has no template. In such a case, the templating engine will simply bind the element
+    itself, and then process its content, if any, that is, unless the `processContent`
+    decorator is also used and disables content processing.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The cases where a viewless custom element is useful are pretty rare. For most
+    use cases I can think of, such as encapsulating the behavior of a JS widget from
+    a UI library, custom attributes are better suited. However, there may be scenarios
+    where you want some behavior to be encapsulated in a fully-fledged element instead
+    of in an attribute on another element.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'For the sake of the example, let''s imagine a custom element acting as an adapter
+    over a JS widget from a UI library. This widget is created by calling a function
+    and passing to it the DOM element to use as the widget visual root:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE72]'
+  prefs: []
+  type: TYPE_PRE
+- en: Such an element doesn't need any template, because the view of the element is
+    rendered by an external library.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Similarly to the `viewResource` decorator, the `noView` decorator can be passed,
+    as its first parameter, an array of dependencies. Those dependencies will be loaded
+    with the component.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Additionally, a second parameter can specify the path the dependencies are relative
+    to. In such a case, this path will be used instead of the view-model's path to
+    locate the dependencies.
+  prefs: []
+  type: TYPE_NORMAL
+- en: useViewStrategy
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The `useViewStrategy` decorator tells the templating engine to use a given `ViewStrategy`
+    instance to load the view of a component. It is actually used behind the scenes
+    by the `useView`, `inlineView`, and `noView` decorators.
+  prefs: []
+  type: TYPE_NORMAL
+- en: It simply attaches the provided view strategy as metadata on the class. During
+    the view location process, this metadata is then inspected by the view locator
+    and used to locate the component's view.
+  prefs: []
+  type: TYPE_NORMAL
+- en: It is mostly useful with custom `ViewStrategy` implementations, which is an
+    advanced topic outside the scope of this book. It is, however, good to know that
+    it exists, in case you ever need to go there.
+  prefs: []
+  type: TYPE_NORMAL
+- en: processAttributes
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'The `processAttribute` decorator can be used to provide a function that can
+    process the element''s attributes before they are processed by the templating
+    engine. The processing function must be passed as a parameter to the decorator:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE73]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The processing function will be passed a bunch of parameters:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`compiler`: The `ViewCompiler` instance used to compile the current template'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`resources`: The `ViewResources` instance containing the set of resources available
+    to the element''s template'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`node`: The DOM element of the custom element itself'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`attributes`: A `NamedNodeMap` instance, which is the `attributes` property
+    of the `node` parameter'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`instruction`: The `BehaviorInstruction` instance, which contains all the information
+    used by the templating engine to process, data-bind, and display the custom element'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: processContent
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The `processContent` decorator can be used to control how and if the templating
+    engine will process the custom element's content. It all depends on what parameter
+    is passed to the decorator.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'If the decorator is passed `false`, the templating engine will not process
+    the element''s content. In such a case, the element is responsible for processing
+    its own content:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE74]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Such an element won''t see its content processed by the templating engine:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE75]'
+  prefs: []
+  type: TYPE_PRE
+- en: When rendered, the previous template would be displayed exactly as it is. The
+    string interpolation instruction would not be interpreted, because `process-no-content-sample`'s
+    content is not processed by the templating engine. The `${someProperty}` text
+    would be displayed unchanged.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The other possibility is to pass a processing function to the decorator. In
+    such a case, the processing function can process the element''s content, and is
+    expected to return `true` or `false` to tell the templating engine if it should
+    in turn process the content once the processing function returns:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE76]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The processing function will be passed a bunch of parameters:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`compiler`: The `ViewCompiler` instance used to compile the current template'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`resources`: The `ViewResources` instance containing the set of resources available
+    to the element''s template'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`node`: The DOM element of the custom element itself'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`instruction`: The `BehaviorInstruction` instance, which contains all the information
+    used by the templating engine to process, data-bind and display the custom element'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: This decorator could be used, for example, to create a custom element acting
+    as an integration point in an Aurelia application in order to encapsulate sections
+    of the application that must use a different templating engine.
+  prefs: []
+  type: TYPE_NORMAL
+- en: containerless
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'The `containerless` decorator indicates to the templating engine that the custom
+    element''s view must be injected in place of the element itself, instead of inside
+    it:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE77]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Let''s imagine that this `containerless-sample` element has the following template:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE78]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This element would be used like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE79]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Without the `containerless` decorator, it would be rendered in the DOM like
+    this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE80]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'However, because it is decorated with `containerless`, the surrounding `containerless-sample`
+    element won''t be rendered:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE81]'
+  prefs: []
+  type: TYPE_PRE
+- en: Even though the element itself is not rendered, bindable properties can still
+    be declared by the custom element and bound to through attributes. This will work
+    even if the element and its attributes are not rendered on the DOM.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Of course, this means that surrogate behaviors cannot be used on a `containerless`
+    custom element, because the element on which the surrogate behaviors should be
+    projected is not rendered.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This decorator is mostly useful when a specific DOM structure must be respected,
+    when using SVG elements, for example.
+  prefs: []
+  type: TYPE_NORMAL
+- en: useShadowDOM
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The `useShadowDOM` decorator will make a custom element render its view in the
+    Shadow DOM. This is useful to isolate the DOM sub-tree of a custom element from
+    the rest of the document, to prevent the unwanted interaction of CSS or DOM queries
+    between the element's DOM sub-tree and the outside world.
+  prefs: []
+  type: TYPE_NORMAL
+- en: To illustrate this, let's consider the `file-picker` custom element in our contact
+    management application. This element has a CSS file, which is loaded by its template.
+    Without the Shadow DOM, the CSS file gets appended to the document's `head`, which
+    means that the CSS will be globally applied to the whole document. Collisions
+    are possible.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To prevent this, let''s make our `file-picker` element render its view on the
+    Shadow DOM. This way, its CSS file will be loaded inside its own shadow root,
+    and will be applied only inside this limited scope:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`src/resources/elements/file-picker.js`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE82]'
+  prefs: []
+  type: TYPE_PRE
+- en: By adding the `shadowDOM` decorator to our element's class, we tell the templating
+    engine that this element's content should be rendered inside its own shadow root.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In order for the CSS file to be rendered in the element''s shadow root, we
+    need to mark the `require` statement as `scoped`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`src/resources/elements/file-picker.html`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE83]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Lastly, since the CSS file will be loaded inside the element''s shadow root,
+    which will be inside the `file-picker` element but around its view, we need to
+    remove the `file-picker` element from the CSS selectors for them to keep matching:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`src/resources/elements/file-picker.css`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE84]'
+  prefs: []
+  type: TYPE_PRE
+- en: Notice how the `file-picker > label` selector has been replaced with the `label`
+    selector. The same goes for the other CSS rule's selector.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now, if you run the application and inspect the DOM around this element, you
+    should see a shadow root, encapsulating the element itself and a `style` element
+    containing the CSS. You may notice that the content projected inside `file-picker`,
+    here, the `strong` and the `img` elements, are located outside the shadow root.
+    This is important. It means that the element's view is only impacted by the CSS
+    file. Its projected content is not. If you added a `label` to the projected content,
+    it would not be matched by the rule defined in `file-picker.css`, because it would
+    not be on the same shadow root.
+  prefs: []
+  type: TYPE_NORMAL
+- en: children
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The `children` decorator is intended to be used on a property of a custom element.
+    It selects all immediate children matching the provided query selector and assigns
+    them to the decorated property as an array.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To illustrate this, let''s imagine the following custom element:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE85]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'And let''s say the element is used like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE86]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here, the `child-children-sample` instance would see the repeated `item` elements
+    assigned as an array to its `items` property.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Additionally, the value of `items` would be synchronized with the matching set
+    of elements. This means that, if a new `item` element is inserted or an existing
+    one is removed, because of the `repeat.for` binding, the `items` property will
+    be synchronized.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Similarly to bindable properties, a `children` property can also implement a
+    change handler method, using the same naming rule, to react to changes. In this
+    example, the `itemsChanged` method, if present, would be called when rendering,
+    during the property initialization, and then every time the `items` array would
+    change.
+  prefs: []
+  type: TYPE_NORMAL
+- en: child
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The `child` decorator is very similar to `children`, except that it targets
+    a single element.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To illustrate this, let''s adapt the previous example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE87]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'And let''s say the element is used like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE88]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here, the `child-children-sample` instance would see the `header` element assigned
+    to its `header` property. Additionally, the `headerChanged` method, if present,
+    would be called when rendering, during the property initialization, and then every
+    time the element is removed, added, or replaced.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Bonus – preventing multiple submits
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: At the moment, our contact management application doesn't handle form submits
+    very well. Indeed, in the `contact-creation`, `contact-edition`, and `contact-photo`
+    components, if the **Save** button is clicked once, then clicked again before
+    the underlying Fetch call completes and the router navigates away from the form,
+    multiple calls to the backend will be performed in parallel. Sometimes, it doesn't
+    matter. However, it can also be a problem in many scenarios.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Creating the submit task attribute
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'To fix this, we will create a custom attribute named `submit-task`, which will
+    replace the `submit` handler of the `form` elements. It will be bound using the
+    `call` command to a method, which is expected to return a `Promise`. When the
+    `form` is submitted, the attribute will turn a flag on, and when the returned
+    `Promise` completes, it will turn it back off. This flag will indicate if the
+    form is currently waiting for a submit task to complete:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`src/resources/attributes/submit-task.js`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE89]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here, we first use the naming convention to identify the class as a custom attribute.
+    We also declare a dependency on the DOM element the attribute is on, which we
+    inject in the constructor.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Here, when our custom attribute is `attached` to the document, we add a listener
+    on the element's `submit` event, which will call the `trySubmit` method when triggered.
+    Additionally, a new `isSubmitTaskExecuting` property is created on the element
+    and initialized to `false`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: When the element publishes a `submit` event, we start by making sure that no
+    submit `task` is currently running. If one already is, we simply return. If none
+    is, the element's `isSubmitTaskExecuting` property is set to `true`, and the function
+    bound to the custom attribute's `value` is called. The result is guaranteed to
+    be a `Promise`, and a callback is attached to this `Promise` so `isSubmitTaskExecuting`
+    is set back to `false` when the `Promise` completes, no matter whether it succeeds
+    or fails.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Lastly, when the attribute is `detached` from the document, we simply remove
+    the `submit` event listener.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using the submit task attribute
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Now we can go into the various components with a `form` element and replace
+    the `submit` event handler with the new `submit-task` attribute, bound using the
+    `call` command to the `save` method:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`src/contact-creation.html`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE90]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Of course, for this to work, we need to modify the `save` method so it returns
+    the `Promise` tracking the Fetch call:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`src/contact-creation.js`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE91]'
+  prefs: []
+  type: TYPE_PRE
+- en: I'll leave it as an exercise to the reader to also apply those changes to the
+    `contact-edition` and `contact-photo` components.
+  prefs: []
+  type: TYPE_NORMAL
+- en: At this point, if you run the application, you shouldn't be able to trigger
+    multiple submits when one is already in progress.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Creating the submit button
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Another thing that would be great is to display a visual indicator to the user
+    that a submit task is in progress. Now that we have a custom attribute that creates
+    and manages the appropriate flag, let''s create a `submit-button` custom element
+    that will display a spinner animated icon when its form is running a submission:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`src/resources/elements/submit-button.html`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE92]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here, we first declare a `disabled` bindable property on the template element.
+    This means that this element will be made of this template only; it won't have
+    a view-model.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Next, we declare a `button` element, with a `submit type`. We also use the `ref`
+    attribute to assign a reference of this button to the `button` property on the
+    binding context, and we bind the button's `disabled` attribute to the `disabled`
+    bindable property.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Inside the button, we add a `span` which will be hidden when the `isSubmitTaskExecuting`
+    property of the button's `form` element is `true`. Inside this `span`, we define
+    an `icon` slot, whose default content is a check icon.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We also add a spinner icon inside the button, which will be displayed only when
+    the `isSubmitTaskExecuting` property of the button's `form` element is `true`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Lastly, we define a default slot, which contains the `Submit` text as its default
+    content.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This custom element will simply show a check icon when no submit is in progress,
+    and will replace this check icon with a spinner during any submit task. It will
+    then toggle back to the check icon when the submit task completes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Additionally, the `icon` slot will allow instances to override the default check
+    icon, and the unnamed slot will allow instances to override the `Submit` label.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using the submit button
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Now we can go into the various components with a `form` element and replace
+    the **Save** button with the new `submit-button` element:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`src/contact-creation.html`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE93]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here, we simply define a `submit-button` element, and project the `Save` text
+    on the default slot, which overrides its default label.
+  prefs: []
+  type: TYPE_NORMAL
+- en: I'll leave it as an exercise to the reader to also apply those changes to the
+    `contact-edition` and `contact-photo` components.
+  prefs: []
+  type: TYPE_NORMAL
+- en: At this point, if you run the application, you should see the check icon of
+    the various **Save** buttons replaced by a spinner when a submit task is in progress.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Customizing the view location strategy
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: View location is the process of locating the template or view for a given component.
+    By convention, the template should be a file sitting in the same directory as
+    the view-model and having the same name, apart from the extension, which should
+    be `.html`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We already saw a way to customize the view location process for custom elements,
+    using decorators such as `useView`, `inlineView`, and `noView`. It is important
+    to note that using those decorators is not restricted to custom elements. They
+    can be used with any Aurelia component, such as router components, or components
+    displayed using the `compose` instruction.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There are, however, two other ways to customize the view location strategy.
+    Let's walk through them.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Changing the convention itself
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The conventional view location strategy for a whole application can be changed
+    by overriding the `convertOriginToViewUrl` method of `ViewLocator`. This means
+    that, by default, the view of all components and custom elements in the application
+    will be located using this new strategy.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s imagine we want to change this convention. This should be done in the
+    `main` module''s `configure` function:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`src/main.js`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE94]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here, we re-implement the `convertOriginToViewUrl` method identically as it
+    is in `aurelia-templating`. The convention won't be changed here. It gives, however,
+    a good idea of how you can implement your own view location logic.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The `convertOriginToViewUrl` method is passed an `Origin` instance as its parameter.
+    The `Origin` class has a `moduleId` property, which contains the path to the JS
+    file exporting the component's view-model class, and a `moduleMember` property,
+    which contains the name under which the view-model class is exported from its
+    JS file.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Changing the strategy for a single component
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The alternative to changing the convention is to specify the view location strategy
+    at the component or custom element level. This can be done using the view location
+    decorators we saw in a previous section, such as `useView`, `inlineView`, and
+    `noView`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: However, if you don't want to depend on Aurelia imports for a given component
+    or custom element, or if you can't use decorators, you can also implement the
+    `getViewStrategy` method on the view-model. This method is expected to return
+    either the path of the template file as a string, or a `ViewStrategy` instance.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The `aurelia-templating` library ships with a couple of view strategy implementations
+    out of the box, all of which are used under the hood by their corresponding view
+    location decorator:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`RelativeViewStrategy`: Used by the `useView` decorator. Its constructor expects
+    the same parameters as `useView`.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`InlineViewStrategy`: Used by the `inlineView` decorator. Its constructor expects
+    the same parameters as `inlineView`.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`NoViewStrategy`: Used by the `noView` decorator. Its constructor expects the
+    same parameters as `noView`.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'For example, we could remove the `useView` decorator from the `file-picker`
+    custom element of our contact management application and use the `getViewStrategy`
+    method instead:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`src/resources/elements/file-picker.js`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE95]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here we were able to remove `useView` from the import statement. Additionally,
+    we replaced the usage of the decorator with the `getViewStrategy` method, returning
+    the path of the template file.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: HTML behaviors are extremely powerful and versatile. They open a whole world
+    of possibilities to create complex and flexible components, specialized and dedicated
+    to a single application, or reusable, fully customizable, and intended to be distributed
+    as third-party plugins or frameworks.
+  prefs: []
+  type: TYPE_NORMAL
+- en: They also offer a great way to integrate third-party libraries into Aurelia.
+    We will see how to do this in [Chapter 11](ch11.html "Chapter 11. Integrating
+    with Other Libraries"), *Integrating with Other Libraries*. With Aurelia's templating
+    API being open and easy to use, we will be able to customize and plug in the rendering
+    process of those integration components to do some amazing things.
+  prefs: []
+  type: TYPE_NORMAL
+- en: But we are not there yet. In the next chapter, we will take a step back to have
+    a good look at our contact management application. We will reflect about the design
+    choices we made and the ones we didn't make and see how we can make things better.
+    We will also talk about different ways to organize an Aurelia application to make
+    it more modular, testable, and easy to maintain.
+  prefs: []
+  type: TYPE_NORMAL

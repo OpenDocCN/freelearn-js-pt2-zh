@@ -1,0 +1,1467 @@
+- en: Chapter 4. Planning to Test
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Welcome to the fourth chapter. Before we move into a more formal testing process,
+    we must first understand what testing is about. In this chapter, we will learn
+    how to make a plan for testing your JavaScript program. We will learn about the
+    various testing concepts that you should know, after which I will present to you
+    a brief guideline which will be used as a basis for the next chapter.
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: 'Before we move into the various testing concepts, we will first need to establish
+    a brief understanding of the following issues:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Do we really need a test plan in order to carry out testing?
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: When should we develop the test plan for our code?
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How much testing do we need for our program?
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'After covering the above issues, we will learn about the following testing
+    concepts and ideas:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Black box testing, white box testing, and related concepts
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Boundary conditions
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Unit testing
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Web page functional testing
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Integration testing
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Non-functional testing, such as performance testing
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Usability testing
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Testing order—which of the above tests do we perform first?
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Regression testing—which is typically done when we make changes to the code
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: In order to get a better overview of when and where testing plays its part,
+    we will first start with a very brief introduction to the software lifecycle.
+  prefs: []
+  type: TYPE_NORMAL
+- en: A very brief introduction to the software lifecycle
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Understanding the software lifecycle will help you to develop a deeper insight
+    into the software development process and, more importantly, when and where testing
+    will play its part.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In general, the software lifecycle has the following stages:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Analysis
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Design
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Implementation
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Testing
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Deployment
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Maintenance
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: In the first stage, we generally perform an analysis to understand what the
+    needs of the stakeholders are. For instance, if you are carrying out a customized
+    project for a customer, you will need to understand the user requirements, system
+    requirements, and the business goals. Once you have understood the needs, you
+    will need to design the software. Things to do in this stage include drawing data
+    flow diagrams, designing the database, and so on. The next stage is the implementation
+    stage. We can see this as the actual coding process.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Next comes testing, which is the main focus of this book. In this chapter, we
+    will learn how to plan our test based on various testing concepts. After the testing
+    stage, we will deploy the project, and finally we maintain the project. Because
+    this is a cycle, we theoretically move back to the analysis stage during or after
+    the maintenance stage. This is because a software or program is evolutionary;
+    as needs and requirements change, so does our software.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Although the terminologies and number of stages may be slightly different from
+    what you see in other related content, the process is generally the same. The
+    main takeaway here is that testing typically comes after implementation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The agile method
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: You may have heard about the agile methodology, which includes the agile software
+    development methodologies, and of course, agile testing methods.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In general, agile software development and testing methods typically happen
+    with the end users or customers in mind. There is often little documentation,
+    and a focus on short software development cycles, which typically last for one
+    to four weeks.
+  prefs: []
+  type: TYPE_NORMAL
+- en: So how does this relate to the software development cycle that you have read
+    about in the previous section? In general, testing is not an individual phase
+    by itself, but rather is closely integrated with the development process, with
+    code being tested from the customer perspective, as early as possible, when code
+    becomes stable enough to perform testing.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The agile method and the software cycle in action
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: It might be difficult for you to visualize how the previous theories come into
+    place. The process of creating the sample code for this book closely mimics the
+    software lifecycle and agile methodology. So I thought I'll very briefly share
+    with you my experience when I was creating the code samples for this book, based
+    on the theories that we have learnt about.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Analysis and design
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Technically speaking, the analysis and design stage took place when I was thinking
+    about what kind of code samples would meet the objectives of the book. I thought
+    that the code should be simple enough to follow, and most importantly should demonstrate
+    the various features of JavaScript. The code should set up the stage for code
+    testing in the later chapters.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Implementation and testing
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The implementation stage occurred when I was writing the code samples. As I
+    created functions for snippets of code, I tested whenever I could, and asked myself
+    if the code could demonstrate the use of JavaScript and facilitate testing purposes
+    later on.
+  prefs: []
+  type: TYPE_NORMAL
+- en: So, what happened here is that I used some form of agile testing as I tested
+    as often as I could.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Deployment
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Deployment of the code in the business world typically occurs after the code
+    has been transferred to the end user. However, in my case, deployment involved
+    sending my code samples to the editors.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Maintenance
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The maintenance stage occurred when I fixed bugs discovered by the editors after
+    the code was submitted. Despite the best of intentions, code is not always error-free.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Do you need a test plan to be able to test?
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: You will most likely require a test plan in order to carry out testing. This
+    is because a plan helps you keep a clear objective on what to test. It also helps
+    you to figure out what kind of tests you want to perform on your program.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Most importantly, as you will realize, in order to carry out a thorough test
+    you will need to implement various tests, including testing concepts based on
+    white box testing and black box testing, web page testing, unit testing, integration
+    testing, and so on. A test plan also serves as a record of your test data, bugs,
+    test results, and possible solutions for your bugs. This means that in order to
+    ensure that you do not miss anything, it is good to have a solid plan as to what
+    to test, when to test, and how to test your program.
+  prefs: []
+  type: TYPE_NORMAL
+- en: When to develop the test plan
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In theory, if you look at the software development cycle, you will see that
+    testing comes after implementation. Development of the test plan should take place
+    after you have completed implementation (the actual coding process) of the program.
+    This is because it is only at this point that you have confirmed what features,
+    methods, and modules you have; planning what to test based on what you have already
+    done makes good business sense, because you know what to focus on.
+  prefs: []
+  type: TYPE_NORMAL
+- en: However, in practice, it is advisable to start planning before the implementation
+    process. Depending on your situation, it is certainly possible that you can develop
+    a High Level Test Plan (HLTP) or High Level Test Case (HLTC). An HLTP is required
+    if you are developing a large and complex system, and is meant to address the
+    overall requirements. Other supporting test plans are used to address the details
+    of the system. An HLTC is somewhat similar to an HLTP, except that it covers test
+    cases of the main functionalities that are directly related to the overall requirements
+    of the system.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Another point that you should take note of is that, in practice, the test plan
+    can be broadly categorized into system test and user acceptance test. System test
+    covers all forms of functional testing and non-functional testing (which you learn
+    about later), whereas user acceptance testing is a phase where testing is carried
+    out by end users prior to transferring ownership to them.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How much testing is required?
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: You might be anxious to determine what you need to test and what you do not.
+    Although there are many different arguments as to how much testing is required,
+    I personally believe the aspects of your program listed in the following sections
+    should define the scope of your test plan.
+  prefs: []
+  type: TYPE_NORMAL
+- en: What is the code intended to do?
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Firstly, you need to understand what the code is intended to do. For instance,
+    the business requirements for our code in the previous chapters is to calculate
+    whether the user can retire on time, based on his inputs, such as his current
+    age, the age at which he wants to retire, his current spending, current salary,
+    and so on. Therefore, we created code that meets the business needs. Once we know
+    what our code is intended to do, we can test whether the code satisfies our business
+    needs.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Testing whether the code satisfies our needs
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: By testing the code to see if it satisfies our business needs, we mean that
+    for each input, we need to get the correct output. Going back to our example in
+    [Chapter 2](ch02.html "Chapter 2. Ad Hoc Testing and Debugging in JavaScript"),
+    *Ad hoc Testing and Debugging in JavaScript* and [Chapter 3](ch03.html "Chapter 3. Syntax
+    Validation"), *Syntax Validation*, I would need to ensure that if the total left-over
+    income is less than the amount of money that is needed for retirement, the output
+    would be "unable to retire", at least in a pseudo sense. What we need to do from
+    a testing point of view is to make sure that whenever the mentioned condition
+    is true, the output would be "unable to retire".
+  prefs: []
+  type: TYPE_NORMAL
+- en: This can be achieved through a concept called white box testing, where testing
+    is carried based on the assumption that the tester knows what the code is about.
+    I'll cover the specific details of white box testing and other testing concepts
+    in the following chapters. To give you a heads up, some of the testing concepts
+    that you will encounter will include unit testing, where you test codes in small
+    units, and boundary values testing, where you test for the maximum or minimum
+    acceptable values of your code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The next thing that we will need to consider is how to test for or detect invalid
+    actions by users.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Testing for invalid actions by users
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '"Never trust users" is a phrase which we most commonly hear when developing
+    for the Web. This is because there may be malicious users who attempt to "break"
+    your applications by giving invalid input. Using the example from previous chapters,
+    the input fields for the name can only accept characters and spaces, and the input
+    fields for the age and salary can only accept numbers, and not characters. However,
+    if someone were to attempt to enter characters into the age or salary field, this
+    would be an invalid action.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Our program will have to be robust enough to test or check for invalid actions;
+    incorrect input will result in incorrect output.
+  prefs: []
+  type: TYPE_NORMAL
+- en: A short summary of the above issues
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: By knowing what your code is intended for and what it is supposed to do, and
+    understanding the need to detect invalid actions by users, you have already defined
+    the scope of your test plan. Your tests should revolve around these criteria.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We can now move on to the various testing concepts that you will be using for
+    various aspects of your test, and the building blocks of a test plan—major testing
+    concepts and strategies.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Major testing concepts and strategies
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'In this section, we will cover different types of testing concepts and strategies.
+    I will not attempt to go into too much detail with regards to each concept, but
+    rather I need you to get the gist of it and see where each of these concepts is
+    coming from. After you have gained familiarity with these concepts, we will move
+    on to creating the actual test plan. As a start, I will begin with the business
+    strategies that developers follow (whether you are performing a project for an
+    external or an internal client), so that you can gain a high-level idea of how
+    testing is conducted. In general, no matter what testing concepts, methodology,
+    or ideology you subscribe to, you will face the following test cases:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Functional requirement testing
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Non-functional requirement testing
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Acceptance testing
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Functional requirement testing
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Functional requirement testing is meant to test the code, a function, or a
+    module of a software system. For instance, going back to the code that we wrote
+    for the previous chapters, the functional requirements consists of the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Check user's input for validity.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: If the input from step 1 is valid, a new input box will appear on the right-hand
+    side of the current input box, after the users mouse moves on to the next input
+    box.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Provide the correct calculation output based on the users input. For example,
+    if the user requires 1,000,000 dollars for retirement, and he only has 500,000
+    dollars by the time he retires, then he will not be able to retire.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Examples of functional requirement testing that are covered in this chapter
+    are as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Web page tests
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Boundary testing
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Equivalence partitioning
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Non-functional requirement testing
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Non-functional requirement testing refers to testing requirements that are not
+    related to the functionality or specific behaviour of the software. Rather, it
+    is a requirement that specifies criteria that can be used to judge the operation
+    of a software.
+  prefs: []
+  type: TYPE_NORMAL
+- en: For example, a functional requirement would be that our software should be able
+    to store the values that our users have entered, and a non functional requirement
+    is that the database should be updated in real-time.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Another example that is related to our sample code in previous chapters is that
+    a functional requirement would be a software, which is able to calculate whether
+    our user is able to retire on time, and a non-functional requirement would be
+    one in which our user interface should be intuitive. Do you see the difference
+    between non functional requirements and functional requirements, now?
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Examples of non functional requirement testing that are covered in this chapter
+    are as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Performance testing
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Usability testing
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Integration testing
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Other non-functional requirements that you are likely to encounter throughout
+    your career as a software developer are as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Fast loading of pages
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Search engine optimized web pages
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Documentation of the software that you have created
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Efficiency of the system
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Reliability of the software
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Interoperability of the software code that you have produced. For instance,
+    you can code JavaScript across major browsers
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Acceptance testing
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Acceptance testing is usually the final phase of the entire testing process.
+    This is often done prior to the final acceptance of the software by the customer.
+    Acceptance testing can be further divided into two parts. The software vendor
+    performs the acceptance testing first, and then acceptance testing by the end
+    users (known as user acceptance testing) is performed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Acceptance testing is the time where your customer (or the end-user) will perform
+    actual testing (similar to actual usage of the system) on the software that you
+    have created. A typical process will include the creation of test cases by the
+    end users that reflect business use of the software.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If you are using agile testing methods, such test cases are often referred to
+    as stories. It depends on how the customer will use them in a business setting.
+    And after the user acceptance tests, you will transfer ownership of the product
+    to your customers.
+  prefs: []
+  type: TYPE_NORMAL
+- en: With the most common testing scenarios covered, we will move on to the specifics
+    of the testing concepts. We will start with one of the most commonly-heard testing
+    concepts, the black box testing concept.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Black box testing
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Black box testing belongs to the "box approach", where a piece of software is
+    regarded as a box and the box contains various functions, methods, classes, and
+    so on. Metaphorically, a "black box" typically means that we cannot see what is
+    inside the box. This means that we implement the test without knowing the internal
+    structure of our program; we take an external perspective of the program, using
+    valid and invalid inputs in order to determine if the output is correct.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Because we have no knowledge about the internal structure and code of the program,
+    we can only test the program from a user's point of view. In this case, we might
+    try to determine what the major functions are, and then attempt to implement our
+    test based on these functions.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The main advantage of black box testing is that the test results are often unaffiliated,
+    because the tester has no knowledge of the code. However, the disadvantage is
+    that because the tester has no idea of what the code is about, the tester may
+    create tests or perform tests that may be repetitive, or tests that fail to test
+    the most important aspects of the software. Or worse, the tester may miss out
+    an entire function or method.
+  prefs: []
+  type: TYPE_NORMAL
+- en: That is why, in the real world, test cases are prepared in the early phases
+    of the development cycle, so that we will not miss out on certain requirements.
+    The advantage is that testers will have access to the required test cases, but
+    at the same time, the testers need not have full knowledge of the code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Some examples of black box testing include usability testing, boundary testing,
+    and beta testing.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Usability tests
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'In simple terms, usability testing typically involves testing from the user''s
+    point of view, to see if the program we have created is easy to use. The key objective
+    here is to observe users using our program, to discover errors or areas of improvement.
+    Usability testing generally includes the following aspects:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Performance:** especially in terms of the number of clicks (or actions) that
+    a user has to take in orders to complete a particular task, such as signing up
+    as a member, or purchasing a product form a website, and so on.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Recall:** can users remember how to use the program after not using it for
+    a certain period?'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Accuracy:** does our program design result in mistakes by the end users?'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Feedback:** feedback is certainly one of the most important AJAX-related
+    application issues. For instance, after submitting an AJAX form, a user will typically
+    wait for some form of feedback, (in the form of visual feedback, such as a success
+    message). But imagine this—if there is no form of visual feedback or success message,
+    how will the user know if he has submitted the form successfully or unsuccessfully?'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Boundary testing
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Boundary testing is a form of testing method where the maximum and minimum values
+    are tested. Boundary testing sometimes includes the testing of error values and
+    typical values.
+  prefs: []
+  type: TYPE_NORMAL
+- en: For instance, in the program in the previous chapters, the maximum number of
+    characters we allow for the entry of names are 20 characters.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Equivalence partitioning
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Equivalence partition testing is a technique that divides a range of data into
+    partitions from which test cases can be derived. For instance, for input boxes
+    accepting a users'' age, it should exhibit the following partition:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Equivalence partitioning](img/0004_04_04.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Note that only positive values are accepted for our example to read in a users'
+    age, as a person's age should technically be positive. Therefore, any negative
+    values are unacceptable values.
+  prefs: []
+  type: TYPE_NORMAL
+- en: For the range that is less than **-231** and larger than **231-1**, it is asssumed
+    that the integers can only hold values between **-231** and **231-1** due to hardware
+    and EMCA operator requirements.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Beta testing
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Beta testing has been popularized by the current popular Web 2.0 companies,
+    such as Google, where web applications are often released to a limited audience
+    other than the core programing team. Beta testing occurs after alpha testing,
+    where most of the bugs and faults have been detected and fixed. Beta testing is
+    often used as a way to gain feedback from prospective users.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Such a process is commonly seen in open source projects, such as Ubuntu (an
+    open source operating system based on Linux), jQuery (a JavaScript library), and
+    Django (a Python-based web framework). Such open source projects or software typically
+    have a series of alpha and beta releases. They also typically have release candidates
+    prior to releasing a major version of the software or project.
+  prefs: []
+  type: TYPE_NORMAL
+- en: White box testing
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: White box testing is also known as clear box testing, glass box testing, or
+    transparent testing. White box testing can be seen as the opposite of black box
+    testing; we test the program with knowledge of the internal structure of our program.
+    We take an internal perspective of the program, and use this perspective when
+    we implement our test plan.
+  prefs: []
+  type: TYPE_NORMAL
+- en: White box testing typically occurs when the test has access to the internal
+    code and data structures of the program. Because we take an internal perspective
+    of our program and with knowledge of our source code, we design the test plan
+    based on our code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We might find ourselves tracing the path of how our code is executed and work
+    out what are the input and output values for various functions or methods of our
+    program.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Some examples of white box testing include Branch testing, and Pareto testing.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Branch testing
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Branch testing is a concept where each branch of the code should be tested
+    at least once. This means that all functions or code that has been written should
+    be tested. In software testing, there is a measure known as code coverage, which
+    refers to how much source code of a program has been tested. Some of the more
+    important types of branch testing coverage includes the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Functional coverage: where we make sure that each function of the code has
+    been called (tested)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Decision coverage: where each of the `if else` statements has been tested.
+    There might be cases where the `if` part of the code works but not the `else`
+    part of the code, and vice versa.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Pareto testing
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Pareto testing is what I personally call "real world" testing, and is conducted
+    under strict time and money constraints. This is because Pareto testing only focuses
+    on the most used functions; the most frequently used functions are what matter
+    the most and hence we should focus our time and effort on testing these functions.
+    Alternatively, we may see Pareto testing such that most bugs come from a small
+    handful of functions of our programs; therefore, by spotting these functions,
+    we can test our program much more effectively.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Pareto testing is derived from an idea called "Pareto Principle" or perhaps
+    better known as the "80-20 principle". What the Pareto Principle suggests is that
+    roughly 80% of the effects come from 20% of the causes. For instance, 80% of the
+    sales revenue may come from 20% of the sales team or customers. Or another example
+    would be 80% of the world wealth is control by 20% of the world's population.
+    Applied in our case here, we can say that 80% of the bugs or program errors come
+    from 20% of our code, and therefore we should focus testing on that particular
+    20% of the code. Alternatively, we can say that 80% of the program's usage activity
+    comes from 20% of our code. Similarly, we can focus testing on that particular
+    20% of the code. Just for the record, pareto testing can be regarded as a general
+    testing principle, and not just a form of white box testing.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Unit tests
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Unit testing breaks up code into logical chunks for testing, and generally focuses
+    on one method at a time. A unit can be seen as the smallest possible chunk of
+    code, such as a function or method. This means that in the ideal situation, each
+    unit should be independent from all other units.
+  prefs: []
+  type: TYPE_NORMAL
+- en: When we are performing unit testing, we attempt to test each function or method
+    as we complete it, thus making sure that whatever code we have works before we
+    move on to the next function or method.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This helps to reduce errors, and you may have noticed that we have somehow applied
+    the idea of unit testing when developing the JavaScript program in the previous
+    chapters. As we create each function, we try to test it whenever possible.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Some of the benefits of unit testing includes minimization of errors, and allowing
+    ease of change, because each function or method is tested individually in isolation
+    and, to a good extent, simplifies integration.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The main benefit, in my opinion, is that unit tests are flexible and allow ease
+    of documentation. This is because as we write and test new functions, we can easily
+    take note of what the problems are, and whether the code can work correctly. In
+    effect, we are doing incremental documentation—documenting the results as we test.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Unit testing is also an integral part of integrated testing, especially in the
+    bottom-up approach, as we test our program from the smallest possible unit before
+    moving on to larger units. For example, as I was creating the code for [Chapter
+    2](ch02.html "Chapter 2. Ad Hoc Testing and Debugging in JavaScript"), *Ad Hoc
+    Testing and Debugging in Javascript*, I essentially carried out unit testing informally.
+    I carried out unit testing by treating each of the functions as individual units,
+    and tested each JavaScript function with the related HTML input field, in order
+    to make sure that the correct output was achieved. This technique can be seen
+    as part of performing continuous integration as new code is being written.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Continuous integration is a process where developers integrate their code frequently,
+    in order to prevent integration errors. This is often done with the help of automated
+    builds of the code (and includes tests) to detect integration testing. As we create
+    new code, it is important that we integrate with the existing code to make sure
+    that no compatibility issues or new bugs (or even old bugs) are introduced. Continuous
+    integration is becoming popular as it integrates unit tests, revision control,
+    and build systems.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Web page tests
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: As mentioned previously, web page testing is a form of functional testing, and
+    typically refers to the testing of the user interface, from the user's point of
+    view. For our purposes here, we would test our JavaScript program in conjunction
+    with HTML and CSS.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Web page testing also includes testing for correctness in terms of different
+    browsers and platforms. We should at least focus on the major web browsers such
+    as Internet Explorer and Firefox, and see if the presentation and JavaScript program
+    works under different browsers.
+  prefs: []
+  type: TYPE_NORMAL
+- en: To have a brief idea regarding the usage of browsers, you might want to head
+    down to [http://www.w3schools.com/browsers/browsers_stats.asp](http://www.w3schools.com/browsers/browsers_stats.asp)
+    to see which browsers are popular, in decline, or on the rise.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: It appears that Google Chrome is gaining a lot of momentum, and it has a good
+    chance of becoming a popular web browser; in less than two years, Google Chrome
+    has increased its market share from 3.15 percent to 14.5 percent, based on the
+    statistics provided by w3schools. This increase in popularity is in part due to
+    its JavaScript engine performance.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The other main focus of web page tests also includes checking for the most frequently-used
+    user behaviors, such as illegal and legal values, login, logout, erroneous behavior
+    of the users, SQL, HTML injection, checking of HTML links, images, the possibility
+    of robot attacks, and so on.
+  prefs: []
+  type: TYPE_NORMAL
+- en: As SQL, HTML injection, and robot attacks are out of the scope of this book,
+    we will focus on the other issues, such as making sure that the web page will
+    work under different browsers, testing for illegal and legal values, erroneous
+    behavior, and frequent behaviors.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Performance tests
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Performance tests have a wide range of genres such as load testing, stress testing,
+    endurance testing, isolation testing, spike testing, and so on. I will not attempt
+    to bog you down with the details. Instead, I will focus on two of the more common
+    issues that you will face as a JavaScript programer.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Firstly, performance can refer to the amount of time required for the client
+    to download a piece of JavaScript. You may argue that download time depends on
+    the Internet connection. But there is one simple thing that you can do to reduce
+    the size of your JavaScript without refactoring or rewriting it, and that is compressing
+    your JavaScript code. A good example of this would be the JQuery library, which
+    we introduced in [Chapter 3](ch03.html "Chapter 3. Syntax Validation"), *Syntax
+    Validation*. If you visit the JQuery home page at [http://jquery.com](http://jquery.com),
+    you may have noticed that JQuery comes in two forms—a production version and a
+    development version. The production version is minified, and the file size is
+    24KB, whereas the development version is 155KB. Obviously, the production version
+    is smaller in file size and hence improves performance in terms of downloading
+    the JavaScript.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Compressing your code—or minifying your code—refers to an act where you remove
+    all unnecessary white spaces and lines from your code in order to reduce file
+    size. Some code minifiers automatically remove comments, replace functions, variables,
+    and even encode in different codings.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Secondly, performance can also refer to the speed at which a particular piece
+    of code executes for any given amount of input. In general, we need to use external
+    libraries or tools to help us find out which parts of our code are performing
+    relatively slower than the others, or where the bottlenecks are. Related tools,
+    and how we can apply performance testing, will be covered in [Chapter 6](ch06.html
+    "Chapter 6. Testing More Complex Code"),*Testing more complex code*.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Integration testing
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Integrated testing is among the last steps of the testing process prior to acceptance
+    testing. Because we have made sure that the basic building blocks of the program
+    work correctly as an individual unit, we will now need to make sure if they can
+    work together.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Integration testing refers to the testing of all of the different components
+    of our program. The different components can refer to the various units that we
+    have talked about so far. The main objective of integration testing is to ensure
+    that the functional, performance, and reliability requirements are met. We also
+    test the different units together and see if they can work; we'll need to check
+    for any irregularities when combining the units together.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Integration testing can take different forms, such as top-down and bottom-up
+    approach.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the top-down approach, we start with the highest-level integrated module,
+    followed by the sub-modules or functions of each module. On the other hand, bottom-up
+    testing starts from the lowest level components before moving on to the upper-level
+    components.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Based on the sample code that we have seen so far, it would be difficult to
+    understand how integrated testing works. In general, if we view the HTML code
+    as a unit, CSS as a unit, and each individual JavaScript function as a unit, we
+    can see that integrated testing would include testing all three together and making
+    sure that it is correct.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the bottom-up approach, we begin testing from the basic units of code. As
+    we test the basic units of code, we move up to test larger units of code. This
+    process is similar to unit testing.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Regression testing—repeating prior testing after making changes
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Regression testing focuses on uncovering errors in a program when a program
+    is being modified or upgraded. In real-life situations, we tend to make changes
+    to a program—whether this is upgrading it, adding new features, and so on. The
+    key point is that as we make changes to a program, we need to test the new components
+    to see if they work in conjunction with the old components.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We need to perform regression testing because research and experience have
+    shown that as a program is being modified, new or old errors may appear. For instance,
+    an old, previously-fixed bug may be re-introduced into the program when a new
+    feature is being added, or the new feature itself may contain a bug that affects
+    the existing features. This is where regression testing comes in: we perform previous
+    tests to make sure that the old components are still running and that no old faults
+    have re-emerged. We test the new features with the old components to ensure that
+    the entire system is working. Sometimes, in order to save time and resources,
+    we may only perform testing on the new features in conjunction with the old components.
+    At this point, we can apply impact analysis to determine the impact area of the
+    application, by adding or modifying code.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Regression testing is as real as it gets. This is because as a program grows,
+    the chances are that you will make changes to your code. As you make changes to
+    your code there is a likelihood that bugs or incompatibilities may be introduced
+    to your program, and regression testing helps you to spot such mistakes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Testing order
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'We have now covered the required background knowledge, so it is time to understand
+    what kind of tests we should start with. The order in which we carry out the tests
+    depends on whether we want to implement bottom-up testing or top-down testing.
+    There is nothing wrong with either order of testing, but I personally prefer bottom-up
+    testing: I''ll typically start with unit testing first, followed by other types
+    of tests (depending on what the program is like), and finish off with integration
+    testing.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The main reason for taking this approach is that unit testing allows us to find
+    errors in the code much earlier; this prevents bugs or errors from piling up.
+    In addition, it provides flexibility in how you choose to document the test results.
+  prefs: []
+  type: TYPE_NORMAL
+- en: However, if you prefer the top-down approach, you can always start by testing
+    the program as if you were an end user.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the real world, especially in terms of testing web applications, it can be
+    difficult to differentiate (at least conceptually) between bottom-up testing and
+    top-down testing. This is because although the user-interface and programing logic
+    are separated, we really need to test both at the same time in order to understand
+    if it works the way that we want it to.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Nonetheless, the testing order should finish with user acceptance testing, because
+    the end users are the ones who will be using our code eventually.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the next section, we will show you how to document your test plan. You will
+    notice that we will be performing tests from the users' point of view. Now, it
+    is time to document our test plan.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Documenting your test plan
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Now that we have covered the required testing concepts, it is time to learn
+    how we can create the test plan. At the same time, we will document our test plan;
+    this will serve as a basis for the next part of this chapter, where we will apply
+    the test.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The test plan
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Our test plan will consist of some of the concepts we have covered earlier,
+    such as web page testing, boundary testing, integration testing, and others. Because
+    we are applying the test on the code we have used in [Chapter 2](ch02.html "Chapter 2. Ad
+    Hoc Testing and Debugging in JavaScript"), *Ad Hoc Testing and Debugging in Javascript*,
+    we have the advantage of knowing what the code is about. Therefore, we can design
+    our test process in such a way that it can incorporate ideas from both black box
+    testing and white box testing.
+  prefs: []
+  type: TYPE_NORMAL
+- en: You might want to go to the `source code` folder and open the `sample_test_plan.doc`
+    file, which is our sample test plan. This is a very simple and informal test plan,
+    which contains only the bare minimum of the required components. If you are writing
+    documentation for your own reference, you can save on time and effort by using
+    a simple document. However, if you are preparing a test plan for a client, you
+    will need a more elaborate document. For simplicity sake, we'll use the sample
+    document provided in the `source code` folder to help you understand the planning
+    process quickly. I will briefly run through the components of our test plan and
+    at the same time, I will introduce to you the main components of our test plan.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Versioning
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: In the first component, you will notice that there is a version table, which
+    documents the changes in the test plan. In the real world, plans change and therefore,
+    it is a good habit to keep track of the things that have changed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Another way to keep versioning easy and maintainable is to use version control
+    software such as Git or BitBucket. Such versioning tools keep a log of the changes
+    that you have made in your code; this will enable to trace what changes you have
+    made, and this makes creating tests plans a lot easier. You can visit [http://git-scm.com/](http://git-scm.com/)
+    to learn more about Git, and [http://bitbucket.org/](http://bitbucket.org/) to
+    learn more about BitBucket.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Test strategy
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The next important component that you should notice is the test strategy. The
+    test strategy represents the main thoughts and ideas that we will be using for
+    our test plan. You will see that we are employing both white box and black box
+    testing, along with unit testing and integration testing. Because our JavaScript
+    program is web-based, we are implicitly carrying out a form of web page testing,
+    although this is not mentioned in the subsequent parts of the chapter. For each
+    phase of the test, we will decide on the test values required. Also, if you look
+    at the `sample_test_plan.doc`, you will see that I have added, in the form of
+    a brief description of the expected values, the result or response for each part
+    of the test.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Testing expected and acceptable values by using white box testing
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: The first thing that we will be doing is white box testing by using unit testing.
+    Because we have a strong understanding of the code and user interface (the HTML
+    and CSS code), we will apply the test at the user-interface level. This means
+    that we will test the program by entering the various test values that we have
+    decided upon.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this case, we will use the program as we have already used in [Chapter 2](ch02.html
+    "Chapter 2. Ad Hoc Testing and Debugging in JavaScript"), *Ad Hoc Testing and
+    Debugging in Javascript*, and [Chapter 3](ch03.html "Chapter 3. Syntax Validation"),
+    *Syntax Validation*, and see if the program works the way that we intended it
+    to. We will be using values that are expected and acceptable here.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The input will be what the program requires us to enter—for input fields that
+    require us to enter down our name, place of birth, and so on, we will enter characters
+    into it. Input fields that require numbers as inputs, such as age, the age at
+    which we would like to retire, salary, expenses, and so on, we will enter numbers.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The details of the input are as follows (the input values are for demonstration
+    purposes only):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '| Input fields | Input value (case 1) | Input Value (case 2) |'
+  prefs: []
+  type: TYPE_TB
+- en: '| --- | --- | --- |'
+  prefs: []
+  type: TYPE_TB
+- en: '| Name | Johnny Boy | Billy Boy |'
+  prefs: []
+  type: TYPE_TB
+- en: '| Place of birth | San Francisco | San Francisco |'
+  prefs: []
+  type: TYPE_TB
+- en: '| Age | 25 | 25 |'
+  prefs: []
+  type: TYPE_TB
+- en: '| Spending per month | 1000 | 1000 |'
+  prefs: []
+  type: TYPE_TB
+- en: '| Salary per month | 100000 | 2000 |'
+  prefs: []
+  type: TYPE_TB
+- en: '| Age at which you wish to retire | 55 | 55 |'
+  prefs: []
+  type: TYPE_TB
+- en: '| Amount of money I want by retirement age | 1000000 | 1000000 |'
+  prefs: []
+  type: TYPE_TB
+- en: 'For each of the input values, we would expect a corresponding input field to
+    be created dynamically in the middle of the screen, under the header **Response**,
+    and at the same time, the original input field would be disabled. This is known
+    as the expected output, result, or response for the test. This goes on for the
+    rest of the input fields for the first form. An example of the dynamically-created
+    field is shown in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Testing expected and acceptable values by using white box testing](img/0004_04_01.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Notice that in the middle of the screenshot, under the header **Response**,
+    there are two input fields. These input fields are created dynamically.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Testing expected and unacceptable values by using black box testing
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: 'The second thing that we will be doing is to perform black box testing by employing
+    boundary value testing. There are two parts to this test: we will first test the
+    boundary values of the program to see if the output is correct. The inputs are
+    similar to what we have used for white box testing, except that we will use unusually
+    large numbers, or unusually large number of characters, for each input. We will
+    also use single number and single characters as part of our inputs. The output
+    for each of the inputs should be similar to what we have seen in white box testing.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To be more specific, we will be using the following test values (note that
+    the test values are purely for demonstration purposes only; when you are creating
+    your program you have to decide what suitable boundary values should be used):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '| Input fields | Minimum Value | Common Value | Maximum value | Comments |'
+  prefs: []
+  type: TYPE_TB
+- en: '| --- | --- | --- | --- | --- |'
+  prefs: []
+  type: TYPE_TB
+- en: '| Name | A single character, such as ''a'' | Eugene | An extremely long string,
+    not more than 255 characters. | Range of values (X):Single character 1 <= X <=
+    255 characters |'
+  prefs: []
+  type: TYPE_TB
+- en: '| Place of birth | A single character, such as a | New York City | An extremely
+    long string, not more than 255 characters. | Range of values (X):Single character
+    1 <= X <= 255 characters |'
+  prefs: []
+  type: TYPE_TB
+- en: '| Age | 1 | 25 | No more than 200 years old | Range of values (X):1 <= X <=
+    200 |'
+  prefs: []
+  type: TYPE_TB
+- en: '| Spending per month | 1 | 2000 | 1000000000 | Range of values (X):1 <= X <=
+    1000000000 |'
+  prefs: []
+  type: TYPE_TB
+- en: '| Salary per month | 2 | 5000 | 1000000000 | Notice that that we are assuming
+    that our user earns more than he spends.Range of values (X): 1 <= X <= 1000000000
+    |'
+  prefs: []
+  type: TYPE_TB
+- en: '| Age at which you wish to retire | This age should be greater than the present
+    age | This age should be greater than the present age | This age should be greater
+    than the present age | Range of values (X): 1 <= X <= 200 |'
+  prefs: []
+  type: TYPE_TB
+- en: '| Amount of money I want by retirement age | We will be using 1 here | A suitable
+    number, such as 1000000 | No more than a trillion dollars | Range of values (X):
+    1 <= X <= 1000000000 |'
+  prefs: []
+  type: TYPE_TB
+- en: If you refer to the `sample test` document, you will realize that I have provided
+    a sample range of values for each of the input fields.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Remember that we've touched on equivalence partitioning in the earlier sections?
+    In practice, given a boundary value, we would test three values relating to the
+    given test value. For example, if we want to test a boundary value of '50', then
+    we will test on 49, 50, and 51\. However for simplicity's sake, we will be testing
+    on the intended value only. This is because in the next chapter we will be carrying
+    out the actual test for the given values; it can get repetitive and tedious. I
+    just want you to know what the real world practices are.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The second part of this test is that we will test for expected illegal values.
+    In the first scenario, we will be using values that are both accepted and unaccepted.
+    The input will be similar to what we have used for the white box testing phase,
+    except that we will use characters as inputs for input fields that require numbers,
+    and vice versa. The expected output each time that we enter an unaccepted value
+    is that there will be an alert box telling us that we have entered a wrong value.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'For details, check the following table:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '| Input fields | Input Value | Input Value Case 1 | Input Value Case 2 | Input
+    Value Case 3 |'
+  prefs: []
+  type: TYPE_TB
+- en: '| --- | --- | --- | --- | --- |'
+  prefs: []
+  type: TYPE_TB
+- en: '| Name | Digits or empty values | 1 | ~!@#$%^&*()" | Testing |'
+  prefs: []
+  type: TYPE_TB
+- en: '| Place of birth | Digits or empty values | 1 | ~!@#$%^&*()" | testing |'
+  prefs: []
+  type: TYPE_TB
+- en: '| Age | Characters and empty values | a | ~!@#$%^&*()" | -1 |'
+  prefs: []
+  type: TYPE_TB
+- en: '| Spending per month | Characters and empty values | a | ~!@#$%^&*()" | -1
+    |'
+  prefs: []
+  type: TYPE_TB
+- en: '| Salary per month | Characters and empty values | a | ~!@#$%^&*()" | -1 |'
+  prefs: []
+  type: TYPE_TB
+- en: '| Age at which you wish to retire at | Characters and empty values | a | ~!@#$%^&*()"
+    | -1 |'
+  prefs: []
+  type: TYPE_TB
+- en: '| Amount of money I want by retirement age | Characters and empty values |
+    a | ~!@#$%^&*()" | -1 |'
+  prefs: []
+  type: TYPE_TB
+- en: In general, for each of the expected illegal values, we should expect our program
+    to alert us with an alert box, telling us that we have entered the wrong type
+    of values.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the second test scenario, we will attempt to enter non-alphanumeric values,
+    such as exclamation marks, asterisk signs, and so on.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the third test scenario, we will test for negative values for input fields
+    that require numbers. The input values for the third test scenario are as follows:We
+    are using -1 to save some typing; so negative values such as -100000 don't make
+    any difference.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Testing the program logic
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: For this part of the test plan, we will attempt to test the program logic. Part
+    of ensuring program logic is to ensure that the inputs are what we need and want.
+    However, certain aspects of the program logic cannot be guaranteed simply by validating
+    the input values alone.
+  prefs: []
+  type: TYPE_NORMAL
+- en: For instance, an implicit assumption that we have about the user is that we
+    assume the user will enter a retirement age that is bigger than his present age.
+    While this assumption is logically sound, users may or may not enter the value
+    according to conventional assumptions. Therefore, we need to guarantee the logic
+    of the program is correct by ensuring that the retirement age is greater than
+    the present age.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The inputs for this test are as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '| Input fields | Input value of first form |'
+  prefs: []
+  type: TYPE_TB
+- en: '| --- | --- |'
+  prefs: []
+  type: TYPE_TB
+- en: '| Name | Johnny Boy |'
+  prefs: []
+  type: TYPE_TB
+- en: '| Place of birth | San Francisco |'
+  prefs: []
+  type: TYPE_TB
+- en: '| Age | 30 |'
+  prefs: []
+  type: TYPE_TB
+- en: '| Spending per month | 1000 |'
+  prefs: []
+  type: TYPE_TB
+- en: '| Salary per month | 2000 |'
+  prefs: []
+  type: TYPE_TB
+- en: '| Age at which you wish to retire | 25 |'
+  prefs: []
+  type: TYPE_TB
+- en: '| Amount of money I want by retirement age | 1000000 |'
+  prefs: []
+  type: TYPE_TB
+- en: The key thing to note here is that the value for "age at which you wish to retire
+    " is smaller than "age".
+  prefs: []
+  type: TYPE_NORMAL
+- en: We should expect our program to spot this logical error; if it does not, we
+    will need to fix our program.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Integrated testing and testing unexpected values
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: The final phase is integrated testing, where we test the entire program and
+    see if it works together, which includes the first form, the second form which
+    is derived from the first form, and so on.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In the first test scenario, we begin slow and steady by testing expected and
+    acceptable values. The input values for the first test scenario are as follows
+    (the input values are for demonstration purposes only):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '| Input fields | Input Value (case 1) | Input Value (case 2) | Input Value
+    (case 3) | Input Value (case 4) |'
+  prefs: []
+  type: TYPE_TB
+- en: '| --- | --- | --- | --- | --- |'
+  prefs: []
+  type: TYPE_TB
+- en: '| Name | Johnny Boy | Johnny Boy | Johnny Boy | Johnny boy |'
+  prefs: []
+  type: TYPE_TB
+- en: '| Place of birth | San Francisco | San Francisco | San Francisco | San Francisco
+    |'
+  prefs: []
+  type: TYPE_TB
+- en: '| Age | 25 | 25 | 25 | 25 |'
+  prefs: []
+  type: TYPE_TB
+- en: '| Spending per month | 1000 | 1000 | 1000 | 1000 |'
+  prefs: []
+  type: TYPE_TB
+- en: '| Salary per month | 100000 | 2000 | 2000 | 100000 |'
+  prefs: []
+  type: TYPE_TB
+- en: '| Age at which you wish to retire | 55 | 55 | 28 | 28 |'
+  prefs: []
+  type: TYPE_TB
+- en: '| Amount of money I want by retirement age | 2000000 | 2000000 | 1000000 |
+    100000 |'
+  prefs: []
+  type: TYPE_TB
+- en: Take note of the input values that are underlined. These input values are designed
+    to determine if we will get the correct response based on the input. For example,
+    after entering all of the values and submitting the dynamically-generated second
+    form, the input values for case 1 and case 3 will result in an output stating
+    that the user will not be able to retire on time, whereas the input values for
+    case 2 and 4 will result in an output stating that the user will retire on time.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Here''s a screenshot that shows what the output looks like if the user can
+    retire on time:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Integrated testing and testing unexpected values](img/0004_04_02.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'The next screenshot shows the output if the user cannot retire on time:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Integrated testing and testing unexpected values](img/0004_04_03.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Take note of the differences in text for the two different cases.
+  prefs: []
+  type: TYPE_NORMAL
+- en: For the full details of the results of the test case, open the `sample_test_plan.doc`
+    file, which can be found in the `source code` folder of this chapter.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Now it''s time for the second test scenario. In the second test scenario, we
+    first finish filling up the values in the first form. Before we submit the second
+    form, which was created dynamically, we will attempt to change the values. The
+    input values will include the values that we have used for both white box testing
+    and black box testing. The input values for the first test scenario are as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '| Input fields | Input value of first form | Input Value the second form (random
+    values) |'
+  prefs: []
+  type: TYPE_TB
+- en: '| --- | --- | --- |'
+  prefs: []
+  type: TYPE_TB
+- en: '| Name | Johnny Boy | 25 |'
+  prefs: []
+  type: TYPE_TB
+- en: '| Place of birth | San Francisco | 100 |'
+  prefs: []
+  type: TYPE_TB
+- en: '| Age | 25 | Johnny Boy |'
+  prefs: []
+  type: TYPE_TB
+- en: '| Spending per month | 1000 | Some characters |'
+  prefs: []
+  type: TYPE_TB
+- en: '| Salary per month | 100000 | More characters |'
+  prefs: []
+  type: TYPE_TB
+- en: '| Age at which you wish to retire at | 20 | Even more characters |'
+  prefs: []
+  type: TYPE_TB
+- en: '| Amount of money I want by retirement age | 1000000 | 1000000 |'
+  prefs: []
+  type: TYPE_TB
+- en: The main objective of this phase of the test is to test the robustness of the
+    second form, which we have not verified up to this point of time. If the second
+    form fails, we will need to change our code to enhance the robustness of our program.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We'll now move on to the next component of our test plan—errors or bugs found.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Bug form
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The last component helps us to record the bugs that we have found. This area
+    allows us to take note of what the errors are, what caused them, and the function
+    or feature in which these errors occurred. In general, whenever we spot an error,
+    we need to take note of the exact function that resulted in the error, and comment
+    on what the possible solutions may be.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary of our test plan
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The components introduced above are some of the most important components of
+    a test plan. In general, for each phase of the test, we have stated our test data
+    and our expected output. Note that we are using this documentation as an informal
+    way of reminding ourselves of what tests needs to be done, the required inputs,
+    expected outputs, and more importantly the bugs that we have found. One thing
+    not mentioned in this sample documentation is the action to be performed for those
+    bugs that are discovered; this will be covered in the next chapter.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: We effectively carried out the planning process for our test plan. Although
+    our test plan is informal, we have seen how we can apply various testing concepts,
+    coupled with different test data values to test our program that we have created
+    in previous chapters.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Specifically, we covered the following topics:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: We first started off with a brief introduction to the key aspects of software
+    engineering. We've learned that testing takes place after the implementation (coding)
+    stage.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: We've learned to define the scope of our test by asking what our code is suppose
+    to do, making sure that it does what it is supposed to do, and finally testing
+    for invalid actions by users.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Next we covered various testing concepts such as white box testing, black box
+    testing, unit testing, web page testing, performance testing, integrated testing,
+    and regression testing.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: We also learnt that we need to test our program from different aspects, thus
+    enhancing the robustness of the program.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Although the testing concepts introduced in this chapter may be different in
+    certain aspects, we can group them as: testing expected but acceptable values,
+    expected but unacceptable values, and unexpected values in general. We''ve also
+    learnt to test for logical errors based on our understanding of the code that
+    we have written.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Finally we planned and documented our test plan, which includes the test process
+    description, test values, expected output and other important components, such
+    as versioning and a bug form.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Although testing methodologies can be substantially different depending on organization
+    types and types of applications, the methods that are listed here are generally
+    more suitable for lightweight web applications. However, the concepts also form
+    the building blocks of large-scale, complex web applications.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This chapter marks the end of planning for your test. Now brace yourself as
+    we move on to the next chapter, where we will carry out the test plan.
+  prefs: []
+  type: TYPE_NORMAL

@@ -1,0 +1,1 @@
+["```js\nvar res = [ 1, 2, 3, 4 ].filter(function( v ){\n return v > 2;\n})\nconsole.log( res ); // [3,4]\n```", "```js\n/**\n* @param {Function} [cb] - callback\n*/\nfunction fn( cb ) {\n cb && cb();\n};\n```", "```js\nnpm install fs-walk cli-color\n\n```"]

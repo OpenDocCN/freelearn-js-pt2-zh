@@ -1,0 +1,441 @@
+- en: Chapter 8. Web Workers and Promises
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In the previous chapters, we addressed some common performance issues while
+    dealing with common JavaScript issues that come up in general JavaScript development.
+    Now, we come to the point where, assuming that our projects can support newer
+    JavaScript features, we can make our code perform even better than before.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This is where web workers and promises come into play. In this chapter, we will
+    take a look at both and see how and when to use them. We will also discover their
+    limitations and understand their benefits in terms of high-performance JavaScript.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Understanding the limitations first
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Before diving into web workers and promises, we need to understand a concern
+    with the JavaScript language itself. As mentioned in past chapters, JavaScript
+    is single-threaded and cannot support two or more methods running at the same
+    time.
+  prefs: []
+  type: TYPE_NORMAL
+- en: For many years, we as JavaScript developers never really had to concern ourselves
+    with threading, let alone the JavaScript memory issues that we have covered in
+    the course of this book. Most of our code existed inside a browser, and ran on
+    the same page either inline, or linked externally to a file on the same server,
+    for basic web page functionality.
+  prefs: []
+  type: TYPE_NORMAL
+- en: As the Web moves forward, with originally frontend coding becoming more and
+    more necessary for high-performing applications, newer ways of handling larger
+    JavaScript applications are needed. Today, we consider these newer features as
+    a part of the *ECMAScript 5* feature set.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In ECMAScript 5, many of these features were rolled into what many consider
+    to be the HTML5 stack. This stack consists of HTML5 (the `DOCTYPE` and `HTML`
+    tags), CSS version 3.0, and ECMAScript 5.
+  prefs: []
+  type: TYPE_NORMAL
+- en: These technologies make the Web much more powerful than the days of AJAX and
+    XHTML development. The limitation is that these features are cutting-edge and
+    may or may not work with every browser. So, using these newer features usually
+    requires a bit for forethought before their implementation in a project.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We've talked about some of these features since [Chapter 2](ch02.html "Chapter 2. Increasing
+    Code Performance with JSLint"), *Increasing Code Performance with JSLint*, including
+    the `use strict` statement, which forces the browser to throw an error if something
+    in JavaScript isn't strictly written or coded correctly. Now you may ask why we
+    are using the `use strict` statement if it isn't supported in all browsers. The
+    trick with the `use strict` statement is that, when it's coded for an older browser,
+    it shows up as a string and is ignored.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This is a great thing because, even if it is ignored in older browsers, we can
+    still use this newer feature and write more efficient code. Unfortunately, that
+    doesn't translate to all features in ECMAScript 5; this includes web workers and
+    promises.
+  prefs: []
+  type: TYPE_NORMAL
+- en: So in this chapter, let's keep in mind that henceforth, while working with code
+    samples, we need to focus our testing and coding on a newer browser such as Google
+    Chrome, Opera, Firefox, or Apple's Safari, and even newer versions of Internet
+    Explorer that follow the same standards.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Web workers
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Web workers give JavaScript developers like us a way to build multi-threaded
+    JavaScript applications; this works in newer browsers as we have an object called
+    a **worker**. A worker object is simply an external JavaScript file that we pass
+    logic to.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Now, this may seem a little odd. Haven''t we worked with external JavaScript
+    files, since the beginning of JavaScript? Fair enough, but web workers are a bit
+    new in terms of how a browser handles the execution of files in the DOM. Let''s
+    take a look at the following sample diagram on how a browser reads a file:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Web workers](img/7296OS_08_01.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'So here we have a single-threaded JavaScript application, a `DOMContentLoaded`
+    event, and a `window.onload` event triggering shortly after, followed by the functions
+    simply named as: `function1`, `function2`, `function3` respectively. Now, what
+    if we had the `function2()` function perform some complex `for` loop such as calculating
+    pi 5 million times while `console.log(Shakespeare)` is checking the time? Well,
+    we can see that in the following diagram:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Web workers](img/7296OS_08_02.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: As we can see, once the browser calls `function2()`, it locks up and hangs until
+    it can complete its execution, (assuming that the system running the code has
+    enough memory to execute). Now an easy way to fix this would be to say, "Hey,
+    maybe we don't need to check the time, or maybe we only want to calculate pi once
+    to improve performance.". But what if we had no choice but to write code that
+    way? Maybe our application had to work like that, and so we were obliged to code
+    a complicated, slow-performing function that did slow performance; for the success
+    of the application, that function with that logic must fire.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Well, if we must build an application like that, our solution is a web worker.
+    Let''s see how that works in comparison to our single-threaded diagrams:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Web workers](img/7296OS_08_03.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: In our example here, we can see in the diagram that we create a new worker that
+    points to an external JavaScript worker file called `worker.js`. That worker sends
+    a response in the form of a message. With web workers, messages are how we pass
+    data between the host script and the worker data. It works in a similar way to
+    any other event in JavaScript using the `onmessage` event.
+  prefs: []
+  type: TYPE_NORMAL
+- en: So how does this look in a coded application? Well, let's find out!
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We have a coded example shown in the following screenshot that is built in
+    a similar way to the preceding diagrams:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Web workers](img/7296OS_08_04.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: As we can see, this is a simple HTML5 page with a `script` tag on line 11\.
+    On line 13, we have `function1()` declared first, which prints an info message
+    to the console; with line 15, we start a new timer to see how fast our worker
+    is. It's rightly called a `Worker`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Next up, on line 18 we declare `function2()`; now here is where the things get
+    interesting. First, on line 19, we declare a variable called `func2_Worker`; the
+    naming of this variable isn't important, but it's always a good idea to indicate
+    what your variable actually is. In this case, I add the suffix `_Worker` to the
+    variable, following which I create a new web worker using the `Worker` keyword
+    with a capital *W*.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Inside the parentheses, we add a string, the filename, using the relative path
+    of our worker file, named `08_01-worker.js`. Let's take a look inside the worker
+    file.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Web workers](img/7296OS_08_05.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'As we can see, the worker file is very simple. We have a global object declared
+    on line 1 called `onmessage` and that is assigned a function with a `for` loop.
+    It''s also worth noting that we can refer to this context through the `self` and
+    `this` keywords (example: `self.onmessage`). You may have noticed that we also
+    have a parameter called `oEvent`, which is a placeholder for any data being passed
+    into the worker that we call using the `data` property. We can see this in our
+    `postMessage` function on line 3.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The `postMessage` function is a built-in function for ECMAScript that either
+    sends data to an assigned worker or, if no worker is assigned, it posts a message
+    back to any parent JavaScript workers that might be listening. Now let''s go back
+    to our root HTML page script and take a look on line 20; this is shown in the
+    following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Web workers](img/7296OS_08_06.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: We can see that, by calling our `func2_Worker` worker variable, we can use the
+    `onmessage` property of that worker and call a function back on our root page;
+    in this case, you need to log a message back to the console using the `oEvent`
+    parameter used in the worker.
+  prefs: []
+  type: TYPE_NORMAL
+- en: That's all well and good. But how do we pass data in? Well, that's easy enough.
+    Line 24 uses the `func2_Worker` variable but utilizes the `postMessage` function
+    for that worker object, as mentioned earlier. As we've assigned a worker variable
+    to this `postMessage` function, this will pass in a data parameter into our `oEvent`
+    parameter used in our `worker.js` file; in this case, it's a string that says,
+    `"Processing a high performance JavaScript worker..."`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Finally, on line 32 and again on line 35, we have 2 event listeners. One is
+    for the `DOMContentLoaded` event that was shown in our diagram as the first function
+    called in our execution thread and that simply outputs a log message that the
+    DOM is loaded; this is followed by our `window.onload` function, which also prints
+    a log message, But then it also triggers functions 1, 2, and 3, in order when
+    the page is loaded. Let''s load this in our browser and see what happens by using
+    Chrome''s **Developer tools** option. Take a look at the output in the **Console**
+    panel, which will resemble the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Web workers](img/7296OS_08_07.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'Well, that''s not a good sign as we can see an error appear in our console.
+    The `DOM Loaded` and `Page Loaded` log messages appear as does `function1(): Called.`
+    after which we get the `Uncaught SecurityError: Failed to construct ''Worker'':
+    Script at (file:url) cannot be accessed from origin ''null''` error message.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now what does that mean? First, we have to understand that using a web worker
+    is similar to working with AJAX. If your code is not on a server, there is a security
+    risk in sharing or gathering data across your system. Now this isn't incorrect
+    but, when testing our code, we need to test on a local server such as Apache or
+    IIS that can secure our content using HTTP. In Chrome, there is also another way
+    to disable this warring, but that's only for limited testing.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Testing workers with a local server
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: A local server can be created on OS X and Linux quickly using Python; now, if
+    you're not a Python *guru*, don't worry as this is a quick one-line bit of Terminal
+    code to spin up a server in seconds.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'First, open the Terminal and set its path; this should be the path your files
+    are in. You can do this by using the change directory command or `cd`. Here''s
+    an example of setting the path to the active user''s desktop using the *tilde*
+    key:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Once that''s done, we can start the server with this simple one-line python
+    command that calls a built-in simple server method, as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: Once we press the *Enter* key, we can start the server. We can look at the server
+    root by typing `http://127.0.0.1:8000` into Chrome; we should then see a list
+    of files to access. Also, should you need to close the server, you can exit out
+    of the Terminal or use *CTRL* + *Z* to kill the server manually.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Testing workers with a local server](img/7296OS_08_08.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Now go ahead and open the HTML file in which the worker script is called, from
+    the `.js` file, in the page. We should then see the **Console** panel in Chrome's
+    **Developer tools** show one thousand lines iterating through our "for loop" from
+    our worker JavaScript file.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We can also see that, on the fifth console line, the `console.timeEnd` function
+    stops for about 0.5 milliseconds, showing that it''s been called prior to processing
+    the loop. This is shown in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Testing workers with a local server](img/7296OS_08_09.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'Before we move on, let''s check how long this would process outside a worker
+    in the next code sample. We''ve recreated the logic for the loop in the page itself
+    without using a web worker. We are still using the `console.time` function to
+    test how long the thread runs until `function3()` is triggered. Let''s take a
+    look at the following code and review it:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Testing workers with a local server](img/7296OS_08_10.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: So, on line 19, we've removed the reference to the worker file, which is a `.js`
+    file, and moved the `for` loop into the page. Here it will loop one thousand times
+    and print to the console. Now on line 32, we have our `window.load` event listener,
+    and we sequentially call our functions as 1, 2, and 3.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We then again use the `console.time` function to track how long a process occurs.
+    As this code sample is now single-threaded, we should see a longer time for the
+    `timeEnd` function to fire. Let''s run our code and take a look at the next screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Testing workers with a local server](img/7296OS_08_11.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: That's not bad! Here, our time is much longer than our multi-threaded Worker
+    example, which is roughly 70 milliseconds slower than our web worker. That's not
+    a bad performance boost; it's minor but still helpful. Now, one issue with workers
+    is that they take a lot of time to trigger the next function that exists on a
+    separate thread from the main thread. We need to have some way to call a function
+    when a function completes asynchronously, and for that we have JavaScript promises.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Promises
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: JavaScript promises are also a new way to optimize our JavaScript code; the
+    idea of promises is you have a function that is chained to a main function, and
+    is fired in sequential order as it's written. Here is how it's structured. First,
+    we create a new object using the `Promise` object, and, inside the parentheses,
+    we write the main function, and assign the new promise object to a variable.
+  prefs: []
+  type: TYPE_NORMAL
+- en: One thing to note before continuing is that JavaScript promises are EcmaScript
+    6- specific. So, for this section, we will need to test our code in an EcmaScript
+    6-ready browser such as Google Chrome.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Next, with our `promise` variable, we use the `then` keyword, which in actuality
+    works just like a function. But it only fires when our root promise function is
+    completed. Also, we can chain the `then` keywords one after another and sequentially
+    fire JavaScript asynchronously to ensure that the variables scoped in our promise
+    will, of course, promise to the next `then` function that those variables will
+    have set values. Let''s take a look at a sample promise and see how this works:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Promises](img/7296OS_08_12.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: In our code sample, we have an HTML5 page with an embedded `script` tag. We
+    have two elements on our page that we interact with or view using a `button` tag
+    with the `makeAPromise()` function as an attached `onclick` event on line 13\.
+    On line 15, we have a `div` tag with an `id` of `results`, with its inner HTML
+    left empty.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Next, on line 19 we create our `makeAPromise` function and set a `count` variable
+    on line number 20 called `promiseCount`. Now here's where we create our promise.
+    On line number 22, we create a variable called `promiseNo1`, and we assign it
+    with a new `Promise` object. Here you can notice how we start opening the parenthesis
+    with a `function` as parameter that starts on line 23, and we have a `resolve`
+    parameter inside that function. We'll discuss that later.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In our `Promise` function, we have a simple `for` loop that multiplies the value
+    from the `for` loop by `5`, and the `then` function assigns it to our `promiseCount`
+    variable. To finish our `Promise` object's function, notice a new type of keyword,
+    `resolve`! The `resolve` keyword is a type of return used specifically for promises;
+    it sets a promise's return value. There are also other promise return types such
+    as `reject`, which allows us to return a failed value if we want. For this example,
+    however, we are keeping it simple and only using `resolve`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now, if you remember on line 23, our `Promise` function had an internal function
+    with the `resolve` parameter. Though this may look a little odd, it is required
+    to make our promise work; by adding `resolve` to our function, we are telling
+    our promise that we need to use the resolve function inside our `Promise` function.
+    For example, if we needed `resolve` and `reject`, we would write it as `function
+    (resolve, revoke) {}`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Back on line 29, we assign our `resolve` with a string that outputs our value
+    with some copy to fill our `div`, but we don't assign the `innerHTML` property
+    here; that's done using our `promiseNo1.then` function. This works like a function
+    that follows the promise's `resolve` function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Finally on line 32, we call our `promiseNo1` variable's instance, use the `then`
+    function, and again wrap the parenthesis with its own internal function. We may
+    notice that, on line 33, we've passed in an argument called `promiseCount`. This
+    is our `resolve` value that ended our `Promise` function declared on line 22\.
+    We then use that again in line 33, where we assign our `results div` element with
+    its `innerHTML` property.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Testing a true asynchronous promise
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'For this simple example, we can see how a promise is structured and how each
+    firing is needed when chained; when we chain promises, we can see how a promise
+    can still fire a chained function even when we create a bit of single-threaded
+    JavaScript code that causes a delay in execution. In this case, it''s a `setTimeout`
+    function; let''s take a look at this new code sample shown in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Testing a true asynchronous promise](img/7296OS_08_13.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: For this simple example, we can see how promise chains function without breaking
+    the thread. Here, we set a `timerCount` variable on line 20; then we will print
+    to an empty `results` `div` element found on line 15\. Next, by reusing our `promiseNo1`
+    variable with its own promise instance, we create a `for` loop that randomizes
+    the `timerCount` using `Math.random()`, which allows a random number to be generated
+    and then multiplied to 10000 in the `for` loop when it finishes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Lastly, we use the resolve function to return our promise, which is chained
+    to our `then` function on line 31; here we have an argument called response to
+    serve as our `resolve` function's value. Now on line 33, we have a variable called
+    `totalCount`, where we have the response argument and the `timerCount` function
+    added together.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Next, we create a `setTimeout` function that appends the `results` `div` element
+    with a second line, printing the amount of time set by the `totalCountvariable`
+    variable declared by us, while still using the `timerCount` function as our timeout
+    value. Now, the last part of our chain is another `then` function on line number
+    40\. Here, we append the `results` `div` element again, but you need to note that
+    we are printing from our second chained `then` function. Let''s take a look at
+    how that works in Chrome, as shown in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Testing a true asynchronous promise](img/7296OS_08_14.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Take a look at the output. Here, we can see that, with each button click, we
+    get a numeric count for each point of the promise chain. We have a value of `0`
+    on the `First count`, and a random larger number on the `Third count`. Wait! Is
+    that the third count? Yes, note that the third count comes after first; this demonstrates
+    that, even when we were waiting for our for loop to process, the third promise
+    continued.
+  prefs: []
+  type: TYPE_NORMAL
+- en: On the next line, we see an even larger number value with the `Second count`
+    noted in our line; if we continue clicking the button, we should see a consistent
+    pattern. Using promises can help us multi-thread code as long as we don't need
+    a specific value in the chain immediately. We also get performance benefits by
+    moving some of our code off our main JavaScript thread using promises.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this chapter, we reviewed how to use web workers, and the limitations web
+    workers have technically and conceptually in a real-life application. We also
+    worked with JavaScript promises, where we learned common keywords related to promises
+    such as `respond` and `revoke`. We saw how to use the `then` function to chain
+    our promises in sync with our main application thread, to create a multi-threaded
+    JavaScript function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the next chapter, we will see how working from a mobile device such as iOS
+    and Android can affect our performance and how to debug performance on a device.
+  prefs: []
+  type: TYPE_NORMAL

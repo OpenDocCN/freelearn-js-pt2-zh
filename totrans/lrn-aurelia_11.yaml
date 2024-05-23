@@ -1,0 +1,1300 @@
+- en: Chapter 11. Integrating with Other Libraries
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: A UI framework never lives on its own, especially a web framework. The web being
+    such a rich platform and being driven by such a dynamic community, there are thousands
+    of libraries, widgets, and components out there that can be leveraged in countless
+    scenarios, and which save developers tremendous amounts of time.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this chapter, we will see how we can integrate various libraries into our
+    contact-management application. We'll add UI widgets from both Bootstrap and jQuery
+    UI, some drag and drop support using `sortable.js`, and graphs using D3\. We'll
+    also see how we can leverage SASS instead of CSS. Finally, we'll even see how
+    we can integrate Polymer components.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using Bootstrap widgets
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Since the beginning of this book, we have relied on Bootstrap to style and lay
+    out our application. However, we haven't used the library's JS widgets. Let's
+    see how we can integrate such widgets into our application.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Loading the library
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Since jQuery is used by Bootstrap''s JS widgets, we''ll first need to install
+    it:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Next, we need to add jQuery and Bootstrap JS resources to the vendor bundle:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`aurelia_project/aurelia.json`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here, we add jQuery to the bundle's dependencies, then we update the entry for
+    Bootstrap so the JS widgets are loaded after jQuery is.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `bootstrap` module in the application is also configured to export the global
+    `jQuery` object. This means that we'll be able to import the `jQuery` object from
+    `bootstrap` in our JS code, and we'll be sure that the Bootstrap widgets have
+    been registered on jQuery.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Creating a bs-tooltip attribute
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Let''s go over a simple example of using a Bootstrap JS widget with Aurelia.
+    We''ll create a custom attribute that will encapsulate the Bootstrap `tooltip`
+    widget:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`src/resources/attributes/bs-tooltip.js`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here, we start by importing the jQuery global object from Bootstrap. This will
+    ensure that the Bootstrap JS library was properly loaded and registered to the
+    jQuery namespace. We also declare the list of properties supported by the `tooltip`
+    widget, so the attribute can use dynamic options and just ignore unsupported options.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We''ll use dynamic options instead of explicit options, just to write less
+    code. We''ll write some change-handler methods next, and if we use an explicit
+    list of properties, all declared as bindable on the `BsTooltipCustomAttribute`
+    class, we will have to write a distinct change handler for each property. All
+    those change handlers will do pretty much the same thing: update the corresponding
+    option on the Bootstrap widget. Instead, since we use dynamic options, we can
+    write a single change handler that will be called for all options.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: We can now create a custom attribute, named `bs-tooltip`. It receives as a constructor
+    argument the DOM element on which it is placed. When attached to the DOM, it assigns
+    the value bound to the attribute for each supported property to an `init` object.
+    This object is then passed to the `tooltip` initialization method, which is called
+    on the element hosting the attribute. This last line will create the `tooltip`
+    widget.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Finally, when detached from the DOM, it just calls the `destroy` method on the
+    `tooltip` widget.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This first version of the `bs-tooltip` attribute doesn''t support updating
+    properties. This can be added by using the `propertyChanged` callback method to
+    update the `tooltip` widget:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`src/resources/attributes/bs-tooltip.js`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here, when the value of a property changes and the attribute is currently attached
+    to the DOM, we first make sure that the property is supported by the widget, then
+    we simply update the widget's property.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using the attribute
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'We can now add a Bootstrap `tooltip` to any element. Let''s replace the **Remove**
+    button''s `title` attribute with a Bootstrap `tooltip` in the `list-editor` component:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`src/resources/elements/list-editor.html`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here, we simply remove the `t="[title]..."` attribute from the **Remove** button
+    and replace it with a `bs-tooltip` attribute. In this attribute, we define a `title`
+    option, to which we bind the result of the same translation as before. The fact
+    that we use the `.bind` command and the `t` binding behavior will cause the tooltip's
+    `title` to be updated when the current locale changes. We also specify that the
+    `tooltip` should be placed to the `right` of the hosting element using the `placement`
+    option.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Do not forget to load the `bs-tooltip` attribute, either as a global resource
+    in the `resources` feature's `configure` function, or in the template of `list-editor`
+    using a `require` statement.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If you run the application at this point and hover over a **Remove** button
+    in one of the `list-editor` instances with your mouse, a Bootstrap `tooltip` widget
+    should show up.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Creating a bs-datepicker element
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: One widget our contact-management application could greatly benefit from is
+    a date picker. This would make entering a birthday much more comfortable for most
+    users.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Bootstrap doesn't include a date picker per se, but some are available as plugins.
+    In this section, we'll install the `bootstrap-datepicker` plugin, load it, and
+    create a new custom element that will encapsulate an `input` element hosting a
+    date picker.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Installing the bootstrap-datepicker plugin
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'We''ll first install the Bootstrap plugin:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Next, we need to add it to the vendor bundle:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`aurelia_project/aurelia.json`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here, we add the `bootstrap-datepicker` library to the vendor bundle. Just like
+    the standard Bootstrap widgets, this plugin adds new functions on the jQuery object,
+    so it needs to have a dependency on jQuery so it can register itself. It also
+    loads its own stylesheet as an additional resource.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Creating the custom element
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Now that the plugin is ready to be used, we can start building the custom element.
+    Our `bs-datepicker` element will expose a two-way bindable `date` property, which
+    will be assigned the selected date as a `Date` object. It will also expose a bindable
+    `options` property, which will be used to provide the options passed to the underlying
+    `bootstrap-datepicker` widget instance.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'First, let''s write its template:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`src/resources/elements/bs-datepicker.html`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: This template simply requires the stylesheet `bootstrap-datepicker`, then declares
+    an `input` element. A reference to this `input` will be assigned to the binding
+    context's `input` property, so the view-model can use it to host the date picker.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Next, let''s write the view-model class:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`src/resources/elements/bs-datepicker.js`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: We start by importing the global jQuery object from Bootstrap; remember, we
+    configured the Bootstrap library so it exports the jQuery object when we added
+    it to the vendor bundle to write the `bs-tooltip` attribute.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Next, we load the `bootstrap-datepicker` plugin so it is properly registered
+    to jQuery, then create the custom element's class.
+  prefs: []
+  type: TYPE_NORMAL
+- en: It first declares a static `defaultOptions` property, which is used to set the
+    default values for the options passed to the widget when creating it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: When the element is attached to the DOM, it creates a `datepicker` widget instance
+    on the `input`. It also subscribes to the widget's `clearDate` and `changeDate`
+    events, so it can update its own `date` property when the widget's selected date
+    changes; then it initializes the widget's selected date.
+  prefs: []
+  type: TYPE_NORMAL
+- en: You may wonder why we add those event listeners and why we don't just bind to
+    the value of `input`. That's because the widget already handles validation of
+    the value of `input` and its parsing as a `Date` object, so it is much simpler
+    for our custom element to rely on the selected date of `datepicker`. Basically,
+    our custom element just bridges its `date` bindable property with the selected
+    date of `datepicker`. When the widget's selected date changes, one of the event
+    listeners is triggered and the widget's new value is assigned to the element's
+    `date` property. Similarly, since the element's `date` property uses two-way binding
+    by default, when the `date` property changes, mostly when initializing the element
+    when used in a template, the `dateChanged` method is called by the binding system
+    and the widget's selected date is updated. We additionally use an `isUpdating`
+    property to prevent infinite update loops between the element and the widget.
+  prefs: []
+  type: TYPE_NORMAL
+- en: When the element is detached from the DOM, it first unsubscribes from the widget's
+    `clearDate` and `changeDate` events, then calls its `destroy` method.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Finally, when the element's `options` property changes, the widget is destroyed
+    then recreated. This is because, at the time of writing, the `bootstrap-datepicker`
+    plugin doesn't offer any API to update a widget's options after its creation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: As you can see, this element manually handles data binding between Aurelia and
+    the Bootstrap widget. The patterns you see here, registering event handlers on
+    the widget, and synchronizing data back and forth, are pretty common when integrating
+    an external UI library in Aurelia.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'A group in the Aurelia community is doing some pretty interesting work in this
+    area. They develop what they call bridges, allowing us to use various UI frameworks
+    in Aurelia applications. They have already released such a bridge for Kendo UI,
+    and are working on bridges for Bootstrap and Materialize, among others. I suggest
+    you take a look at their work if you''re interested in the subject: [https://github.com/aurelia-ui-toolkits](https://github.com/aurelia-ui-toolkits).'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using the element
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'We can now easily replace the `input` bound to the contact''s birthday in the
+    `form` component with our new `bs-datepicker` element:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`src/contacts/components/form.html`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here, we simply replace the previous `input` element with a `bs-datepicker`
+    element. We bind the element's `date` property to the `birthday` property of `contact`,
+    decorating the binding with the `validate` binding behavior so the property is
+    still validated.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Since our new element''s `date` property expects a `Date` object and not a
+    string value, we need to change the `Contact` model class, so it parses its `birthday`
+    property into a `Date` instance when created from a JS object. Additionally, we
+    need to change the default value of `birthday` from an empty string to `null`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`src/contacts/models/contact.js`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: Now, the `birthday` property of `Contact` instances will be either `null` values
+    or a `Date` object.
+  prefs: []
+  type: TYPE_NORMAL
+- en: At this point, if you run the application, navigate to the creation or edition
+    component, and give the focus to the birthday `input`, the date picker should
+    show up. You should be able to navigate through the calendar and select a date.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Do not forget to load the `bs-datepicker` element, either as a global resource
+    in the `resources` feature's `configure` function, or in the `form` template using
+    a `require` statement.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Internationalizing the bs-datepicker element
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: At this point, our `bs-datepicker` element doesn't support internationalization.
+    In a typical real-world application, the format of the date displayed in the input,
+    and the calendar's texts and properties, such as the first day of the week, should
+    be localized.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Thankfully, the `bootstrap-datepicker` contains localization data as additional
+    JS modules. We simply need to include the modules for the locales we need in the
+    bundles.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Reconfiguring bundling of jQuery and Bootstrap
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'However, at the time of writing, the localized modules don''t support module-loading
+    mechanisms, but rely exclusively on the jQuery object being on the global scope.
+    As such, we need to change the way we use jQuery and the Bootstrap widgets by
+    loading them not as AMD modules but as global libraries, using the vendor bundle''s
+    `prepend` property:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`aurelia_project/aurelia.json`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here, we add jQuery, the Bootstrap widgets, the `bootstrap-datepicker` plugin,
+    and its French localization module to the prepended libraries of the bundle (the
+    English localization data being built into the plugin itself, so we don't need
+    to include it). This means that those libraries will simply be merged at the beginning
+    of the bundle, without being loaded as AMD modules, but using the global `window`
+    scope. Of course, this means the entries for jQuery, Bootstrap, and the date-picker
+    plugin must be removed from the `dependencies` array.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Since the prepended libraries can only be JS files, this also means we must
+    change the way we load the Bootstrap stylesheet:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`index.html`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: Of course, the `require` statements for `bootstrap.css` and `bootstrap-datepicker3.standalone.css`
+    must be respectively removed from the `src/app.html` and the `src/resources/elements/bs-datepicker.html`
+    templates.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Finally, the `import` statements for `bootstrap` and `bootstrap-datepicker`
+    must be removed from the `bs-tooltip.js` and the `bs-datepicker.js` files, since
+    jQuery, Bootstrap, and the date-picker plugin will be accessed from the global
+    scope.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Updating the element
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'To localize the date-picker widget, we simply need to set the `language` option:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`src/contacts/components/form.html`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This means we need to add this `locale` property to the view-model of `form`.
+    We also need to subscribe to the proper event, so we can update the property when
+    the current locale changes:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`src/contacts/components/form.js`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here, we start by importing the `I18N` class from the `aurelia-i18n` library
+    and the `EventAggregator` class from `aurelia-event-aggregator`. We then hint
+    to the DIC that they should both be injected into the view-model's constructor.
+  prefs: []
+  type: TYPE_NORMAL
+- en: When the component is data-bound, we initialize the `locale` property using
+    the `I18N` instance's `getLocale` method, and we subscribe to the `i18n:locale:changed`
+    event, so we can keep the `locale` property up-to-date.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Finally, when the component is unbound, we dispose of the event subscription.
+  prefs: []
+  type: TYPE_NORMAL
+- en: At this point, if you run the application and play around with the birthday
+    date picker while toggling the current locale back and forth between French and
+    English, the date format displayed in the `input`, and the calendar's texts and
+    setup should update accordingly.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using jQuery UI widgets
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The jQuery UI widget library is still pretty popular. Integrating those widgets
+    in an Aurelia application is pretty similar to what we just did with Bootstrap
+    widgets, although not as painless, as we'll see in the following section.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let's create a `tooltip` attribute using jQuery UI, so we can compare it with
+    Bootstrap's.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The following code snippets are excerpts from the `chapter-11/samples/using-jqueryui`
+    sample in the book's assets.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Installing the libraries
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'We first need to install both jQuery and jQuery UI by opening a console in
+    the project directory and running the following commands:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Next, we need to add those libraries to the vendor bundle. The simplest way
+    to do this is to put them in the `prepend` section:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`aurelia_project/aurelia.json`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Since CSS files cannot be globally loaded into the `prepend` section, let''s
+    load them into the `index.html` file:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`index.html`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: At this point, we can now create our attribute.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Creating a jq-tooltip attribute
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'At first, our new attribute will be pretty similar to the one using Bootstrap:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`src/resources/attributes/jq-tooltip.js`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: We start by defining the `options` that the jQuery UI `tooltip` widget supports,
+    so the attribute can use dynamic options and ignore those that are not supported
+    in this; the `jq-tooltip` attribute behaves exactly like the `bs-tooltip` attribute
+    we created in the previous section. Next, we hint to the DI container that the
+    DOM element hosting the attribute should be injected into the constructor.
+  prefs: []
+  type: TYPE_NORMAL
+- en: When the attribute is attached to the DOM, it retrieves the value bound to the
+    attribute instance for each supported property to build an `options` object. This
+    object is then passed to the `tooltip` initialization method, which is applied
+    to the element hosting the attribute.
+  prefs: []
+  type: TYPE_NORMAL
+- en: When the attribute is detached from the DOM, the widget's `destroy` method is
+    called on the element hosting the attribute.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'At this point, the attribute doesn''t support property changes. Since jQuery''s
+    `tooltip` widget offers an API to update options, this implementation won''t have
+    to destroy and recreate the widget to update a property like the `bs-tooltip`
+    attribute did:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`src/resources/attributes/jq-tooltip.js`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here, we simply add the `propertyChanged` callback method, which updates the
+    widget instance if the attribute is attached to the DOM and the updated property
+    is supported by the widget.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Now that our attribute is ready, let''s replace the **Remove** button''s `title`
+    attribute for a `jq-tooltip` custom attribute in the `list-editor` component:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`src/resources/elements/list-editor.html`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here, we simply put a `jq-tooltip` attribute on the proper `button` element.
+    We bind its `content` property to the proper translation, which is decorated with
+    the `t` binding behavior.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Do not forget to load the `jq-tooltip` attribute, either as a global resource
+    in the `resources` feature's `configure` function, or in the `list-editor` template
+    using a `require` statement.
+  prefs: []
+  type: TYPE_NORMAL
+- en: However, if you run the application and hover over the **Remove** button of
+    a `list-editor` element with your mouse, you'll see that the `tooltip` doesn't
+    show up.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This is caused by a long-known limitation; some in the community would say it's
+    a bug (and I would agree) in the `tooltip` widget, which forces the hosting element
+    to have a `title` attribute, even if it is not used.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'As such, let''s update the attribute and add a method to create an empty `title`
+    attribute if none exists on the hosting element:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`src/resources/attributes/jq-tooltip.js`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE21]'
+  prefs: []
+  type: TYPE_PRE
+- en: Now you can run the application and the `tooltip` should show up properly.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using SASS instead of CSS
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: '**SASS**, which stands for Syntactically Awesome Stylesheets, is the most mature,
+    stable, and powerful professional-grade CSS extension language in the world according
+    to their website. Whether this claim is true or not, it is one of the most popular,
+    and I can at least say that I use it a lot.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using SASS instead of CSS in an Aurelia application is pretty simple, at least
+    for CLI-based projects. The CLI already offers support for many CSS processors,
+    such as SASS, LESS, and Stylus.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s recreate our contact-management application using the CLI and, in the
+    creation process, enable the SASS processor:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Using SASS instead of CSS](img/image_00_001.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: You can select the default values for all the other questions.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Once the project has been created and the dependencies have been fetched, we
+    can move the following directories and files from our working copy of the application
+    to the newly created project:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`aurelia_project/environments`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`locales`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`src`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`index.html`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: We also need to copy the `dependencies` from the `package.json` file, and run
+    another `npm install` in order to fetch all application dependencies. Finally,
+    we need to copy the vendor-bundle configuration from the `aurelia_project/aurelia.json`
+    file.
+  prefs: []
+  type: TYPE_NORMAL
+- en: You can take a look at the `chapter-11/samples/using-sass` sample from the book's
+    assets as a reference.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Replacing CSS with SASS
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Let''s transform the CSS files in the application into SASS files, by replacing
+    the `.css` extension with the `.scss` extension:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`src/resources/elements/list-editor.scss`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE22]'
+  prefs: []
+  type: TYPE_PRE
+- en: Since the build tasks created by the CLI now include a SASS processor, every
+    `.scss` file in the `src` directory will be transformed into a `.css` file with
+    the same path, and will be included in the `app-bundle` under that path.
+  prefs: []
+  type: TYPE_NORMAL
+- en: For example, the `resources/elements/list-editor.scss` file will be transformed
+    into CSS, and the result will be bundled as `resources/elements/list-editor.css`
+    in the `app-bundle`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This means that the `require` statements must keep referring to stylesheets
+    using the `.css` extension:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`src/resources/elements/list-editor.html`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE23]'
+  prefs: []
+  type: TYPE_PRE
+- en: If you run the application at this point, everything should be styled as before.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Dragging and dropping with sortable
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Sortable ([https://github.com/RubaXa/Sortable](https://github.com/RubaXa/Sortable))
+    is a well-known library for drag and drop. Its simple yet powerful API makes its
+    integration very easy.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let's use it in our contact-management application to allow users to reorder
+    the items for `list-editor` elements using drag and drop.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Installing the library
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'First, we need to install the library by opening a console in the project directory
+    and running the following command:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE24]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Next, we need to add it to the vendor bundle:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`aurelia_project/aurelia.json`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE25]'
+  prefs: []
+  type: TYPE_PRE
+- en: At this point, we can start using the library in our application.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Adding drag and drop to list-editor
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Let''s first add a handle to list items. This handle will be the area where
+    the users will be able to drag items up and down the list. Additionally, we need
+    to add a `div` element, which will act as the container for the sortable items:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`src/resources/elements/list-editor.html`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE26]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here, we start by assigning a reference on the `div` element containing the
+    list items to the view-model's `container` property. This `container` will be
+    required by the `sortable` API to enable drag and drop on its children. Next,
+    we remove the `col-sm-offset-1` CSS class from the label column, and we add a
+    sized-1 column, using Bootstrap's `col-sm-1` CSS class containing a `bars` Font
+    Awesome icon and acting as a `sort-handle`, using the CSS class of the same name.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s also add a CSS rule to change the drag handle''s mouse cursor:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`src/resources/elements/list-editor.css`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE27]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We can now use `sortable` to add drag and drop support:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`src/resources/elements/list-editor.js`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE28]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here, we start by importing the `sortable` API. Then, when the element is attached
+    to the DOM, we create a `sortable` instance on the `container` items that have
+    the `le-item` CSS class. We specify to `sortable` that the item's child element
+    that has the `sort-handle` CSS class should be used as the drag handle. Finally,
+    when an item is dropped at a different position in the list, the `onUpdate` callback
+    is triggered, in which we remove the dropped item from its previous position in
+    the `items` array and then insert it back at its new position.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We need to use `splice` to remove then add the moved items, because Aurelia
+    is unable to observe the array's index setter. It can only react to an array's
+    changes by overriding the methods of `Array.prototype`, such as `splice`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Additionally, we need to remove the `animated` CSS class from the items before
+    moving them, so the CSS rules triggering the animations won't be matched. We then
+    add it back using `setTimeout`, so it is only added once the templating engine
+    is done removing the old view and adding the new one. This way, the animations
+    that play when removing or adding items won't play when dragging and dropping
+    items, which would look weird.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Finally, when the `list-editor` is detached from the DOM, we call the `destroy`
+    method on the `sortable` instance, in order to prevent memory leaks.
+  prefs: []
+  type: TYPE_NORMAL
+- en: At this point, you can run the application, reorder the items for one of a contact's
+    list properties, and save the form. In the details view, the items should appear
+    in the new order in which you put them.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Drawing graphs with D3
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Presenting data as a graph is yet another common need in modern applications.
+    When it comes to the Web, **D3.js** is a well-known library that offers a very
+    powerful API to display data in the DOM.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the following section, we'll add a tree view to our contact-management application,
+    which will display the contacts grouped by address parts. Taking all the addresses
+    for all contacts, the first level of nodes will be the countries, then each country
+    will have its states as children, then each its cities, and so on.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The tree view we will build in this section is only a simple, poor example of
+    what can be achieved with D3\. Go to [https://d3js.org/](https://d3js.org/) and
+    browse through the hundreds of samples to see for yourself the power of this library.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Installing the library
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Let''s first install the library by opening a console in the project directory
+    and running the following command:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE29]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'As usual, we need to add it to the vendor bundle:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`aurelia_project/aurelia.json`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE30]'
+  prefs: []
+  type: TYPE_PRE
+- en: At this point, D3 is ready to be used.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Prepping the application
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Before creating the tree itself, let's start by prepping the application around
+    it. We'll add a `route` component that will load the contacts using the gateway,
+    inside which we'll display the tree. We'll also add a `route` for this component
+    in the contacts `main`, then add links allowing navigation back and forth between
+    the list and the tree.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s start with the `route`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`src/contacts/main.js`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE31]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here, we simply add a `route` named `contacts-by-address` matching the `by-address`
+    path and leading to the `by-address` component, which we'll create in a minute.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Next, let''s add to the list component a link leading to the yet-nonexistent
+    tree component:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`src/contacts/components/list.html`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE32]'
+  prefs: []
+  type: TYPE_PRE
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: You probably noticed that the `title` property of the new `route` and the text
+    of the new link both use new translations, the addition of which I leave as an
+    exercise for the reader. As always, this chapter's sample application can be used
+    as a reference.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Finally, we'll create the `by-address` component. In order to keep things as
+    decoupled as possible, we'll isolate the D3-related code in a custom element named
+    `contact-address-tree`. The `by-address` component's sole responsibility will
+    be to connect this custom element with the rest of the application.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s start with the view-model:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`src/contacts/components/by-address.js`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE33]'
+  prefs: []
+  type: TYPE_PRE
+- en: This view-model is pretty straightforward. When activated, it uses the injected
+    gateway to retrieve the full list of contacts. It also exposes a method that triggers
+    navigation to a given contact's details component. This method will be called
+    when clicking on a contact node in the tree.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The template is pretty simple, as you can imagine:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`src/contacts/components/by-address.html`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE34]'
+  prefs: []
+  type: TYPE_PRE
+- en: This template simply declares a `contact-address-tree` element, binding the
+    loaded `contacts`, and calling `navigateToDetails` when a contact node is clicked.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The CSS file simply sets the size of the `contact-address-tree` element:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`src/contacts/components/by-address.css`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE35]'
+  prefs: []
+  type: TYPE_PRE
+- en: Creating the contact-address-tree custom element
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Now that everything is ready to use our new element, let's create it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Since we're adding more contact-specialized custom elements, I suggest we create
+    a new `elements` directory in the `contacts` feature, move the contact `form`
+    to it, and create those new elements in it. This chapter's completed application
+    sample can be used as a reference.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We''ll start by laying out some CSS rules, which will style various tree parts,
+    such as branch nodes, leaf nodes, and links:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`src/contacts/elements/address-tree.css`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE36]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Since the rendering of the tree view will be handled by the D3 API, the custom
+    element doesn''t need a template. As such, it will be declared with the `noView`
+    decorator, to which the path to the CSS file will be passed, so it is loaded as
+    a resource:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`src/contacts/elements/address-tree.js`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE37]'
+  prefs: []
+  type: TYPE_PRE
+- en: Additionally, the view-model's constructor will be injected into the DOM element
+    itself, so the D3 API can use it as a viewport to render the tree. It also exposes
+    a `contacts` and a `click` bindable property.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This is for the Aurelia part. Now, let''s add an `attached` method, which will
+    render the tree inside the element. The code inside this method will be completely
+    ignorant of Aurelia, and will simply work with the `d3` API and the DOM `element`
+    itself:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`src/contacts/elements/address-tree.js`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE38]'
+  prefs: []
+  type: TYPE_PRE
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: This code is a simplified adaptation of Mike Bostock's sample, found at [https://bl.ocks.org/mbostock/4339083](https://bl.ocks.org/mbostock/4339083).
+  prefs: []
+  type: TYPE_NORMAL
+- en: It is way beyond the scope of this book to explain in detail how the `d3` API
+    works. However, the inline comments in the previous code snippet can give you
+    a good idea of how it works.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Chances are that you noticed some missing pieces: the `createAddressTree` and
+    the `onNodeClicked` methods don''t exist yet.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The latter is pretty simple:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`src/contacts/elements/address-tree.js`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE39]'
+  prefs: []
+  type: TYPE_PRE
+- en: This method simply makes sure that the clicked node is a contact node, and that
+    the `click` property was properly bound before calling it with the clicked `contact`
+    object. This will execute the expression bound using the `.call` command to the
+    `click` property, passing to it the node's contact as a `contact` argument.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The former is a little more complicated. Its job is to transform a list of
+    contacts into a tree data structure that will act as the data source for the `d3`
+    API:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`src/contacts/elements/address-tree.js`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE40]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here, the `createAddressTree` method starts by creating a root node with an
+    empty list of `children`. It then loops over every contact's `addresses` and,
+    for each of them, creates a path of nodes for the address, starting from the country
+    and drilling down to the street number. Nodes for the whole path or for a part
+    of it that already exists are not created again but simply retrieved. Finally,
+    a leaf node for the contact itself is appended to the last node in the path, which
+    is the one for the street number.
+  prefs: []
+  type: TYPE_NORMAL
+- en: At this point, if you run the application and go to the address tree view, you
+    should see the contacts show up, laid out in a tree.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using Polymer components
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: '**Polymer** is a popular library, which is heavily biased towards web components.
+    Its community offers a wide range of components, among them a `google-map` element that
+    encapsulates the Google Maps API in order to display a map declaratively in HTML.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Aurelia offers an integration library named `aurelia-polymer`, which allows
+    the use of Polymer components inside an Aurelia application. In the following
+    section, we'll integrate it into our contact-management application. In the details
+    component, we'll display a small map showing the contact's address.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Installing the libraries
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Polymer and its libraries are typically installed using **Bower**. Bower and
+    NPM can be used side by side without any problem, so let''s first install it,
+    if you don''t already have it on your development environment, by opening a console
+    and running the following command:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE41]'
+  prefs: []
+  type: TYPE_PRE
+- en: Bower is yet another package manager for web libraries, which can be found at
+    [https://bower.io/](https://bower.io/).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Once this is done, let''s create Bower''s project file:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`bower.json`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE42]'
+  prefs: []
+  type: TYPE_PRE
+- en: This file is pretty similar to `package.json`. It describes the project's dependencies
+    managed by Bower. Here, we include Polymer and the Google Maps components.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We also include `webcomponentjs`, which is a polyfill for various web components'
+    APIs, such as the Custom Elements API and the HTML Imports API. Since those two
+    APIs are required by Polymer, this polyfill is required if the browsers you target
+    don't support those natively.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'You can check if your favorite browser supports the required APIs here: [http://caniuse.com/#feat=custom-elementsv1](http://caniuse.com/#feat=custom-elementsv1)
+    and [http://caniuse.com/#feat=imports](http://caniuse.com/#feat=imports).'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Just like NPM, the packages listed in the project file must be installed. As
+    such, open a console in the project directory and run the following command:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE43]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Once this is done, the last thing we need to install is the bridge between
+    Polymer and Aurelia, which is done by opening a console in the project directory
+    and running the following command:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE44]'
+  prefs: []
+  type: TYPE_PRE
+- en: Configuring the application
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Now that everything is installed, we need to configure our application so it
+    can load Polymer components.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s start by adding the `aurelia-polymer` library to the vendor bundle:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`aurelia_project/aurelia.json`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE45]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Of course, with this library being an Aurelia plugin, we need to load it into
+    our application''s main `configure` function:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`src/main.js`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE46]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'As mentioned earlier, Polymer relies on HTML Imports. At the time of writing,
+    CLI-based Aurelia applications don''t support using HTML Imports to load views.
+    As such, we won''t be able to load components in the templates that need them.
+    We have no choice but to load them in the `index.html` file:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`index.html`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE47]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here, we first load the Web Components API polyfill. This line can be removed
+    if you don't need the polyfill. Next, we import Polymer and the `google-map` components.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In a production-ready application, importing Polymer and each component separately
+    is sub-optimal. It is strongly suggested to vulcanize the components into a single
+    bundle, which can be loaded in the `index.html` file: [https://github.com/Polymer/vulcanize](https://github.com/Polymer/vulcanize).'
+  prefs: []
+  type: TYPE_NORMAL
+- en: At this point, integration with Polymer is up and running. The `google-map`
+    element is ready to be used.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Displaying a Google map
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Let''s start by making sure everything works by creating a custom element that
+    we''ll use to display a map with a single address pinned on it:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`src/contacts/elements/address-map.html`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE48]'
+  prefs: []
+  type: TYPE_PRE
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The `google-map` Polymer component loads the Google Maps API behind the scenes.
+    In order for it to load correctly, you'll need a Google Maps API key. You can
+    create one by following the instructions found at [https://developers.google.com/maps/documentation/javascript/get-api-key#key](https://developers.google.com/maps/documentation/javascript/get-api-key#key).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Here, we first add a button that toggles the value of the `isMapVisible` property.
+    Next, we add a `google-map` Polymer element. Its `api-key` attribute should be
+    set to your own Google Maps API key.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'As for the view-model, it will be almost empty for now:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`src/contacts/elements/address-map.js`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE49]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Finally, we need to add this `address-map` element to the contact''s `details`
+    component:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`src/contacts/components/details.html`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE50]'
+  prefs: []
+  type: TYPE_PRE
+- en: At this point, if you run the application and navigate to a contact's details,
+    you should see a button beneath every address. If you click on it, a map should
+    show up.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Geocoding addresses
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'In order to display the address as a marker on the map, we need to get the
+    geographical coordinates of the address. As such, we''ll create a new service
+    named `Geocoder`, which will use **Nominatim**, a search service based on `OpenStreetMap`
+    data ([http://www.openstreetmap.org/](http://www.openstreetmap.org/)), to find
+    the latitude and longitude of a given address:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`src/contacts/services/geocoder.js`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE51]'
+  prefs: []
+  type: TYPE_PRE
+- en: This class starts by creating an `HttpClient` instance, using Nominatim's URL
+    and the standard configuration. It then exposes a `search` method, which expects
+    an `Address` object as a parameter to send a request to the Nominatim endpoint
+    and return the resulting `Promise`. This `Promise` is either resolved with `null`
+    if the address is not found, or with an object containing the matching position's
+    `latitude` and `longitude`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Displaying a marker
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Now that we can geocode the address, let''s update our `address-map` element
+    to display a marker for it:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`src/contacts/elements/address-map.js`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE52]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here, we start by injecting a `Geocoder` instance into the view-model. We also
+    add a bindable `address` property. When the element is attached to the DOM, we
+    geocode the address, and if its coordinates are found, we set the value of the
+    `latitude` and `longitude` properties. We also set `isGeocoded` to `true`. This
+    flag is initially set to `false`, and will be used to disable the toggle button
+    if the address can't be localized. If the address can't be found, we hide the
+    map, disable the toggle button, and reset `latitude` and `longitude` to `null`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We also geocode each time the `address` changes after the element has been attached
+    to the DOM, to keep the `latitude` and `longitude` properties up-to-date.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'As for the template, we don''t need to change much:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`src/contacts/elements/address-map.html`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE53]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here, we start by disabling the toggle button when `isGeocoded` is `false`.
+    Next, we bind the `google-map` element's `latitude` and `longitude`, and set its
+    `zoom` to `15` so it is centered on the address's location.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Finally, we add a `google-map-marker` element inside the `google-map` element.
+    We also bind this marker's `latitude` and `longitude`, and set its `open` property
+    to `true` so its info window is opened upon rendering. Inside the marker, we display
+    the full address as text, which will be rendered inside the info window.
+  prefs: []
+  type: TYPE_NORMAL
+- en: You may wonder where this `google-map-marker` element comes from. In fact, the
+    HTML Imports mechanism allows the loading of multiple components from a single
+    file. When we imported the `bower_components/google-map/google-map.html` file
+    in `index.html`, many components were registered to Polymer, among which were
+    the map and the marker.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If you run the application at this point, navigate to a contact's details, and
+    click on an address's **View map** button, a map should show up with a marker
+    at the proper location and an info window displaying the full address.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'The integration of a UI library into an Aurelia application almost always follows
+    the same process: you create a custom element or attribute around it. By leveraging
+    Aurelia''s two-way data binding, it is not too complicated most of the time.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: This is particularly true for libraries that follow good practices and community
+    standards such as supporting common module loaders, exposing data-change events,
+    and having a destructor in its public API. Libraries that are older, or that do
+    not follow those standards, can be more painful to integrate. Aurelia, for its
+    part, makes it as easy as it can.
+  prefs: []
+  type: TYPE_NORMAL

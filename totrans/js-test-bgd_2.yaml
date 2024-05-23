@@ -1,0 +1,1430 @@
+- en: Chapter 2. Ad Hoc Testing and Debugging in JavaScript
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this chapter, we'll formally move into testing the JavaScript programs that
+    we actually create. But before I start, I'd like to brief you on what you can
+    expect in this chapter. In this chapter, you will learn about two major ideas
+    the first idea being how different browsers can affect JavaScript testing, and
+    the second major idea being how you can test your JavaScript program by using
+    the alert(). You will also learn how to access the values on a form, manipulate
+    the values and finally output the values in a meaningful manner.
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: You will also see many of the techniques introduced in the previous chapter
+    being used extensively.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To be more specific, we shall learn about the following topics:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The purpose of ad hoc testing
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: What happens when your browser encounters an error in JavaScript
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Browser differences and the need to test in multiple browsers
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Common browser messages and what they mean
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to find out if you are getting the right output and putting the right values
+    in the correct places in your code
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to access values on a form and how to access other parts of the web page
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Tips on what to do when your JavaScript program does not give you the expected
+    result
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: What to do if the script does not run
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to perform a visual inspection
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to use the `alert()` to test your JavaScript program
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Commenting out parts of your code in order to simplify testing
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Why ad hoc testing isn't always enough
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: So before I move on to the main topics of this chapter, I'll briefly mention
+    the two basic ideas that you should understand before moving on to the rest of
+    the chapter.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The purpose of ad hoc testing—getting the script to run
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The first basic idea concerns the purpose of ad hoc testing. The main purpose
+    of ad hoc testing is to quickly get your code up and running and then see if there
+    are any errors with your code. As mentioned previously, the three different types
+    of JavaScript errors entail loading, runtime, and logic errors.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The main advantage of ad hoc testing is that it allows you to test your JavaScript
+    program without bogging you down. It is meant for those who want to save time,
+    especially when testing small pieces of code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: What happens when the browser encounters an error in JavaScript
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Now it's time for the second basic idea. In the previous chapter, I have briefly
+    described how a web page is loaded in to the browser and then rendered in the
+    web browser, waiting for interaction with the user. I have also mentioned that,
+    in general, JavaScript fails silently; it does not explicitly tell or show you
+    what errors (if any) have occurred. This happens when your browser does not have
+    any form of debugging turned on.
+  prefs: []
+  type: TYPE_NORMAL
+- en: However, modern web browsers feature built-in ways for the browser to tell the
+    user that some form of errors have occurred on the web page. This happens when
+    you explicitly turn on or install the debugging tools for the web browser. For
+    some of the browsers, you will also need to explicitly turn on the error console
+    in order to find out what error has occurred.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In case you are wondering what you need to do in order to make use of these
+    built-in features, here are some simple instructions to help you to get started:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: For Firefox—turn on your web browser and go to **Tools**. Click on **Error Console**.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: For Internet Explorer—you need to go to **Tools | Internet Options | Advanced**.
+    Scroll down to **Browsing** and check **Display a notification about every script
+    error**.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: You now understand the basic ideas about why we perform ad hoc testing. We will
+    now move on to a more complex topic—how browser differences can affect your JavaScript
+    program.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Browser differences and the need to test in multiple browsers
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In general, browsers have different features. The one difference that matters
+    the most to us, at least in this book, is the JavaScript engine used by different
+    browsers. Different JavaScript engines process JavaScript in different manners.
+    This has important implications for us. Certain JavaScript functions or methods
+    that are supported by one web browser may not be supported by another.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The main essence of JavaScript is that it provides behavior to the web page
+    through DOM manipulation; different browsers have different levels of support
+    for DOM.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We will not attempt to go into a deep discussion about what is supported and
+    what is not by various browsers. Instead, we''ll point you to this website: [http://www.quirksmode.org/compatibility.html](http://www.quirksmode.org/compatibility.html).'
+  prefs: []
+  type: TYPE_NORMAL
+- en: This link provides a summary of the various incompatibilities of various web
+    browsers according to different selectors. For our purpose here we should be more
+    focused on the DOM selectors since we are concerned about JavaScript. Feel free
+    to browse through the website for the details. But for now, the main idea that
+    you need to understand is that browser differences result in incompatibilities
+    and hence we need to test for browser compatibility.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Most beginner JavaScript programers would often want to know how they can find
+    out the browser that their visitors are using. After all, if you can find out
+    what browser your visitors are using, you'll be able to create compatible JavaScript
+    code. That's true to a large extent; so now we'll start by learning how we can
+    check the visitor's browser.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Time for action—checking for features and sniffing browsers
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this section, we would like to introduce you to the navigator object. The
+    navigator object is a built-in object that provides you with information regarding
+    the visitor's browser. What we are trying to do here is to show you how the navigator
+    object works, and how you can make programing decisions based on the browser information.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The source code for this example can be found in the source code folder, `Chapter
+    2`, with a file name of `browser-testing-sample-1.html` and `browser-testing-sample-2.html`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Start your text editor if you have not already done so, and then enter the
+    following code in your text editor:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Here''s what''s happening in the previous code: we defined a variable `browserType`.
+    After which we used a `for` loop and defined another variable, `propertyName`.'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: The line that says:`for( var propertyName in navigator )` means that we are
+    trying to get all of the properties in the `navigator` object.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: After doing this, we append the `propertyName` and the information into the
+    `browserType` variable. And finally, we output the information in an alert box.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Now, load the file in to your web browser and you should see a pop-up window
+    containing information about your web browser.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Notice that the alert box contains various types of information about your web
+    browser. You can also access specific property of the browser for your own use.
+    This is what we are going to do next.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Now that you have learned how to use the navigator object, it''s time to see
+    how we can make use of this information in order to perform programing decisions:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Create another new document, and enter the following code into it:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: In the previous sample code, we have defined the variable `typeOfBrowser`, which
+    is used to decide which to execute. An easy way would be to use the `if else`
+    statement to choose the of code to execute, based on the browser name.
+  prefs: []
+  type: TYPE_NORMAL
+- en: What just happened?
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In the preceding examples, you have seen how to use the navigator object to
+    perform "browser sniffing", and based on the given information, perform appropriate
+    actions.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Apart from using the navigator object, you can also test browser differences
+    based on the browser's capabilities. This means that you can test whether the
+    user's browser has a certain feature or not. This technique is also known as feature
+    testing. Now, we'll briefly see how you can perform capability testing.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Testing browser differences via capability testing
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Capability testing is an important and powerful way to cope with browser incompatibilities.
+    For instance, you might want to use a certain function that might not be supported
+    on different browsers. You can include a test to see if this function is supported
+    or not. Then, based on this information, you can execute the appropriate code
+    for your visitor.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Time for action—capability testing for different browsers
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this section, we'll briefly introduce a simple-to-use method that can help
+    you to quickly test for a certain feature. The method that we are going to use
+    is the `.hasFeature()` method. Now, we'll dive right in and see it in action.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The source code for this example can be found in the `source code` folder, `Chapter
+    2`, with a file name of `browser-testing-by-feature-2.html` and `browser-testing-by-feature.html`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Start your text editor and then enter the following code in your text editor:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'To make things clearer, I''ve defined variables for each of the features and
+    the version number. In general, the usage of `hasFeature` is as follows:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Now load the file in to your web browser and you should see various types of
+    text being created dynamically on the screen.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Similarly, you can use the information that you have derived from the user's
+    browser to perform various decisions in a similar manner as to what you have seen
+    in the previous example.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: So, for simplicity and explanation sake, here's how you can perform programing
+    decisions using the `.hasFeature()`.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Create another new document, and enter the following code into it:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: The sample code above is self-explanatory as it is similar to the example seen
+    in `browser-testing-sample-2.html`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: What just happened?
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The previous example is a simple extension of what you can do to test for browser
+    differences. It is similar to the first example, which "sniffs" for the browser
+    information explicitly, while the method using `.hasFeature()` is based on capabilities.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There is no right or wrong way to test for browser differences. However, a general
+    practice is to use `.hasFeature()` to test for program functionality. That is
+    to say that we often use `.hasFeature()` in order to ensure that our JavaScript
+    functionality will be available in different browsers.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The previous example shows some of the features that you can test for by using
+    `.hasFeature()`. Following is a list of the remaining features that you can test
+    for by using `.hasFeature():`
+  prefs: []
+  type: TYPE_NORMAL
+- en: Events
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: UI Events
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Mouse Events
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: HTML Events
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Mutation Events
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Range
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Traversal
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Views
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Now that you have some understanding of how you can test for browser differences,
+    it is time for the next topic—getting the output and putting values in the right
+    places.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Are you getting the correct output and putting values in the correct places?
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this section, we'll learn how to make sure that we are getting the output
+    and putting the correct values in the correct places. This means that we need
+    to understand how to use JavaScript with a HTML form.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Accessing the values on a form
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In general, "getting" values would generally mean that a user would input some
+    values into a form (in a HTML document of course), and then our program "gets"
+    the input from the web form. Also, these values may or may not be manipulated
+    by other functions; the initial user input may be passed as arguments to other
+    functions and then manipulated.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This can be achieved by using JavaScript's built-in utilities; JavaScript provides
+    a few ways for you to access the form values so that you can use these values
+    later on. In general, JavaScript will **"get" the value from a form** `onsubmit`
+    event.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Time for action—accessing values from a form
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In the following example, we'll start off with a simple HTML form. You will
+    learn about various techniques for accessing different form elements. What happens
+    here is that you'll see how we first submit a form by using the `onsubmit` event.
+    The `onsubmit` event allows us to send the form to a JavaScript function, which
+    then helps us to extract the values from various form element types. So for this
+    example, I need you to relax and understand the techniques mentioned earlier.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The source code for this example is found in `Chapter 2` of the `source code`
+    folder, with a name of `accessing-values-from-form.html`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Once again, enter the following code into your newly-created document in your
+    favorite editor:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: You should notice that there are various input types, such as `text`, `textarea`,
+    `checkbox`, `select`, and `radio`.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Save the form and then load it in to your web browser. You should see a simple
+    HTML form on your screen.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Go on and enter values for the fields, and then click on **Submit form**. You
+    should see a series of alert windows, which repeat the values that you have entered.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: What just happened?
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In the simple form example described earlier, you submitted a form via a JavaScript
+    event `onsubmit`. The `onsubmit` event calls a JavaScript function `checkValues()`
+    which then helps us to access the values from different form elements.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In general, the syntax for accessing form elements is as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: where `formName` is the name of the form, and `elementName` refers to the name
+    of the element.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'As in the **previous example, the form name is** `testingForm`, as can be seen
+    in`<form name="testingForm" onsubmit="return checkValues()">`, and the input text
+    element has the name `enterText`, as can be seen in`<input type="text" name="enterText"
+    />`. Therefore, based on this code snippet, we''ll access the form values by doing
+    the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`document.testingForm.enterText.value`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: We can then assign this to a variable that can be saved for later use, as shown
+    in the code example.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The previous example should be simple to grasp. But in this short example,
+    I''ve also introduced a few more useful methods. Consider the following code snippet
+    which is found in the example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: Notice that in the highlighted line I've made use of the `length` property;
+    `document.testingForm.radioType.length` means that I am calculating how many elements
+    by the name of `radioType` do I have in the form named `testingForm`. This property
+    returns an integer that can then be used in loops such as the `for` loop, as seen
+    in the previous code snippet. You can then loop through form elements and check
+    for their values by using the method mentioned earlier.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Another **important technique that you can use can be found in the following
+    code snippet**:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: What happens in **the highlighted line is that** `document.testingForm.clickCheckBox.checked`
+    returns a `true` or `false`. You can use this technique to check if the form element
+    you are referring to has input or not. You can than make use of this information
+    to perform decisions.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Another technique for accessing form values
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'As you may have noticed, we are accessing the form elements by making use of
+    the `name` attribute. We would most probably (and most likely) make use of the
+    `name` attribute to access the form elements, as it is easier to refer to those
+    elements. But nonetheless, here''s an alternate method that you can quickly look
+    though:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Instead of writing
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'You can write this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: where you are making use of the `forms` object, and `elementName` refers to
+    the name of the input.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'An example for the preceding code sample would be:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`document.forms[0].enterText.value`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Notice that the `forms` object is appended with `[0]`. This means that the `forms`
+    object are treated similarly to an array; `forms[0]` refers to the first form
+    in the web page, and so on.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now that you have understood the basics of accessing the values for a form,
+    you will learn how to make sure that you are getting the correct values in the
+    correct places in the next section.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Accessing other parts of the web page
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In this section, you will learn how to access other parts of the web page. In
+    general, you have already learned the building block for accessing different parts
+    of the webpage by making use of `getElementById, getElementsByTag`, and `getElementsByTagName`.
+    Now you will make further use of these, along with the newly-learned techniques
+    of accessing values from a form.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Time for action—getting the correct values in the correct places
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'In this example, you will see a general integration of the techniques that
+    you have learned so far. You will learn how to access form values, manipulate
+    them, perform operations on them, and finally, put the new output on other parts
+    of the webpage. To help you better visualize what I am about to describe, following
+    is a screenshot of the completed example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Time for action—getting the correct values in the correct places](img/0004_02_01.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: The example **that you are about to use is a simple JavaScript program that
+    checks to see if** you can retire **at the age that you want to. It will request
+    some basic information from you**. Based on the information provided, it will
+    determine if you can retire at that time, **based on** the amount of money you
+    would want to have at **the time of retirement**.
+  prefs: []
+  type: TYPE_NORMAL
+- en: You will be building a form (2 forms in fact, loosely speaking), where the user
+    will be required to enter basic information into the first form (on the left),
+    and after entering the required information in each field, there will be another
+    input field appearing dynamically on the right of the field ( in the **middle
+    of the web page**), **if the input is correct**.
+  prefs: []
+  type: TYPE_NORMAL
+- en: As you enter the information, a JavaScript event will fire off a JavaScript
+    function that checks for the correctness of the input. If it is correct, there
+    will be a new field created on the right-hand side of the field that has just
+    accepted the input, and the field on the left will be disabled.
+  prefs: []
+  type: TYPE_NORMAL
+- en: After the **fields on the left are filled correctly, you will notice a complete
+    form is being** filled out in the middle of the page. After you click on **Submit**,
+    the code will perform the calculations and determine whether you can retire at
+    the age you have specified, based on the amount of money that you require.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The basic requirements for this example are as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Correct values must be entered. For instance, if the field requires you to enter
+    your age, the field must only accept integers and no characters should be allowed.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: If the fields require a text input, such as your name, no integers will be allowed.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The completed source code for this example can be found in the source code folder
+    for `Chapter 2`, with a file name of `getting-values-in-right-places.html`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'So now, let us get started with this example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let us start by building the basic interface for this example. So, enter the
+    following code (the HTML and style) in to your text editor.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: You might want to save this file and load it in your browser to see if you are
+    getting the same output as the previous screenshot that you have seen.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Notice that in the HTML form above, there is JavaScript event `onblur. onblur`
+    is a JavaScript event that occurs whenever an element loses focus. So you should
+    see that all input elements have an `onblur`, which fires off the `submitValues()`
+    function.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: You should also see that there is a `this` as an argument for `submitValues().this`
+    is one of the most powerful JavaScript keywords, and refers to the corresponding
+    element it is being referred to. An example would be `<input type="text" name="enterText"
+    id="nameOfPerson" onblur="submitValues(this)" size="50" value="Enter your name"/>`.
+    In this code snippet, `submitValues(this)` will submit the HTML form element object
+    by the name of `enterText`.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Now, it's time for the JavaScript programing. What happened, as explained previously,
+    is that on the JavaScript event `onblur`, it will submit the HTML form element
+    object to the function `submitValues()`. So, we'll start with this function first.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Now, enter the following code between the `<script type="javascript/text">`
+    tags:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: I've commented on what the code is doing, but I'll focus on some of the techniques
+    used in the previous function.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'What we are trying to do here is to check the correctness of the input. For
+    this example, we only accept either pure numbers or pure characters (including
+    spaces). This is what the following code snippet is doing:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Here we are making use of regular expressions to check for the correctness of
+    the input. `/^\d+$/` and `/^[a-zA-Z\s]*$/` are regular expressions, where both
+    are appended with the `test` method. The `test` method tests for the value of
+    the HTML form object's value. For instance, `var digits = /^\d+$/.test(elementObj.value)`
+    will return `true` if the value is indeed digits, and `false` if it is not. Similarly,
+    `var characters = /^[a-zA-Z\s]*$/.test(elementObj.value)` will return `true` if
+    it is characters (which includes spaces) and `false` if it is otherwise.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: In case you wish to learn more about using regular expressions, you can refer
+    to [http://www.w3schools.com/jsref/jsref_obj_regexp.asp](http://www.w3schools.com/jsref/jsref_obj_regexp.asp)
+    and see how it works.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: The previous information will be used during the decision-making process in
+    `if-else` statements. The `if-else` statements check for the name of the HTML
+    object; `enterNumber` expects an integer input. If it is not `enterNumber`, it
+    is expecting a character input.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: You should notice that if there are no problems with the input, we will disable
+    the input element and pass the `value` and `id` of the HTML form object to a function
+    `addResponseElement()`, after which we will `return true`, which signifies the
+    successful execution of the code and the submission of the form values.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'So now, we''ll move on to the `addResponseElement()`function:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Continuing with the current document, append the following code below `submitValues()`
+    function:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: What `addResponseElement()` does is that it attempts to dynamically add the
+    input element on the form to the right of original input form. Here, you should
+    find `var container = document.getElementById('formSubmit')` familiar. It looks
+    for an HTML element with ID of formSubmit. After this, we will append HTML into
+    this form, through the `innerHTML` method. `container.innerHTML += "<input type=\"text\"
+    value=\"" +messageValue+ "\"name=\""+idName+"\" /><br>";` attempts to append the
+    input that is wrapped between the outermost inverted commas into `<form>` tags.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: You should also notice `var totalInputElements = document.testForm.length`;.
+    What this line of code does is determine the total number of input elements that
+    `testForm` has, by using the `length` property. We are making use of this information
+    to determine if we are on the last input field of the form, so that we can append
+    a Submit button on the other form.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Next, we will create the function, which is called after the second form, which
+    has a name of `testFormResponse`, is submitted.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Continuing with the **current document, append the following code below** `addResponseElement()`
+    function:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: What happens in this function is pretty straightforward. The various form values
+    are assigned to the various variables. Then we begin some simple calculations
+    to see if the user will have enough money for retirement. You may refer to the
+    comments in the function to understand the logic of the calculations.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: In general, we'll call the function `buildFinalResponse()`, irrespective of
+    whether the user can retire on time, and with the required amount of money. So
+    here's the `buildFinalResponse()`.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Continuing with the current document, append the following code below `checkForm
+    ()` function:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: The function `buildFinalResponse()` is similar to the `addResponseElement()`
+    function. **It simply looks for the required HTML element, and appends the required**
+    HTML to the element.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Here, **you can clearly see the JavaScript functions, methods, and techniques
+    that you have** learnt so **far in this book**.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Save the file. **You can try playing with the example and see how it works for
+    you**.
+  prefs: []
+  type: TYPE_NORMAL
+- en: What just happened?
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In the previous example, you saw how to access the values of the form, perform
+    operations on the input, and then place the output on various parts of the web
+    page. You may have noticed that we made extensive use of `getElementById`. We
+    have also made use of the `form` object and the `value` method in order to access
+    the value of various elements in the form. Then, by making use of `getElementById`,
+    we looked for the required HTML element and appended the output into the HTML
+    element.
+  prefs: []
+  type: TYPE_NORMAL
+- en: But, at this point of time, you may be wondering what you should do if you happen
+    to make mistakes in the program. This is what we'll be focusing on in the next
+    section.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Does the script give the expected result?
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: My opinion is that before we can begin any meaningful discussion, we must understand
+    what is meant by "**expected result**".
+  prefs: []
+  type: TYPE_NORMAL
+- en: '"Expected result(s)" **can have several meanings, at least for the purpose
+    of this book. For** instance, as mentioned in the **previous chapter, the output
+    should be correct for each input**; as this refers to the eventual output. There
+    is another output, which takes the form of "**visual output**". For instance,
+    for every user interaction or event, our web applications would often provide
+    a form of visual cue to allow the user to know that something is happening. In
+    this case, our visual clues helping in the way that we intended would be deemed
+    as an "**expected result**".'
+  prefs: []
+  type: TYPE_NORMAL
+- en: A simple tip, to check if the script gives you the expected results, is to use
+    simple input and perform the calculations yourself. Make sure that your calculations
+    are correct and test your program.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the later part of this chapter, we'll discuss two relevant techniques in
+    detail. But first, let us see what actions we can take if our script does not
+    run.
+  prefs: []
+  type: TYPE_NORMAL
+- en: What to do if the script doesn't run
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: If the script doesn't run, it is very likely that loading or runtime errors
+    have occurred, depending on the way that your program is coded. For example, in
+    the previous program that you have just created, you know that the program is
+    not running if there is no response after you have entered the first input field
+    and the focus is no longer on the first input field.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this case, there are a few possibilities (all of which fall under the three
+    basic forms of JavaScript errors as mentioned in the previous chapter). Firstly,
+    there might be an error in the syntax of your input field for the JavaScript event,
+    or, there could be a serious error in the function that is called by the JavaScript
+    event. If not, it could be a logic error.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Whatever the errors may be, it is often difficult to guess what and where the
+    errors are. Therefore, I'll introduce three important techniques for testing out
+    your code, if your code does not run.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Visually inspecting the code
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Visually inspecting the code means that you will be a human compiler, and visually
+    check for errors in your code. My opinion is that there are certain pre-conditions
+    and tips for visual inspection:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: There must be a good code block structure. This means that code should be properly
+    spaced and indented for visual clarity. At one glance, you should be able to see
+    which code is nested under which `if-else` statements, or which functions it belongs
+    to.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The code editor that you use makes a huge difference. A common error is the
+    mismatching of brackets or inverted commas. Therefore, a code editor that allows
+    for the highlighting of matching brackets will help you to spot such errors.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Check for semicolons after each statement(s).
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Check to see if variables are initialized. If variables are used in later parts
+    of the program but are not initialized, it will create serious errors.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The previous actions are some of the things I will do if my script doesn't run
+    or if it doesn't run in the way that I intend it to. However, despite our best
+    intentions, visual inspection of code can only be useful for small programs, such
+    as programs that have less than 30 to 50 lines of code. If the programs get any
+    larger, or if they contain various functions that are invoked during events, it
+    might be better (and more efficient) to check our code by using the `alert` function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using alert[] to see what code is running
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The `alert` method can be used to check that what code is running is being
+    used appropriately. We have not formally introduced the alert method yet. But
+    just in case, you can use the alert function to create pop-up windows just about
+    anywhere in a JavaScript program. The syntax is as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`alert(message)`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: where `message` can take almost any number of values (or variables if it has
+    been defined or initialized). Due to this flexible nature of the `alert` method,
+    it can also be used to show values, strings, and object types as well.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The issue in using `alert` stems from the location where the `alert` should
+    be placed in the code. This will be demonstrated in the next hands-on example.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using alert() to see what values are being used
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: As mentioned earlier, the `alert` method can be used to show almost any type
+    of value. Therefore, a common usage would be to pass a variable into the `alert`
+    method and see if the value is what we need or intended.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Similarly, we need to know where we should be applying the `alert` method to
+    in order to ensure that our code inspection is correct.
+  prefs: []
+  type: TYPE_NORMAL
+- en: At this point of time, an example would be the most appropriate way to see how
+    we can make use of the `alert` method to inspect the code for errors. So, let
+    us see how this works.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Time for action—using alert to inspect your code
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: This example is similar to what you have done in the previous example. In this
+    example, you will be required to insert `alert` in the appropriate places in order
+    to check which part of the code is running. In some cases, you will need to pass
+    values to the `alert` method and see if the value is the one that you want.
+  prefs: []
+  type: TYPE_NORMAL
+- en: To be honest, it would be tedious to tell you step-by-step where you should
+    place the `alert` method, especially as the bulk of the code in this example is
+    similar to the previous one. However, to make things easier for you to follow,
+    we'll start immediately with the entire program, after which we'll explain to
+    you the rationale behind the location of the `alert` methods and the values that
+    are passed into the `alert` method.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The source code of the following example can be found in `Chapter 2` of the
+    source code folder, named `getting-values-in-right-places-using-alert.html`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This example is similar to the previous one, except that the JavaScript has
+    been changed slightly. Replace the JavaScript code from the previous example with
+    the following code:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Save the document and load it in to your web browser. Play around with the example
+    and see how the alert boxes notify you of which part of the code is being executed,
+    and also the values being entered.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: What just happened?
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: If you go through the previous example, you will notice that the `alert()` is
+    most often placed at the beginning of functions, and when variables are being
+    initialized. To check the functions, we often manually type in the name of the
+    function and pass it as arguments to the `alert` method, to inform us of what
+    is happening as we interact with the program. Similarly, we pass the variables
+    that are defined (the values from the form elements) as arguments to the alert
+    method to inform us of what values are being entered by the user.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Therefore, by using a single `alert()` method, we are able to find out what
+    code is running and what values are being used. However, this method may be slightly
+    too tedious or frustrating, because the alert boxes keep on popping up on your
+    window. Here's a simple alternative for checking what code is running, and also
+    to inspect the input elements.
+  prefs: []
+  type: TYPE_NORMAL
+- en: A less obtrusive way to check what code is running and the values used
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: To test our code in a less obtrusive manner we would write a simple debugging
+    function. This debugging function should print out the names of the functions,
+    and some other variables. For simplicity's sake, we'll demonstrate a simple debugging
+    function that prints the name of the function, and the HTML element being used.
+    So, let us get started.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Time for action—unobtrusively checking what values are used
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: As mentioned above, we'll be demonstrating a very simple debugging function
+    that helps you to identify which code is running and also which HTML element is
+    in use. Here, you'll get a basic idea of some of the actions that you can perform
+    in order to have a less obtrusive way of testing your code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Again, this example is similar to the previous one, but there are some important
+    elements that which we will be adding to the previous example. In essence, we
+    will be adding a function, some HTML, and CSS to it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: However, you might find it tedious to refer back to the previous example and
+    add the new elements to the previous example. Therefore, it is recommended that
+    you stay with me on this example.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Alternatively, you can view the source code in the source code folder, `Chapter
+    2`, with a file name of `getting-value-in-right-places-complete.html`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'So, without further ado, let us start right now:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Insert the following CSS code in between the`<style>` tags:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Now, for the HTML container which will contain the debugging messages, enter
+    the following code snippet before`</body>` tag:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'What happens here is that the preceding HTML element will be used to provide
+    a visual separation between the debugging messages and the simple application
+    itself. Save the file now , load it to your web browser and you will see an example
+    similar to the one shown in the next screenshot:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '![Time for action—unobtrusively checking what values are used](img/0004_02_02.jpg)'
+  prefs:
+  - PREF_IND
+  type: TYPE_IMG
+- en: 'Next, you will need to append the following code to your JavaScript code:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: The previously-mentioned function is used to capture the name of the function
+    used right now; this is equivalent to what code is in use right now, because our
+    program is event driven and the functions are, in general, triggered by the user.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'The three arguments are as follows:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '`functionName` refers to the functionName of the function used right now. In
+    the next step, you shall see the method used to derive this value dynamically.'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`objectCalled` refers to the HTML object being used.'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`Message` refers to a string. This can be any message that you want; it is
+    meant to provide some form of flexibility to the kind of debugging messages that
+    you can write to the screen.'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Also, we are making use of the `.innerHTML` method to append the messages into
+    the HTML `div` element for the `id` "debugging".
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Now finally, it''s time to see how we can use this function. In general, we
+    use the function as follows:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE21]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'If you refer to the source code, you will see that the previously-mentioned
+    function is being used sparingly in the program. Consider the following code snippet:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[PRE22]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: In the previous case, the value of "`submitValues`" will be passed because `submitValues`
+    is the name of the function. Notice that we also passed the function argument,
+    `elementObj` into `debuggingMessages()` in order to notify us what is being used
+    in the current function.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Finally, you might want to add the `debuggingMessages("name of function", elementObj,"empty")`
+    to each function in your JavaScript program. If you are not sure where you should
+    use this function, refer to the source code given.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: If you are typing in the function yourself, then do take note that you might
+    have to change the argument names in order to accommodate each of the functions.
+    In general, `debuggingMessages()` can be used in place of the `alert()` method.
+    So, if you are unsure of where you should use `debuggingMessages()`, you can use
+    `debuggingMessages()` for every `alert()` used for inspecting the code in the
+    previous example.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: If you have executed the entire program, you will see something similar to the
+    next screenshot:![Time for action—unobtrusively checking what values are used](img/0004_02_03.jpg)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: What just happened?
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: You have just created a function that allows you to inspect your code in a less
+    obtrusive manner, by making use of some built-in methods of JavaScript, which
+    includes the `.innerHTML` method. What happens here is another example of how
+    you can access values, manipulate them, and then output these values to the required
+    HTML element, in order to make inspection less obtrusive.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If you look through the source code, you may have noticed that I used different
+    messages during different situations; this will bring more flexibility to your
+    debugging functions, if you use one.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Commenting out parts of the script to simplify testing
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Commenting out parts of the script is another important and simple-to-use ad
+    hoc technique for testing your JavaScript code. Essentially, you comment out the
+    code that will not be used immediately.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Because we have not introduced how to do multiple line commenting, I''ll take
+    this chance to show you how to use it. The syntax is as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE23]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Here''s how commenting out parts of the script can be used to simplify testing:
+    we would often comment out all other code that we would not use at first. For
+    instance, the first function used in `getting-values-right-places-complete.html`
+    is the `submitValues()` function.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: We would make sure that the `submitValues()` function is correct before uncommenting
+    the second function that is used, which is the `addResponseElement()` function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The process goes on until all functions are uncommented, which means that the
+    code is correct.
+  prefs: []
+  type: TYPE_NORMAL
+- en: With all of these points in mind, we'll now move on to a simple workout based
+    on the previous example.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Time for action—simplifying the checking process
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'In this example, there will not be any source code for you to copy. Instead,
+    you can use the previous example found in `getting-values-right-places-complete.html`
+    and try out the following steps:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Scroll to the JavaScript section of the source code. Comment out all functions
+    except for `submitValues()` and `addResponseElement()`.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Save the file and load it to your web browser. Now test out the program.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: You should notice that your program can still work, except that after all the
+    input fields are filled correctly, you will not be able to submit the form successfully.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: This is because you have commented out the function `checkForm()`, which is
+    needed for the second form submission.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: What does this mean? This means to say that the functions `submitValues()`and
+    `addResponseElement()` work correctly, and now it is safe to move on.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Now, uncomment the `checkForm(), buildFinalResponse()`, and `debuggingMessages()`
+    function, save the file and reload in your browser. Continue to test out your
+    program until you submit the form.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: You should have noticed that all things go well before the submission of the
+    second form. This is, because expected as you have tested it in the previous step.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Now, after you have completed all of the input fields, submit the form. Because
+    you have uncommented the `checkForm()` and `buildFinalResponse()` functions, you
+    should now expect a response after submitting the form.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Finally, uncomment the `debuggingMessages()` function. Save the file and load
+    it in to your browser
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Now, similarly, use the program as usual, and you should see that all of the
+    required functionalities are working as before.
+  prefs: []
+  type: TYPE_NORMAL
+- en: What just happened?
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: You have just executed a useful way of testing your code by uncommenting different
+    parts of the code. You may have noticed that we started from the first function
+    that will be used, and then proceeded to the next one. This process will help
+    us to spot the block of code that contains the error.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This technique can also be applied to code statements. We commented out the
+    code in functions, because it is easier to follow based on the example.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Timing differences—making sure that the HTML is there before interacting with
+    it
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Remember that the essence of JavaScript is to provide behavior to web pages
+    by manipulating DOM elements? Here's the catch—if the HTML is not available when,
+    for instance, a JavaScript function that changes the color of a form is executed,
+    then the JavaScript function will not work.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this case, it is not due to JavaScript errors such as logic, runtime, and
+    loading errors, but rather, due to timing problems.
+  prefs: []
+  type: TYPE_NORMAL
+- en: As mentioned in the previous chapter, the web browser (client) downloads a web
+    page from a server, and in general, reads the web page (document) from top to
+    bottom. So, for instance, if you have a large HTML document (for instance an HTML
+    document with large images within the body), your JavaScript might not be able
+    to interact with the HTML DOM because there is no HTML to interact with.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'There are two solutions that allow us to deal with this problem:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Using the JavaScript event `onload` with the`<body>` tag. This can be done
+    as follows:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE24]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: The highlighted line means that `aSimpleFunction()` is executed only when the
+    contents in the `<body>` tag have finished loading. You can make use of this technique
+    to ensure that your HTML contents have finished loading before you execute your
+    JavaScript functions.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Here''s another (and possibly preferred method):'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Placing your JavaScript function before the`</body>` tag.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: This method is commonly used; you can see companies providing analytics service
+    often requesting its users to place the tracking code (often in JavaScript, such
+    as Google Analytics) just before the`</body>` tag. This means that the JavaScript
+    snippet will be loaded after all contents in the`<body>` tag are loaded, ensuring
+    that the HTML DOM will interact with the JavaScript.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Why ad hoc testing is never enough
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Up to this point, you may have noticed that the methods introduced for ad hoc
+    testing can get repetitive when applied to your code. For instance, the `alert`
+    method requires you to manually type in the `alert` function in different parts
+    of the code, containing different values in order for you to inspect the code.
+    This can get tedious and inefficient, especially when the program begins to get
+    larger. Simply put, it will not be able to scale when the program gets too large.
+    At the same time, the `alert` method can be quite obtrusive. For this reason,
+    we created a simple debugging function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The simple debugging function that we have created is less obtrusive; you can
+    interact with the program and receive an almost instant feedback on your screen.
+    Although it has the advantage of being less obtrusive, it suffers from two major
+    disadvantages. The first is the fact that it can be tedious and inefficient, which
+    is similar to the `alert` method. The second disadvantage is that how well the
+    debugging function can work relies largely on the skills of the JavaScript program.
+    However, being beginners in JavaScript, we may or may not have the skills to create
+    a robust debugging function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Therefore, there are other, more powerful, tools to help us get the job done
+    when the need arises, and we will be discussing these in the later chapters.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this chapter, we built upon the basics learnt in the previous chapter, and
+    expanded our knowledge of how we can perform ad hoc testing by using various techniques
+    covered in the chapter.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In general, we have combined the various methods and techniques from the previous
+    chapter and this chapter in order to help us perform ad hoc testing. We often
+    look for the required element through `getElementById`, and then by accessing
+    form values through the `form` object. We also used the `alert()` method to perform
+    some form of ad hoc testing.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Specifically, we have covered the following topics:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: We have learnt how to access values on forms by using the `form` object and
+    its methods, manipulating the values, and outputting the values in to other parts
+    of the web page by using the techniques learnt in the previous chapter, such as
+    `getElementById`. We appended HTML content to specific HTML elements by using
+    `.innerHTML`.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Actions that we can take if the script does not provide the expected output,
+    namely by testing the script by using the `alert()` method and commenting out
+    the code. This leads us to ad hoc testing.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Various techniques to perform ad hoc testing, most notably, by using the `alert()`
+    method. Due to its apparent obtrusiveness, we created a simple debugging function
+    that provides a less obtrusive way of performing testing.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Timing differences: We must always make sure that the HTML DOM is available
+    before JavaScript can interact with it.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Ad hoc testing is never enough due to scalability and efficiency problems
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Now that we have understood and have tried ad hoc testing, it is time to learn
+    some slightly more advanced stuff about JavaScript testing. As mentioned earlier,
+    although ad hoc testing is quick and simple, it does not necessarily lead to better
+    JavaScript code (on top of its other weaknesses). In the next chapter, we'll learn
+    about validating JavaScript. Although it sounds like a simple concept, you'll
+    learn more JavaScript concepts in terms of the actual coding and design process,
+    and other factors that can help you to validate your JavaScript program.
+  prefs: []
+  type: TYPE_NORMAL

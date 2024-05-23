@@ -1,0 +1,306 @@
+- en: Appendix A. Using JSPM
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: '**JSPM** ([http://jspm.io/](http://jspm.io/)) is a package manager for the
+    **SystemJS** universal module loader ([https://github.com/systemjs/systemjs](https://github.com/systemjs/systemjs)),
+    which is probably the most forward-looking module loader out there as it is based
+    on future web standards.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: At the moment of writing, the simplest way to create a JSPM-based Aurelia project
+    is to use the proper skeleton. The Aurelia team, however, plans to add creation
+    of JSPM-based projects to the CLI in the future.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this appendix, we will see the differences between a CLI-based project that
+    uses `requirejs` at the moment of writing, and a JSPM-based project started using
+    the skeleton.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The purpose of this appendix is not to cover JSPM and SystemJS in detail. As
+    such, I strongly suggest that you get more familiar with them if you intend to
+    use them in your project.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Our contact management application, rebuilt using the JSPM-based skeleton, can
+    found at `appendix-a\using-jspm` in the book's assets and can be used as a reference
+    throughout this appendix.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting started
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The first step for creating a JSPM-based application is to download the latest
+    version of the skeletons from [https://github.com/aurelia/skeleton-navigation/releases/latest](https://github.com/aurelia/skeleton-navigation/releases/latest)
+    and to unzip the file. In the root folder, you'll find a distinct directory for
+    each available skeleton. The one we will look at here is named `skeleton-esnext`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The JSPM skeleton uses Gulp as its build system. As such, let''s first install
+    it globally if you don''t already have it installed, by opening a console and
+    running the following command:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Additionally, we need to install JSPM itself:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Once the tools we need are installed, let''s restore the dependencies of the
+    project''s build system, by opening a console in the project directory and running
+    the following command:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: This command will restore all the dependencies that are used to run and build
+    our application, basically everything in the `devDependencies` section of the
+    `package.json` file.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Next, we need to restore the libraries used by our application itself by running
+    the following command:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: This command will use JSPM to restore all `dependencies` in the `jspm` section
+    of the `package.json` file.
+  prefs: []
+  type: TYPE_NORMAL
+- en: At this point, everything is ready to roll.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Running tasks
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The JSPM skeleton comes with a pretty complete set of Gulp tasks. These tasks
+    can be found in the `build/tasks` directory.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The first thing you''ll probably want to do is to run the sample application
+    from the skeleton. This can be done by opening a console in the project directory
+    and running the following command:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: This command launches a development web server with a watcher process which
+    will refresh the browser every time a source file changes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'If you want to run the application without watching the files and automatically
+    refreshing the browser, you can do it by running the `serve` task:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: Running unit tests
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'By default, the JSPM skeleton''s unit tests can be found in the `test/unit`
+    directory. It also typically contains three different Gulp tasks related to unit
+    tests:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`test`: Runs the unit tests once'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`tdd`: Runs the unit tests once, then watches the files and reruns the tests
+    when the code changes'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`cover`: Runs the unit tests once with code coverage enabled using Istanbul
+    ([https://github.com/gotwarlost/istanbul](https://github.com/gotwarlost/istanbul))'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'For example, if you want to do some test-driven development and have your tests
+    run continuously while you code, you can run the following command:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Since the skeleton relies on Karma to run the tests, you need to install the
+    Karma CLI on your environment before running any of the tasks above:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: Running end-to-end tests
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The JSPM skeleton also contains an `e2e` task, which will launch the end-to-end
+    tests found in the `test/e2e/src` directory.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'However, since the end-to-end tests rely on Protractor, you first need to update
+    the Selenium drivers by running the proper task:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Then, since the E2E tests need to interact with the application itself, you
+    need to launch the application:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Finally, you can open a second console and launch the E2E tests:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: Adding libraries
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Adding a library using JSPM is only a matter of running the proper command:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: This command will install the `aurelia-validation` library to the project. Since
+    JSPM has been designed to work with SystemJS, it will also add the proper entries
+    to the SystemJS mapping configuration, which is found in the `config.js` file
+    and is used by SystemJS to map module names to URLs or local paths.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Once this command completes, the SystemJS module loader will be able to locate
+    `aurelia-validation` and its dependencies, if any, so you can start using it right
+    away in your application.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Using a library in a JSPM-based application is similar to a CLI-based project.
+    If you need to use some of the library''s JS exports, simply import them in a
+    JS file:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'If you want to import other resources, like CSS files, simply `require` it
+    in the proper template:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: Bundling
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Contrary to the CLI or the Webpack-based skeleton, the JSPM-based skeleton
+    doesn''t bundle the application automatically when running in a development environment.
+    It however contains a Gulp task dedicated to bundling:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: This task will create some bundles according to the bundling configuration.
+    It will also update the SystemJS mapping in the `config.js` file, so the loader
+    knows to load each module from the proper bundle.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This means that if you do manual deployment from your development environment
+    instead of using an automated build system, you''ll need to unbundle your application
+    after deployment:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: This command will reset the SystemJS mapping in the `config.js` file to its
+    original, unbundled state. It is however automatically called when running the
+    `watch` task, so you shouldn't have to manually run it very often.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Configuring bundles
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The bundling configuration can be found in the `build/bundles.js` file. It
+    looks like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`build/bundles.js`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'By default, this configuration describes two bundles:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`app-build`: Contains all JS modules, templates, and CSS files from the `src`
+    directory'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`aurelia`: Contains the Aurelia libraries, Bootstrap, the fetch polyfill, and
+    jQuery'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The brackets around the `app-build` bundle's JS glob pattern `[**/*.js]`, tell
+    the bundler to ignore dependencies. Without those brackets, the bundler would
+    recursively walk up every `import` statement of every JS file, and would include
+    all dependencies in the bundle. Since the default bundling configuration packages
+    the application's resources in a first bundle and all external dependencies in
+    a second, we don't want to include any dependency in the `app-build` bundle, hence
+    the brackets.
+  prefs: []
+  type: TYPE_NORMAL
+- en: When adding an external library to your application, you'll need to add it to
+    a bundle's `includes`, typically it would be in the `aurelia` bundle, which I
+    normally rename to `vendor-bundle`. If you don't, SystemJS's mapping will refer
+    to the unbundled library, and will try to load it from the `jspm_packages` directory,
+    which is not what we want in a production scenario.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In addition to its content, the configuration of a bundle has `options`. The
+    most useful of those options is probably `rev`, which, when set to `true`, enables
+    bundle versioning. As such, the name of each bundle will be appended with a content-based
+    hash, and the SystemJS mapping will be updated with those versioned bundle names.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: For most of Aurelia's development, JSPM has been the *de facto* package manager
+    and SystemJS the preferred module loader; that is, until the CLI was released.
+    JSPM and SystemJS are however, still pretty central in Aurelia's ecosystem, and
+    most projects that were started before the CLI arrived run on this technology.
+  prefs: []
+  type: TYPE_NORMAL

@@ -1,0 +1,401 @@
+- en: Chapter 6. Constructors, Prototypes, and Arrays
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Now that we are getting comfortable with optimizing JavaScript without a linter
+    or an IDE testing our code for us, it's time to dive into more complex optimization,
+    specifically when it comes to memory and object creation. In this chapter, we're
+    going to take a look at optimizing larger JavaScript code bases using constructors,
+    prototypes, and arrays.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We are planning to cover the following topics in the chapter:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Building with constructors and instance functions
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Alternate constructor functions using prototypes
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Array performance
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Building with constructors and instance functions
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Here, we will learn about building with constructors and instance functions
+    in the following ways:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: A quick word
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Depending on skill level, some of us following this book may or may not know
+    exactly what prototypes are in JavaScript. If you're one of the readers who've
+    heard of prototypes in JavaScript but don't use them on a daily basis, you need
+    not worry as we will quickly cover the basic concepts and how to apply them to
+    JavaScript performance.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If you're one of those who know what closures, inheritance, parent and child
+    relations, and so on are, feel you fall into the latter category and so want to
+    skip this chapter, I would encourage you to keep reading, at least to skim through
+    the chapter, because, we as JavaScript developers tend to forget common concepts
+    while working with JavaScript for many years and continuously focusing on just
+    the factors that affect our performance.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The care and feeding of function names
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Take a close look at this simple function shown below and see if you spot anything
+    unusual about this function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![The care and feeding of function names](img/7296OS_06_01.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Now, when we look at the code, what we can see is a simple function named `AuthorName`
+    holding the `author` parameter. The function uses a `use strict` statement discussed
+    in [Chapter 2](ch02.html "Chapter 2. Increasing Code Performance with JSLint"),
+    *Increasing Code Performance with JSLint*, which forces **Developer tools** or
+    other similar inspectors to treat any kind of warnings in that scope as errors.
+    We then return the `author` parameter using the `return` keyword.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This looks fairly normal; however something that trips up many JavaScript developers
+    is how the function name is structured. Notice that `AuthorName` starts with a
+    capital *A*. In JavaScript, when we declare a function name with a capital letter,
+    we are actually telling the JavaScript interpreter that we are declaring a constructor.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'A constructor is simply a JavaScript function, and it works the same way as
+    any other function. We can even print an author''s name to the console using a
+    simple `console.log` function as shown in the following screenshot using **Developer
+    tools**:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![The care and feeding of function names](img/7296OS_06_02.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: If we run this in an `about:blank` **Developer tools** console or dummy HTML
+    page with this code, we will see the console output as the name just as we would
+    expect. The problem is that, in order to efficiently use constructors, we need
+    to use them with the `new` keyword.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now you may ask how we can possibly know if any of our existing JavaScript code
+    uses constructors. Imagine a very large code base with functions everywhere; how
+    can we check this if even the **Developer tools** option doesn't inform us that
+    we need to use an instance using `new` rather than a `static` function call?
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Luckily, there is a way. If we remember in [Chapter 2](ch02.html "Chapter 2. Increasing
+    Code Performance with JSLint"), *Increasing Code Performance with JSLint*, JSLint
+    can show us if we need to use a `new` keyword. I''ve added the preceding code
+    sample and enabled the **console** and **browser** objects in JSLint. Check out
+    the error presented by JSLint in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![The care and feeding of function names](img/7296OS_06_03.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: As we can see from JSLint, on line 11 we're given an error, `Missing 'new'`
+    as our only error, indicating that we have a constructor and we need to use it
+    as such.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Understanding instances
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Now the easy way to fix this issue is to change the name of the `AuthorName`
+    function to camel case; that is, we change `A` to lowercase (`a`). But here we're
+    going to indicate this as an instance, and you may ask why? Well in JavaScript,
+    every time we write an object, a variable, a function, an array, and so on, we
+    are creating objects.
+  prefs: []
+  type: TYPE_NORMAL
+- en: By using instances, we keep our object usage down. In JavaScript, an instance
+    is only counted once in memory. For example, let's say we use a `document.getElementById()`
+    method. Every variable saved with that object is given a memory count of one but,
+    if it's in an object we declare with the `new` keyword, that count is only counted
+    once rather than reused for every occurrence of `getElementById()`. By using the
+    `new` keyword, we create an instance of our constructor (in this case `AuthorName`)
+    that allows us to reuse that function in the same manner that we typically use
+    it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Creating instances with 'new'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Creating a new instance is pretty easy; we can simply call a new instance to
+    run a function, as shown in the following screenshot, using the `new` keyword
+    in our `console.log` function on line number 11:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Creating instances with ''new''](img/7296OS_06_04.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: If we run this code inside a blank page or a simple HTML page, we will see that
+    our log doesn't output the way we expect. But we can see an object return `AuthorName
+    {}` in the **Console** panel of the **Development tools** in Chrome. What this
+    shows us is that we are actually logging a new instance of an object, but not
+    the author's name.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In order to properly display this name, we will need a keyword to declare a
+    reference to the instance of this constructor. To do that, we will use the `this`
+    keyword; in JavaScript, `this` is a reference to the exact point in execution
+    in a scope.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `this` keyword in JavaScript refers to the scope and variable that exists
+    at that point of script execution when it is used. For example, when you use a
+    `this` keyword in a function, it can reference a variable that is also in the
+    same scope (or inside a function). By using a `this` keyword, we can point to
+    variables and objects at a certain point in a code's execution.
+  prefs: []
+  type: TYPE_NORMAL
+- en: A **scope** is simply a block of JavaScript code with its own variables and
+    properties. Scopes can include a global-level scope of a single JavaScript object,
+    meaning an entire JavaScript file, a function-level scope where variables and
+    properties are set inside a function, or, as discussed earlier, a constructor
+    since a constructor is a function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let's rewrite our `AuthorName` constructor with `this` keyword so that we can
+    reference our scope and print our value to the **Console** panel. We will need
+    to create an initializer inside our constructor in order to get our scoped variables
+    returned. An initializer (sometimes called an `init` function) specifies certain
+    variables inside our constructor and assigns properties on creation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Here, we create a variable with a `this` keyword prefixed to indicate that
+    we are referencing our instance inside our constructor followed by our function
+    called `init`, which equals a function, just as we would use a variable to declare
+    a function. Let''s take a look at this in the code shown in the next screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Creating instances with ''new''](img/7296OS_06_05.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Take a look at line numbers 13 and 15; on 13 we declare a variable `author1`,
+    with a `new` `AuthorName` constructor having `Chad Adams` as the string parameter.
+    In this example `author1` is an instance of the `AuthorName` constructor with
+    `Chad Adams` as the only parameter.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Also notice that, on line number 15 in our `console.log`, we have an `init()`
+    function that is an inner function of our constructor. We can create other functions
+    in our constructor as well, for instance printing a custom log message like this
+    as shown in the next screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Creating instances with ''new''](img/7296OS_06_06.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: As we can see on line number 11, we have now added a `helloInfo()` function,
+    scoped to our `AuthorName` constructor, that prints out a custom message using
+    the `author` parameter. Then, on line number 20, we call this outside a `console.log`
+    by simply calling the function of the constructor, which has its own `console.info`
+    function wrapped inside.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This is helpful in keeping our logic confined to a single object inside our
+    code base and keeps our code nicely organized. This is called object orientation;
+    it''s great for reusing code but might cause issues with performance in JavaScript.
+    Let''s try an example. Here, we have two examples of the same code, each wrapped
+    in a `console.time` and `console.timeEnd` function. The following screenshot shows
+    our reviewed code and the resulting time to render the code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Creating instances with ''new''](img/7296OS_06_07.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: So our total time here is roughly 2.5 milliseconds. This isn't too bad, but
+    now let's see what happens if we use simple non-constructor functions and what
+    the speed of rendering the same output would be. As shown in the following screenshot,
+    I've pulled apart our constructor and created two separate functions.
+  prefs: []
+  type: TYPE_NORMAL
+- en: I've also called the main `authorName` function within the secondary function
+    in the exact same manner as on our `console.log` function to print an author's
+    name. Let's run the code shown updated in the next screenshot, and see if this
+    runs faster or slower than our constructor methods. However, do keep in mind that,
+    depending on our system's speed and browser, the results may vary.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Creating instances with ''new''](img/7296OS_06_08.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: So, with static functions our results hover right around 4 milliseconds, which
+    is longer than our instance-built object. So, that's a great use of static functions
+    over prototype functions in JavaScript!
+  prefs: []
+  type: TYPE_NORMAL
+- en: Alternate constructor functions using prototypes
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Here, we will learn about the concept of alternate constructor functions using
+    prototypes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Understanding prototypes in terms of memory
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'We''ve covered how to create instance functions inside a constructor, and we''ve
+    also learned about scope inside one as well using the `this` keyword. But, there
+    is one more thing to cover: the ability to append a constructor with another instance
+    method outside the constructor, which is helpful in many ways. First, it allows
+    us, as developers, to create functions outside the pre-written constructor if
+    needed. Next, it also keeps our memory usage small. Before diving into this, let''s
+    rework our constructor code to use prototypes, as shown in the next screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Understanding prototypes in terms of memory](img/7296OS_06_09.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'Now looking at this code updated, we can see that the constructor functions
+    have been removed but pulled outside the constructor: they were then moved to
+    prototypes of the `AuthorName` function using the same function names used earlier.
+    Now, you can notice that, on lines 10 and 13, we can use this in our prototype
+    function because we are referring our constructor''s instance to print that instance''s
+    specific variables.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Which is faster, a prototype or a constructor function?
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'You may also notice that I''ve again added `console.time` and `console.timeEnd`
+    functions to our function calls on lines 16 through 22\. So do you think that
+    prototypes will be faster or slower when compared to standard constructor functions?
+    Well, here in the next screenshot we can take a look at the results:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Which is faster, a prototype or a constructor function?](img/7296OS_06_10.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Wow, 4.2 milliseconds to fire the prototypes when compared with 2.1 milliseconds
+    using constructor method; what happened here? We essentially created functions
+    after the constructor. The output is slow, but this is to be expected with prototypes,
+    as the intention is to append a constructor with a prototype.
+  prefs: []
+  type: TYPE_NORMAL
+- en: At this point, we may think "Oh wow I never knew that, I should never code a
+    prototype again!" Now, before we start deleting prototypes from our project files,
+    I want to explain scalability with prototypes. It is true that prototypes, when
+    called for a constructor function, can be slower… "*in the small*. What do I mean
+    by in the small?" Well, for small uses of prototypes such as this particular example,
+    we can see prototypes run slower than a traditional constructor method.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now here's the rub; for larger projects, a constructor in a large-scale application
+    may have 50 functions, 200 functions, and so on. When we call those larger constructors
+    over and over, it gets pretty expensive in terms of memory just by calling the
+    instance of a constructor since it has to ready all the functions contained inside.
+  prefs: []
+  type: TYPE_NORMAL
+- en: By using prototype methods, those initial constructor calls are stored in memory
+    once. For small uses of prototypes the performance benefits aren't visible since
+    we use the memory in-place as if we had a simple static function but, once it's
+    set up, it's in memory and doesn't have to be recalled or reprocessed like a static
+    JavaScript function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: One more thing about prototypical inheritance, though performance issues can
+    arise from its use over static functions, it can be very helpful for large codebases.
+    If a project has scope concerns or uses libraries that may cause conflicts, consider
+    using a namespace. This works similar to prototype classes but function like simple
+    static functions that prepend with a namespace to prevent conflict.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Array performance
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'We typically don''t think about arrays when dealing with performance, but it''s
+    worth mentioning a few things here. First, large arrays can be messy and performance
+    hogs when you''re trying to work with a large amount of data. Typically with arrays,
+    we only need to worry about two things: searching and array size.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Optimizing array searches
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Let''s create an array that has a lot of values in it; here I''ve created an
+    array called `myArray` which has 1001 values within, with a string value of key
+    and the index of the array. You can grab the full version in the `06_09.js` file
+    inside the `Chapter_6` folder of the example code on the Packt Publishing''s website.
+    Here''s a part of the code sample of the total array:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Optimizing array searches](img/7296OS_06_11.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: There are two ways to look up a value in an array; the first uses the `indexOf()`
+    function, which is an array-specific function that looks up each value and returns
+    the index of that searched value. The other way is to specify the index value
+    directly, which returns the value (assuming we know the index of the value we
+    need).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s try an experiment where we are going to use a pre-made `myArray` of
+    1001 values and iterate through them with the `indexOf()` function, and then again
+    with just an array. We have appended the code after our `myArray`, and we''ve
+    wrapped this code block in `console.time` and `console.timeEnd` functions, as
+    shown here with the time rendered in Chrome **Developer tools**:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Optimizing array searches](img/7296OS_06_12.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'This shows that our result for searching that large array was roughly 5.9 milliseconds.
+    Now, for our comparison, I''m going to keep our `indexFound` variable even though
+    we can simply specify the index of the array value we want. We will also search
+    using the same index value, which is `541`. Let''s update our code as shown here
+    and view our results in Chrome **Developer tools**:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Optimizing array searches](img/7296OS_06_13.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: It looks like our results trim our index searching performance time by quite
+    a bit. So, when you're structuring arrays in JavaScript, only use `indexOf` if
+    you need to and try to directly call the index if possible. So why was the time
+    output so different? It's simple; in this second example, we indicated the position
+    of the array manually rather than having JavaScript look up the key on its own.
+    This sped up the JavaScript interpreter as it iterated through our array and provided
+    a value.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this chapter, we learned about the proper use of constructors. We learned
+    about instances in JavaScript using the `new` keyword, and found that we can speed
+    up static code with constructors while scoping our code at the same time.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We learned about prototypes and how they scale well for large applications while
+    adding little value for smaller projects. Finally, we also learned about searching
+    arrays and about performance loss with arrays by using the `indexOf` function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the next chapter, we are going to look at how to write our JavaScript to
+    optimize our Document Object Model for our projects.
+  prefs: []
+  type: TYPE_NORMAL

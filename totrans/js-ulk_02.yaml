@@ -1,0 +1,996 @@
+- en: Chapter 2. Modular Programming with JavaScript
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Engineering in general is all about splitting large tasks into small ones and
+    composing the solutions of these tasks in a system. In software engineering, we
+    break the code-base into modules by following the principles of low coupling and
+    high cohesion. In this chapter, we will talk about the approaches to create modules
+    in JavaScript by covering the following topics:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to get out of a mess using modular JavaScript
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to use asynchronous modules in the browser
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to use synchronous modules on the server
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: JavaScript built-in module system
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Transpiling CommonJS for in-browser use
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to get out of a mess using modular JavaScript
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: How many digital photos do you have, probably thousands, or more? Just imagine
+    if your image viewer had no capacity to categorize. No albums, no books, no categories,
+    nothing. It would not be of much use, does it? Now let's assume that you have
+    a JavaScript application in a single file and it grows. When it approaches thousand
+    or more than a thousand lines of code, however good your code design is, from
+    a maintainability perspective, it still turns into a useless *pile* like that
+    enormous list of uncategorized photos. Instead of building a monolithic application,
+    we have to write several independent modules that combine together to form an
+    application. Thus, we break a complex problem into simpler tasks.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Modules
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: So, what is a module? A module encapsulates code intended for a particular functionality.
+    A module also provides an interface declaring what elements the module exposes
+    and requires. A module is often packaged in a single file, which makes it easy
+    to locate and deploy. A well-designed module implies low coupling (the degree
+    of interdependence between modules) and high cohesion (the degree to which the
+    elements of a module belong together).
+  prefs: []
+  type: TYPE_NORMAL
+- en: What are the advantages that modules give us in JavaScript?
+  prefs: []
+  type: TYPE_NORMAL
+- en: Cleaner global scope
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: You know in JavaScript any assignation that we do out of any function scope
+    makes a new member of the global scope (a built-in object window in a browser
+    or global in Node.js/Io.js). Therefore, we are always at a risk of overriding
+    accidentally an already defined property. On the contrary, whatever is declared
+    in a module stays here unless we explicitly export it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Packaging code into files
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: In server-side languages, applications consist of numerous files. One of the
+    best practices here is that a file may contain only one class and have only one
+    responsibility. Besides, a fully-qualified class name must reflect its file location.
+    So when we run into a problem on an object, we can easily deduct where to find
+    its source code. We can divide JavaScript application code into separate scripts,
+    but these will share the same scope and won't give us any encapsulation. Moreover,
+    when the scripts load asynchronously, the internal dependencies must be solved,
+    which is not easy to do. But if we use modules, each is given a dedicated file
+    and has its own scope. A module loader takes care of asynchronous dependencies.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Reuse
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Imagine, while working on a project, you wrote a code that solves one task—let's
+    say it provides a convenient API to manage cookies. When switching to another
+    project, you realize that your cookie manager would quite be in place there. In
+    case of *spaghetti code*, you would have to extract the component code, decouple
+    it, and bind it to the new place. If you wrote the component as a decently-designed
+    module, you simply take it and plug it in.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Module patterns
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Well, we know that modules help and we want to use them. How do we implement
+    a module in JavaScript? First of all, we need to detach the module code from the
+    global scope. We can only do this by a wrapping module code with a function. A
+    common practice here is to go with **Immediately Invoked Function Expression**
+    (**IIFE**):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: A module must also have access points with the surrounding environment. In the
+    same way as we usually deal with functions, we can pass object references to IIFE
+    as arguments.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: You may have also seen a pattern where a global object (window) is passed with
+    arguments. This way we do not access the global object directly, but by a reference.
+    There is an opinion that the access by a local reference is faster. That's not
+    completely true. I've prepared a Codepen with some tests at [http://codepen.io/dsheiko/pen/yNjEar](http://codepen.io/dsheiko/pen/yNjEar).
+    It shows me that in Chrome (v45), a local reference is really ~20 percent faster;
+    however, in Firefox (v39), this doesn't make any considerable difference.
+  prefs: []
+  type: TYPE_NORMAL
+- en: You can also run a pattern variation with `undefined` in the parameter list.
+    A parameter that was not supplied with the arguments has an `undefined` value.
+    So, we do this trick to ensure that we get the authentic `undefined` object in
+    the scope even if the global `undefined` object is overridden.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'In order to expose a module element outside its scope, we can simply return
+    an object. The result of the function call can be assigned to an external variable,
+    as shown here:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: Augmentation
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Sometimes we need to mix things up in a module. For example, we have a module
+    that provides core functionality, and we want to plug-in extensions depending
+    on the context of use. Let's say, I have a module to create objects based on pseudo-class
+    declarations.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Basically, during instantiation it automatically inherits from a specified
+    object and calls the constructor method. In a particular application, I want this
+    to also validate the object interface against a given specification. So, I plug
+    this extension to the base module. How is it done? We pass the reference of the
+    base module to the plugin. The link to the original will be maintained, so we
+    can modify it in the scope of the plugin:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: Module standards
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We've just reviewed a few ways to implement modules. However, in practice, we
+    rather follow a standardized API. These have been proved by a huge community,
+    adopted by real-world projects, and recognizable by other developers. The two
+    most important standards that we need to keep in mind are **AMD** and **CommonJS
+    1.1**, and now we would rather look at at ES6 Module API, which is going to be
+    the next big thing.
+  prefs: []
+  type: TYPE_NORMAL
+- en: CommonJS 1.1 loads modules synchronously. The module body is executed once during
+    the first load and the exported object is cached. It is designed for server-side
+    JavaScript and mostly used in Node.js/Io.js.
+  prefs: []
+  type: TYPE_NORMAL
+- en: AMD loads modules asynchronously. The module body is executed once after the
+    first load and the exported object is also cached. This is designed for in-browser
+    use. AMD requires a script loader. The most popular are RequireJS, curl, lsjs,
+    and Dojo.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Soon, we can expect the script engines to gain native support for JavaScript
+    built-in modules. The ES6 modules take the best of the two worlds. Similar to
+    CommonJS, they have a compact syntax and support for cyclic dependencies, and
+    similar to AMD, the modules load asynchronously and the loading is configurable.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to use asynchronous modules in the browser
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: To get a grasp on AMD, we will do a few examples. We will need script loader
+    RequireJS ([http://requirejs.org/docs/download.html](http://requirejs.org/docs/download.html)).
+    So you can download it and then address the local version in your HTML or give
+    it an external link to CDN.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'First of all, let''s see how we can create a module and request it. We place
+    the module in the `foo.js` file. We use the `define()` call to declare the module
+    scope. If we pass an object to this, the object simply gets exported:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**foo.js**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'When we pass a function, it is called and its return value is exported:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**foo.js**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Next to `foo.js`, we place `main.js`. This code can be described as follows:
+    call the given callback when all the modules supplied to the first argument (here
+    only `foo`, which means `./foo.js`) are loaded and available.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**main.js**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'From the HTML (`index.html`), first we load `RequireJS` and then `main.js`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**index.html**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Loading scripts synchronously when we have a loader doesn''t feel right. However,
+    we can do this with the only script element that, in addition, can be forced to
+    load asynchronously:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**index.html**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: With the `data-main` attribute, we tell the loader what module to load first,
+    whenever the module is ready. As we fire up `index.html`, we will see the values
+    of the `foo` module properties that we imported in `main.js`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`index.html` outputs the exports of the asynchronously loaded modules:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How to use asynchronous modules in the browser](img/00002.jpeg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'Now we fiddle with more dependencies. So we create the `bar.js` and `baz.js`
+    modules:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**bar.js**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: '**baz.js**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We have to modify `foo.js` to access these modules:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**foo.js**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'As you may have noticed, the `require`/`define` dependency lists consists of
+    module identifiers. In our case, all the modules and the HTML located in the same
+    directory. Otherwise, we need to build the identifiers based on relative paths
+    (the `.js` file extension can be omitted). If you mess up with a path and RequireJS
+    cannot resolve the dependency, it fires `Error: Script error for:<module-id>`.
+    Not of much help, is it? You can improve error handling on your own. A function
+    expression passed next to the module scope callback receives an exception object
+    as an argument. This object has special properties such as `requireType` (a string
+    containing error types such `timeout`, `nodefine`, `scripterror`) and `requireModules`
+    (an array of module IDs affected by the error).'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'In a well-grained design, modules are numerous and are allocated to a directory
+    tree. In order to avoid relative path computation every time, you can configure
+    the script loader once. So the loader will know where to find the dependency file
+    by a specified alias:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**main.js**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This gives a bonus. Now if we decided to change a module file name, we do not
+    need to modify every other module that requires it. We just need to change the
+    configuration:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**main.js**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'By configuring, we can also address remote modules. For example, here we refer
+    to jQuery, but RequireJS knows the module endpoint from the configuration and,
+    therefore, loads the module from CDN:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**require.config({**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: Pros and cons
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The main advantage of the AMD approach is that modules load asynchronously.
+    It also means that while deploying, we don't have to upload the entire code-base,
+    but just a module is changed. And since a browser can handle multiple HTTP requests
+    simultaneously, this way we improve performance. However, here comes a huge trap.
+    It's really quick to load a code in a few separate pieces in parallel. But real-world
+    projects have many more modules. With the HTTP/1.1 protocol, which is still dominant
+    at the moment, loading all of them would take unacceptably long time. Unlike the
+    new standard SPDY and HTTP/2, HTTP/1.1 doesn't cope really well with concurrency
+    during the downloading of a page, and in case of a substantially long queue, this
+    results in head-of-line blocking ([https://http2.github.io/faq/](https://http2.github.io/faq/)).
+    RequreJS provides a tool ([http://requirejs.org/docs/optimization.html](http://requirejs.org/docs/optimization.html))
+    to combine a bunch of modules. This way we don't need to load every single module,
+    but only a few packages. The dependencies packaged together are resolved synchronously.
+    So, one may say that partly we abandon the main benefit of AMD—asynchronous loading.
+    Meanwhile, we must still load a, usually quite heavy, script loader and wrap every
+    single module with the `define()` callback.
+  prefs: []
+  type: TYPE_NORMAL
+- en: From my experience, I would rather advice you to go synchronous with the Common
+    JS modules compiled into packages capable of in-browser use.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to – use synchronous modules on the server
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The following examples require Node.js. It will take just a few minutes to install
+    Node.js using the pre-built installer available at [https://nodejs.org/download/](https://nodejs.org/download/)
+    or even faster via a package manager at [https://github.com/joyent/node/wiki/Installing-Node.js-via-package-manager](https://github.com/joyent/node/wiki/Installing-Node.js-via-package-manager).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We will start by putting a simple logic into a module:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**foo.js**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Now we can call the module:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**main.js**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'In order to run the example, we will open the console (under Windows, you can
+    simply run `CMD.EXE`, but I would recommend an enhanced tool like CMDER available
+    at [http://cmder.net/](http://cmder.net/)). In the console, we type the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs: []
+  type: TYPE_PRE
+- en: '![How to – use synchronous modules on the server](img/00003.jpeg)'
+  prefs: []
+  type: TYPE_IMG
+- en: As soon as *Enter* is pressed, the console outputs **I'm running**. So when
+    a module is requested, its body code is invoked. But what if we request the module
+    several times?
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**main.js**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The result is the same. It outputs **I''m running** only once. This is because
+    the module body code is executed only once when the module is initially requested.
+    An exported object (probably produced by the body code) is cached and acts similar
+    to a singleton:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**foo.js**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE21]'
+  prefs: []
+  type: TYPE_PRE
+- en: '**main.js**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE22]'
+  prefs: []
+  type: TYPE_PRE
+- en: As you will likely notice, unlike AMD we don't need any wrappers in the modules.
+    But is it still isolated from a global scope?
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**foo.js**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE23]'
+  prefs: []
+  type: TYPE_PRE
+- en: '**main.js**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE24]'
+  prefs: []
+  type: TYPE_PRE
+- en: Any variables defined in a module scope are not available outside the scope.
+    However, if you really want anything to be shared between the module variables
+    behind the exposed interface, you can do it via a global object (Node.js is analogous
+    to an in-browser Windows object).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'So what about exports? CommonJS has a preference for single export. We assign
+    to `module.exports` a reference to a type or a value, and this will be the cached
+    return of the required function. If we want multiple exports, we just export an
+    object:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**foo.js**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE25]'
+  prefs: []
+  type: TYPE_PRE
+- en: '**main.js**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE26]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The following is the most common case in Node.js where an object constructor
+    is exported:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**foo.js**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE27]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'So through a required call, we receive the constructor function with the prototype
+    and can create instances:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**main.js**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE28]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The same way as we request the `foo` module from `main`, we can request from
+    other modules as well:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**bar.js**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE29]'
+  prefs: []
+  type: TYPE_PRE
+- en: '**baz.js**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE30]'
+  prefs: []
+  type: TYPE_PRE
+- en: '**foo.js**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE31]'
+  prefs: []
+  type: TYPE_PRE
+- en: '**main.js**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE32]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'But what if Node.js runs into cyclic dependencies? What if we request back
+    the caller from the called module? Nothing dramatic happens. As you may remember,
+    a module code is executed only once. So if we request `main.js` from `foo.js`
+    after `main.js` is already performed, its body code isn''t invoked anymore:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**foo.js**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE33]'
+  prefs: []
+  type: TYPE_PRE
+- en: '**main.js**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE34]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'When we run `main.js` with Node.js, we get the following output:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE35]'
+  prefs: []
+  type: TYPE_PRE
+- en: Pros and cons
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: CommonJS has a concise and expressive syntax. It's very easy to use. Unit tests
+    are usually written to run in the command line and preferably are a part of continuous
+    integration. A well-designed CommonJS module makes a perfect test unit, which
+    you can access directly from a Node.js-driven test framework (for example, Mocha)
+    far out of the application context. However, CommonJS implies synchronous loading,
+    which is not suitable in a browser. If we want to bypass this limitation, we have
+    to transpile module sources into a single script that resolves module dependencies
+    internally without loading (see *"Traspiling CommonJS for in-browser use"*).
+  prefs: []
+  type: TYPE_NORMAL
+- en: UMD
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: If you want your module to be acceptable both in a browser as AMD and on the
+    server as CommonJS, there is a trick ([https://github.com/umdjs/umd](https://github.com/umdjs/umd)).
+    By adding a wrapper function, you can dynamically build the export in a desired
+    format depending on the runtime environment.
+  prefs: []
+  type: TYPE_NORMAL
+- en: JavaScript's built-in module system
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Well, both AMD and CommonJS are community standards and not a part of the language
+    specification. However, with EcmaScript 6th edition, JavaScript acquired its own
+    module system. At the moment, no browser yet supports this feature, so we have
+    to install the Babel.js transpiler to fiddle with the examples.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Since we already have Node.js that is distributed with NPM (the Node.js package
+    manager), we now can run the following command:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE36]'
+  prefs: []
+  type: TYPE_PRE
+- en: Named exports
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Now we can write a module as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**foo.es6**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE37]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'In ES6, we can export multiple elements. Any declaration prefixed with the
+    keyword export becomes available for import:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**main.es6**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE38]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Since we don''t yet have any support for ES6 modules in the browser, we will
+    transpile them into CommonJS or AMD. Here Babel.js helps us:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE39]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'By this command, we made Babel.js translate all the `*.es6` files of the current
+    directory into CommonJS modules. So, we can run the derived `main.js` module with
+    Node.js:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE40]'
+  prefs: []
+  type: TYPE_PRE
+- en: '![Named exports](img/00004.jpeg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'Similarly, we translate ES6 modules to AMD:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE41]'
+  prefs: []
+  type: TYPE_PRE
+- en: '**index.html**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE42]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'In the previous example, we enlisted our named exports in the import statement.
+    We could also import the entire module and refer to the named exports as properties:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**main.es6**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE43]'
+  prefs: []
+  type: TYPE_PRE
+- en: Default export
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Besides, we can also do a default export. This is how usually exports are done
+    in Node.js:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**foo.es6**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE44]'
+  prefs: []
+  type: TYPE_PRE
+- en: '**main.es6**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE45]'
+  prefs: []
+  type: TYPE_PRE
+- en: We exported a function and came with the import. This could also be a class
+    or an object.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In AMD, we receive exports as callback arguments, and in CommonJS, as local
+    variables. Though ES6 doesn''t export values, but it exports the so called bindings
+    (references) that are immutable. You can read their values, but if you try changing
+    them, you get a type error. Babel.js triggers this error during compilation:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**foo.es6**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE46]'
+  prefs: []
+  type: TYPE_PRE
+- en: '**main.es6**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE47]'
+  prefs: []
+  type: TYPE_PRE
+- en: The module loader API
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'In addition to declarative syntax in a separate specification ([https://github.com/whatwg/loader/](https://github.com/whatwg/loader/)),
+    ES6 offers us a programmatic API. It allows us to programmatically work with modules
+    and configure module loading:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE48]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Unlike Node.js, the ES6 modules, due to their declarative nature, require imports
+    and exports at the top level. So, this cannot be conditional. However, with the
+    pragmatic loader API, we can do otherwise:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE49]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here we defined a callback that is invoked only when all of the three specified
+    modules are loaded.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Conclusion
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Both AMD and CommonJS are interim standards. As soon as the JavaScript built-in
+    module system gets wider support in script engines, we don't really need them
+    anymore. The ES6 modules load asynchronously, and the loading can be configured
+    similar to AMD. They also have a compact and expressive syntax and support for
+    cyclic dependencies similar to CommonJS. In addition, ES provides declarative
+    syntax for static module structure. Such structure can be statically analyzed
+    (static checking, linting, optimization, and so on). ES6 also provides a programmatic
+    loader API. So you can configure how modules are loaded and load modules conditionally.
+    Besides, ES6 modules can be extended with macros and static types.
+  prefs: []
+  type: TYPE_NORMAL
+- en: While everything looks so unclouded, there is still a fly in the ointment. ES6
+    modules can be pre-loaded synchronously (with `<script type="module"></script>`),
+    but often there is asynchronous loading and this brings us to the same trap as
+    in the case of AMD. Numerous requests over HTTP/1.1 cause a harmful effect on
+    user response time ([https://developer.yahoo.com/performance/rules.html](https://developer.yahoo.com/performance/rules.html)).
+    On the other hand, SPDY and HTTP/2 that allow multiple requests per TCP connection
+    are getting wider support and eventually will take the place of the dubious HTTP/1.x.
+    Furthermore, W3C works on a standard called *Packaging on the Web* ([https://w3ctag.github.io/packaging-on-the-web/](https://w3ctag.github.io/packaging-on-the-web/))
+    that describes how archived files (scripts) can be accepted from a URL (hash).
+    So, we will be able to bundle the entire directory with modules into an archive,
+    deploy, and address them in the same way as we do when we have them in a directory.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Transpiling CommonJS for in-browser use
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: While HTTP/2 and *Packaging on the Web* are still on their way, we need fast
+    modular applications. As it was previously mentioned, we can divide the application
+    code into CommonJS modules and transpile them for in-browser use. The most popular
+    CommonJS transpiler is surely Browserify ([http://browserify.org](http://browserify.org)).
+    The initial mission of this tool was to make Node.js modules reusable. They quite
+    succeeded in this. It may feel like magic, but you can really use `EventEmitter`
+    and some other Node.js core modules on the client. However, with the main focus
+    on Node.js compatibility, the tool provides too few options for CommonJS compilation.
+    For example, if you want dependency configuration, you have to use a plugin. In
+    a real-world project, you will likely end up with multiple plugins, where each
+    has a specific configuration syntax. So the setup in general gets over-complicated.
+    Rather, we'll examine here another tool called CommonJS Compiler ([https://github.com/dsheiko/cjsc](https://github.com/dsheiko/cjsc)).
+    This is a considerably small utility designed to bring CommonJS modules into the
+    browser. The tool is very easy to configure and use, which makes it a good choice
+    to illustrate the concept.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'First of all, we install `cjsc`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE50]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Now we can take an example from the *How to synchronous modules on the server*
+    section and transpile it for in-browser use:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**bar.js**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE51]'
+  prefs: []
+  type: TYPE_PRE
+- en: '**foo.js**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE52]'
+  prefs: []
+  type: TYPE_PRE
+- en: '**main.js**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE53]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The starting point is `main.js`. So, we tell `cjsc` to bundle this module with
+    all the required dependencies recursively into `bundle.js`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE54]'
+  prefs: []
+  type: TYPE_PRE
+- en: '![Transpiling CommonJS for in-browser use](img/00005.jpeg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Let's take a look into the generated file. `cjsc` replaced all the require calls
+    with `custom _require` and put them into the beginning `_require` function definition.
+    This little trick allows you to run the compiled code in a Node.js/Io.js friendly
+    environment such as NW.js, where the `require` function is still needed for local
+    packages. Every module is wrapped in a function scope supplied with module relevant
+    objects (exports and modules) plus global, which is a reference to the global
+    object (`window`).
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE55]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The generated code is a generic JavaScript that we can surely address from
+    the HTML:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**index.html**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE56]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Our sources are still in a CommonJS module. This means that we can access them
+    directly from a Node.js-based framework for unit-testing. The official site for
+    Mocha.js Test is [http://mochajs.org/](http://mochajs.org/):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE57]'
+  prefs: []
+  type: TYPE_PRE
+- en: '`cjsc` has a number of options. But in a real project, typing a long command-line
+    with every build would be annoying and unproductive:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE58]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'That is why we use task runners such as `Grunt`, `Gulp`, `Cake`, and `Broccoli`.
+    `Grunt` ([http://gruntjs.com](http://gruntjs.com)) is the most popular task runner
+    at the moment and has an overwhelming number of plugins available (see the Grunt
+    versus Gulp infographic at [http://sixrevisions.com/web-development/grunt-vs-gulp/](http://sixrevisions.com/web-development/grunt-vs-gulp/)).
+    So, we install the `grunt` command-line interface globally:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE59]'
+  prefs: []
+  type: TYPE_PRE
+- en: In order to setup a `Grunt` project, we need two configuration files, `package.json`
+    ([https://docs.npmjs.com/files/package.json](https://docs.npmjs.com/files/package.json))
+    and the `Gruntfile.js` file. The first one contains metadata about NPM packages
+    required to run `Grunt` tasks. The second is needed to define and configure the
+    tasks.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Here we can start with a very minimalistic `package.json` that has only an
+    arbitrary project name and its version in a semver ([http://semver.org/](http://semver.org/))
+    format:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**package,json**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE60]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Now we can install the required NPM packages:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE61]'
+  prefs: []
+  type: TYPE_PRE
+- en: Thus we get a local Grunt and a Grunt plugin for CommonJs compiler. The `--save-dev`
+    special option creates `devDependencies` (if it doesn't exist) in the `package.json`
+    section and populates it with the installed dependency. So for instance, when
+    we pull the project sources from a version control system, we can restore all
+    the dependencies by simply running `npm install`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In `Gruntfile.js`, we have to load the already installed `grunt-cjsc` plugin
+    and configure a task called `cjsc`. In practice, we will need at least two targets
+    that provide different configurations for this task. The first one, `cjsc:debug`,
+    runs `cjsc` to produce uncompressed code, provided with source map. The second
+    one, `cjsc:build` is used to prepare assets for deployment. So we get minified
+    code in `bundle.js`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Gruntfile.js**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE62]'
+  prefs: []
+  type: TYPE_PRE
+- en: As you can see from the configuration, `cjsc` is intended to `transpile js/src/main.js`
+    into `js/bundle.js`. So we can take the module of the previous example and copy
+    them into `./js/src`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Now, when we have everything in place, we will run a task. For example, see
+    the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE63]'
+  prefs: []
+  type: TYPE_PRE
+- en: '![Transpiling CommonJS for in-browser use](img/00006.jpeg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'As mentioned earlier, we can configure dependency mapping with `cjsc`. We just
+    need to describe the dependencies in an object literal that can be supplied to
+    `cjsc` as a JSON-file in the command-line interface or injected into a Grunt configuration:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE64]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Here we declare the `jquery` alias (shortcut) for a module located in `./vendors/jQuery/jqueiry.js`.
+    We also state that a globally exposed `"_"` (Underscore.js) library has to be
+    treated as a module. At the end, we specify the path, exports, and imports for
+    a third-party component. Thus, we get this in the app (without intervention in
+    its code) as a module, though it''s not a module:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE65]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Alternatively we can use the following Grunt configuration:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE66]'
+  prefs: []
+  type: TYPE_PRE
+- en: Bundling ES6 modules for synchronous loading
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Well, as we mentioned in the *JavaScript built-in module system* section, ES6
+    modules are going to be replace the AMD and CommonJS standards. Moreover, we can
+    already write ES6 code and transpile it into ES5 for now. As soon as the support
+    for ES6 across script agents is good enough, we theoretically can use our code
+    as it is. However, what about performance? In fact, we can compile ES6 modules
+    in CommonJS and then bundle them with `cjsc` for in-browser use:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**foo.es6**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE67]'
+  prefs: []
+  type: TYPE_PRE
+- en: '**main.es6**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE68]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'First, we compile ES6 into CommonJS modules:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE69]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Then, we bundle CommonJS modules into a script suitable for in-browser use:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE70]'
+  prefs: []
+  type: TYPE_PRE
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Modular programming is a concept closely related to OOP that encourages us to
+    structure code for better maintainability. In particular, JavaScript modules protect
+    global scope from pollution, divide application code into multiple files, and
+    allow the reuse of application components.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The two module API standards that are mostly used at the moment are AMD and
+    CommonJS. The first one that is designed for in-browser use assumes asynchronous
+    loading. The second is synchronous and intended for server-side JavaScript. However,
+    you should know that AMD has a substantial flaw. A well-grained application design
+    with a plenty of modules over HTTP/1.1 may cause a disaster in terms of application
+    performance. This is the major reason why, recently, the practice of transpiling
+    CommonJS modules for in-browser use is on the rise.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Both these APIs shall be considered as interim standards because the upcoming
+    ES6 modules standard is meant to replace them. At the moment, there are no script
+    engines supporting this feature, but there are transpilers (for example, Babel.js)
+    that allows the translation of ES6 modules into CommonJs or AMD.
+  prefs: []
+  type: TYPE_NORMAL

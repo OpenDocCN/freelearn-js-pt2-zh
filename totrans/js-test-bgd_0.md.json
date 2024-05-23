@@ -1,0 +1,1 @@
+["```js\n<input type=\"submit\" value=\"Submit\"\nonclick=\"amountOfMoneySaved(moneyForm.money.value)\" />\n</form>\n</body>\n</html>\n\n```", "```js\nfunction changeElementUsingName(a){\nvar n = document.getElementsByName(a); \nfor(var i = 0; i< n.length; i++){\nn[i].setAttribute(\"style\",\"color:#ffffff\");\n}\n}\n\n```"]

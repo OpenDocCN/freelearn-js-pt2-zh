@@ -1,0 +1,127 @@
+- en: Chapter 4. HTML5 APIs
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: While the language specification (**ECMA-262**) changes once in a few years,
+    the new HTML5 APIs sneak in to the language almost with every browser update.
+    The already available APIs are quite numerous. Yet in this chapter, we will focus
+    on those that are used to reconsider the entire development process. We'll learn
+    how we can benefit from multithreading using web workers, how to build an application
+    from reusable independent web components, how to store and search considerably
+    a large amount of data in the client side, and how to establish bidirectional
+    communication with a server.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In this chapter, we will cover the following topics:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Storing data in a web browser
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Boosting performance with JavaScript workers
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Creating our first web component
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Learning to use server-to-browser communication channels
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Storing data in web-browser
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Among the HTML5 features, there are a few intended to store data on the client
+    side: Web Storage, IndexedDB, and FileSystem API. We benefit from these technologies
+    when the following happens:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: We want to cache client-side data to make them fetch-able without extra HTTP
+    requests
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: We have a significant amount of local data in the web application, and we want
+    our application to work offline
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Let's take a look at these technologies.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Web Storage API
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In the past, we only had the mechanism to keep the application state, and it
+    was using **HTTP cookies**. Besides unfriendly API, cookies have a few flaws.
+    They generally have a maximum size of about 4 KB. So we simply cannot store any
+    decent amount of data. Cookies don't really fit when the application state is
+    being changed in different tabs. Cookies are vulnerable to **Cross-Site Scripting**
+    attacks.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Now we have an advanced API called **Web Storage**. It provides greater storage
+    capacity (5-25 MB depending on the browser) and doesn''t attach any data to the
+    HTTP request headers. There two JavaScript built-in objects implementing this
+    interface: **localStorage** and **sessionStorage**. The first is used as persistent
+    data storage and the second to keep the data during a session.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Storage API is very simple to use, as shown here:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Alternatively, we can use getters/setters for convenience, as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'If we want to iterate through the storage, we can use `storage.length` and
+    `storage.key()`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: As you can see, the Web Storage API is much more developer-friendly compared
+    to cookies. It's also more powerful. One of the most common real-life examples
+    where we need storage is the shopping cart. While designing the application, we
+    have to keep in mind that a user, while making their choices, often opens pages
+    with product details in multiple tabs or windows. So we should take care of storage
+    synchronization across all the open pages.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Fortunately, whenever we update the localStorage, the `storage` event is fired
+    on the window object. So we can subscribe a handler for this event to update the
+    shopping cart with the actual data. A simple code illustrating this example may
+    look like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: To see this in action, we have to open the code HTML in two or more tabs. Now
+    when we click the **Add to cart** button, we have a list of the ordered items
+    updated in every tab. As you may have probably noticed, we can also clean up the
+    cart by clicking the **Reset** button. This calls the `storage.clear` method and
+    empties the list. If you want to use sessionStorage here instead of localStorage,
+    I have to warn you that this won't work. The sessionStorage is isolated for every
+    tab or window, so we cannot communicate across them this way.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'However, we could have ran this example with sessionStorage if we had the page
+    loaded in a different frame, but on the same window though. Following screenshot
+    is an example of Shopping cart app in action:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Web Storage API](img/00008.jpeg)'
+  prefs: []
+  type: TYPE_IMG

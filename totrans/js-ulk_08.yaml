@@ -1,0 +1,632 @@
+- en: Chapter 7. JavaScript Beyond the Browser
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Originally, JavaScript was designed as a client-side scripting language, but
+    today, it is used literally everywhere: in server scripting, mobile and desktop
+    software programming, game development, DB querying, hardware control, and OS
+    automation. When you have experience in client-side JavaScript, with a little
+    additional knowledge, you can apply your skills in other programming areas as
+    well. Here, we will learn how to write a command-line tool, web-server, desktop
+    application, and mobile software using JavaScript.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In this chapter, we will be learning about the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Leveling up the coding of a command-line program in JavaScript
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Building a web-server with JavaScript
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Writing a desktop HTML5 application
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using PhoneGap to make a mobile native app
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Levelling up the coding of a command-line program in JavaScript
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: You must have heard about Node.js. This is an open source cross-platform development
+    environment that allows the creation of web-servers, networking, and other tools
+    using JavaScript. Node.js extends classical JavaScript with a collection of specialized
+    modules. These modules handle filesystem I/O, networking, OS-level operations,
+    binary data, cryptography functions, data streams, and others ([https://nodejs.org/api/index.html](https://nodejs.org/api/index.html)).
+    Node.js uses an event-driven I/O model. Similar to JavaScript, it operates on
+    single-thread performing non-blocking calls. So time consuming functions can run
+    concurrently by invoking a callback when it completes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To get the feel of Node.js, we start with an example that simply prints *Hello
+    world*:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**hello.js**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Now let''s open the console (command-line interface: **CMD** in Windows, or
+    **Terminal** in Linux and Mac OS), navigate to the example script location, and
+    run the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here we go, we get `Hello world!` in the output.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Following screenshot shows the Windows CMD
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Levelling up the coding of a command-line program in JavaScript](img/00016.jpeg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'The Node.js modules follow the CommonJS specification in the same way that
+    we examined in [Chapter 2](part0021_split_000.html#K0RQ2-f4ff6b81796e4f78aa983a623fb95daf
+    "Chapter 2. Modular Programming with JavaScript"), *Modular Programming with JavaScript*:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**foo.js**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'As we run `main.js`, we are supposed to get the following output:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The Node.js native modules such as `fs` ([https://nodejs.org/api/index.html](https://nodejs.org/api/index.html))
+    don''t require downloading. We may just refer to them in `require()`, and at the
+    runtime, it will be known where to find them:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here we use the filesystem I/O (`fs`) module to read a file. The `__filename`
+    property of a module scope contains the absolute path of the executing source
+    file. Remember the *Error First Callback* approach that we examined in [Chapter
+    5](part0035_split_000.html#11C3M2-f4ff6b81796e4f78aa983a623fb95daf "Chapter 5. Asynchronous
+    JavaScript"), *Asynchronous JavaScript* That is the main interface for asynchronous
+    functions in Node.js.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s now try something more practical. We''ll write a utility that recursively
+    scans all the source files in a given directory to make sure every file has block
+    comments with up-to-date copyrights. First of all, we need a module that can test
+    whether a supplied block comment text contains the actual copyright line:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Here, we have a constructor that creates an object representing `BlockComment`.
+    The object has a method (`isValid`) to test its validity. So if we create an instance
+    of `BlockComment` with a block comment text, we can validate this against our
+    requirements:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Now, we will write a module capable of testing whether all the copyright lines
+    in a given source code has the actual year:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: In this example we introduced a `SourceFile` object that has two methods, `parse`
+    and `isValid`. The private method, `parse`, extracts all the block comments from
+    a given JavaScript source code and returns an array of the `BlockComment` objects.
+    The `isValid` method checks whether all the received `BlockComment` objects meet
+    our requirements. In these methods, to manipulate arrays, we use `Array.prototype.filter`
+    and `Array.prototype.map` that we examined in [Chapter 1](part0014_split_000.html#DB7S2-f4ff6b81796e4f78aa983a623fb95daf
+    "Chapter 1. Diving into the JavaScript Core"), *Diving into JavaScript Core*.
+  prefs: []
+  type: TYPE_NORMAL
+- en: But how can we reliably extract `blockComments` from a JavaScript source? The
+    best way is to go with a bulletproof solution called the **esprima** parser ([http://esprima.org/](http://esprima.org/))
+    that performs code static analysis and returns a full syntax tree including comments.
+    However, esprima is a third-party package that is supposed to be downloaded and
+    linked from the application. In general, a package may depend on other packages,
+    which also have dependencies. It looks like that bringing the required dependencies
+    together may be a hell of a work. Fortunately, Node.js is distributed with the
+    NPM package manager. The tool can be used to install and manage in the NPM repository
+    ([https://www.npmjs.com/](https://www.npmjs.com/)) third-party modules. NPM doesn't
+    just download the requested modules, but also resolves the module dependencies,
+    allowing a well-grained structure of reusable components in the scope of a project
+    or in the global scope.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'So, to make `esprima` available in our application, we simply request it from
+    NPM using this command: `npm install esprima`.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'By running this command in the console, we automatically get a new `node_modules`
+    subdirectory with the `esprima` package in it. If the package requires any dependencies,
+    they will be fetched and allocated in `node_modules`. As soon as the package is
+    installed by NPM, Node.js can find it by its name. For example, `require( "esprima"`
+    ). Now when we have the `SourceFile` object, we just need the main script that
+    will read the files from a given directory and test them with `SourceFile`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**copyright-checker.js**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: In this code, we relied on a third-party module, `cli-color`, to colorize the
+    command-line output. We used the `fs-walk` module to recursively traverse through
+    a directory. And the Node.js native module, path, allows us to resolve the absolute
+    path by a given relative directory and filename, and the `fs` built-in module
+    is used to read a file.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'As we intend to run our application from the console, we can use command-line
+    options to pass on a directory that we want to test:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We can extract script arguments from a built-in process (`process.argv`) object.
+    For this command, `process.argv` will contain an array like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: So in the main script, now we can pass the third element of this array to `walk.files`.
+    The function will traverse through the given directory and run the callback for
+    every file found. In the callback function, if a filename looks like JavaScript,
+    we read the content and test it using the `SourceFile` object.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Before we can run the main script, we need to ask NPM for third-party packages
+    that we are going to use in the script:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: Now we are good to go. As we run `node copyright-checker.js fixtures`, we get
+    a report on the validity of the JavaScript files located in fixtures.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Following screenshot shows the Mac OS X terminal:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Levelling up the coding of a command-line program in JavaScript](img/00017.jpeg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Building a web server with JavaScript
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: We've just learnt how to write command-line scripts with Node.js. However, this
+    run-time is mostly known as server-side JavaScript, meaning this is the software
+    to run an HTTP-server. Actually, Node.js is especially great for this kind of
+    job. If we launch a server application based on Node.js, it runs permanently,
+    initialized only once. For instance, we may create a single DB connection object
+    and reuse it whenever someone requests the application. Besides, it grants us
+    all the flexibility and power of JavaScript including event-driven, non-blocking
+    I/O.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'So how can we make use of this? Thanks to the HTTP native module of Node.js,
+    a simple web-server can be implemented as easy as this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Here we created a server with a dispatcher callback to handle HTTP requests.
+    Then, we make the server listen on port 80\. Now run `node simple-server.js` from
+    the console, and then hit `http://localhost` in a browser. We will see the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'So we just need to route incoming requests, read the corresponding HTML files,
+    and send them with the response to make a simple static web server. Or we can
+    install the existing modules, `connect` and `serve-static`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'And implement the server using this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'In practice, routing requests can be a challenging task, so we rather go with
+    a framework. For example, Express.js ([http://expressjs.com](http://expressjs.com)).
+    Then, our routing may look like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: Writing a desktop HTML5 application
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Have you ever wondered about writing a desktop application with HTML5 and JavaScript?
+    Nowadays, we can do this quite easily with NW.js. This project is a cross-platform
+    application runtime based on Chromium and Node.js. So, it provides a frameless
+    browser where both the DOM API and Node.js API are available. In other words,
+    we can run NW.js classical web-applications, access low-level APIs (filesystem,
+    network, processes, and so on), and reuse the modules of the NPM repository. Interesting?
+    We'll start a tutorial where we will create a simple HTML5 application and run
+    it with NW.js. It'll be a roster application with a form to enter names and a
+    list of already submitted ones. The names will be stored in localStorage. Let's
+    rock it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Setting up the project
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'First of all, we have to download the NW.js run-time relevant to our platform
+    (Mac OS X, Windows, or Linux) from [http://nwjs.io](http://nwjs.io). Next to the
+    NW.js executable (`nw.exe`, `new.app`, or `nw.` depending on the platform), we
+    place the `package,json` file ([https://github.com/nwjs/nw.js/wiki/manifest-format](https://github.com/nwjs/nw.js/wiki/manifest-format))
+    where we describe our project:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: Our `package.json` file has three main fields. `name` contains a unique name
+    associated with the project. Note that this value will be a part of the directory
+    path where application data (sessionStorage, localStorage, and so on) is stored.
+    `main` accepts a relative path to the main HTML page of the project. Eventually,
+    `window` describes the browser window where the HTML will be displayed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Adding the HTML5 application
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'According to the `main` field in `package.json`, we will place our `index.html`
+    in to the `wwwroot` subdirectory. We can try it with a simple HTML like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'NW.js treats the HTML in the same way as a browser, so if we now launch the
+    NW.js executable, we will see `Hello world!`. To give it look and feel we can
+    add CSS and JavaScript. So we can write the code for NW.js in the same way as
+    we do it for a browser. Here, we have a good opportunity to apply the principles
+    that we learned in [Chapter 6](part0042_split_000.html#181NK2-f4ff6b81796e4f78aa983a623fb95daf
+    "Chapter 6. A Large-Scale JavaScript Application Architecture"), *A Large-Scale
+    JavaScript Application Architecture*. In order to make the example concise but
+    expressive, we will take the AngularJS approach. First, we create the HTML. The
+    markup of the body will be as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We defined a form to submit new names and a table to display the already stored
+    names. To make it prettier, we used Bootstrap ([http://getbootstrap.com](http://getbootstrap.com))
+    styles. The CSS file can be loaded from a CDN as shown here:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Now we will bring it to life by adding the AngularJS directives:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE21]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Here we declares a `myApp` module scope (`<body ng-app="myApp" >`). Within
+    this, we defined a `RosterController` controller. In the boundaries of the controller,
+    we bind our input field to the model name (`<input ng-model="name">`) and set
+    handlers for the `form submit` and `Empty List` button click events (`<form ng-submit="submit()">`
+    and `<button ng-click="empty()">`). Lastly, we make a template bound out of the
+    table to the `$scope.persons` collection. So whenever the collection changes,
+    the table is updated:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE22]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Now it is time to add some JavaScript to our HTML:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE23]'
+  prefs: []
+  type: TYPE_PRE
+- en: As we intend to store the data submitted in the form, we can use localStorage
+    that we discussed in [Chapter 4](part0030_split_000.html#SJGS2-f4ff6b81796e4f78aa983a623fb95daf
+    "Chapter 4. HTML5 APIs"), *HTML5 APIs*. In order to get localStorage in the AngularJS
+    way, we used the `ngStorage` module ([https://github.com/gsklee/ngStorage](https://github.com/gsklee/ngStorage)).
+    So, we specify the plugin during module initialization, and this makes the plugin
+    available in the controller as a parameter (`$localStorage`). In the controller
+    body, we have a function `sync` that sets `$scope.persons` with the person array
+    from localStorage. We call the `sync` function in the form submit handler (`$scope.submit`)
+    and in the **Empty List** button on-click handler (`$scope.empty`). It causes
+    the person table to update every time. During the handling of the submit event,
+    we append the value of the `$scope.persons` input and save `$scope.persons` in
+    localStorage.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In order to enable this functionality, we have to load the AngularJS and ngStorage
+    plugins:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE24]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Now we launch the NW.js executable and get the application working. Following
+    screenshot shows Roaster example app in NW.js without styles:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Adding the HTML5 application](img/00018.jpeg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'It''s all nice, but as we run NW.js frameless, we have no way to even close
+    the application. Besides, we cannot drag the application window within the desktop.
+    This is easy to fix. We can add an HTML fragment to the HTML body with two buttons
+    to close and minimize the application:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE25]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Now we subscribe listeners to these buttons that call the close and minimize
+    NW.js Window API ([https://github.com/nwjs/nw.js/wiki/Window](https://github.com/nwjs/nw.js/wiki/Window))
+    methods respectively:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE26]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'In order to make our window drag-able ([https://github.com/nwjs/nw.js/wiki/Frameless-window](https://github.com/nwjs/nw.js/wiki/Frameless-window)),
+    we can use the `-webkit-app-region` CSS pseudo-class. We set this with the drag
+    value on the handle container (header) and with the no-drag value on any clickable
+    elements within it:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE27]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'In addition, we prettify the look and feel of the page. Note that with NW.js,
+    we can have a transparent background. So we set the `border-radius` on the `html`
+    element and the window gets rounded:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE28]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Now we can launch our NW.js executable again. Roaster example app in NW.js
+    with styles is shown in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Adding the HTML5 application](img/00019.jpeg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'Note that on Mac OS X/Linux, we have to launch with special arguments ([https://github.com/nwjs/nw.js/wiki/Transparency](https://github.com/nwjs/nw.js/wiki/Transparency))
+    to get the transparency effect. For example, we have to do the following on Mac
+    OS X:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE29]'
+  prefs: []
+  type: TYPE_PRE
+- en: Debugging
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Still something is missing. If anything goes wrong, how can we debug and trace
+    the errors? There are a few options available:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Launch the NW.js executable with the `--enable-logging` argument and get the
+    logs in `stdout`.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Launch the NW.js executable with `--remote-debugging-port` and access the DevTools
+    application in a remotely running Chrome. For instance, we start up the project
+    as `nw --remote-debugging-port=9222` and look for the `http://localhost:9222`
+    page in Chrome.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Enable toolbar and frame for the window in `package.json`.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'The first option isn''t quite handy in debugging. The second provides you with
+    a limited version of DevTools, and the last option brings the frame and can make
+    the application look terrible. Fortunately, we can call DevTools programmatically
+    from the app. So, on the `DEVELOPMENT/TEST` environment, you can add this code
+    that shows up DevTools by pressing *Ctrl* + *Shift* + *I*:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE30]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Programmatically called DevTools in NW.JS are shown in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Debugging](img/00020.jpeg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Packaging
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'To have a real desktop application experience, we can bundle the projects assets
+    and NW.js files into a single executable. Firstly using ZIP, we compress our project
+    directory (`wwwroot`) and the accompanying files (the `node_modules` directory
+    and the `NAPI` plugins) into `app.nw`. Then, we combine the archive with the NW.js
+    executable. In Windows, this can be done as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE31]'
+  prefs: []
+  type: TYPE_PRE
+- en: If the distribution of NW.js that is targeted for your platform contains any
+    components (for example, the Windows distribution includes DLLs), inject them
+    into the newly created application executable using Enigma Virtual Box ([http://enigmaprotector.com](http://enigmaprotector.com)).
+    Voilà, now we can distribute the project in a single file.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using PhoneGap to make a mobile native app
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Well, now we can make desktop applications with JavaScript but what about native
+    mobile applications? There are a number of web-based frameworks available for
+    mobile development ([https://en.wikipedia.org/wiki/Multiple_phone_web-based_application_framework](https://en.wikipedia.org/wiki/Multiple_phone_web-based_application_framework)).
+    One of the most trending solutions is called Adobe PhoneGap, which is built on
+    top of the Apache Cordova project. By and large, the PhoneGap application consists
+    of a web-stack (HTML5, CSS, and JavaScript). Despite the fact that nowadays, HTML5
+    provides access to some of the native features (accelerometer, camera, contacts,
+    vibration, GPS, and others), the support across different devices is inconsistent
+    and quirky, and performance is relatively poor. So PhoneGap runs HTML5 inside
+    a native WebView on a device and provides access to device resources and APIs
+    ([https://en.wikipedia.org/wiki/Foreign_function_interface](https://en.wikipedia.org/wiki/Foreign_function_interface)).
+    As a result, we can write a mobile application based on HTML5 and build it with
+    PhoneGap for the devices and OS that we support (iPhone, Android, Blackberry,
+    Windows, Ubuntu, Firefox OS, and others). A good point here is that we can reuse
+    the components created for the Web while developing for mobile. In fact, we can
+    bundle the Roster application that we made for NW.js as a mobile app. So let's
+    do this.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Setting up the project
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'First of all we need a framework. The easiest way to install it is by using
+    the NPM tool:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE32]'
+  prefs: []
+  type: TYPE_PRE
+- en: The `-g` option means that we install this globally on the machine and don't
+    need to do it when setting up any new project.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Now we can create a new project with the following command:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE33]'
+  prefs: []
+  type: TYPE_PRE
+- en: In the `roster` subdirectory, the tool creates a `boilerplate` file structure
+    for the project named `Roster` that is registered within the `org.tempuri.roster`
+    namespace.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Now, we need to inform PhoneGap about the platforms that we want to support.
+    So, we navigate to the `roster` subdirectory and type the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE34]'
+  prefs: []
+  type: TYPE_PRE
+- en: Building the project
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'In the `www` subdirectory, we can find a placeholder HTML5 application. We
+    can replace this with the roster application written for NW.js (without an environment-specific
+    header container and its listeners code, of course). In order to check whether
+    the project was properly initialized, we run the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE35]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Alternatively, we can use this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE36]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This builds the project and displays it with a platform-specific emulator.
+    On a Mac, this is how it looks. Roster example app by PhoneGap is shown in the
+    following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Building the project](img/00021.jpeg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Adding plugins
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'As it was mentioned already, with PhoneGap, we can access native device features
+    ([http://phonegap.com/about/feature](http://phonegap.com/about/feature)). Moreover,
+    we can also install and use native plugins available in the `Cordova` repository
+    ([http://cordova.apache.org/plugins/](http://cordova.apache.org/plugins/)). Let''s
+    take one of these—*cordova-plugin-vibration*. We can add it to the project as
+    easy as this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE37]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'As we have the plugin, we can use its API in our JavaScript code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE38]'
+  prefs: []
+  type: TYPE_PRE
+- en: Debugging
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: As for debugging a mobile application, there are a number of options ([https://github.com/phonegap/phonegap/wiki/Debugging-in-PhoneGap](https://github.com/phonegap/phonegap/wiki/Debugging-in-PhoneGap)).
+    The main idea is to reach the application with a desktop inspector tool. In the
+    case of iOS, we go with the Safari WebInspector desktop. Just find the **iPhone
+    Simulator** option in the **Develop** menu and press **WebView** corresponding
+    to your application HTML. Similarly, we can access Android WebView in Chrome DevTools
+    ([https://developer.chrome.com/devtools/docs/remote-debugging#debugging-webviews](https://developer.chrome.com/devtools/docs/remote-debugging#debugging-webviews)).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The widely spread Node.js run-time extends JavaScript with a low-level API,
+    which unlocks for us on the methods of creating command-line tools, web-servers,
+    and specialized servers (for example UDP-TCP/WebSocket/SSE servers). To see how
+    far we can go beyond the Web, just consider a standalone OS NodeOS built with
+    Node.js. With HTML5 and JavaScript we can write a desktop software and easily
+    distribute it across different platforms. Similarly, we can compose a mobile application
+    out of HTML5/JavaScript and native APIs. Using tools such as PhoneGap, we can
+    build the application for diverse mobile platforms.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this chapter, we learned how to access DevTools to debug NW.js and PhoneGap
+    applications. In the next chapter, we will talk about how to use DevTools efficiently.
+  prefs: []
+  type: TYPE_NORMAL

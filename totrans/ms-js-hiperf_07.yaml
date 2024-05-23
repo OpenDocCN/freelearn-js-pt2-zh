@@ -1,0 +1,553 @@
+- en: Chapter 7. Hands off the DOM
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this chapter, we will review the DOM in relation to writing high-performance
+    JavaScript, and see how to optimize our JavaScript to render our web applications
+    visibly faster.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We will also take a look at JavaScript animations and test their performance
+    against modern CSS3 animations; we will also test for paint redraw events in the
+    DOM and quickly test for scrolling events attached to a page that may affect performance.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We will cover the following topics in the chapter:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Why worry about the DOM?
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Don't we need a MV-whatever library?
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Creating new objects using the `createElement` function
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Animating elements
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Understanding paint events
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Pesky mouse scrolling events
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Why worry about the DOM?
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The **Document Object Model** (**DOM**) is how our HTML content is presented
+    in our web browser. It's not quite the same as the source code; the DOM is the
+    live updated version of our source code as we make updates to a web application's
+    page in a web browser.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We can say that fast, optimized JavaScript will certainly help our applications
+    run and perform better, as we learned in previous chapters. But it's important
+    to understand that the DOM is just as important to JavaScript performance as understanding
+    how to optimize a `for` loop.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the early days of the Web, we as web developers didn't think about the DOM
+    too much. If we think about how far JavaScript has come, we can see that many
+    changes have come to the world of web development. If we reminisce about the pre-Google
+    days of the web, we know that websites were pretty simplistic, and user interaction
+    was mainly limited to hyperlink tags and an occasional JavaScript `window.alert()`
+    function to show some form of application interaction.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'As time passed, we encountered Web 2.0, or rather the point where **Asynchronous
+    JavaScript and XML** (**AJAX**) came into being. If you''re not familiar with
+    AJAX, I would like to sum it up: AJAX web applications allow developers to pull
+    content from external sources, typically XML files, (this is the X in AJAX).'
+  prefs: []
+  type: TYPE_NORMAL
+- en: With AJAX, website content suddenly became dynamic, meaning developers didn't
+    have to rely on backend technologies to refresh a web page with updated data.
+    Suddenly, a need for stronger JavaScript came into play. Businesses and their
+    clients no longer wanted to have a website responding with page flashes (or sites
+    that used backend technologies to update the page with a `POST` submission method),
+    all the more so with sites such as Google Maps and Gmail seemingly pushing the
+    idea of the web as a platform for software rather than a desktop operating system.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Don't we need an MV-whatever library?
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Today, we have frameworks that help with the heavy lifting of some of this type
+    of application; AngularJS, Backbone.js, Knockout.js, and jQuery are a few libraries
+    that come to mind.
+  prefs: []
+  type: TYPE_NORMAL
+- en: For this book, however, we will stick to vanilla JavaScript for two reasons.
+    The first reason is that entire books are dedicated to many of these libraries
+    and talk about performance and various levels of experience, all of which are
+    good but beyond the scope of this book. The second reason is that most developers
+    typically don't need these libraries to build a project.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Remember that all the JavaScript libraries mentioned here, as well as those
+    found on the Web, are again all JavaScript! For most projects, we shouldn't need
+    a library to make a project the way we want to build it; moreover, many of these
+    libraries come with extra code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: What I mean by this is that the libraries come with features that might not
+    be needed in a given project and, unless a library is modular, it's difficult
+    to use it without removing features that aren't needed. This is even harder if
+    you're working in a team environment where others may be using a shared library
+    for certain areas of the application that may use some features, but not all of
+    them.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We'll look into mobile JavaScript performance later in [Chapter 9](ch09.html
+    "Chapter 9. Optimizing JavaScript for iOS Hybrid Apps"), *Optimizing JavaScript
+    for iOS Hybrid Apps*. We will find these libraries become even more of a burden.
+    Now with that said, let's look at some common ways to break the DOM, and what
+    we can do to make it perform better.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Creating new objects using the createElement function
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Here, we will learn to create new objects using the `createElement` function
+    along with the following three topics:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Working around the `createElement` function
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Working with the `createElement` function
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: When to use the `createElement` function
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Working around the createElement function
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In JavaScript, we can create new page elements using the `document.createElement()`
+    function and text objects to place inside our generated elements using the `document.createTextNode()`
+    function. Typically, creating new elements to inject into our DOM can be a bit
+    of a drain on rendering resources as well as interaction performance if done with
+    multiple generated elements.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Working with the createElement function
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Let''s test how well the `createElement` function renders content to a screen.
+    Here''s our test: we are going to create a table with a lot of data using a `for`
+    loop. We will populate a table cell with a text object with the count of the iteration
+    of our `for` loop. Then, we will look at an alternate version creating the same
+    effect with a different code implementation, and compare both. Let''s take a look
+    at the first option using the `createElement` function shown as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Working with the createElement function](img/7296OS_07_01.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Here, we have a simple HTML5 page with some formatting CSS styles in the `head`
+    section and an empty placeholder `div` element on line number 21 with an `id`
+    set as `datainsert`. On line 25, we have an `anonymous function` to run as soon
+    as it's loaded into the browser; also on line 26, we start a `console.time` function
+    to start counting how long our JavaScript performs. We then create a table element
+    variable called `tableElem` on line 27; on lines 28 through 31, we set some attributes
+    to help style the formatting of our table.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Then on line 33, we start our `for` loop; in the scope of our `for` loop we
+    create a table row element, a table cell element, and a text node to insert text
+    into our generated table cell, starting with the `cellContent` variable on line
+    35, the `tableTr` variable on line 36, and the `tableTd` variable on line 37\.
+    On lines 39-41, we append the table with our generated cell and continue the loop
+    for `10000` times. Lastly, we append the table element to our `datainsert` div
+    element on the page to render our content. Let's run this in our browser and see
+    how long it takes for the content to render using Chrome **Developer tools** options.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Working with the createElement function](img/7296OS_07_02.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: As we can see, this took quite a bit of processing time, roughly 140 milliseconds
+    in Chrome, which is a pretty lengthy render. You can consider doing something
+    like this in building a messaging client or displaying data from JSON. Whatever
+    the case, the cost of using the `createElement` function is quite large and should
+    only be used in small portions.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The other way to generate data on a table like this, but without the use of
+    the `createElement` function, is to use the `innerHTML` property. This property
+    provides a simple way to completely replace the contents of an element and assign
+    values in the same manner as assigning value to a variable. When the `innerHTML`
+    property is used, you can change the page''s content without refreshing the page.
+    This can make your website feel quicker and more responsive to user input. This
+    property can also be appended using the `+=` append operator. Knowing this, we
+    can structure our code base in a slightly different way. What we are doing is
+    shown in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Working with the createElement function](img/7296OS_07_03.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: The layout for this should be pretty similar to our `createElement` function
+    example. On line 21, we have the same `datainsert` div; on line 25 our `Anonymous
+    function` is started off. Now on line 28, we see something quite different; here,
+    we can see the start of a string variable called `tableContents`, with the start
+    of an HTML table with the same properties as that of the preceding example set
+    to it. This is just like what we did using the `createElement` function except
+    that we used just a JavaScript string of HTML markup rather than a DOM object
+    this time.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Next on line 30, we start our `for` loop and append the `tableContents` string
+    with an appended string adding in our table row and table cell, with the for loop's
+    iteration count inserted into the cell, again counting 10,000 times.
+  prefs: []
+  type: TYPE_NORMAL
+- en: When the loop is finished on line 35, we append our string with the closing
+    brackets for our table. Finally on line 37 and 38, we use the `innerHTML` property
+    and write our table into the `innerHTML` property of the `datainsert` div element.
+    Let's run this example in a browser and take a look at its processing time.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Working with the createElement function](img/7296OS_07_04.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: This time our table's render time is roughly 40 milliseconds, which is almost
+    four times faster than we would get if we used the `createElement` function. Now
+    that's a great speed improvement! And it's even visually faster in Chrome as well.
+  prefs: []
+  type: TYPE_NORMAL
+- en: When to use the createElement function?
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Though the `createElement` function is slow, on occasion it can be more helpful
+    in generating HTML through a complex layout, where a complex application generates
+    many more elements than an `innerHTML` property can be styled to accommodate.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If this is the case, this is done more for convenience and usability for the
+    development team when modifying the element's type rather than for updating a
+    full string to fit the needs of the application. In any case, if you need to create
+    HTML elements, the `innerHTML` property is always faster.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Animating elements
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: One of the more impressive uses of JavaScript came around the *Web 2.0* age
+    of JavaScript while AJAX was gaining popularity; another interesting idea came
+    about in the form of JavaScript animations. These are animations that are created
+    by simply iterating over and over an element's styles that are left- and top-positioned
+    using a `setInterval` function, and then dismissing it after the element reached
+    its end point. This allows the div to appear to tween or animate on the page itself.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Animating the old-fashioned way
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Most JavaScript developers are familiar with doing animations using jQuery,
+    the popular DOM manipulation library for JavaScript, using the `animate` function
+    to create DOM animations. But, as we are talking about pure JavaScript in this
+    book, let''s take a look at an example of how to build this from the ground up.
+    Check out the code in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Animating the old-fashioned way](img/7296OS_07_05.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: In this example, I've simply created a WebKit-friendly animation using just
+    JavaScript, (meaning this will only display properly in the Google Chrome and
+    Apple Safari browsers). On line 7, we set up some basic styles including a black
+    dot div element with the `id` set as `dot`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Now on line 27 and 28, we declare the `dot` and `i` variables respectively.
+    Then, on line 31, we create a variable called `interval`, which is actually a
+    parameter passed to the `setInterval` function. In the case of this code, it''s
+    for every millisecond, which is shown on line 38\. Inside the `setInterval` function
+    we increment the `i` variable''s count by `1`, and update the position of the
+    `dot` element. Finally, when the value of the `i` variable is strictly equal to
+    `450`, we dismiss our interval variable using the `clearInterval` function, which
+    stops the `setInterval` function from processing any further. If we look at this,
+    we can see a simple animation tween using pure JavaScript in our browser. This
+    is shown in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Animating the old-fashioned way](img/7296OS_07_06.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Now, you may think that creating a `setInterval` function in this manner may
+    be a cause of concern, and you might be correct. Fortunately, we as developers
+    now have an alternative when it comes to creating animations like this for our
+    HTML5 applications!
+  prefs: []
+  type: TYPE_NORMAL
+- en: Animating using CSS3
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Let''s rebuild this example using CSS3 and JavaScript only to trigger the animation.
+    Again, we will simply style for WebKit-focused browsers, just for simplicity.
+    Let''s take a look at the updated code sample shown in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Animating using CSS3](img/7296OS_07_07.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: With this example, we can see that our JavaScript has much fewer lines, and
+    that's a good thing; it keeps our content styles purely CSS-based rather than
+    styling content using JavaScript logic.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now, on the JavaScript side, we can see that we are using the same kind of `Anonymous
+    function` on line 39, except that we are setting a timeout to trigger the `dot`
+    element to add an active class property that triggers the animation in CSS3\.
+    This is shown on lines 19 through 30 in our example
+  prefs: []
+  type: TYPE_NORMAL
+- en: An unfair performance advantage
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'In many code examples in this book, I''ve used `console.time`, and `console.timeEnd`
+    to review performance, and this example is no exception. You may have noticed
+    that I''ve wrapped each animation example in a `time` and `timeEnd` function to
+    measure the processing timeAs we can see in the following screenshot, it''s a
+    bit one-sided:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![An unfair performance advantage](img/7296OS_07_08.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: As we can see in the preceding screenshot, the JavaScript processing time is
+    roughly 1,900 milliseconds, and the CSS3 animation is around 0.03 milliseconds.
+    Now, before we conclude that the CSS3 method is better, we must bear in mind that
+    we are using CSS3 only to render the page, and JavaScript is handling only the
+    trigger of the animation. It's still more efficient, but it should be noted that
+    JavaScript handles less code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Now for newer browsers, this is the recommended way of building content animations
+    given the performance improvements seen thus far, whether made by JavaScript or
+    not. However, some projects require older browser support, where projects may
+    not have access to CSS3 transitions and animations, or we''re upgrading a part
+    of an application''s animation while still maintaining compatibility. Here''s
+    one way of doing just that while using the same JavaScript-based animation as
+    earlier:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![An unfair performance advantage](img/7296OS_07_09.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Here we've modified our initial JavaScript example by updating the position
+    of the `dot` element; however, we've added two CSS lines on lines 17 and 18\.
+    The first one is a `-webkit-transform` and `translate3d` property that only sets
+    the element to not change position; in older browsers or non webkit-focused browsers,
+    this property will be ignored. But here it's simply setting the position of the
+    element to its initial position, which sounds silly, and in a way it is!
+  prefs: []
+  type: TYPE_NORMAL
+- en: What this really does is tell the DOM runtime that this needs to run as a unique
+    graphics process; it also tells the **graphics processing unit** (**GPU**) on
+    the browser's device to draw this element fast! The same can be said for `will-change`,
+    which is a similar property that does the same thing as the `translate3d` property
+    with the exception that it's not updating the position but simply telling the
+    GPU to redraw this element at a very high rate and to expect it to change in the
+    DOM. Now, this practice is called adding elements to a composite layer. We will
+    get more into composite layers in [Chapter 9](ch09.html "Chapter 9. Optimizing
+    JavaScript for iOS Hybrid Apps"), *Optimizing JavaScript for iOS Hybrid Apps*.
+    But for now, this is what we are doing here; this way, newer browsers can still
+    get some visual speed improvements using legacy JavaScript animations.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Understanding paint events
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Paint events are DOM events that cause a web browser to paint the web page as
+    the DOM is updated with JavaScript. For browsers with low memory, this can be
+    a bit of an issue as paint events take a sizable amount of processing and graphics
+    rendering to show updates in large quantities.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to check for paint events?
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Typically, paint events can be found in your Web Inspector's timeline view.
+    Since paint events are displayed chronologically during a page's execution in
+    a web browser, these appear slightly differently in Chrome's **Developer tools**
+    options.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Open Chrome''s **Developer tools** options and click the drawer icon (it''s
+    the icon next to the gear icon on the upper right of the **Developer tools** options).
+    Next, open the **Rendering** tab in the drawer, and click **Show paint rectangles**
+    option. Once that''s finished, refresh the page. We will see the page highlighted
+    green in various areas as the page loads. These are paint events in action as
+    they are loaded on screen. Here''s an example using our animation and showing
+    paint rectangles enabled in Chrome''s **Developer tools** options:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How to check for paint events?](img/7296OS_07_10.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Notice how the green square appears on page load and again when the animation
+    finishes. This happens because the DOM only repaints the browser window on page
+    load or when an animation ends.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Occasionally, projects can create pretty complex animations using JavaScript
+    alone. To spot errors with our JavaScript logic and ensure that a paint event
+    isn't causing an issue, we can use the continuous page repainting feature inside
+    Chrome's **Developer tools**.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Testing paint events
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'To test this, we''ve set up a JavaScript animation with a built-in bug as shown
+    here:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Testing paint events](img/7296OS_07_11.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Much of this should seem pretty similar to earlier animations we've built in
+    this chapter. But if we take a look at lines 35 through 38, we can see that we
+    have a conditional `else if` statement checking to see if our increment variable
+    `i` is within the 250-258 range count; if so, the `left` `style` is removed from
+    the `dot` element.
+  prefs: []
+  type: TYPE_NORMAL
+- en: When we run this, we should encounter a flicker right the animation hits this
+    point. We can verify whether this is truly a JavaScript issue by enabling continuous
+    page repainting in Chrome's **Developer tools**.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To do this, open the **Developer tools** options, open the drawer, and click
+    the **Rendering** tab in the drawer. Then we can check the **Enable continuous
+    page repainting** and **Show paint rectangles** options. When we do this, our
+    web page should show a green overlay and display an information box in the upper
+    right of our browser window. This is shown in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Testing paint events](img/7296OS_07_12.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Now, when we reload the page and the animation is replayed, our `dot` element
+    should show a green box drawn around it during the whole animation this time.
+    This is Chrome forcing the page to constantly redraw as the animation updates.
+    As we can see, the box is still on the dot even when we hit our premade bug, indicating
+    a JavaScript issue. If this was a true paint issue, the box would disappear when
+    a redraw issue occurs.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Pesky mouse scrolling events
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Paint events (or a lack thereof) are not the only issues when it comes to web
+    application performance when you're working with JavaScript. Scrolling events
+    applied to a browser window or document can cause havoc on an application; it's
+    never a good idea to continuously trigger events by scrolling a mouse, let alone
+    multiple events.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If we're coding an application, we know whether our application has one or many
+    events added. But if we are handed a web application to update, there is a tool
+    in Chrome's **Developer tools** that lets us visually check for scroll events.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s create a quick example to show how this feature works and what it looks
+    for when trying to optimize the DOM interface. For this, I''ve created a `mousewheel`
+    event that will capture the *X* and *Y* coordinates of a mouse pointer''s position
+    with respect to the page, and print that to an input field with an `id` set as
+    `txtfield`; it will trigger every time I move the mouse wheel. Let''s take a look
+    at the following code sample:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Pesky mouse scrolling events](img/7296OS_07_13.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: We can see here that the page itself is pretty light but, on line 23, we can
+    see the `mousewheel` event listener in play adding a continuous event using the
+    `getMouseLocation` function on line 26\. Then on line 27, our input field with
+    an `id` of `txtfield` is assigned a string with the mouse event information, grabbing
+    the mouse pointer's `X` and `Y` coordinates and applying it to the value of `txtfield`.
+    Now let's see **Developer tools** highlight performance issues with scrolling.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Open up the drawer, open the **Rendering** tab, and then click **Show potential
+    scroll bottlenecks**. This will highlight the block areas that have scroll events
+    assigned in JavaScript; here''s what our example looks like with the filter enabled:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Pesky mouse scrolling events](img/7296OS_07_14.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'Now, this by itself isn''t too bad when it comes to performance, but applications
+    with multiple mouse movement events can potentially cause issues, even more so
+    if the movement areas overlap. If we add the same event listener to the text area
+    and remove the listener from the document, will we see multiple instances of the
+    scroll listener showing in our **Developer tools** filter? Let''s find it out
+    by looking at the output of the final example file for this chapter, `07_08.html`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Pesky mouse scrolling events](img/7296OS_07_15.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Nope! As we can see, even when a `mousewheel` event is enabled on a single element,
+    the entire page becomes highlighted. As the `mousewheel` event can be checked
+    at the top of the DOM, the whole page is affected even if an application focuses
+    only on one small element for a `mousewheel` event.
+  prefs: []
+  type: TYPE_NORMAL
+- en: So it's important to keep in mind `mousewheel` events, as they can potentially
+    slow down your page's performance.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this chapter, we covered how JavaScript can affect the DOM's performance;
+    we reviewed the `createElement` function and learned how to better write our JavaScript
+    to optimize generating elements from code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We also reviewed JavaScript animations, and compared their performance to modern
+    CSS3 animations. We also learned how to optimize existing or legacy JavaScript
+    animations.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Lastly, we reviewed paint events in the DOM and saw how the DOM redraws its
+    content after JavaScript manipulates it; we also covered `mousewheel` events and
+    saw how they can potentially slow down the DOM.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In the next chapter, we will take a look at JavaScript''s new best friend for
+    performance: *web workers*, and how we can make JavaScript perform like a multithreaded
+    application.'
+  prefs: []
+  type: TYPE_NORMAL

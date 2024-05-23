@@ -1,0 +1,1298 @@
+- en: Chapter 5. Putting the Test Plan Into Action
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Welcome to the fifth chapter. This chapter is pretty straightforward; we basically
+    put the plan discussed in [Chapter 4](ch04.html "Chapter 4. Planning to Test"),
+    Planning to Test, into action.
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Heres how we are going to implement our test plan. Well first start by testing
+    the expected and acceptable values, and follow this by testing the expected but
+    unacceptable values. Next, well test the logic of our program. Lastly, we'll perform
+    integrated testing and testing of unexpected values or actions.
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: 'Apart from performing the above tests, here''s what we will also cover in this
+    chapter:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Regression testing in action—youll learn how to perform regression testing by
+    fixing bugs and then testing your program again
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The differences between client-side testing and server-side testing
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How using Ajax may make a difference to testing
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: What to do when a test returns a wrong result
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: What happens if your visitor turns off JavaScript
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to enhance performance by compressing your JavaScript code
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: So let us get our hands dirty, and start testing right away.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Applying the test plan: running your tests in order'
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this section, we'll simply apply the test plan to our program. For simplicity's
+    sake, we will record any bugs or errors in the Bug Report Form found in the sample
+    test plan from the previous section. In addition to that, at the end of each test,
+    we will record a Pass or Fail text in the `sample_text_plan.doc`, which we created
+    in the previous chapter. However, take note that in the real world (especially
+    if you are working on a custom project for your client), it is extremely important
+    that you document the results, even if your tests are correct. This is because,
+    very often, producing the correct test results is part and parcel of handing over
+    the code to your client.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Just a reminder—the test plan that we are going to use was created in the previous
+    chapter. You can find the test plan in the `source code` folder of [Chapter 4](ch04.html
+    "Chapter 4. Planning to Test"), entitled `sample_test_plan.doc`. If you are in
+    a hurry and would like to see the entire completed test plan where all tests have
+    been carried out already, head to the `source code` folder of [Chapter 5](ch05.html
+    "Chapter 5. Putting the Test Plan Into Action") and open up `sample-testplan-bug-form-filled.doc`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In case you do not wish to flip the pages or open up your computer just to
+    see the list of the tests, the list of tests are as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Test Case 1
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Test Case 1a: White Box Testing'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Test Case 1b: Black Box Testing'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Test Case 1bi: Boundary Value Testing'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Test Case 1bii: Testing for illegal values'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Test Case 2: Testing Program''s logic'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Test Case 3: Integration Testing'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Test Case 3a: Testing the entire program with expected values'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Test Case 3b: Testing the robustness of the second form.'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: With this in mind, let us proceed to the first test.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Test Case 1: Testing expected and acceptable values'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Testing expected and acceptable values refers to the white box test phase. We
+    will now execute the test as per our plan (this is First test scenario).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Time for action—Test Case 1a: testing expected and acceptable values by using
+    white box testing'
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this section, we will start our test by using values that we have predetermined
+    during the planning phase. The source code that you are using for this part of
+    the chapter is `perfect-code-for-jslint.html`, which can be found in the `source
+    code` folder of [Chapter 3](ch03.html "Chapter 3. Syntax Validation"). What we
+    will do here is enter the expected and acceptable values. We will start testing
+    by using the input values for input value case 1 as per our sample test document.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Open the source code in your favorite web browser.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: When you open your program in your web browser, the focus should be on the first
+    input field. Enter the name **Johnny Boy** as per our plan. After you have entered
+    **Johnny Boy** in the first input field, go on to the next field.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: As you change your focus to the next field, you will see a new input field appearing
+    on the right-hand side of the original input field that contains the value you
+    have entered. If this happens, then you have received a correct and expected output
+    for the first input. If you do not understand what this means, feel free to refer
+    back to [Chapter 4](ch04.html "Chapter 4. Planning to Test"), *Planning to Test*,
+    and look at the screenshot given for the expected output.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: For the second input, we are required to enter a place of birth. Enter **San
+    Francisco**, as per the plan. Click on (or tab to) the next field.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Similarly to the first input field, after you move to the next field you will
+    see a new input field containing your input value. This means that you have the
+    correct output at this point.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: This step is similar to the above step, except that the input value is now a
+    number. Enter your age as **25**. Then move on to the next field. You should also
+    see a new input field on the right.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Now repeat the previous steps for the remaining fields for the form on the left.
+    Repeat this action until you see a **Submit** button appearing in the middle of
+    the screen.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: If a new input field is dynamically created for each of your input, and each
+    of the new input fields created dynamically contains the exact same input that
+    you have entered, then you have received the correct output. If not, the test
+    has failed. However, based on our tests, we have received the correct output.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Now, refresh the page in your browser, and repeat the test for the input values
+    found in input value Case 2\. You should also receive the correct output.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Assuming that both test cases produce the correct output, then congratulations,
+    there are no bugs or errors found in this phase of the test. There isn't anything
+    special or tedious in this part of the test because we already knew that we would
+    receive the expected output based on our input. Now, we will move to something
+    more exciting—testing expected but unacceptable values.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Test Case 1b: Testing expected but unacceptable values using black box testing'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In this section, you will continue to execute our test plan. As you continue
+    with the tests, you will see that our program is not robust enough and has some
+    inherent errors in it. You will learn that you will be required to take note of
+    these; the information will be used later when we debug the program (this is second
+    test scenario).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Time for action—Test case 1bi: testing expected but unacceptable values using
+    boundary value testing'
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: For this part of the test, we will continue to use the same source code as we
+    have used in the previous section. We'll start by performing boundary values testing.
+    Therefore, we will begin the test by using the "minimum values", followed by "maximum
+    values". We will skip the common values test case as that was similar to what
+    we did in the previous test.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Once again, refresh the page in your web browser.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: We'll first enter a single character **a** for the input field of **name**.
+    After you have entered the value, use your mouse to click on the next input field.
+    You should see an input field dynamically created on the right-hand side of the
+    first input field, as for the previous test.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: The output for this test is similar to what you have seen and experienced in
+    the previous test. What we are trying to test for is whether the program accepts
+    a minimum value. For this phase of the test, we naïvely chose to accept a single
+    character as an acceptable input. Because this is acceptable, we should see an
+    input field that contains the value of a dynamically generated on the right-hand
+    side of the original input field. If you see that, you have the correct output.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Similarly, we will enter a single character **a** for the input field for **place
+    of birth**. After you have entered the value, use your mouse to click on the next
+    input field. You will see an input field dynamically created on the right-hand
+    side of the first input field, as seen in the previous test.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: You should also receive the correct output for this input value. Now let us
+    move on to the next input value.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: We'll now enter the number 1 as planned for the input field age. Similarly,
+    after you have entered the value, move the focus to the next input field.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: We'll repeat the test by entering the values as planned.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'In general, we should not receive any errors at this point of the test. Similar
+    to the first test which we have performed earlier, we should see familiar output
+    for each of the inputs. However, I would like to point out an important point
+    for this phase of the test:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: We have naïvely chosen a minimum value that might not be practical. Consider
+    the various input fields that accept a single character value. To a large extent,
+    our original program logic doesn't seem to suit the real world cases. In general,
+    we should expect to have at least two or three characters for input fields that
+    accept character values. Therefore, we will take this as a bug in our program
+    and we'll take note of this on our "Bug Report Form". You may open the `sample-testplan-bug-form-filled.doc`
+    document and see how we can take note of this flaw.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Now that we have cleared the minimum values test case, it is time to move to
+    the next test case—maximum values.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: As usual, refresh your web browser to clear all of the values that were previously
+    entered. We'll now begin by entering an extremely long string, of more than 255
+    characters.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: As explained earlier, we should also receive a similar output—a dynamically-generated
+    input field that contains our input value.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Similarly, enter the values for the remaining input fields using long strings
+    or large values. You should not face any errors.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: While we do not have any obvious errors, you may have noticed that we have a
+    similar problem to the one we experienced earlier on. Our program does not have
+    a boundary value for maximum values as well. It appears that if you try to enter
+    values that are larger than your maximum values, the program will still accept
+    them, as long as the values are not illegal. Similarly, if you try to enter a
+    string that is more than 200 characters, the program will still accept it because
+    it is a legal value. This means that our program does not limit the maximum number
+    of characters that a user can enter. This can be regarded as a bug. We'll also
+    take note of this programing error in our Bug Report Form. You might want to pop
+    over to have a look on how we recorded this error. Now that we have completed
+    the first phase of our test for expected and unacceptable values, it is time to
+    move on to the second phase of this test—testing for expected illegal values.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Time for action—Test case 1bii: testing expected but unacceptable values using
+    illegal values'
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: There are three input cases for this phase of the test. What we will do in the
+    first case of the test is enter numeric values for input fields that require character
+    inputs and vice versa.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Input Case 1:'
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: We'll once again refresh our browser to clear out the old values. Next we'll
+    begin to enter the expected illegal values. For the "name" input field, we'll
+    enter a digit. This can be any number, such as "1". Go on and test it. After you
+    have entered the digit, try to move your mouse cursor to the next input field.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: As you attempt to shift the focus to the next input field, you should see an
+    alert box telling you that you have entered an incorrect type of value. If you
+    see the alert box as per our test plan, then there is no error at this point.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: In order to test the next field, we will need to enter a correct value for the
+    first field before we can move on to the next field. Alternatively, we can refresh
+    the browser and go directly to the second field. Assuming that you are using the
+    first method, let us enter a hypothetical name, **Steve Jobs**, and move on to
+    the next input field. Similarly, well try to enter a digit for the **place of
+    birth**. After you have entered a digit for the input field, try to move to the
+    next field.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Once again, you will see an alert box telling you that you have entered an invalid
+    input and that you need to enter a text input. So far so good; there are no errors
+    or bugs, and we can continue to the next field.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Well need to either refresh the browser and go directly to the third field,
+    or we will need to enter valid values for the **name** and **place of birth**
+    fields before we can move on to the third field. Regardless of the method used,
+    we'll try to enter a string for the **age** field. Once you have done that, attempt
+    to move on to the next input field.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: You will get an alert box again, telling you that you have entered an input
+    of the wrong type. This is as per the plan, and is expected. Therefore, no errors
+    or bugs yet.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Repeat the previous steps for the remaining fields, and attempt to move on to
+    the next field as you enter the expected but illegal values.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: For all of the remaining fields, you should receive alert boxes telling you
+    that you have entered an input of the wrong type, which is what we expect and
+    have planned for.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Input Case 2:'
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: Now that we have completed the first test scenario, it is time to move on to
+    the second test scenario, where we try to enter non-alphanumeric values.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The testing process is fairly similar to the first test. We will first refresh
+    the browser, and then immediately enter the non-alphanumeric values for the first
+    input field—the **name** input field. As per our plan, we will enter **~!@#$%^&*()**
+    as the input, and then attempt to move on to the next input field.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: For the first input field, which requires a character input, you should see
+    an alert box telling that only text input is allowed. If you see that, then our
+    program works as planned. Now let us move to the next step.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: For the next input field, we'll repeat the previous step and we should expect
+    the same output as well.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Now for the third input field, we proceed to enter the same non-alphanumeric
+    input values. The only difference we should expect for this step is that the alert,
+    which informs us that we have entered a wrong input, will tell us that we need
+    to enter digits and not text.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: We repeat the previous steps for the remaining fields, and in general we should
+    expect to see an alert box informing us that we need to either enter text or enter
+    digits, depending on which input field it is. If this is the case, then all is
+    well; there are no related errors or bugs for this test scenario.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Input Case 3:'
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: Now it is time to perform the third test scenario, where we enter negative values
+    for input fields that require numerical inputs.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Once again, we'll refresh the browser to clear the old values. We'll proceed
+    to enter the values as planned for the first two input fields. We will enter **Johnny
+    Boy** and **San Francisco** for the input fields of **name** and **place of birth**,
+    respectively.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Once you have performed the previous step, enter **-1** for the remaining input
+    fields. As you enter **-1** for these fields, you should see that our program
+    does not detect negative values. Instead, it gives an incorrect response telling
+    us that we should enter digits.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: In reality, our program should be robust enough to spot negative values. However,
+    as shown in the previous tests, our program appears to have the incorrect response
+    to an illegal value. Our program does spot the error, but it returns an incorrect
+    response. The response given is an alert box, telling you that the input must
+    be a digit. This is technically incorrect, because our input is a digit, albeit
+    a negative one.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: This means that our program does spot negative values, but it returns an incorrect
+    response. This means that we have a serious bug here. We need to take note of
+    this bug in our sample documentation by documenting this error on the "Bug Report
+    Form". You may make a look at how I have documented this in the `sample test plan`
+    document.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Whew! This subsection is kind of long and tedious. That's right, testing can
+    be tedious, and by now you should see that a good program design will incorporate
+    the issues that we tested in this section. You will notice that, at least for
+    our purposes here, checking of the input values to make sure that the input is
+    what we need is fundamental to our program's success; if the input values are
+    wrong, there is no point in testing the remaining program, as we are almost certain
+    to receive a wrong output for a wrong input.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Test Case 2: Testing the program logic'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In this subsection, we will attempt to test the robustness of the program in
+    terms of the program logic. Although we have somewhat tested the program logic
+    by ensuring that the input is correct, there is one more aspect that we need to
+    test according to our test plan, and that is the present age and the retirement
+    age.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Time for action—testing the program logic
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'In general, we will attempt to enter a retirement age that is less than the
+    current age. Now let us test the robustness of the program:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let us refresh the browser, and then we'll enter the values as per our plan.
+    Well first enter **Johnny Boy** and then **San Francisco** for the input fields
+    of **name** and **place of birth**, respectively.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Now, take note of this step: we will now enter **30** for **age** and continue
+    with the other fields.'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: When you reach the input field **age at which you wish to retire**, you will
+    want to enter a value that is less than the **age** field. As per our test plan,
+    we will enter **25**. After this, we will attempt to move on to the next field.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Because we were able to successfully move on to the next field, this means that
+    our program is not robust enough. Our program should not accept a retirement age
+    value that is less than the present age value. Therefore, even if our program
+    does produce a final outcome, we can be sure that the output is not what we want,
+    because the logic is already incorrect.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: As such, we will need to take note of the logical error found in this phase
+    of the test. Well take note of this on the Bug Report Form once again. Now we
+    will move on to the final stage of our test.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Test Case 3: Integration testing and testing unexpected values'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We have reached the final phase of our test. In this subsection, we will move
+    on to integrated testing by first testing the whole program by using expected
+    and acceptable values, followed by breaking the flow of form submission by changing
+    the values of the second form.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Time for action—Test Case 3a: testing the entire program with expected values'
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'There are four sets of test values for the first test. In general, we will
+    enter all values, and then submit the form to see if we are getting the response
+    that we are expecting: the input values for input Case 1 and input Case 3 will
+    result in an output stating that the user is not able to retire on time, and the
+    input values for input Case 2 and input Case 4 will result in an output stating
+    that the user will be able to retire on time. With that in mind, let us start
+    with the first set of input values:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Going back to your web browser, refresh your program, or re-open the source
+    code if you have closed the program. We''ll enter the values as planned: **Johnny
+    Boy** and **San Francisco** for **name** and **place of birth**.'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Next, we'll enter **25** for **age** and then **1000** for **spending per month**.
+    Well repeat these steps for the remaining values, until we see the **Submit**
+    button that is dynamically generated on the second form.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Once you see the **Submit** button, click on the button to submit the values.
+    You should see some text being generated in the **Final Response** box. If you
+    see that the output contains the name, retirement age, the correct output value
+    for the required amount of money we need to retire, and more importantly the response
+    **you will be able to retire by 55 years old**, as shown in the following screenshot,
+    then there are no bugs in the program.![Time for action—Test Case 3a: testing
+    the entire program with expected values](img/0004_05_01.jpg)'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Now let us move on to entering the values for Case 2\. Similarly, well refresh
+    the browsers, and then begin to enter all of the values as planned.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'When you see the **Submit** button that is created dynamically, click on the
+    button to submit the form. In this test case, you will see that the user will
+    not {kind of crucial difference!} be able to retire on time, as shown in the following
+    screenshot:![Time for action—Test Case 3a: testing the entire program with expected
+    values](img/0004_05_02.jpg)'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: If you receive the output as shown in the previous screenshot, then there are
+    no errors up to this point. So let's move on to the input values for the third
+    case.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Refresh your browser again, and then start entering the values as planned. The
+    values to take note of include the **salary per month** and **age at which you
+    wish to retire**. In general, we have set the values in order to test if we can
+    create the output to either be able to retire on time or be unable to retire on
+    time.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Continue entering values until you see the **Submit** button that is dynamically
+    generated. Click on the **Submit** button to submit the form. You will see the
+    output as shown in the next screenshot:![Time for action—Test Case 3a: testing
+    the entire program with expected values](img/0004_05_03.jpg)'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: If you received the previous output, then there are no errors or bugs.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Now, let us move on to the final case—case 4\. We'll basically repeat the steps
+    as done previously. I just need you to take note of the input values of **salary
+    per month**. Notice that the input value is **100000**, and that the retirement
+    age did not change. We are trying to simulate a situation where the user will
+    be able to retire on time.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Continue to enter the values until you see the **Submit** button that is dynamically
+    generated. Click on the **Submit** button to submit the form. You will see the
+    output as shown in the next screenshot:![Time for action—Test Case 3a: testing
+    the entire program with expected values](img/0004_05_04.jpg)'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Once again, if you received the output shown in the previous screenshot, then
+    you have received the correct output. And with this, we have completed the first
+    part of this test phase.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: In general, we have tested the whole program to see if we are getting the expected
+    output. We used different values to generate the two possible outputs of being
+    able to retire on time or being unable to retire on time. Not only have we have
+    received the correct output, we have also tested the robustness of our functions
+    in terms of calculating the outcome.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: With the previous factors in mind, it is time to move on to the second phase
+    of the test—testing the robustness of the second form.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Time for action—Test Case 3b: testing robustness of the second form'
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: If you have been following me right from the first chapter, you may have noticed
+    that we have have only disabled the input fields for the form on the left, and
+    not the input fields on the right. Apart from doing it deliberately, to show you
+    different aspects of JavaScript coding, we have set it up such that we can demonstrate
+    to you other aspects of integrated testing. So now, well attempt to change the
+    values of the dynamically-generated form and see what happens.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Well first refresh the browser, and then begin entering the input values according
+    to the plan. After you have finished entering all of the values, change the values
+    in the second form as per the test plan.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Now, submit the form, and you will see the output as displayed in the next
+    screenshot:![Time for action—Test Case 3b: testing robustness of the second form](img/0004_05_05.jpg)'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Oops! Apparently, there is a fatal flaw in our program. There is no checking
+    mechanism or whatsoever for our second form. The second form is present in case
+    our users may want to change the values. Right from the start, we naïvely chose
+    to believe that the user will enter legal and acceptable values on the second
+    form, should they choose to change their input. Now that we know this might not
+    be the case, we'll make a note of this on our Bug Report Form".
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: What just happened?
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In general, we have executed the entire test plan. Along the way, we have uncovered
+    bugs and errors that we will be fixing later. You may find the steps repetitive;
+    that is true testing can be repetitive sometimes. But, luckily, our program is
+    quite small and hence testing it is manageable.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now that we have completed the test, it is time to think about what we can do
+    about those errors. We'll start talking about this in the next section.
+  prefs: []
+  type: TYPE_NORMAL
+- en: What to do when a test returns an unexpected result
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'In general, when a test returns an unexpected or incorrect result, it means
+    that there is a bug or error in our program. Based on our tests, you must certainly
+    have noticed that there are weak points in our program. The weak points or errors
+    that resulted in a test returning an unexpected result are as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Our program does not support negative values
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The code that we have written does not support boundary values (both maximum
+    and minimum values)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The second form does not check for correctness in the input values; if we make
+    any changes to the values in the second form, the program fails
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: These points mean that our code is not robust enough and we need to fix it;
+    we will do this right away in the next section.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Regression testing in action
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this section, we will get our hands dirty by performing regression testing.
+    We will attempt to simulate a situation that warrants regression testing by writing
+    code that fixes the errors found when we initially applied our test plan. After
+    writing the code, we will first test the code that we have written, after which
+    we will test the entire application to see if it works in coherence.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Time for action—fixing the bugs and performing regression testing
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: We'll fix each of the bugs that we've uncovered, one by one. We'll start by
+    writing a function that allows our program to support boundary values. The completed
+    source code, where all of the errors have been corrected, is found in `Chapter
+    5` of the `source code` folder, and is entitled `perfect-code-for-JSLInt-enhanced.html`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Before we move on to the actual coding process for the first bug, let us think
+    about what we can do to support boundary values.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Firstly, if we go back to our sample test plan, you will notice that in our
+    "Bug Report Form", we have documented that we can try to change the function that
+    checks for form input such that it can check for minimum and maximum values. For
+    simplicity's sake, we will enable boundary values by checking the length of the
+    input. For example "Neo" would mean that there are three input characters and
+    "1000" would have four input digits.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Secondly, because the checking of the input of the first form is done at `submitValues()`,
+    we''ll attempt to add in the required checking mechanism of this function. With
+    that in mind, we can start the coding process:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Open the original source code that we wrote in [Chapter 3](ch03.html "Chapter 3. Syntax
+    Validation"), *Syntax Validation*, in your favorite source code editor, and look
+    for the function `submitValues()`. Next, add the following code after the `debuggingMessages()`
+    function:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: What happened in the previous code is that we have added in a few `if` statements.
+    These statements check for the type of input via the `.name` property, and then
+    check to see if it is more than the minimum input or less than the maximum output.
+    We have set a minimum input length of three characters and a maximum input characters
+    of less than 100 length for text inputs. For input that requires numerical inputs,
+    we have set a maximum input length of 10 digits. We did not set a minimum input
+    length since it is possible that the user may not have any income.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Save your file and test the program. Try entering less than three characters
+    or more than 100 characters. You should receive an alert box showing that you
+    have too large or too small inputs. Similarly, test the input fields that require
+    numerical inputs and see if the program detects an input length of more than 10
+    digits. If you have received the correct alert boxes for each of the different
+    cases, then you have fixed the error.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Now that we have fixed the issue regarding boundary values, it is time to move
+    on to the next error that we have documented on our "Bug Report Form", which is
+    the third error (bug number 3 in our `sample-testplan-bug-form-filled.doc`) that
+    we uncovered, which relates to negative values.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: The error is that our program sees a negative input as a non-digit value and
+    produces a wrong output message of input must be digit. Therefore, in this case
+    we would need to fix this error by tracing back to the source of the problem—the
+    functions that are responsible for checking the input.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Take note that the function that checks the input is `submitValues()`.Now,
+    let us move to the actual coding process:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Go back to your source code and start with the `submitValues()` function. We''ll
+    need to have a mechanism that checks for negative input, and this will have to
+    return the correct output, which says that **input must be positive**. So here''s
+    what we can do:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: By adding the above code, you will be able to check for negative values. The
+    above code should be placed within the `submitValues()` function, and before the
+    `if` statement which checks for the length of the input.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Save your program and test it. Upon encountering fields that require numeric
+    inputs, try entering a negative value, say **-1**. If you receive an alert box
+    stating that **input must be positive**, then we have done it right.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'The code for `submitValues()` should include the following lines shown below:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: The lines in the previous snippet are those lines that we added in this subsection.
+    Because we have made sure that we are on the same frequency, we can move on to
+    the fourth error (bug number 4 in our `sample_test_plan.doc`), which is regarding
+    the program logic.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: At the start of this chapter, we found out that our program does not detect
+    that the retirement age can be smaller than the user's present age. This can be
+    fatal for our program. Therefore, we need to add a mechanism that makes sure that
+    the retirement age is greater than the user's present age.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Because the issue lies with the checking of inputs, we will need to turn our
+    attention to `submitValues()`.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Let us go back to the source code, and add the following code to `submitValues():`
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: You should enter this code prior to the code done up in the previous subsection.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Now, go ahead and test your code. Try entering a retirement age that is less
+    than the current age. You should receive an alert message that says retirement
+    age must be larger than age.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'If you received this alert, then congratulations, you have got it right! Once
+    again, to quickly sum up this section and to make sure that we are on the same
+    page, `submitValues()` should include the lines of code as shown next:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Now let us move on to the last error (bug number 5 in our `sample-testplan-bug-form-filled.doc`)
+    that we have uncovered by checking the second form.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: We have created our JavaScript program such that as we enter the values for
+    each input field, a new input field is created dynamically. This means that after
+    all of the input fields have been completed, a new form will be created. In case
+    you didn't notice, the new input fields that are created allow users to change
+    their values.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: The issue here is that the user may change the input values in the new form,
+    which can result in fatal errors as we have no checking mechanisms in place to
+    check the values in the second form. So, we naïvely chose to believe that the
+    user will act accordingly, and only enter valid values. But obviously, we were
+    wrong.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Therefore, in order to check the second form, we would most likely have to create
+    a new function that checks the second form.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Although the second form is generated dynamically, we can still get the values
+    within those fields through the methods that we have learned so far. Remember
+    that because JavaScript has created the fields in the second form, these fields
+    technically exist in memory and are therefore still accessible.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: With that in mind, we'll need to create a function that works on these fields.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Open the source code, and scroll to the last function, which uses jQuery statements.
+    Before this function, create the following function:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Well first start by checking for empty values. Therefore here''s what we can
+    do to check for empty values:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: In general, we apply what we have learned in the third chapter by using `===`
+    instead of `==` when checking for empty values. We basically check the values
+    that are found in the dynamically-generated fields, and check to see if they are
+    empty.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Now that we have the code that checks to see if the fields are empty, it is
+    time to write code that checks for the correct type of input.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'We can apply the techniques learned in [Chapter 3](ch03.html "Chapter 3. Syntax
+    Validation"), *Syntax Validation*, to check for the correctness of the input.
+    In general, we are using regular expression, as we did in the previous chapters,
+    to check for the input''s type. Heres what we can do:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: For a complete version of the previous code, please check the `source code`
+    folder of *Chapter 5*, and refer to the file `perfect-code-for-JSLInt-enhanced.html`.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: However, remember that in the earlier debugging sessions we have created new
+    checking mechanisms in order to support boundary values, prevent negative values,
+    and to make sure that the retirement age is greater than the user's current age.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Because the second form may be changed, the previous errors can occur in the
+    second form as well. Therefore, we''ll need to add those checking mechanisms as
+    well. To see if you have done it correctly, check the `checkSecondCode()` function
+    in the `source code` folder for the file entitled `perfect-code-for-JSLInt-enhanced.html`.
+    Here''s a code snippet of `checkSecondCode()`:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: What just happened?
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We have now finished executing the entire test plan, including regression testing.
+    Notice that at each phase of the coding process we carried out small tests to
+    make sure that our solution works correctly; we have used unit testing once again
+    in our regression testing process.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Also note that we tested the program incrementally; we tested each new function
+    or code that we created and made sure that it worked correctly, before we moved
+    on to fixing the next error.
+  prefs: []
+  type: TYPE_NORMAL
+- en: By going through this process, we will have a much better chance of creating
+    good programs and will avoid introducing new errors into our code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Apart from performing regression testing as a part of an ongoing process as
+    our program changes, there are other important issues regarding the testing of
+    our program. Let us move to the first important issue—performance issues.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Performance issues—compressing your code to make it load faster
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: As I mentioned in [Chapter 4](ch04.html "Chapter 4. Planning to Test"), *Planning
+    to Test*, the performance of the code that we write is dependent on various factors.
+    Performance in general refers to the speed of the execution of your code; this
+    is dependent on the algorithms you use for your code. Because algorithm issues
+    are beyond the scope of this book, let us focus on something that is much easier
+    to achieve, like enhancing the programs performance by compressing your code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In general, after compressing your code, the file size of your code will be
+    smaller and hence lowers disk usage in the cache that is required to store the
+    code before execution. It also reduces the amount of bandwidth required to transfer
+    your JavaScript file from the web server to the client. So now, let us see how
+    we can compress our JavaScript code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'There are two ways in which we can go about doing this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: We can compress our entire program, which means that we will compress our CSS,
+    HTML, and JavaScript together.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: We can remove all of the local JavaScript and place it in an external file,
+    and then, compress only the external JavaScript. To keep things simple, I'll start
+    by using the first method.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Firstly, I want you to visit [http://jscompress.com/](http://jscompress.com/)
+    and copy and paste our source code into the input box. Theres an option called
+    "**Minify (JSMin)**". This option will compress HTML, CSS, and JavaScript all
+    together. Once you have copied the code into the input box, click on **Compress
+    JavaScript**.
+  prefs: []
+  type: TYPE_NORMAL
+- en: You will then see the page refresh and the minified code will be displayed within
+    the input box. Copy and paste that code into a new file, and then save it as `testing-compressed.html`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If you go to the `source code` folder, you will notice that I have already done
+    the compression process for you. Check the size of the file for `testing-compressed.html`
+    and the code that we wrote earlier. Based on the source code that we have, the
+    compressed version is 12KB, whereas the original version is 18KB.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Now let us try the second method—placing all of the JavaScript in an external
+    JavaScript file and compressing that. Heres what we will do:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Cut all of the JavaScript found between the`<head>` and`</head>` tags, and paste
+    it into a new document called `external.js`.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Save `external.js`, and also save your changes to the HTML document.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Go back to your HTML document, go to the`<head>` and`</head>` tags and insert
+    the following:`<script type="text/javascript" src="img/external.js">` between
+    them. Then save the file.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: So there you have it! We have compressed your code so that your code gets loaded
+    faster from the web server to the client side.
+  prefs: []
+  type: TYPE_NORMAL
+- en: It seems that we have managed to reduce the file size by compressing the code.
+    Of course, the difference is not that obvious because our code isn't much. However,
+    in reality code can go up to thousands or even tens of thousands of lines of code,
+    we have seen with the jQuery library. In such cases, code compression will help
+    to enhance performance.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: If you are a developer who is working under the terms of an Non-Disclosure Agreement
+    (NDA), there is a likelihood that you are not allowed to use any of the external
+    services that I have previously mentioned. If this is the case, you might want
+    to consider using Yahoo's YUI Compressor, which allows you to work directly from
+    the command line. For more information, visit [http://developer.yahoo.com/yui/compressor/#using](http://developer.yahoo.com/yui/compressor/#using).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Does using Ajax make a difference?
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Let me start by briefly explaining what happens when you are using Ajax. JavaScript
+    is part of the Ajax equation; the execution of JavaScript is responsible for sending
+    information to and loading information from the server. This is achieved by using
+    `XMLHttpRequest` object.
+  prefs: []
+  type: TYPE_NORMAL
+- en: When the sending and loading of data to and from the server is done using Ajax,
+    the testing responsibilities are different; you will not only have to test for
+    the various errors that we have covered in the previous chapters, but you will
+    also have to test if each error has resulted in the successful sending and loading
+    of information and the correct visual response to the user.
+  prefs: []
+  type: TYPE_NORMAL
+- en: However, because you are sending and receiving requests to and from the server,
+    you might have to perform some form of server-side testing. This brings us to
+    the next part of the topic—the difference between JavaScript testing and server-side
+    testing.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Difference from server-side testing
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: As mentioned in the previous section, when you are performing tests for Ajax,
+    you might have to perform server-side testing. In general, the concepts that you
+    have picked up to this point in the book can also be applied to server-side testing.
+    Therefore, conceptually, there should be little difference between JavaScript
+    testing and server-side testing.
+  prefs: []
+  type: TYPE_NORMAL
+- en: However, do take note that server-side testing typically includes serve-side
+    code and most probably includes databases such as MySQL, PostgreSQL, and others.
+    This means that the complexities involving server-side testing can take a different
+    form when compared to JavaScript testing.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Nonetheless, you will be expected to have a good understanding of the server-side
+    language used, the database used, and so on. This is the bare minimum for you
+    to get started with planning your tests.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'If you are performing server-side testing as a part of Ajax testing, you will
+    most certainly want to know about Hypertext Transfer Protocol response status
+    codes. These status codes are a way to determine whether your request was successful
+    or not. They even tell you what kind of errors occurred, should any occur. For
+    more information, visit: [http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html](http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html).'
+  prefs: []
+  type: TYPE_NORMAL
+- en: What happens if you visitor turns off JavaScript
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'We have briefly covered the issues of whether we should write applications
+    that support users who have had their JavaScript turned off. Although there are
+    different points of view on whether or not we should support such users, one of
+    the best ways, in my humble opinion, is that we should at least inform our users
+    that their browser does not support JavaScript (or that JavaScript is turned off)
+    and they might be missing out on something. In order to achieve this, we can use
+    the following code snippet:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: Note that we used the `<noscript>` tag, which is a way to show user's alternative
+    content when JavaScript is turned off or is not supported.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Now that we have almost reached the end of this chapter, you must be getting
+    the hang of it. Let us see if you can improve upon your skills by trying out the
+    following assignment.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Have a go hero—enhance the usability of our program
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Now that you have come this far, you might want to take a shot at this task—enhance
+    the usability of this program by doing the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Make sure that the user enters the required information, starting from the first
+    field to the last field.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The other issue that we might have with our program is that the user might click
+    on any input field other than the first one and begin entering the information.
+    Although this may not directly affect the correctness of our program, there might
+    be a chance that the result is not what we expect.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: With regards to the second form, is there any way that you can inform your user
+    which input fields have the wrong input? Can your user change an input that is
+    incorrect?
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: When we are fixing the bug related to the second form, we only created mechanisms
+    to detect the correctness of the input in the second form. However, should the
+    user enter an incorrect value in the second form, the user might not know immediately
+    which fields were entered incorrectly.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Here are some tips to help you get started with this exercise:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Right from the start, you can disable all of the input fields apart from the
+    first one. Then as the first field gets the correct input, you can enable the
+    second input field. Similarly, when the second input field is completed correctly,
+    the third input field gets enabled, and so on and so forth.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: For the second issue, you might want to take a look at our code and see if you
+    can edit the conditions found in the `if else` statements for the function `checkSecondForm()`.
+    What I have done is to lump all of the possibilities into a single `if` or `else
+    if` statement, thus making it impossible to detect which field has gone wrong.
+    You can try to split up the conditions such that each of the `if` and `else if`
+    statements contain only a single condition. That way, well be able to create a
+    custom response for each individual input field in the second form, should anything
+    go wrong.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Wow, we have covered a lot in this chapter. We have executed the test plan and
+    have uncovered bugs. Next we successfully fixed the bugs that we uncovered. After
+    fixing each bug, we performed regression testing in order to make sure that the
+    original functionality was retained and that no new bugs were introduced into
+    the program.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Specifically, we covered the following topics:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to execute a test plan and how to document bugs that we uncovered
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to perform regression testing after fixing each bug
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to compress the code in order to enhance performance
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Testing differences if we use Ajax
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Differences between client-side testing and server-side testing
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The previous learning points may seem small, but now that you have gone through
+    this chapter, you should know that carrying out a test plan and subsequently fixing
+    the bugs can be tedious.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Now that we have covered the execution of test plan, its time to move on to
+    something slightly more difficult—testing more complex code. Notice that we have
+    been dealing with JavaScript in a one-dimensional manner: we placed all of our
+    JavaScript in our HTML file, along with CSS. We have been developing JavaScript
+    code as this was the only piece of JavaScript code that we were using. But, in
+    reality, it is usual to see web applications using more than one piece of JavaScript
+    code; this additional code is usually attached via an external JavaScript file.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: More importantly, this is not going to be the only issue that we will face in
+    the real world. As our code gets more complex, we will need to use more sophisticated
+    testing methods, or even use tools such as built-in consoles, to help us test
+    more efficiently and effectively.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We will cover the previously-mentioned issues in the next chapter, [Chapter
+    6](ch06.html "Chapter 6. Testing More Complex Code"), *Testing more complex code*.
+    See you there!
+  prefs: []
+  type: TYPE_NORMAL

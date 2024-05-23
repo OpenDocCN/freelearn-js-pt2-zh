@@ -1,0 +1,410 @@
+- en: Chapter 6. A Large-Scale JavaScript Application Architecture
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Any experienced programmer works hard to make the code reusable and maintainable.
+    Here we are guided by the principles of object-oriented programming, such as encapsulation,
+    abstraction, inheritance, composition, and polymorphism. In addition to these
+    fundamentals, we follow the *five basic principles* of object-oriented programming
+    and design defined by Robert C. Martin and known under the acronym **SOLID** ([https://en.wikipedia.org/wiki/SOLID_(object-oriented_design)](https://en.wikipedia.org/wiki/SOLID_(object-oriented_design))).
+    When during code review we run into a violation of any of these principles, it''s
+    considered as a code smell and results in refactoring. At the core of the tasks
+    that we solve every day in development, often lie the common problems that we
+    meet again and again. In this chapter, we will cover the most common universal
+    architectural solutions and concepts in JavaScript development:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Design patterns in JavaScript
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Understanding concern separation in JavaScript using JavaScript MV* Frameworks
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Design patterns in JavaScript
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Abstract bulletproof solutions have been known for long and are usually referred
+    to as **Design Patterns**. The original 23 Design Patterns in programming were
+    first collected in *Design Patterns: Elements of Reusable Object-Oriented Software*,
+    an influential book published in 1995 by *Erich Gamma*, *Richard Helm*, *Ralph
+    Johnson*, and *John Vlissides* (*GoF*). These patterns are language-agnostic.
+    Nonetheless, *Addy Osmani* in his online book *Learning JavaScript Design Patterns*
+    ([http://addyosmani.com/resources/essentialjsdesignpatterns/book/](http://addyosmani.com/resources/essentialjsdesignpatterns/book/))
+    shows how some of the GoF''s patterns can be implemented particularly in JavaScript.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Here we won''t repeat his work; instead we''ll examine how we can combine the
+    patterns. One of the common problems in JavaScript development is communication
+    between dynamically created objects. For instance, we have an object and need
+    to call a method (`baz`) of object `bar` from `foo`. However, we cannot know if
+    `bar` is already available. GoF''s pattern mediator encourages us to dedicate
+    an object that is used to proxy communications between other objects. Thus, we
+    promote loose coupling by keeping objects from direct interaction. In our case,
+    despite calling `bar.baz`, we inform the mediator about our intent. The mediator
+    will do the call when `bar` is available:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here, we used the ES6 syntax, which serves just perfectly to describe a code
+    design. With ES6, the intend can be shown to be concise and plain, while in the
+    JavaScript edition ES5 and older we need additional lines of code to achieve the
+    same result.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In the preceding example, we created a mediator object by instantiating the
+    `EventEmitter` class. `EventEmitter` implements a messaging pattern known as PubSub.
+    This pattern describes a message exchange where one object sends an event addressed
+    to another object and the second object calls the handlers, if any, which subscribed
+    for the event. In other words, if we subscribe a handler function of the `foo`
+    object for the `myevent` mediator event (`mediator.on`), we can then invoke the
+    handler of `foo` from any other object by publishing the `myevent` event on the
+    mediator (`mediator.trigger`). Let''s look at an example. Our imaginary application
+    is localized. It starts with a login screen. When users signs in, the screen jumps
+    to the dashboard with the news. User may change the language on any of the screens.
+    However, in the first stage, the news view object isn''t yet even created, while
+    in the second stage, the login view object is already destroyed. However, if we
+    use the mediator, we can trigger the `translate` event and all the available subscribers
+    will receive the message:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: Whenever a user changes the language (`language.change`), the corresponding
+    event is broadcasted through the mediator. When the news instance is available,
+    it calls the `update` method that receives an event payload. In a real application,
+    this instance would load news for the given language and update the view.
+  prefs: []
+  type: TYPE_NORMAL
+- en: So what did we achieve? When using a mediator and an event-driven approach (PubSub),
+    our objects/modules are loosely coupled and therefore, the overall architecture
+    better accepts requirement changes. Besides, we gain more flexibility in unit
+    testing.
+  prefs: []
+  type: TYPE_NORMAL
+- en: At the time this book was written, no browser provided native support for the
+    ES6 class statement. However, you can run the given code using Babel.js run-time
+    ([https://babeljs.io/docs/usage/browser/](https://babeljs.io/docs/usage/browser/))
+    or transpiring.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'When the application grows and we are getting too many events that are circulating,
+    it makes sense to encapsulate event handling into a separate message hub object.
+    Here comes to mind the `Facade` pattern, which defines a unified high-level interface
+    for other interfaces:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: After initializing the `Facade` class, we can trigger a complex flow where multiple
+    modules are involved by simply firing an event on the mediator. This way we encapsulate
+    behavioral logic into a dedicated object; this makes the code more readable and
+    the whole system easier to maintain.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Understanding concern separation in JavaScript
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: While writing JavaScript (especially client-side), one of the major challenges
+    is to avoid *spaghetti code*, where the same module renders the user view, handles
+    user interactions, and does the business logic. Such a module may quickly grow
+    into a monster of a source file, where a developer rather gets lost than spots
+    and resolves a problem.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The MVC Programming paradigm known as **Model View Controller** (**MVC**) splits
+    the application functionality into separate layers such as presentation, data,
+    and user input. MVC in a nutshell implies that a user interacts with the view
+    land in a controller module that manipulates a model, which updates the view.
+    In JavaScript, the controller is usually an observer that listens to UI events.
+    A user clicks a button, the event is fired, and the controller addresses the corresponding
+    model. For example, the controller requests the model to send submitted data to
+    the server. The view is notified about the model state change and reacts accordingly,
+    let''s say it displays a message, **Data saved**. Collaboration of components
+    in MVC pattern is shown in the following image:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Understanding concern separation in JavaScript](img/00013.jpeg)'
+  prefs: []
+  type: TYPE_IMG
+- en: As you see, we can keep all the user input handlers encapsulated in a single
+    module (here the **Controller**), we can abstract the data layer following Domain-Driven
+    design practices into a model module. Eventually, we have a view module responsible
+    for updating the UI. So, the model has no knowledge about the component's presentation
+    (HTML, CSS) and knows nothing about DOM events—that's just pure data and operations
+    on it. The controller knows only the events from the view and the view API. And
+    finally, the view knows nothing about the model and controller, but exposes its
+    API and sends events. Thus, we have an efficient architecture that is easy to
+    maintain and test.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'However, in the case of a JavaScript-built UI, it''s not that easy to draw
+    a line between the view logic and the controller one. Here we get handy MVC derivatives:
+    **MVP** and **MVVM.MVP**.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The **P** in **MVP** stands for **Presenter** that serves user requests. The
+    presenter listens to the view events, retrieves data, manipulates it, and updates
+    the presentation using the view API. The **Presenter** can interact with models
+    to persist data. As you can see in the following diagram, the **Presenter** acts
+    like a manager that receives a request, processes it using available resources,
+    and directs the view to change. Following image shows collaboration of components
+    in MVP pattern:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Understanding concern separation in JavaScript](img/00014.jpeg)'
+  prefs: []
+  type: TYPE_IMG
+- en: MVP provides better testability and concern separation compared to MVC. You
+    can find an example of a `TODO` application implementing MVP at [http://codepen.io/dsheiko/pen/WQymbG](http://codepen.io/dsheiko/pen/WQymbG).
+  prefs: []
+  type: TYPE_NORMAL
+- en: MVVM
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'A passive view of MVP is mostly about data bindings and proxying of UI events.
+    In fact, that''s something we can abstract. The view in **Model View ViewModel**
+    (**MVVM**) approach may not require any JavaScript at all. Usually, the view is
+    HTML-extended with directives known by ViewModel. The model represents domain-specific
+    data and exposes concomitant methods such as validation. The ViewModel is a middleman
+    between view and model. It converts the data objects from the model for the view.
+    For instance, when a model property contains a raw datetime, the ViewModel converts
+    it into the form expected in the view like `1 January 2016, 00:01`. Following
+    image shows collaboration of components in MVVM pattern:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![MVVM](img/00015.jpeg)'
+  prefs: []
+  type: TYPE_IMG
+- en: The MVVM pattern has the advantage of both imperative and declarative programming.
+    It may drastically reduce the development time by abstracting most of the generic
+    view logic in a common binder module. The pattern gains momentum with popular
+    JavaScript frameworks such as Knockout, Angular, and Meteor. You can find an example
+    of an RSS reader application based on MVVM pattern at [https://msdn.microsoft.com/en-us/magazine/hh297451.aspx](https://msdn.microsoft.com/en-us/magazine/hh297451.aspx).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using JavaScript MV* frameworks
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: When starting a new scalable web application, you have to decide whether to
+    go with a framework or not. It's hard now to find any large projects that are
+    not built on the top of a framework. Yet there are drawbacks in using frameworks;
+    just take a look at **Zero Framework Manifesto** ([http://bitworking.org/news/2014/05/zero_framework_manifesto](http://bitworking.org/news/2014/05/zero_framework_manifesto)).
+    However, if you decide in favor of frameworks, then you are in a quandary about
+    which one to pick. This is indeed not an easy task. JavaScript frameworks today
+    are quite numerous; just take a look at the variety available at TodoMVC ([http://todomvc.com](http://todomvc.com)).
+    It's hardly feasible to review all of them, but we can briefly examine a few of
+    the most popular frameworks. According to recent surveys (for example, [http://ashleynolan.co.uk/blog/frontend-tooling-survey-2015-results](http://ashleynolan.co.uk/blog/frontend-tooling-survey-2015-results)),
+    among the most trendy are Angular, React, and Backbone. All three give quite dissimilar
+    development paradigms. So they are fitting to make an overall picture of JavaScript
+    frameworks in general.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Backbone
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Backbone ([http://backbonejs.org](http://backbonejs.org)) is very lightweight
+    and easy to start with. This is the only popular framework where you can grasp
+    the entire codebase in a considerably short time ([http://backbonejs.org/docs/backbone.html](http://backbonejs.org/docs/backbone.html)).
+    Inherently, Backbone gives you a consistent abstraction and nothing besides this.
+    By and large, we encapsulate all the UI-related logic into a subtype of `Backbone.View`.
+    Any data required by the view, we put this into a derivative of `Backbone.Model`
+    or `Backbone.Collection` (when it's a list of entries). Eventually, we route hash-based
+    navigation requests by means of `Backbone.Route`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s consider an example. Our imaginary application allows us to look up
+    for a contact by a given email address. Since we want this to be user friendly,
+    the application form is expected to validate as we type in it. For this, we need
+    a little HTML:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Here we have an input control, a submit button, and a container for a possible
+    error message. In order to manage this, we will use the following `Backbone.View`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**ContactSearchView.js**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: In the constructor (the `initialize` method), we bind the acting nodes of the
+    HTML to the properties of the view and subscribe handlers to UI and the model
+    events. Then, we register listener methods on the `submit` form and the `input`
+    form. The second handler is invoked as we type, and it updates the model. The
+    model runs a validation, and according to the results, it responds with a `invalid`
+    or `change` model event. In the case of the `invalid` event, the view shows up
+    the error message, otherwise it's hidden.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Now we can add the model, as shown here:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**ContactSearchModel.js**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: This model defines domain data in the `defaults` property and provides the `validate`
+    method that is called automatically when we set or save the model.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Now we can combine all together and initialize the view:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: Backbone itself is surprisingly small in size (6.5 Kg zipped), but with the
+    jQuery and Underscore dependencies, this makes quite a bundle. Both dependencies
+    were vital in the past, but now that's under the question—do we need them at all?
+    So, it makes sense to check the **Exoskeleton** ([http://exosjs.com/](http://exosjs.com/))
+    project, which is an optimized version of Backbone that works perfectly without
+    the dependencies.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Angular
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Angular ([http://Angular.org](http://Angular.org)) now seems to be the most
+    popular JavaScript framework in the world. It is supported by Google and is considered
+    as a framework that solves most routine tasks for you. In particular, Angular
+    has a feature called two-way binding, meaning that UI changes propagate to the
+    bound model and, vice versa, and model changes (for example, by XHR) update the
+    UI.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In AngularJS, we define behavior straight in HTML with directives. Directives
+    are custom elements and attributes that assume UI logic similar to web components.
+    Actually, you can create functional widgets in AngularJS without writing a single
+    line of JavaScript code. Models in AngularJS are simple data containers and unlike
+    Backbone, have no connection to external sources. When we need to read or write
+    data, we use services. When any data is sent to View, we can use filters to format
+    the output. The framework leverages dependency injection (DI) pattern allowing
+    to inject core components into each other as dependencies. That makes the modules
+    easier to meet requirement changes and unit-test. Let''s see this in practice:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'In this example, we declared an input field and bound it to a model email (`ng-model`
+    directive). Form validation works in the same way as in HTML5 forms: if we declare
+    an input type email and it gets validated accordingly. Here we go with a default
+    text type and use the `ng-pattern` (similar to HTML5''s pattern) attribute to
+    set the same validation rules for email as in the Backbone case. Further, we rely
+    on the `ng-show` directive to display error messages block when the input state
+    is empty (`csForm.email.$dirty`) or invalid (`csForm.email.$invalid`). In this
+    case, the submit button, on the contrary, is hidden. Using the `ng-controller`
+    and `ng-submit` directives, we bind the `csController` controller and the `on-submit`
+    handler to the form. In the body of `csController` (JavaScript), `$scope.submit`
+    expects a handler function for the form submit event.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: As you can see with Angular, it takes much less code in total to implement the
+    same task. However, one should accept that keeping application logic in HTML makes
+    it really hard to read the code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Furthermore, Angular subscribes many watchers per directive (intended handlers,
+    automatic dirty checking, and so on) and makes it slow and resource-expensive
+    on the pages with numerous interactive elements. If you want to tune your application
+    performance, you rather learn Angular source code and it'll be a challenging task
+    with ~11.2K lines of code (version 1.4.6).
+  prefs: []
+  type: TYPE_NORMAL
+- en: React
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: React ([https://facebook.github.io](https://facebook.github.io)) is a project
+    of Facebook that isn't really a framework, but rather a library. The unique approach
+    of React implies a component-based application. Inherently, React defines the
+    Views of the components utilizing the so-called Virtual DOM, which makes UI rendering
+    and updating surprisingly fast. With this focus on View, React comprises a template
+    engine. Optionally, the React components can be written in a subset of JavaScript
+    called JSX where you can put HTML templates within JavaScript. JSX can be parsed
+    dynamically as in the following example, or it can be precompiled. Since React
+    deals with Views only and makes no assumptions about other concerns, it makes
+    sense to use this in conjunction with other frameworks. Thus, React can be plugged
+    into a framework (for example, as directives in Angular or Views in Backbone).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'While implementing the contact search application this time, we will use React
+    to control the View of our example by splitting it into two components (`FormView`
+    and `EmailView`). The first one defines the View for the search form:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: In the `render` method, we declared the View of the component using the JSX
+    notation. This makes it much easier to manipulate the Virtual DOM. Similar to
+    Angular, we can address the component scope directly in the HTML. Thus, we subscribe
+    to the form submit event and to the input change event by referring to the corresponding
+    handlers in the `onSubmit` and `onChange` attributes. Since React provides no
+    built-in model, we reused `ContactSearchModel`, the model we created while exploring
+    Backbone.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'You might notice a `EmailView` custom tag in JSX. This is how we refer to our
+    second component, which represents an email input control:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here we bound the email input to the model and the error message container to
+    the model state. We also passed the input `onChange` event to the parent component.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Well, now we can add the components in the HTML and render the form:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: We address the components in the templates such as web-components by the corresponding
+    custom elements. Do not confuse yourself over the similarity, React components
+    are abstracted from the browser, while web-components work similar to browser-native
+    things. The core concept of React is that the Virtual DOM allows us to avoid unnecessary
+    DOM reflow cycles that make the library preferable for high-performance applications.
+    React is really good to render static pages on the server using Node.js. Thus,
+    we can reuse application components between server and client sides.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Writing maintainable code is an art. Probably the best book that provides guidance
+    on this is *Clean Code: A Handbook of Agile Software Craftsmanship* by *Robert
+    C. Martin*. It''s about naming functions, methods, classes, commenting, code formatting,
+    and of course, about the correct use of OOP and SOLID. However, when reusing solutions
+    described in this book, or in any of the Design Patterns series, we have to translate
+    them into JavaScript, and it can be challenging due to the nature of the language.
+    On a higher level, we have to split the code into layers such as presentation,
+    business logic, data access, and persistence, where each bundle of code addresses
+    the one concern and is loosely coupled with others. Here, we may choose an approach
+    to go with. In the JavaScript world, it''s usually a derivative of MVC (MVP or
+    MVVM or other). Considering this, a decent programming design requires a lot of
+    abstraction. Today, we can use numerous frameworks. They provide diverse programming
+    paradigms.'
+  prefs: []
+  type: TYPE_NORMAL

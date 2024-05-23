@@ -1,0 +1,430 @@
+- en: IndexedDB
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Web Storage serves well when we have to store a considerably small amount of
+    data (megabytes). However, if we need structured data in a much greater quantity
+    and we want do performance searches through this data using indices, we will use
+    IndexedDB API. The idea of an API to store data in databases in a browser isn't
+    new. A few years ago, Google and their partners were actively advocating a standard
+    candidate called **Web SQL Database**. This specification has failed to make it
+    through W3C recommendation though. Now, we have IndexedDB API instead that is
+    widely-supported already and provides a significant performance boost (asynchronous
+    API and robust search due to indexed keys).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'However, the API of IndexedDB is pretty complex. It''s also quite hard to read
+    because of a large amount of nested callbacks:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'In this sample, we created a request for opening DB. If the DB doesn''t exist
+    or its version is changed, the `upgradeneeded` event is fired. In the function
+    subscribed to this event, we can define the schema by declaring object stores
+    and their indices. So if we need to update the schema of the existing DB, we can
+    increment the version number, `upgradeneeded` will fire again and the listener
+    will be called to update the schema. As soon as we have defined the schema, we
+    can populate the object store with sample data. When the request to open the DB
+    is complete, we request the record that matches the email ID `don@company.com`.
+    When the request is done, we go inside the console:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Pretty tangled, isn''t it? This API makes me think of a wrapper. The best I
+    know is called **Dexie** ([http://www.dexie.org](http://www.dexie.org)). Just
+    compare how easy it is to solve the same task with the interface it exposes:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: FileSystem API
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Well, in a web application, we can store key value pairs with Web Storage and
+    we can create and use IndexedDB. Something is still missing. Desktop applications
+    can read and write files and directories. That is what we often need in a web
+    application that is capable of running offline. The FileSystem API allows us to
+    create, read, and write to a user''s local file system in application scope. Let''s
+    take up an example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'First of all, we request for a local file system (`requestFileSystem`) that''s
+    sandboxed to the application. With the first argument, we state whether the file
+    system should be persistent. By passing `window.TEMPORARY` in the argument, we
+    allow the browser to remove the data automatically (for example, when more space
+    is needed). If we go with `window.PERSISTENT`, we determine that the data cannot
+    be cleaned without explicit user confirmation. The second argument specifies how
+    much space we can allocate for the file system. Then, there are the `onSuccess`
+    and `onError` callbacks. When the file system is created, we receive a reference
+    to the `FileSystem` object. This object has the `fs.root` property, where the
+    object keeps `DirectoryEntry` bound to the root file system directory. The `DirectoryEntry`
+    object has the `DirectoryEntry.getDirectory`, `DirectoryEntry.getFile`, `DirectoryEntry.removeRecursevly`,
+    and `DirectoryEntry.createReader` methods. In the preceding example, we write
+    into the current (`root`) directory, so we simply use `DirectoryEntry.getFile`
+    to open a file of a given name. On successfully opening a file, we receive `FileEntry`
+    that represents the open file. The object has a few properties such as: `FileEntry.fullPath`,
+    `FileEntry.isDirectory`, `FileEntry.isFile`, and `FileEntry.name` and methods
+    such as `FileEntry.file` and `FileEntry.createWriter`. The first method returns
+    the `File` object, which can be used to read file content, and the second is used
+    to write in the file. By the time the operation is complete, we read from the
+    file. For this, we create a `FileReader` object and make it read our `File` object
+    as text.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Boosting performance with JavaScript workers
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: JavaScript is a single-threaded environment. So, multiple scripts cannot really
+    run simultaneously. Yes, we use `setTimeout()`, `setInterval()`, `XMLHttpRequest`
+    and event handlers to run tasks asynchronously. So we gain non-blocking execution,
+    but this doesn't mean concurrency. However, using web workers, we can run one
+    or more scripts in the background independent of the UI scripts. Web workers are
+    long running scripts that are not interrupted by blocking UI events. Web workers
+    utilize multithreading, so we can benefit from multicore CPUs.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Well, where can we use web workers? Anywhere where we do processor-intensive
+    calculations and don't want them blocking the UI thread. It can be graphics, web
+    games, crypto, and Web I/O. We cannot manipulate the DOM from a web worker directly,
+    but we have access to `XMLHttpRequest`, Web Storage, IndexedDB, FileSystem API,
+    Web Sockets and other features.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'So let''s see what these web workers are in practice. By and large, we register
+    an existing web worker in the main script and communicate to the web worker using
+    the PostMessage API ([https://developer.mozilla.org/en-US/docs/Web/API/Window/postMessage](https://developer.mozilla.org/en-US/docs/Web/API/Window/postMessage)):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here in `index.html`, we requested the web worker (`foo-worker.js`) to subscribe
+    for worker messages and requested it to load the CPU for 2,000 ms, which represents
+    a resource-consuming process. The worker receives the message and checks for a
+    function specified in the `command` property. If this exists, the workers pass
+    the message value to the function and replies with the return value.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Note that despite of launching such an expensive process by starting up `index.html`,
+    the main thread stays nonblocked. Nonetheless, it reports to the console when
+    the process is complete. But if you try to run the `loadCpu` function within the
+    main script, the UI freezes and most probably results in a script-timeout error.
+    Now consider this: if you call `loadCpu` asynchronously (for instance, with `setTimeout`),
+    the UI will still hang. The only safe way to deal with processor-sensitive operations
+    is to hand them over to web workers.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Web workers can be dedicated and shared. A dedicated worker is accessible only
+    through a script, the one where we call the worker. Shared workers can be accessed
+    from multiple scripts, even those running in different windows. That makes this
+    API a bit different:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**index.html**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: The preceding example worker simply echoes the received message. If the worker
+    does some effective computation, we would be able to command it from different
+    scripts on different pages.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'These examples show the use of web workers for concurrent computations. What
+    about unloading the main thread from some of the web I/O operations? For example,
+    we are requested to report specified UI events to a remote **Business Intelligence
+    Server** (**BI Server** is used here to receive statistical data). This is not
+    a core functionality, so it would be great to keep any loads that these requests
+    produce out of the main thread. So we can use a web worker. However, a worker
+    is available only after it''s loaded. Normally, this happens very fast, but I
+    still want to be sure that no BI events are lost because the worker was unavailable.
+    What I can do is embed the web worker code into HTML and register the web worker
+    by data URI:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: By handing over the web I/O to a worker, we can also get additional control
+    over it. For example, in reaction to a network status change (the `ononline` and
+    `onoffline` events, and the `navigator.online` property being available to workers),
+    we can respond to an application either with the actual call results or cached
+    ones. In other words, we can make our application work offline. In fact, there
+    are special types of JavaScript workers called Service Workers. Service Workers
+    inherit from Shared Workers and act as a proxy between the web application and
+    the network ([https://developer.mozilla.org/en-US/docs/Mozilla/Projects/Social_API/Service_worker_API_reference](https://developer.mozilla.org/en-US/docs/Mozilla/Projects/Social_API/Service_worker_API_reference)).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Creating the first web component
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'You might be familiar with HTML5 video element ([http://www.w3.org/TR/html5/embedded-content-0.html#the-video-element](http://www.w3.org/TR/html5/embedded-content-0.html#the-video-element)).
+    By placing a single element in your HTML, you will get a widget that runs a video.
+    This element accepts a number of attributes to set up the player. If you want
+    to enhance this, you can use its public API and subscribe listeners on its events
+    ([http://www.w3.org/2010/05/video/mediaevents.html](http://www.w3.org/2010/05/video/mediaevents.html)).
+    So, we reuse this element whenever we need a player and only customize it for
+    project-relevant look and feel. If only we had enough of these elements to pick
+    every time we needed a widget on a page. However, this is not the right way to
+    include any widget that we may need in an HTML specification. However, the API
+    to create custom elements, such as video, is already there. We can really define
+    an element, package the compounds (JavaScript, HTML, CSS, images, and so on),
+    and then just link it from the consuming HTML. In other words, we can create an
+    independent and reusable web component, which we then use by placing the corresponding
+    custom element (`<my-widget />`) in our HTML. We can restyle the element, and
+    if needed, we can utilize the element API and events. For example, if you need
+    a date picker, you can take an existing web component, let''s say the one available
+    at [http://component.kitchen/components/x-tag/datepicker](http://component.kitchen/components/x-tag/datepicker).
+    All that we have to do is download the component sources (for example, using the
+    browser package manager) and link to the component from our HTML code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Declare the component in the HTML code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This is supposed to go smoothly in the latest versions of Chrome, but this
+    won''t probably work in other browsers. Running a web component requires a number
+    of new technologies to be unlocked in a client browser, such as **Custom Elements**,
+    **HTML Imports**, **Shadow DOM**, and templates. The templates include the JavaScript
+    templates that we examined in [Chapter 1](part0014_split_000.html#DB7S2-f4ff6b81796e4f78aa983a623fb95daf
+    "Chapter 1. Diving into the JavaScript Core"), *Diving into JavaScript core*.
+    The Custom Element API allows us to define new HTML elements, their behavior,
+    and properties. The Shadow DOM encapsulates a DOM subtree required by a custom
+    element. And support of HTML imports assumes that by a given link the user-agent
+    enables a web-component by including its HTML on a page. We can use a polyfill
+    ([http://webcomponents.org/](http://webcomponents.org/)) to ensure support for
+    all of the required technologies in all the major browsers:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Do you fancy writing your own web components? Let''s do it. Our component acts
+    similar to HTML''s `details/summary`. When one clicks on **summary**, the details
+    show up. So we create `x-details.html`, where we put component styles and JavaScript
+    with the component API:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**x-details.html**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Further in the JavaScript code, we create an element based on a generic HTML
+    element (`Object.create( HTMLElement.prototype )`). Here we could inherit from
+    a complex element (for example, video) if needed. We register a `x-details` custom
+    element using the earlier one created as a prototype. With `element.createdCallback`,
+    we subscribe a handler that will be called when a custom element is created. Here
+    we attach our view to the element to enhance it with the functionality that we
+    intend for it. Now we can use the component in HTML, as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'X-details web-component in action is shown in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Creating the first web component](img/00009.jpeg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Learning to use server-to-browser communication channels
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Using XHR or Fetch API, we can request a state from the server. This is a one-way
+    communication. If we want real-time communication, we need this in the opposite
+    direction as well. For example, we may want user notifications (your post has
+    been liked, new comment, or new private message) to pop up as soon as the corresponding
+    records change in the DB. The server side has connection to the DB, so we expect
+    the server to notify the client. In the past, to receive these events on the client,
+    we were using tricks that were known under the umbrella term **COMET** (hidden
+    iframe, long polling, tag long polling, and others). Now we can go with native
+    JavaScript APIs.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Server-Sent Events
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The technology that provides a way to subscribe to server-side events is the
+    **Server-Sent Events** (**SSE**) API. On the client, we register a server stream
+    (`EventSource`) and subscribe to the event coming from it:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Here, we subscribed a listener to a specific event called `"foo"`. If you want
+    your callback to be invoked on every server event, just use `src.onmessage`. As
+    for the server side, we just need to set the MIME type `text/event-stream` and
+    send event payload blocks separated with pairs of new lines:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'SSE works via an HTTP connection, so we need a web server to create a stream.
+    PHP is considerably simpler and a widely used server-side language. Chances are
+    that you are already familiar with its syntax. On the other hand, PHP isn''t designed
+    for a persistent connection of long duration. Yet, we can trick it by declaring
+    a loop that makes our PHP script never ending:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: You may have seen SSE examples where the server script outputs the data once
+    and terminates the process (for example, [http://www.html5rocks.com/en/tutorials/eventsource/basics/](http://www.html5rocks.com/en/tutorials/eventsource/basics/)).
+    That is also a working example, because every time the connection is terminated
+    by the server, the browser renews the connection. However, this way we do not
+    have any benefit of SSE that works the same as polling.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Now everything looks ready, so we can run the HTML code. As we do this, we
+    get the following output in the console:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: Web Sockets
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Well, with XHR/Fetch we communicate from client to server. With SSE, we do this
+    in the opposite direction. But can we have communication both ways at once? Another
+    HTML5 goody called Web Sockets provides bidirectional, full-duplex client-server
+    communications.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The client side looks similar to SEE. We just register the Web Socket server,
+    subscribe to its events, and send to it our events:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This demo source at `ws://echo.websocket.org` simply echoes any messages sent
+    to it:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Need something more practical? I believe the most illustrative case would be
+    a chat:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**demo.html**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Here we have a form with two input fields. The first expects a person''s name
+    and the second, the chat message. When the form is submitted, the values of both
+    inputs are sent to the Web Socket server. Server response is displayed in the
+    output element. Unlike SSE, Web Sockets require a special protocol and server
+    implementation to get working. To run the example, we will take a simple nodejs-based
+    server implementation, **nodejs-websocket** ([https://github.com/sitegui/nodejs-websocket](https://github.com/sitegui/nodejs-websocket)):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**ws.js**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The script creates a server available on the port 8001 that listens to the
+    Web Socket messages, and when any message is received, the port broadcasts it
+    to all the available connections. We can fire up the server like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Now we open our demo chat in two different browsers. When we send a message
+    from one of them, the message shows up in both browsers. Following screenshot
+    shows the WebSocket-driven chat in Firefox:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Web Sockets](img/00010.jpeg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'Following screenshot shows the WebSocket-driven chat in Chrome:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Web Sockets](img/00011.jpeg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Note how fast the clients react to the events. Communication through sockets
+    gives irrefutable advantages.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'There are a number of Web Socket server implementations for various languages,
+    for example, Socket.IO ([http://socket.io](http://socket.io)) for Node.js, Jetty
+    ([http://www.eclipse.org/jetty](http://www.eclipse.org/jetty)) for Java, Faye
+    ([http://faye.jcoglan.com](http://faye.jcoglan.com)) for Ruby, Tornado ([http://www.tornadoweb.org](http://www.tornadoweb.org))
+    for Python, and even one for PHP called Ratchet ([http://socketo.me](http://socketo.me)).
+    However, I would like to draw your attention to a language-agnostic WebSocket
+    daemon—Websocketd ([http://websocketd.com/](http://websocketd.com/)). It''s like
+    **Common Gateway Interface** (**CGI**), but for Web Sockets. so you can write
+    the server login in your favorite language and then attach your script to the
+    daemon:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE21]'
+  prefs: []
+  type: TYPE_PRE
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: HTML5 provide a number of awesome APIs, and we just examined some of them. Among
+    browser storage APIs, there are localStorage and sessionStorage that extend the
+    cookies relict. Both are capable of storing megabytes of data and can be easily
+    synchronized across different browser windows/tabs. IndexedDB allows us to store
+    even greater quantity of data and provides an interface for high-performance searches
+    using indices. We can also use FileSystem API to create and operate a local file
+    system bound to the web application.
+  prefs: []
+  type: TYPE_NORMAL
+- en: While JavaScript is a single-threaded environment, we can still run scripts
+    in multiple threads. We can register dedicated or shared Web Workers and hand
+    over any processor-intensive operations, leaving the main thread and the UI unaffected.
+    We also can leverage a special kind of JavaScript workers—Service Workers--- as
+    a proxy between the web application and the network. This enables control to network
+    I/O when the browsers switches mode online/offline.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Nowadays we can create own custom advanced elements that can be easily reused,
+    restyled, and enhanced. The assets required to render such elements are HTML,
+    CSS, JavaScript, and images are bundled as Web Components. So, we literally can
+    build the Web now from the components similar to how buildings are made from bricks.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the past, we used tricks known as COMET to exchange events between server
+    and client. Now we can use SSE API to subscribe for server events sent over HTTP.
+    We can also use Web Sockets for bidirectional, full-duplex client-server communications.
+  prefs: []
+  type: TYPE_NORMAL

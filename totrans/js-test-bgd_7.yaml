@@ -1,0 +1,1618 @@
+- en: Chapter 7. Debugging Tools
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this chapter, we shall learn about debugging tools that can make our lives
+    easier. We will be using debugging tools provided by major browsers in the market
+    such as Internet Explorer, Firefox, Google Chrome, and Safari.
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: I understand that there is informative documentation on the Internet, therefore
+    what you can expect in this chapter is that I'll very briefly talk about the features,
+    and then walk through a simple example as to how you can make use of the debugging
+    features to make your life easier.
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: 'In general, you will learn about each of the following topics for the above-mentioned
+    debugging tools for each browser:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Where and how to get the debugging tools
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to use the tools to debug HTML, CSS, and JavaScript
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Advanced debugging, such as setting breakpoints and watching variables
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to perform profiling by using the debugging tools
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: So let's get started.
+  prefs: []
+  type: TYPE_NORMAL
+- en: IE 8 Developer Tools (and the developer toolbar plugin for IE6 and 7)
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this section we will focus on Internet Explorer 8's developer toolbar.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: In case you are using Internet Explorer 6 or 7, here's how you can install the
+    developer toolbar for Internet Explorer 6 or 7.
+  prefs: []
+  type: TYPE_NORMAL
+- en: You will need to visit [http://www.microsoft.com/downloads/details.aspx?familyid=e59c3964-672d-4511-bb3e-2d5e1db91038&displaylang=en](http://www.microsoft.com/downloads/details.aspx?familyid=e59c3964-672d-4511-bb3e-2d5e1db91038&displaylang=en)
+    and download the developer toolbar. In case you are reading a paper version of
+    this book and cannot copy and paste the above URL, Google "developer toolbar for
+    IE6 or IE7", and you should land on the download page you need.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note that the toolbar from the above webpage is not compatible with Internet
+    Explorer 8.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If you do not wish to install the developer tool separately, I'd recommend that
+    you install Internet Explorer 8; IE8 comes pre-packaged with their developer tool
+    and it is more handy when compared to installing developer tools for IE6 or IE7
+    separately.
+  prefs: []
+  type: TYPE_NORMAL
+- en: From this point onwards, I'll be covering the developer tool using the built-in
+    tool in Internet Explorer 8.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using IE developer tools
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Now that we have obtained the plugin, it's time to go through an example to
+    get an idea of how it works. I have prepared a sample code in the `source code`
+    folder of this chapter; go to the folder and open the document called `IE-sample.html`
+    in you browser. Basically what this example does is that it requires you to enter
+    two numbers, and then it will perform addition, subtraction, multiplication, and
+    division on the two numbers. The result will be shown on a box which is found
+    on the right-hand side of the form.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now give it a test, and once you are done with it, we will start to learn how
+    we can debug this web page using IE8's debugging tool.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Open
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: I assume that the file is still open in your browser. If not, open `IE-sample.html`
+    in your browser (using Internet Explorer, of course). Once the example is opened,
+    you will need to open the debugging tool. You can navigate to **Tools**, and then
+    click on **Developer Tools**. Alternatively, you can access the debugging tool
+    by pressing *Shift* + *F12* on your keyboard.
+  prefs: []
+  type: TYPE_NORMAL
+- en: A brief introduction to the user interface
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Before we move into the actual debugging process, I'll briefly focus on the
+    key features of the IE debugging tool.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![A brief introduction to the user interface](img/0004_07_21.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'HTML: The **HTML** tab shows the source code for the script or web page that
+    you are currently viewing. When you click on this tab, you will get the related
+    tabs on the right-hand side, as shown in the previous screenshot.'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'CSS: The **CSS** tab shows you the CSS stylesheet used by the current webpage
+    that you are viewing.'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Script: The **Script** tab is where you will be performing your JavaScript
+    debugging tasks. When you click on this tab, you will get a list of features related
+    to the debugging tasks, such as **Console, Breakpoints, Locals**, and **Watch**.'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Profiler: The **Profiler** tab shows the profiling data for the web page, should
+    you choose to perform profiling.'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Debugging basics of the IE debugging tool
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'In general, we can use IE''s debugging tool in two ways:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: In a separate window
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Docking it Docked within the browser
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: You can dock the debugging tool within the browser by going to the upper right-hand
+    corner of the debugging window and clicking on the pin icon. In my case, I prefer
+    to dock it in my browser so that I have more viewing space on my screen. Moreover,
+    because the example code is fairly small, docking it on your browser should suffice.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In general, the left-hand side of the debugging panel is what the IE team calls
+    the **Primary Content** pane. This panel displays the web page's Document Object
+    Model; this is the panel that gives us a programmatic overview of the source code
+    of the web page.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Here are some of the basics of debugging when using IE's debugging tool.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Time for action—debugging HTML by using the IE8 developer tool
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: To inspect HTML elements of the webpage, click on the **HTML** tab found in
+    the **Primary Content Panel**. We can click on the **+** icon located on the first
+    line of the **Primary Content Panel**.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Once you have clicked on the **+** icon, you should see`<head>` and`<body>`
+    appearing as soon as the`<html>` tag is expanded; clicking on them again will
+    show the other elements contained within the`<head>` and`<body>` tags. For example,
+    let us click on the `div` element with the `id wrap`.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: On clicking the `div` element, you can immediately see the various properties
+    associated with `wrap`, such as its parent element, its inherited HTML and CSS,
+    and the CSS properties that belong to `wrap`.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'We can perform further inspection by clicking on the various commands found
+    on the **Properties pane**:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '**Style**: The **Style** command improves CSS debugging by providing a list
+    of all of the rules that apply to the selected element. The rules are displayed
+    in precedence order; so those that apply last appear at the bottom, and any property
+    overridden by another is struck through, allowing you to quickly understand how
+    CSS rules affect the current element without manually matching selectors. You
+    may quickly turn a CSS rule on or off by toggling the checkbox next to the rule,
+    and the action will take effect immediately on your page. In our case, you will
+    see two inheritances for our `#wrap` element: body and HTML. You can change the
+    color property to, say, `#eee`, by clicking on the property value and typing `#eee`.
+    Once you are done, press *Enter* and you can see changes immediately.'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Trace** Styles: This command contains the same information as **Style** except
+    it groups styles by property. If you are looking for information about a specific
+    property, switch to the **Trace Styles** command. Simply find the property that
+    interests you, click the plus (+) icon, and see a list of all rules that set that
+    property—again in precedence order.'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Layout:** The **Layout** command provides box model information, such as
+    the element''s offset, height, and padding. Use this command when debugging an
+    element''s positioning.'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Attributes:** The **Attributes** command allows you to inspect all of the
+    defined attributes of the selected element. This command also allows you to edit,
+    add, or remove the selected element''s attributes.'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Time for action—debugging CSS by using the IE8 developer tool
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Now let use shift our attention back to the **Primary Content Panel**.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Click on the **CSS** tab so that we have access to all of the CSS (external
+    or internal) files. Once you have done that, you will see an identical CSS that
+    is used by our webpage.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Now I want you to click on a style property, say **color**, found in **BODY**,
+    and change it to **#ccc**. You will immediately see changes to the color of the
+    text in our web page.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: What just happened?
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We have just performed the basics of debugging, which has provided us with the
+    required knowledge before we move into debugging JavaScript by using IE's debugging
+    tool.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The simple examples that we have carried out above are what we call editing
+    sources on-the-fly; we can edit any HTML or CSS properties without going back
+    to our source code, changing it, saving it, and than reloading the file in our
+    browser. In my opinion, such features are some of the key reasons why we should
+    use debugging tools.
+  prefs: []
+  type: TYPE_NORMAL
+- en: However, take note that the changes that you have made only exist in Internet
+    Explorer's internal representation of the site. This means that refreshing the
+    page or navigating away brings back the original site.
+  prefs: []
+  type: TYPE_NORMAL
+- en: However, there will be cases where you may want to save the changes, and in
+    order to do that, you can click the **Save** button to save the current HTML or
+    CSS to a file. This is done in order to prevent the accidental overwriting of
+    your original source code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let us move on to JavaScript.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Debugging JavaScript
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Now its time to learn how we can debug JavaScript by using IE's developer tool.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Time for action—more Debugging JavaScript by using the IE8 developer tool
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Here are the steps to start debugging:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Click on the **Script** tab found in the **Primary Content Panel**.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Next, click on the button that says **Start Debugging**.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: After clicking on **Start Debugging**, you will have all of the functionality
+    of a proper debugger.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: If you wish to stop debugging at any point in the debugging process, click on
+    **Stop debugging**.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Now let us see what we can do with the various functionalities of the debugging
+    tools. Let us start with the first one: setting breakpoints.'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: We usually set breakpoints in order to control execution. In the previous chapters,
+    we have typically relied on `alert()` or other functions in order to control program
+    execution.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: However, by using IE's debugging tool, you can control program execution by
+    simply setting breakpoints; you can save quite a lot of `alert()`, or other self-defined
+    functions, along the way.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Now, let us control execution by using breakpoints.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: You can set a breakpoint by right-clicking on a line number and selecting **Insert
+    Breakpoint**. In our case, let us go to the line that contains `buildContent(answerB,
+    "minus")`; right-click on it, and then select **Insert Breakpoint**.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Now try running the example by entering some values into the input fields in
+    your browser. You will see that the dynamic content will not be created on the
+    **black square** on the right-hand side. This is because the code execution stops
+    at `buildContent(answerB, "minus")`;.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: We usually use breakpoints to inspect variables; we need to know if our code
+    is executing the way in which we want it to, in order to make sure that it is
+    correct. So now, let us see how we can set breakpoints and inspect variables.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: We inspect variables by using the watch functionality. Continuing from the previous
+    example, we can use the watch functionality by clicking on the Watch pane. Alternatively,
+    you can click on Locals, which provides a similar functionality and allows us
+    to see a set of variables. This can be done to monitor a custom list of variables,
+    and also to inspect the current state of variables.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'To do what we have just described, we need to perform the following steps:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Click on **Start Debugging** and set breakpoints for the lines that contain
+    `var answerA = add(numberA, number)`; and `buildContent(answerA, "add")`;
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Now, run the example, and type in **5** and **3** respectively for the input
+    fields. Then click on **Submit**.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Now go to your **Debugger** panel, and click on **Locals**. You will see the
+    output as shown in the following screenshot:![Time for action—more Debugging JavaScript
+    by using the IE8 developer tool](img/0004_07_01.jpg)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: What this panel shows is a list of local variables that are local to the function
+    where breakpoints are set
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Notice that **answerA**, **answerB**, **answerC**, and **answerD** are currently
+    undefined as we have not performed any calculation for them, because we have set
+    the breakpoint at `var answerA = add(numberA, number)`;.
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Next, click on **Watch**. You can now add the variables that you want to inspect.
+    You can achieve this by typing in the name of the variables. Type in **answerA**
+    and **numberB**, and then press *Enter*. You will see a screen similar to the
+    example shown in the following screenshot:![Time for action—more Debugging JavaScript
+    by using the IE8 developer tool](img/0004_07_02.jpg)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: As explained previously, **answerA** is not defined yet as it has not been calculated
+    by our program. Also, because we enter the values for **numberA** and **numberB**,
+    **numberB** is naturally defined.
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_IND
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Did you notice that we have the incorrect types for our input? This is because
+    we have used the `.value` method to access the values of the input fields. As
+    a good JavaScript programmer, we should be converting the values to floating-point
+    numbers by using `parseFloat()`.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: We can continue to execute the code (in debugging mode) by performing Continue,
+    Step In, Step Over, and Step Out operations in the debugging window.
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'We will move quickly into the example to see how Continue, Step In, Step Over
+    and Step Out work. Continuing from the above example:'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Click on the **Continue** button, which is green and looks like a "**play**"
+    button. Immediately, you will see that the code will execute until the next breakpoint.
+    This means that the variables that were previously undefined will now be defined.
+    If you click on **Locals**, you will see output similar to the example shown in
+    the next screenshot:![Time for action—more Debugging JavaScript by using the IE8
+    developer tool](img/0004_07_03.jpg)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Click on **Watch**, and you will see a screen similar to the example displayed
+    in the next screenshot:![Time for action—more Debugging JavaScript by using the
+    IE8 developer tool](img/0004_07_04.jpg)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: This means that the effect of Continue is that it will execute the code from
+    one breakpoint to the next breakpoint. If there is no second breakpoint, the code
+    will execute up to the end.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: You might want to experiment with Step In, Step Over, and Step Out.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'In general, this is what they do:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Step In: This traces the code as the code executes. For instance, you can perform
+    the steps shown in the above example except that you click on **Step In** instead
+    of **Continue**. You will notice that you are effectively tracing the code. Next,
+    you can check on the **Locals** and **Watch** window and you will notice that
+    the previously-undefined variables will be defined as the code progresses.'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Step Over: This simply moves to the next line of code without jumping into
+    other functions as with what happened in Step In.'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Step Out: This simply "steps out" of the current breakpoint until the next
+    breakpoint. It is similar to **Continue**. If you use Step Out after Step In,
+    it will continue to the next breakpoint (if any).'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Now let us move on to the next useful feature, stopping your code when an error
+    is encountered.
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: To enable this feature, you will need to click on the **Break on Error** button,
+    or you can simply press *Cntrl* + *Shift* + *E*. This feature should be automatically
+    enabled once you start debugging.
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'What this feature does is stop executing the code should any error be discovered.
+    For example, uncomment the line that says: `buildContent(noSuchThing, "add");`
+    and run the code in debugging mode. You will see the following screenshot in the
+    Console, in your debugging window:'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '![Time for action—more Debugging JavaScript by using the IE8 developer tool](img/0004_07_05.jpg)'
+  prefs:
+  - PREF_IND
+  type: TYPE_IMG
+- en: This is one of the cool things about using a debugger; it helps you to spot
+    errors during run time, so that you can quickly identify the errors that you have
+    made.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Now that we have a basic knowledge and understanding of some of the more advanced
+    features of IE's debugging tool, it's time to be concerned about the performance
+    of our JavaScript program.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: The Internet Explorer debugging tool comes with a built-in profiler called the
+    JavaScript Profiler, which helps to take your site to the next level by improving
+    its performance.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: In general, the profiler gives you data on the amount of time spent in each
+    of your site's JavaScript methods and even built-in JavaScript functions. Here's
+    how you can use this feature.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Using the sample example source code in your browser, open the **Develop** tool
+    and click on the **Profile** tab. Then click on **Start Profiling**, to begin
+    a session.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Go to your browser, and enter some sample values. For instance, I entered **5**
+    and **3**. Once you have entered the sample values, go to your debugging window
+    and click on **Stop Profiling**. A screen similar to the one shown in the following
+    screenshot will be displayed:![Time for action—more Debugging JavaScript by using
+    the IE8 developer tool](img/0004_07_06.jpg)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Notice that the Jscript Profiler includes the time spent on each of the functions
+    (the name of each function is also given). The number of times that each function
+    is being used is also given, as shown in the Count column. You may have noticed
+    that the time taken for each of our functions is 0.00; this is because our example
+    program is relatively small, so the time required is close to zero.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: What just happened?
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We have just covered Internet Explorer's developer tool, which helps us to perform
+    debugging tasks in a much streamlined manner.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In case want to know what the difference between debugging manually and using
+    a debugging tool is, I can safely tell you from experience that the amount of
+    time saved by using a debugging tool alone is a good enough reason for us to use
+    debugging tools.
+  prefs: []
+  type: TYPE_NORMAL
+- en: You may understand that there are various quirks involved when developing for
+    Internet Explorer; using its built-in debugging tools will help you to figure
+    out these quirks in a more efficient manner.
+  prefs: []
+  type: TYPE_NORMAL
+- en: With that in mind, let us move on to the next tool.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Safari or Google Chrome Web Inspector and JavaScript Debugger
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this section, we will learn about the JavaScript debugger used in Safari
+    and Google Chrome. Both browsers have similar code base, but have subtle differences,
+    so let us start by learning about the differences between Safari and Google Chrome.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Differences between Safari and Google Chrome
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: If you are an Apple fan, you will no doubt feel that Safari is perhaps the best
+    browser on planet Earth. Nonetheless, both Google Chrome and Safari have their
+    roots in an open source project called WebKit.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Safari and Google Chrome use a different JavaScript Engine. Since **Safari 4.0**,
+    Safari has used a new JavaScript engine called SquirrelFish. Google Chrome uses
+    the V8 JavaScript Engine.
+  prefs: []
+  type: TYPE_NORMAL
+- en: However, in terms of JavaScript debugging, the two are almost identical when
+    we are using the built-in debugger provided by Google Chrome and Safari; even
+    the interface is similar.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the following sections, I'll be using Chrome to explain the examples.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Debugging using Chrome
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: For Google Chrome, there is no need to download any external tools in order
+    for us to perform debugging tasks. The debugging tools are delivered right out
+    the box with the browser itself. So now, we will see how we can start our debugging
+    session, using `sample.html`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Opening and Enabling: We''ll start by opening and enabling debugging in Chrome.
+    There are basically two tools in Google Chrome that you can use to help you to
+    perform debugging tasks for your web applications: the web inspector and the javascript
+    debugger.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Web Inspector: Google Chrome''s Web Inspector''s predominant use is for inspecting
+    your HTML and CSS elements. To use Web Inspector, right-click on any component
+    on a web page to launch the Web Inspector. You''ll be able to see the elements
+    and resources associated with the component on which you clicked, including a
+    hierarchy view of the DOM and a JavaScript console. To use the Web Inspector,
+    open `example.html` in Google Chrome. Move your mouse to the side bar column that
+    says **Column 2**. Right-click on **Column 2** and you will see a pop-up menu.
+    Select **Inspect Element**. A new window is opened. This is the Web Inspector.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now we'll move on to the JavaScript debugger.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'JavaScript Debugger: To use Chrome''s JavaScript Debugger, select the **Page
+    menu** icon, which can be found on the right-hand side of the **URL** input field,
+    and then go to **Developer** | **Debug JavaScript Console**. You can also press
+    *Ctrl* + *Shift* + *J* to launch JavaScript Debugger. If you are using Safari,
+    you will have to first enable the developer menu by clicking on the **Display
+    Settings** icon that is found on the right-hand side of the **Page** icon, select
+    **Preference**, and then go to **Advanced**. On this screen, enable the option
+    **Show Develop menu in menu bar**. Then you can access this menu bar by clicking
+    on the **Page** icon and going to **Develop** and selecting **Start Debugging
+    JavaScript**. The interface is almost identical as to what we see in Google Chrome.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Notice that by opening the JavaScript Debugger, you will be opening up the same
+    window that you saw in the Web Inspector. However, the default tab is now **Scripts**.
+    In this tab, you can to view the source code of our example mentioned in the previous
+    subsection.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This is the main screen that we will be using to perform our debugging tasks.
+    In the following sessions, we will start to get our hands a little dirty by doing
+    some basic debugging.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Most of the tasks and actions that you are going in order to perform should
+    be conceptually similar if you have gone through our debugging session on using
+    the Internet Explorer developer tools.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We have just explored the basic actions of opening and starting the Web Inspector
+    and the JavaScript Debugger. Let us now go through a brief introduction to the
+    user interface, in order to get you up to speed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: A brief introduction to the user interface
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Here''s a brief explanation of where you can find the key features in Google
+    Chrome''s debugging tool as shown in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![A brief introduction to the user interface](img/0004_07_22.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'Elements: The **Elements** tab shows you the source code for the script or
+    web page that you are currently displaying. When you click on the **Elements**
+    icon, you will get the related tabs (as shown on the right-hand side of the previous
+    screenshot), such as **Computed Style**.'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Scripts: The **Scripts** tab is where you will perform your JavaScript debugging
+    tasks. When you click on the **Scripts** icon, you will get a list of related
+    features for debugging, such as **Watch Expressions, Call Stack, Scope Variables**
+    and **Break**.'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Profiles: The **Profiles** tab shows the profiling data of your web page, should
+    you choose to perform profiling.'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Time for action—debugging with Chrome
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: We'll now learn how to use the console and make use of breakpoints in order
+    to simplify our debugging session. We'll start with the console.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: The console basically shows what you have done within a debugging session. We
+    first see how we can access the console.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Start off by opening the file `sample.html` in your Google Chrome browser,
+    if you have not done so already. Once you have done that, perform the following
+    steps in order to show the console:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Open your JavaScript debugger by selecting the **Page menu** icon ![Time for
+    action—debugging with Chrome](img/0004_07_07.jpg) which can be found on the right-hand
+    side of the **URL** input field, and then go to **Developer** | **Debug JavaScript**.
+    You can also press *Ctrl* + *Shift* + *J* to launch JavaScript Debugger.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Once you have completed step 4, click on the console icon, which can be found
+    at the bottom of the JavaScript debugger. Once you are done, you will see a screen
+    similar to the example shown in the following screenshot:![Time for action—debugging
+    with Chrome](img/0004_07_08.jpg)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Now that we have opened the console, we move on to the most commonly-used features
+    of the debugger. Along the way, you will also see how the console logs our actions.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: We'll now move on to breakpoints by learning how to set them.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: As noted earlier, setting breakpoints is an important part of the debugging
+    process. So we will start off our actual debugging process by setting a breakpoint.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: With `sample.html` opened in Google Chrome, start your debugger and make sure
+    that you are in the **Scripts** tab. You can set a breakpoint by clicking on the
+    line number at which we want to set our breakpoint. Let use try going to the line
+    that contains `buildContent(answerB, "minus")`; and click on the line number.
+    You will see a screen similar to the example shown in the following screenshot:![Time
+    for action—debugging with Chrome](img/0004_07_09.jpg)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Notice that **line 130** now has a blue arrow (highlighted line), and over to
+    the right of the source code panel, you will see the Breakpoint panel. This now
+    contains the breakpoint, which we have just set, within it.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Run the example and enter some values into the input fields in your browser.
+    I want you to enter **4** in the first input field and **3** in the second input
+    field. Then click on **Submit**. You will see that the dynamic content will not
+    be created in the black square on the right. This is because the code has stopped
+    at `buildContent(answerB, "minus")`;.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Now go back to your debugger, and you will see the next screenshot on the right-hand
+    side of your source code, similar to the example shown below:![Time for action—debugging
+    with Chrome](img/0004_07_10.jpg)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: You will see that **Call Stack**, and **Scope variables** are now being populated
+    with values, while Watch Expressions is not. We will cover these in detail in
+    the next few paragraphs. But for now, we first start off with **Call Stack** and
+    **Scope Variables**.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: As shown in the previous screenshot, **Call Stack** and **Scope Variables**
+    are now populated with values when we execute the program. In general, **Call
+    Stack** contains the sequence of functions that are being executed, and **Scope
+    Variables** shows the values of the variables that are available until a breakpoint
+    or end of execution.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Here''s what happens when we click on the **Submit** button: the first function
+    that is executed is `formSubmit()`, and within this function, `var answerA`, `var
+    answerB`, `var answerC`, and `var answerD` are calculated. This is how the **Scope
+    Variables** get populated with our values.'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: In general, that is how **Call Stack** and **Scope Variables** work in Google
+    Chrome. Now, let us focus on a feature that has been lingering in our minds, **Watch
+    Expression**.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Before we explain what **Watch Expression** is, it is best that we see it in
+    action, first. Going back to the previous screenshot, you will notice that **Watch
+    Expression** is not populated at this point of time. We''ll now try to populate
+    Watch Expression by performing the following steps:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Refresh your browser and go back to your debugger.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'In the **Watch Expression** panel, click on **Add**, and enter the following:
+    `document.sampleform.firstnumber.value` and `document.getElementById("dynamic")`.'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Go back to your browser and enter **4** and **3** for the input values. Click
+    on **Submit**. Assuming that you have not removed the breakpoint that we set in
+    the previous subsection, you will see the information shown in the next screenshot
+    in the **Watch Expression** panel:![Time for action—debugging with Chrome](img/0004_07_11.jpg)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '**Watch Expression** is now populated. `document.sampleform.firstnumber.value`
+    and `document.getElementById("dynamic")` are lines of code copied from our JavaScript
+    program. If you were to trace the code, you would notice that `document.sampleform.firstnumber.value`
+    is used to derive the value of the first input field, and `document.getElementById("dynamic")`
+    is used to refer to the `div` element.'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Up to this point, you will have understood that **Watch Expression** is useful
+    for checking out expressions. All you have to do is add the expression that you
+    want to see, and, after executing the program, you will see what that expression
+    means, refers to, or what current values it has. This allows you to watch the
+    expressions update as the program executes. You do not have to complete the program
+    to see the value of the variables.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Now it's time to move on to the Continue, Step In, Step Over, and Step Out operations
+    in the debugging window.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'The concepts here are pretty similar to what we have seen in Internet Explorer
+    developer tools. In case you are wondering where the buttons are for executing
+    these operations, you can find them above the **Watch Expression** panel. Here
+    are the related concepts for each of the operation:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Step In: This traces the code as the code executes. Assuming that you are still
+    at our example, you can click on the icon with an arrow pointing downwards. You
+    will see that you are effectively tracing the code. As you continue to click on
+    **Step In**, you will see the values in **Scope Variables** and **Call Stack**
+    change. This is because at different points of the code there will be different
+    values for various variables or expressions.'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Step Out: This simply moves to the next line of code without jumping into other
+    functions, similarly to how Step In works.'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Step Over: This simply moves to the next line of code.'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'In this last subsection, we will focus on how we can pause on exceptions. In
+    general what this means is that the program will halt at the line where a problem
+    is encountered. Here''s what we will do to see it in action:'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Open `sample.html` in your editor. Search for the line that says `buildContent
+    (noSuchThing, "add")`; and uncomment it. Save the file and open it in Google Chrome.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Open the **debugger**. Click on the button with a Pause sign ![Time for action—debugging
+    with Chrome](img/0004_07_25.jpg) which can be found to the right of the **Show
+    Console** button. This will cause the debugger to halt execution when errors are
+    encountered.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: As usual, enter some values for the input fields. Click on **Submit**. Once
+    you have done so, go back to your debugger, and you will see the information shown
+    in the following screenshot:![Time for action—debugging with Chrome](img/0004_07_12.jpg)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: In general, this is the kind of visual message that you can get if you enable
+    the pause on exception feature.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: What just happened?
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We have covered the basics of using Google Chrome. If you have followed the
+    previous tutorial, you will have learned how to use the Console, setting, stepping
+    in, stepping out and over a breakpoint, pausing on exceptions, and watching the
+    variables.
+  prefs: []
+  type: TYPE_NORMAL
+- en: By using a mix of the above features, you will be able to quickly sniff out
+    and spot unintended JavaScript errors. You can even trace how your JavaScript
+    code is working as it executes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Over the next few sections, you will begin to notice that most of the tools
+    have very similar features, although some may have different terms for the same
+    feature.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now it's time to move on to the other tool, the Opera JavaScript Debugger.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Opera JavaScript Debugger (Dragonfly)
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Opera's JavaScript Debugger is called Dragonfly. In order to use it, all you
+    need to do is download the latest version of Opera; Dragonfly is included in the
+    latest version of Opera already.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now that you have installed the necessary software, it is time for us to perform
+    debugging tasks.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using Dragonfly
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We'll first start with our `example.html` file. Open this file in Opera browser.
+    Now we will see how we can start Dragonfly.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Starting Dragonfly
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: To access Dragonfly, go to menu option **Tools**. Select **Advanced**, and then
+    click on **Developer Tools**. Once you have done that, Dragonfly will appear.
+    As usual, we'll start with a brief introduction to the user interface of the tool.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Brief Introduction to the User Interface
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: 'Here''s a brief overview of the most important functions that we will be using,
+    as shown in the next screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Brief Introduction to the User Interface](img/0004_07_23.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: '**DOM:** This tab is used for checking the HTML and CSS elements'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '**Scripts:** This tab is used when we are debugging JavaScript'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '**Error Console:** This tab shows the various error messages when we are debugging
+    JavaScript.'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: We'll now start with debugging `example.html`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Time for action—debugging with Opera Dragonfly
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this section, we'll learn how to use the debugging facilities of the Dragonfly.
+    We'll start by setting breakpoints.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Here''s how we can set a breakpoint in Dragonfly:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: With `sample.html` opened in Opera, start Dragonfly and click on the **Scripts**
+    tabbed page. You can set a breakpoint by clicking on the line number at which
+    we want to set our breakpoint. Let us try going to the line that contains `buildContent(answerB,
+    "minus")`; and then clicking on the line number.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Go to your browser and execute `example.html`. Enter **5** and **3** as the
+    inputs. Click on **Submit**. As usual, you will not see any content being created
+    dynamically. The program's breakpoint is at contains `buildContent(answerB, "minus")`;.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Now go back to Dragonfly, and you will notice that the panels for **Call Stack**
+    and **Inspection** are now populated. You should see similar values to those shown
+    in the next screenshot if you enter the same values as I did:![Time for action—debugging
+    with Opera Dragonfly](img/0004_07_14.jpg)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: The values shown in **Inspection** and **Call Stack** are the values and functions
+    that have been calculated and executed up to the breakpoint.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: What just happened?
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We have just used Dragonfly to set a breakpoint, and as we executed our JavaScript
+    program, we have seen how Dragonfly's various fields get populated. We'll now
+    go into detail with regards to each field.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Inspection and Call Stack
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: As shown in the previous screenshot, **Call Stack** and **Inspection** are populated
+    with values when we execute the program. In general, **Call Stack** shows the
+    nature of the runtime environment at the time of a specific function call—what
+    has been called, and in what order. The inspection panel lists all of the property
+    values and others for the current call. Stack frames are specific parts of the
+    **Call Stack. Inspection** is conceptually similar to the **Scope Variables**
+    seen in Google Chrome.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Thread Log
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The **Thread Log** panel shows the details of the different threads running
+    through the script that you are currently debugging.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We'll now move on into greater details about the functionalities of Dragonfly.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Continue, Step Into, Step Over, Step Out, and Stop at Error
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'We can also perform the usual Continue, Step Into, Step Over, and Step Out
+    tasks while debugging our code. Here''s a screenshot that shows us where to find
+    the previously-mentioned functions:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Continue, Step Into, Step Over, Step Out, and Stop at Error](img/0004_07_15.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'Continue: This continues the currently-selected script after it has stopped
+    at a breakpoint. This will continue to the next breakpoint, if any, or it will
+    continue to the end of the script.'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Step Into: This allows you to step into the next function in the stack, after
+    the current function within which the breakpoint is contained. It effectively
+    traces the code as the code executes. Assuming that you are still at our example,
+    you can click on the **Step Into** icon with an arrow pointing downwards. You
+    will see that you are effectively tracing the code. As you continue to click on
+    **Step In**, you will see the values in **Inspection** and **Call Stack** change.
+    This is because at different points of the code there will be different values
+    for various variables or expressions.'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Step over: This allows you to step to the next line after the line on which
+    the breakpoint is set—you can use this multiple times to follow the execution
+    path of the script.'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Step out: This causes you to step out of the function.'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Stop at error: This allows you to stop executing your script at the point where
+    an error is encountered. To see this in action, open the file `example.html` in
+    your editor, and search for the line that says `buildContent(noSuchThing, "add")`;
+    and uncomment it. Save the file and then open it again, using Opera. Go to Dragonfly
+    and click on the icon. Now execute your program in Opera and enter some sample
+    values. Once you are done, you will see the following screenshot in Dragonfly:![Continue,
+    Step Into, Step Over, Step Out, and Stop at Error](img/0004_07_16.jpg)'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Notice that at line **46** there is a black arrow pointing to the right. This
+    means that there is an error in this line of code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Before we end of the section on DragonFly, we'll take a look at one more important
+    feature the settings feature.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Settings
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Opera's Dragonfly has a nifty feature that allows us to create different settings
+    for our debugging tasks. There is a whole list of these settings, so I will not
+    go through all of them. But I will focus on those that are useful for your debugging
+    sessions.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Scripts: In this panel, enabling reload documents automatically when selecting
+    window is a huge time saver when you have multiple JavaScript files to debug,
+    because it will help you to automatically reload the documents.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Console: This panel allows you to control what information you wish to see
+    during your debugging session. From XML to HTML, you can enable or disable messages
+    in order to see the most important information.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: With that, we'll end the section on Dragonfly and move on to Firefox and the
+    Venkman Extension.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Firefox and the Venkman extension
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: We know that Firefox has many plugins and tools, some of which are made for
+    web development purposes. In this section, we will learn about the Venkman extension,
+    which is Mozilla's JavaScript Debugger.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using Firefox's Venkman extension
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We'll start off by obtaining the extension; we will assume that you have Firefox
+    installed. In my case, I am using Firefox 3.6.3.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Obtaining the Venkman JavaScript Debugger extension
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: To obtain the Venkman JavaScript Debugger extension, go to [https://addons.mozilla.org/en-US/Firefox/addon/216/](http://https://addons.mozilla.org/en-US/Firefox/addon/216/)
+    and click on **Add To Firefox**. Once it is installed, Firefox will prompt you
+    to restart Firefox for the changes to take effect.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Opening Venkman
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: To start debugging, let us open the file `example.html` in Firefox. Here, we
+    can now start Venkman. Go to **Tools** and select **JavaScript Debugger**. If
+    you are using older versions of Firefox, you can access it by going to **Tools**
+    | **Web Development** | **JavaScript Debugger menu**.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now we'll start with a brief introduction to Venkman's user interface.
+  prefs: []
+  type: TYPE_NORMAL
+- en: A brief introduction to the user interface
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'The next screenshot shows the user interface of the Venkman extension:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![A brief introduction to the user interface](img/0004_07_24.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'Loaded Scripts: The **Loaded Scripts** panel shows a list of scripts that you
+    may load for debugging. After you have loaded a script, you will see it in the
+    **Source Code** panel.'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Local Variables and Watches: The **Local Variables** panel shows the local
+    variables that are available when you are performing debugging tasks. If you click
+    on the **Watches** tab, you will see the **Watches** panel. You will be using
+    this to enter the expressions that you want to watch.'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Breakpoint and Call Stack: The **Breakpoint** panel allows you to add a list
+    of breakpoints, and the **Call Stack** panel shows a list of functions or variables
+    that are executed, in order.'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Source Code: The **Source Code** panel shows the source code that you are currently
+    debugging.'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Interactive Session: The **Interactive Session** panel is the console for this
+    debugger.'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'We''ll now start debugging using the Venkman extension:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Time for action—debugging using Firefox's Venkman extension
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'We''ll start off by setting breakpoints, before we go into greater details:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'As with all debuggers, we can set a breakpoint by performing the following
+    steps:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Start by opening the file `example.html`, in Firefox.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Open the JavaScript debugger, and the debugger window will be shown.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: When your see the debugger window, go to the **Load Scripts** panel and you
+    will see the file `example.html` in it. Click on it and you will see the code
+    being loaded in the **Source Code** panel.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'To set a breakpoint, click on the line at which you want the breakpoint to
+    be set. For instance, I have set it on line **130**, which contains the code:
+    `buildContent(answer, "minus")`;. You should see something like the following
+    screenshot:![Time for action—debugging using Firefox''s Venkman extension](img/0004_07_17.jpg)'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: What just happened?
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The first thing to note is that there is a **white B** within a red rectangle,
+    as shown in the previous screenshot. This indicates that a breakpoint has been
+    set.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In Venkman, there are times where you will see a **white F** within a yellow
+    box; this means that Venkman could only set a Future Breakpoint. This happens
+    when the line you select has no source code, or if the line of code has already
+    been unloaded by the JavaScript engine (top level code is sometimes unloaded shortly
+    after it completes execution).
+  prefs: []
+  type: TYPE_NORMAL
+- en: A Future Breakpoint means that Venkman was unable to set a hard breakpoint now,
+    but if the file is loaded later, and it has executable code at the selected line
+    number, Venkman will automatically set a hard breakpoint.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The second thing to note is the **Breakpoints** panel. This contains a list
+    of all of the breakpoints that we have set in this debugging session.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now, before we move on to the following subsections, I need you to enter some
+    input for our example application by going to your browser. In my case I have
+    entered **5** and **3** for the first and second input fields respectively. Once
+    you have done that, click on **Submit**.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Again, you will notice that the panels that were originally empty are now populated
+    with values. We will cover this in the following subsections.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Breakpoints or Call Stack
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We have briefly covered breakpoints in the previous subsection. If you look
+    at the **Breakpoints** panel, you will notice that in that panel, there is another
+    tab, to the right-hand side of the **Breakpoint** panel, called **Call Stack**.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Click on **Call Stack** and you should see some data in this new panel. Assuming
+    that you have entered the same input and the same breakpoint, you will see a screen
+    similar to the example shown in the next screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Breakpoints or Call Stack](img/0004_07_18.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: In general, **Call Stack** shows the nature of the runtime environment at the
+    time of a specific function call—what has been called, and in what order. In Venkman,
+    it shows the name of the function, filename, line number and pc (program counter).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Local Variables and Watches
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Let us now focus on **Local Variables** and **Watches**. The panels for **Local
+    Variables** and **Watches** are located above the **Breakpoints** and **Call Stack**
+    panels. And if you have been following my instructions up to this point with the
+    exact same input, you should see the following in the **Local Variables** panel:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Local Variables and Watches](img/0004_07_19.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: The **Local Variables** panel simply shows the values of the variables that
+    have values (due to code execution) up to a breakpoint, or to the end of the program,
+    according to the order in which they are created or calculated.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The next panel that we want to talk about is the **Watches** panel. The **Watches**
+    panel does the same thing as watch expressions, as we have done previously for
+    other browsers. However, because we have not added anything for the **Watches**
+    panel yet, let us take some action to see how the **Watches** panel works:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Time for action—more debugging with the Venkman extension
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'In this section, we''ll cover more debugging features such as the Watch, Stop,
+    Continue, Step Into, Step Over, Step Out, edge triggers and throw triggers. But
+    first, let us perform the following steps, in order to see the Watch panel in
+    action:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Click on the **Watches** tab.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Right-click within the **Watches** panel, right-click and select **Add Watch**.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Enter `document.sampleform.firstnumber.value`.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Repeat steps 2 and 3, and this time enter `document.getElementById("dynamic")`.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Once you are done, you will see the output shown in the following screenshot:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '![Time for action—more debugging with the Venkman extension](img/0004_07_20.jpg)'
+  prefs:
+  - PREF_IND
+  type: TYPE_IMG
+- en: What the **Watches** panel does is allow us to add a list of expressions that
+    we want to keep track of, and also shows us the value of the expression.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Now let's move on to the Stop and Continue features.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Venkman provides some useful functionality, which includes Stop and Continue.
+    Stop basically stops at the next JavaScript statement, and Continue continues
+    the code execution.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: You can make Venkman stop at the next JavaScript statement.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Click on the large red **X** on the toolbar, or you can go to the menu and select
+    **Debug** and then choose **Stop**.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: There are times when no JavaScript is being executed. If this is the case, you
+    will see an ellipsis (...) appear over the **X** in the toolbar, and the menu
+    item will be checked. When the next line of JavaScript is encountered, the debugger
+    will stop. You can cancel this by clicking on **X** or selecting **Stop** again.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: In addition to Stop and Continue, Venkman also provides the standard Step In,
+    Step Over, and Step Out features.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Step In: This executes a single line of JavaScript, and then stops. You can
+    try this by clicking on the icon that says **Step Into**. If you click on it multiple
+    times, you will notice that the local variables change and you will get to see
+    that the code is being executed as if you are tracing the code.'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Step Over: This is used to step over an impending function call, and return
+    control to the debugger when the call returns. If you click on **Step Over**,
+    you will see that new content is being created in your browser. For the file `example.html`,
+    assuming that you click on **Step Over** from the breakpoint, you will see content
+    being created from `buildContent(answer, "minus")`;.'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Step Out: This executes until the current function call exits.'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: We'll now see how we can make use of Error triggers and Throw triggers.
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Error triggers is used to make Venkman stop at the next error, and Throw Triggers
+    is used to make Venkman stop when the next exception is thrown.
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'To see it in action, we''ll perform the following actions:'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Open the file `example.html` in your editor and, once again, search for the
+    line that says `buildContent(noSuchThing, "add")`; and uncomment it. Save the
+    file and open it again, using Firefox.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: After you have opened the file in Firefox, open Venkman.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Once you have opened up Venkman, go to **Debug** | **Error Trigger** and select
+    **Stop for Errors**. Then, once again, go back to **Debug** | **Throw Trigger**
+    and select **Stop for Errors**.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Go to your browser and enter any two numbers for the input fields—say **5**
+    and **3** respectively. Click on **Submit**.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Return to Venkman and you will see that the line with `buildContent(noSuchThing,
+    "add")`; is highlighted, and within the Interactive Session (or console) panel,
+    you will see an error message that says **X Error. noSuchThing not defined**.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Now that we have seen how Venkman can be used to stop our program when errors
+    are encountered, let us move on to its profiling feature.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'As we have mentioned in the previous chapters, profiling is used to measure
+    execution times for your scripts. To enable profiling:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Click on the **Profile** button in the toolbar. When profiling is enabled, you
+    will see a green check mark on the toolbar button.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Once you have Profiling enabled, go to your browser and enter some sample values.
+    I'll stick to **5** and **3** again. Then click on **Submit**.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Go back to Venkman, go to **File**, and select **Save Profile Data As**. I have
+    included an example as to what we have just done, and saved it to `data.txt` file.
+    You can open the file and see the contents of the profiling session. You can find
+    the profiling data for the file `sample.html` by searching for `example.html`
+    in the file `data.txt`.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: When you are done, click on **Profile** again to stop collecting the data.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: While profiling is enabled, Venkman will collect call count, maximum call duration,
+    minimum call duration, and total call duration, for every function called.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: You can also clear the profile data for the selected scripts by using the **Clear
+    Profile Data** menu item.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: What just happened?
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We have gone through the various features of the Venkman extensions. Features
+    like Stop, Continue, Step In, Step Out and Over of breakpoints shouldn't be unfamiliar
+    to you by this stage, as they are conceptually similar to the tools that we introduced
+    earlier.
+  prefs: []
+  type: TYPE_NORMAL
+- en: So let us now move to the last and final tool, the Firebug extension.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Firefox and the Firebug extension
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: I personally think that the Firebug extension needs no further introduction.
+    It is probably one of the most (if not most) popular debugging tools for Firefox
+    in the market right now. Firebug is free and open source.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'It has the following features:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Inspection and editing HTML by pointing and clicking on your web page
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Debugging and profiling JavaScript
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Quickly spotting JavaScript errors
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Logging JavaScript
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Executing JavaScript on the fly
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Firebug is perhaps one of the best documented debugging tools on the Internet.
+    So we''ll have a look at the URLs that you can visit in order to take advantage
+    of this free, open source, and powerful debugging tool:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To install Firebug, visit: [http://getFirebug.com](http://getFirebug.com)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'To see a complete list of FAQ, visit: [http://getFirebug.com/wiki/index.php/FAQ](http://getFirebug.com/wiki/index.php/FAQ)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'To see a full list of tutorials, visit: [http://getFirebug.com/wiki/index.php/Main_Page](http://getFirebug.com/wiki/index.php/Main_Page).
+    If you wish to learn more about each specific feature, look for **Panel** on the
+    left-hand side of the web page.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: We have finally reached the end of this chapter. We have covered specific tools
+    for various browsers that can be used for our debugging tasks.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Specifically, we have covered the following topics:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The Developer tool for Internet Explorer
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: JavaScript Debugger and Web Inspector for Google Chrome and Safari
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Dragonfly for Opera
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The Venkman extension for Firefox
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Resources for Firebug
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: In case you need more information about each specific tool, you can Google it
+    by appending the keyword "tutorial" to each of the tools and features' mentioned
+    in this chapter.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We have covered the most important features of the tools that can help you get
+    started with debugging your JavaScript application. In our final chapter, we will
+    focus on the various testing tools that you can use when your testing requirements
+    cannot be met manually.
+  prefs: []
+  type: TYPE_NORMAL

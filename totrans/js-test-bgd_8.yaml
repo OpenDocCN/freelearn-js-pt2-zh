@@ -1,0 +1,651 @@
+- en: Chapter 8. Testing Tools
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In the final chapter, we will cover some advanced tools that you can use for
+    testing your JavaScript. We will be covering tools that can help you further to
+    automate your testing and debugging tasks and, at the same time, show you how
+    you can test your user interface.
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: I understand that you are spoilt for choice as there are many tools out there
+    for you to choose from when carrying out testing tasks. But what I will focus
+    on are tools that are generally free, cross-browser and cross-platform; whether
+    you are a fan of Safari, IE, Chrome or other browsers doesn't really matter. Based
+    on [http://w3schools.com/browsers/browsers_stats.asp](http://w3schools.com/browsers/browsers_stats.asp),
+    approximately 30% of web browsers use Internet Explorer, 46% use the Firefox browser,
+    and the remainder of them use Chrome, Safari, or Opera. This means that the tools
+    that you use will cater to these statistics. Although there are applications that
+    were developed specifically for only one browser, it is a good practice and learning
+    experience for us to learn how to write code for use in different browsers.
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: More importantly, the tools that I am going to cover in great detail are those
+    that I personally feel are easier to get started with; and this will help you
+    to get a feel of the testing tools in general.
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: 'The following tools will be covered in detail:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Sahi, a cross-browser automated testing tool. We'll use this to perform UI testing.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: QUnit, a JavaScript testing suite, which can be used to test just about any
+    JavaScript code. We'll use this to perform automated testing of JavaScript code.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: JSLitmus, a lightweight tool for creating ad hoc JavaScript benchmark tests.
+    We'll use this to perform some benchmarking tests.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Apart from the previously-mentioned tools, I'll also cover a list of important
+    testing tools, that I believe are useful for your daily debugging and testing
+    tasks. So, be sure to check out this section.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Sahi
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: We briefly discussed about the issue of testing user interface widgets provided
+    by JavaScript libraries. In this section, we'll get started with testing a user
+    interface that was built by using the JavaScript libraries widget. The same technique
+    can be used for testing custom user interfaces.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Sahi is a browser-independent, automated testing tool that uses Java and JavaScript.
+    We will focus on this as it is browser-independent, and we cannot always ignore
+    IE users.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Sahi can be used to perform various testing tasks, but the one feature that
+    I would like to emphasize is its ability to record the testing process and play
+    it back in the browser.
+  prefs: []
+  type: TYPE_NORMAL
+- en: You will see how useful it is to use Sahi to perform user interface testing
+    in this section.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Time for action—user Interface testing using Sahi
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: We will demonstrate to you the recording and play back feature of Sahi, and
+    see how it can be used to test user interface widgets provided by JavaScript libraries
+    such as jQuery.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We'll start by installing Sahi. Go to [http://sahi.co.in](http://sahi.co.in)
+    and download the latest version. The latest version at this point of writing is
+    V3 2010-04-30\. Once you have downloaded it, extract it to the `C:` drive.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Open Internet Explorer (I am using IE8 for this demonstration) and go to [http://jqueryui.com/themeroller/](http://jqueryui.com/themeroller/).
+    We will be using the user interface for our demonstration purposes.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: In order to use Sahi, we need to first navigate to `C:\sahi_20100430\sahi\bin`
+    and look for `sahi.bat`. Click on it so that we can start Sahi.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Now, it's time to set up your browser so that it can be used with Sahi. Open
+    your browser, and go to **Tools** | **Internet Options** | **Connections** and
+    click on **LAN Settings**. Click on **Proxy Server** and enter the information
+    that you see in the following screenshot:![Time for action—user Interface testing
+    using Sahi](img/0004_08_01.jpg)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Once you are done, close this window and all other windows related to Tools.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: After you have completed the previous step, let us return to our browser. In
+    order to use Sahi within the browser, you need to press *Ctrl* + *Alt* and, at
+    the same time, double-click on any element on the web page ([http://jqueryui.com/themeroller/](http://jqueryui.com/themeroller/)).
+    You should see a new window that appears as shown in the next screenshot:![Time
+    for action—user Interface testing using Sahi](img/0004_08_02.jpg)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: If you see the window shown above, then you have set up and started Sahi correctly.
+    Now, let us check out its automated testing feature, recording, and playback capabilities.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Enter **jquery_testing** in the **Script Name** input field, and the click on
+    **Record** in the window that is shown in the previous screenshot. This starts
+    the recording process.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Now, let us click on a few of the user interface elements. In my case, I clicked
+    on **Section 2, Section 3, Open Dialog**, and **Font Settings**. This can be found
+    at the menu on the left-hand side.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Navigate to `C:\sahi_20100430\sahi\userdata\scripts` and you will see a file
+    named `jquery_testing.sah`. Open this file in WordPad and you will see the list
+    of actions that we have just created, recorded in this file.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Go to the Sahi window and click on **Stop**. Now, we have stopped the recording
+    process.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Open `jquery_testing.sah` in WordPad and change the code so that it appears
+    like this:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: I have defined a function called `jquery_testing()` to contain the list of actions
+    that we have created. Then, I appended `jquery_testing()` to the end of the file.
+    This line is to call the function when we activate the playback feature.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Now let us go to the Sahi window and click on **Playback**. Then, enter the
+    information as shown in the next screenshot:![Time for action—user Interface testing
+    using Sahi](img/0004_08_03.jpg)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Click on **Set** and wait for the page to refresh.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Once the page has been refreshed, click on **Play**. Within the browser, we
+    will see that the actions that we have performed are being repeated as per the
+    steps mentioned previously. You will also receive a **SUCCESS** message in the
+    **Statements** panel, which means that our testing process was successful.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: What just happened?
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We have just performed a simple user interface testing process by using Sahi.
+    Sahi's playback process and recording features make it easy for us to perform
+    testing on user interfaces.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Notice that Sahi allows us to perform testing in a visual manner. Apart from
+    defining a function for the playback feature, there isn't much coding involved
+    as compared to the other manual testing methods that we have seen in the previous
+    chapters.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now, let us focus on other important and relevant topics related to Sahi.
+  prefs: []
+  type: TYPE_NORMAL
+- en: More complex testing with Sahi
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: As mentioned previously at the start of this section, Sahi can be used with
+    any browser to perform a wide variety of tasks. It can even be used to perform
+    assertion tests.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Check out [http://sahi.co.in/static/sahi_tutorial.html](http://sahi.co.in/static/sahi_tutorial.html)
+    to see how assertion can be used in your testing processes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: After you are done with this section, make sure that you go back to **Tools**
+    | **Internet Options** | **Connections**, click on LAN settings and uncheck **Proxy
+    Server**, so that your browser can work as usual.
+  prefs: []
+  type: TYPE_NORMAL
+- en: QUnit
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Qunit is a jQuery testing suite, but it can be used to test the JavaScript code
+    that we have written. This means that the code does not have to depend on jQuery.
+    In general, QUnit can be used to perform assertion tests and asynchronous testing.
+    Also, assertion testing helps in predicting the returning result of your code.
+    If the prediction is false, it is likely that something in your code is wrong.
+    Asynchronous testing simply refers to testing Ajax calls or functions that are
+    happening at the same time.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let us act immediately to see how it works.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Time for action testing JavaScript with QUnit
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this section, we'll learn more about QUnit, by writing a bit of code, and
+    the also learn about various tests that QUnit supports. We will write tests that
+    are correct and tests that are and wrong, in order to see how it works. The source
+    code for this section can be found in the `source code` folder `qunit`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Open your editor and save the file as `example.html`. Enter the following code
+    in it:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: What the previous code does is that it simply sets up the code for testing.
+    Take note of the highlighted lines. The first two highlighted lines simply point
+    to the hosted version of the QUnit testing suite (both CSS and JavaScript), and
+    the last two lines are where your JavaScript code and test cases reside.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '`codeToBeTested.js` simply refers to the JavaScript code that you have written,
+    while `testCases.js` is the place where you write your test cases. In the following
+    steps, you will see how these two JavaScript files work together.'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'We''ll start by writing code in `codeToBeTested.js`. Create a JavaScript file
+    and name it as `codeToBeTested.js`. For a start, we''ll write a simple function
+    that tests whether a number entered is odd or not. With that in mind, enter the
+    following code into:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: '`isOdd()` takes in an argument value and checks if it is odd. If it is, this
+    function will return 1.'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Let us now write a piece of code for out test case.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Create a new JavaScript file and name it `testCases.js`. Now, enter the following
+    code into it:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Take note of the way that we write the test case using QUnit's provided methods.
+    First, we define a function call `test()`, which constructs the test case. Because
+    we are going to test the function `isOdd()`, the first parameter is a string that
+    will be displayed in the result. The second parameter is a call-back function
+    that contains our assertions.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: We use the assertion statement by using the `ok()` function. This is a Boolean
+    assertion, and it expects its first parameter to be true. If it is true, the test
+    passes, if not, it fails.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Now save all of your files and run `example.html` in any browser you like. You
+    will receive a screenshot similar to the following example, depending on your
+    machine:![Time for action testing JavaScript with QUnitQunitworking](img/0004_08_04.jpg)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: You can see the details of the test by clicking on `isOdd()` and will also see
+    the results of it. The output is as shown in the previous screenshot.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Now let us simulate some fail tests.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Go back to `testCases.js`, and append the following code to the last line of
+    `test():`
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Save the file and refresh your browser. You will now see a screenshot similar
+    to the following example in your browser:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '![Time for action testing JavaScript with QUnitQunitworking](img/0004_08_05.jpg)'
+  prefs:
+  - PREF_IND
+  type: TYPE_IMG
+- en: Now you can see that tests **4, 5**, and **6** have failed and they are in red.
+  prefs: []
+  type: TYPE_NORMAL
+- en: At this point you should see that the good thing about QUnit is that it largely
+    automates the testing process for us without us having to perform testing by clicking
+    on buttons, submitting forms, or using `alert()`. It will certainly save us a
+    tremendous amount of time and effort when using such automated tests.
+  prefs: []
+  type: TYPE_NORMAL
+- en: What just happened?
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We have just employed QUnit in performing automated testing of self-defined
+    JavaScript functions. It was a simple example, but enough to get you started.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Applying QUnit in real-life situations
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: You might wonder how you will make use of such tests on your code in real-life
+    situations. I would say that it is very likely that you will use `ok()` to test
+    your code. For instance, you can test for the truth values, if the user input
+    is alphanumeric, or if the user has entered invalid values.
+  prefs: []
+  type: TYPE_NORMAL
+- en: More assertion tests for various situations
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Another thing that you can take note of is that `ok()` is not the only assertion
+    test that you can perform. You can also perform other tests, such as comparison
+    assertion and identical assertion. Let us see another short example on comparison.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We'll learn to use another assertion statement, `equals()`, in this section.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Open your editor and open `testCases.js`. Comment out the code that you have
+    written previously, and enter the following code into the file:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'This code takes the same structure as the code that you have commented out.
+    But notice that we have used the `equals()` function instead of `ok()`. The parameters
+    of `equals()` are as follows:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: The first parameter is the actual value
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The second parameter is the expected value
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The third parameter is a self-defined message
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: We have used two `equals()` functions, of which the first will pass the test,
+    but the second will not as three and five are not equal.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Save the file and open `example.html` in your browser. You will see the following
+    screenshot:![More assertion tests for various situations](img/0004_08_06.jpg)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: JSLitmus
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: According to JSLitmus's homepage, JSLitmus is a lightweight tool for creating
+    ad hoc JavaScript benchmark tests. In my opinion, it is definitely true. Using
+    JSLitmus is quite a breeze, especially when it supports all popular browsers,
+    such as Internet Explorer, Firefox, Google Chrome, Safari, and others. At the
+    same time, it is entirely free with the products that we mentioned here.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this section, we will focus on a quick example of how we are going to create
+    ad hoc JavaScript benchmark tests.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Time for action—creating ad hoc JavaScript benchmark tests
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Now we will see how easy it is to create ad hoc JavaScript benchmark tests by
+    using JSLitmus. But first, let us install JSLitmus. By the way, all of the source
+    code for this section can be found in the `source code` folder for this chapter,
+    under the `jslitmus` folder.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Visit [http://www.broofa.com/Tools/JSLitmus/](http://www.broofa.com/Tools/JSLitmus/)
+    and download `JSlitmus.js`.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Open your editor, create a new HTML file within the same directory as `JSLitmus.js`
+    and name it `jslitmus_test.html`.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Enter the following code into `jslitmus_test.html:`
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: I've actually taken this code from the official example found on the JSLitmus
+    website. I will conduct the test in a slightly different manner to the official
+    example, but nonetheless, it still demonstrates the syntax of how we can use JSLitmus.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: The previous code snippet contains the user-defined function `testingLoop()`,
+    while the `JSLItmus.test('testing testingLoop()', testingLoop);` is the line of
+    JavaScript code written to test `testingLoop()` by using JSlitmus's syntax.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Let me explain the syntax. Generally, this is how we use JSLitmus:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: The first argument is some string that you can type in, and the second argument
+    is the name of the function that you intend to test. Just make sure that this
+    line of code is located in a place after your function is defined.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Now that we have set up our test, it's time to run it and see how it goes. Save
+    `jslitmus_test.html` and open this file in your browser. This is what you should
+    see in your browser:![Time for action—creating ad hoc JavaScript benchmark tests](img/0004_08_07.jpg)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Notice that under the Test column, it shows the text that we have typed in as
+    our first argument for `JSLItmus.test()`.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Click on the button **Run Tests**. You should receive the following result in
+    your browser:![Time for action—creating ad hoc JavaScript benchmark tests](img/0004_08_08.jpg)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: It basically shows the amount of time taken to execute the code, and other relevant
+    information. You can even check out the performance in chart form by visiting
+    the URL that is created dynamically. If you received something similar to the
+    previous screenshot, then you have just done an ad hoc benchmarking test.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'If you are running this test on Internet Explorer and you happen to receive
+    the following (or similar) message: **Script is taking too long to execute**,
+    then you will need to tweak your Windows registry, in order to allow the test
+    to run. Visit [http://support.microsoft.com/default.aspx?scid=kb;en-us;175500](http://support.microsoft.com/default.aspx?scid=kb;en-us;175500)
+    for details on how to tweak your windows registry settings.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: What just happened?
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We just used JSLitmus to create an ad hoc benchmarking test. Notice how easy
+    it is for you to perform ad hoc benchmarking test using JSLitmus. The cool thing
+    about JSLitmus is the simplicity of it; no additional tools, no windows to open,
+    and so on. All you need to do is to write `JSLItmus.test()` and type in the message
+    and name of the function you want to test.
+  prefs: []
+  type: TYPE_NORMAL
+- en: More complex testing with JSLitmus
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The previous example is a really simple example to help you to get started.
+    If you are interested in performing more complex tests, feel free to check out
+    [http://www.broofa.com/Tools/JSLitmus/demo_test.html](http://www.broofa.com/Tools/JSLitmus/demo_test.html)
+    and view its source code. You will see different style of writing test by using
+    JSLitmus in its well-commented source code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now that we have covered the tools that are browser-independent, it is time
+    to quickly cover other similar testing tools that can help you to debug JavaScript.
+  prefs: []
+  type: TYPE_NORMAL
+- en: More testing tools that you should check out
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Now that we are approaching the end of the chapter, I''ll leave you with a
+    simple list of testing tools that you can check out for testing purposes:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Selenium: **Selenium** is an automated testing tool that can record only on
+    Firefox and may time out when trying to playback in other browsers. There are
+    also other versions of Selenium that can help you to conduct tests in multiple
+    browsers and platforms. Selenium uses Java and Ruby. To get more information,
+    visit [http://seleniumhq.org](http://seleniumhq.org). To see a simple introduction,
+    visit [http://seleniumhq.org/movies/intro.mov](http://seleniumhq.org/movies/intro.mov).'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Selenium Server: Also known as Selenium Remote Control, **Selenium Server**
+    is a test tool that allows you to write automated web-application UI tests in
+    any programing language, against any HTTP website, using any mainstream JavaScript-enabled
+    browser. You can visit [http://seleniumhq.org/projects/remote-control/](http://seleniumhq.org/projects/remote-control/).'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Watir: **Watir** is an automated testing tool available as a Ruby gem. There
+    is detailed documentation on Watir, which can be found at [http://wiki.openqa.org/display/WTR/Project+Home](http://wiki.openqa.org/display/WTR/Project+Home).'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Assertion Unit Framework**: The **Assertion Unit Framework** is a unit testing
+    framework based on assertions. At the point of writing, documentation appears
+    to be limited. But you can learn how to use it at [http://jsassertunit.sourceforge.net/docs/tutorial.html](http://jsassertunit.sourceforge.net/docs/tutorial.html).
+    You can visit [http://jsassertunit.sourceforge.net/docs/index.html](http://jsassertunit.sourceforge.net/docs/index.html)
+    for other relevant information.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'JsUnit: **JsUnit** is a unit testing framework ported from the most popular
+    Java unit testing framework known as JUnit. JsUnit includes a platform for automating
+    the execution of tests on multiple browsers and multiple machines using different
+    operating systems. You can get JsUnit at [http://www.jsunit.net/](http://www.jsunit.net/).'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'FireUnit: **FireUnit** is a unit testing framework designed to run in Firebug
+    on Firefox. It is also a popular debugging tool for Firefox and there are numerous
+    tutorials for it and documentation on it, on the Internet. You can get FireUnit
+    at [http://fireunit.org/](http://fireunit.org/).'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'JSpec: **JSpec** is a JavaScript testing framework that utilizes its own custom
+    grammar and pre-processor. It can also be used in variety of ways, such as via
+    a terminal, via browsers using DOM or Console formatters, and so on. You can get
+    JSpec at [http://visionmedia.github.com/jspec/](http://visionmedia.github.com/jspec/).'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'TestSwarm: **TestSwarm** provides distributed, continuous integration testing
+    for JavaScript. It was originally developed by John Resig to support the jQuery
+    project and, has now become an official Mozilla Labs project. Take note that it
+    is still under heavy testing. You can get more information at [http://testswarm.com/](http://testswarm.com/).'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: We have finally reached the end of this chapter. We have covered specific tools
+    for various browsers that can be used for our debugging tasks.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Specifically, we covered the following topics:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Sahi: A browser-independent automated testing tool that uses Java and JavaScript'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'QUnit: A jQuery testing suite that can be used to test JavaScript code'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'JsLitmus: A lightweight tool for creating ad hoc JavaScript benchmark tests'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: A list of tools that you can check out
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Finally, we have reached the end of the book. I hope that you have learnt a
+    lot from this book about JavaScript testing. I want to thank you for your time
+    and effort in reading this book, and would also like to thank Packt Publishing
+    for it's support.
+  prefs: []
+  type: TYPE_NORMAL

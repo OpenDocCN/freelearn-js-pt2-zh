@@ -1,0 +1,1093 @@
+- en: Chapter 1. Getting Started
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Developer experience is a key strength of Aurelia. Its authors paid careful
+    attention to every aspect of the development process, so using the framework is
+    seamless and fluid, and so the learning curve is as smooth as possible.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This book humbly attempts to follow the same philosophy. It will teach you how
+    you can use Aurelia to build real-world applications from A to Z. In fact, while
+    reading the book and following the code samples, that's exactly what you will
+    do. You will start by setting up your development environment and creating the
+    project, then I will walk you through concepts such as routing, templating, data
+    binding, automated testing, internationalization, and bundling. We will discuss
+    application design, communication between components, and integration of third
+    parties. We will cover every topic most modern, real-world single-page applications
+    require.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this first chapter, we will start by defining some terms that will be used
+    throughout the book. We will quickly cover some core Aurelia concepts. Then we
+    will take a look at the core Aurelia libraries and see how they interact with
+    each other to form a complete, full-featured framework. We will see also what
+    tools are needed to develop an Aurelia application and how to install them. Finally,
+    we will start creating our application and explore its global structure.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Terminology
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: As this book is about a JavaScript framework, JavaScript plays a central role
+    in it. If you are not completely up-to-date with the terminology, which has changed
+    a lot in the last few years, let me clear a few things up.
+  prefs: []
+  type: TYPE_NORMAL
+- en: JavaScript (or JS) is a dialect, or implementation, of the **ECMAScript** (**ES**)
+    standard. It is not the only implementation, but it is definitely the most popular.
+    In this book, I will use the JS acronym to talk about actual JavaScript code or
+    code files and the ES acronym when talking about an actual version of the ECMAScript
+    standard.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Like everything in computer programing, the ECMAScript standard evolves over
+    time. At the time of writing, the latest version is **ES2016** and was published
+    in June 2016\. It was originally called **ES7,** but **TC39**, the committee drafting
+    the specification, decided to change their approval and naming model, hence the
+    new name.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The previous version, named **ES2015** (**ES6**) before the naming model changed,
+    was published in June 2015 and was a big step forward as compared to the version
+    before it. This older version, named **ES5**, was published in 2009 and was the
+    most recent version for six years, so it is now widely supported by all modern
+    browsers. If you have been writing JavaScript in the last five years, you should
+    be familiar with ES5.
+  prefs: []
+  type: TYPE_NORMAL
+- en: When they decided to change the ES naming model, the TC39 committee also chose
+    to change the specification's approval model. This decision was made in an effort
+    to publish new versions of the language at a quicker pace. As such, new features
+    are being drafted and discussed by the community, and must pass through an approval
+    process. Each year, a new version of the specification will be released, comprising
+    the features that were approved during the year.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Those upcoming features are often referred as **ESNext**. This term encompasses
+    language features that are approved or at least pretty close to approval but not
+    yet published. It can be reasonable to expect that most or at least some of those
+    features will be published in the next language version.
+  prefs: []
+  type: TYPE_NORMAL
+- en: As ES2015 and ES2016 are still recent versions, they are not fully supported
+    by most browsers. Moreover, ESNext features have typically no browser support
+    at all.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Those multiple names can be pretty confusing. To make things simpler, I will
+    stick with the official names ES5 for the previous version, ES2016 for the current
+    version and ESNext for the next version. But that's only my preference; in the
+    following chapters, we may encounter some tools or libraries still using the original
+    nomenclature.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Before going any further, you should make yourself familiar with the features
+    introduced by ES2016 and with ESNext decorators, if you are not already. We will
+    use these features throughout the book.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'If you don''t know where to start with ES2015 and ES2016, you can find a great
+    overview of the new features on Babel''s website:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[https://babeljs.io/docs/learn-es2015/](https://babeljs.io/docs/learn-es2015/)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'As for ESNext decorators, Addy Osmani, a Google engineer, explained them pretty
+    well:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[https://medium.com/google-developers/exploring-es7-decorators-76ecb65fb841](https://medium.com/google-developers/exploring-es7-decorators-76ecb65fb841)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'For further reading, you can take a look at the feature proposals (decorators,
+    class property declarations, async functions, and so on) for future ES versions:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[https://github.com/tc39/proposals](https://github.com/tc39/proposals)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Core concepts
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Before we start getting our hands dirty, there are a couple of core concepts
+    that need to be explained.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Conventions
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: First, Aurelia relies a lot on conventions. Most of those conventions are configurable,
+    and can be changed if they don't suit your needs. Each time we'll encounter a
+    convention throughout the book, we will see how to change it whenever possible.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Components
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Components are a first class citizen of Aurelia. What is an Aurelia component?
+    It is a pair made of an HTML template, called the **view**, and a JavaScript class,
+    called the **view-model**. The view is responsible for displaying the component,
+    while the view-model controls its data and behavior. Typically, the view sits
+    in an `.html` file and the view-model in a `.js` file. By convention, those two
+    files are bound through a naming rule, they must be in the same directory and
+    have the same name (except for their extension, of course).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Here''s an example of an empty component with no data, no behavior, and a static
+    template:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`component.js`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: '`component.html`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: A component must comply with two constraints, a view's root HTML element must
+    be the `template` element, and the view-model class must be exported from the
+    `.js` file. As a rule of thumb, the only function that should be exported by a
+    component's JS file should be the view-model class. If multiple classes or functions
+    are exported, Aurelia will iterate on the file's exported functions and classes
+    and will use the first it finds as the view-model. However, since the enumeration
+    order of an object's keys is not deterministic as per the ES specification, nothing
+    guarantees that the exports will be iterated in the same order they were declared,
+    so Aurelia may pick the wrong class as the component's view-model.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The only exception to that rule is some view resources which we'll see in [Chapter
+    3](ch03.html "Chapter 3. Displaying Data"), *Displaying Data*, and [Chapter 5](ch05.html
+    "Chapter 5. Making Reusable Components"), *Making Reusable Components*. In addition
+    to its view-model class, a component's JS file can export things like value converters,
+    binding behaviors, and custom attributes basically any view resource that can't
+    have a view, which excludes custom elements.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Components are the main building blocks of an Aurelia application. Components
+    can use other components; they can be composed to form bigger or more complex
+    components. Thanks to the slot mechanism, you can design a component's template
+    so parts of it can be replaced or customized. We will see all of this in the next
+    chapters.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Architecture
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Aurelia is not your average monolithic framework. It is a set of loosely coupled
+    libraries with well-defined abstractions. Each of its core libraries solves a
+    specific and well-defined problem common to single-page applications. Aurelia
+    leverages dependency injection and a plugin architecture so you can discard parts
+    of the framework and replace them with third-party or even your own implementations.
+    Or you can just throw away features you don't need so your application is lighter
+    and faster to load. We will look deeper into this plugin mechanism in [Chapter
+    2](ch02.html "Chapter 2. Layout, Menu, and Getting Familiar"), *Layout, Menu,
+    and Getting Familiar*.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The core Aurelia libraries can be divided into multiple categories. Let's have
+    a quick glance.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Core features
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The following libraries are mostly independent and can be used by themselves
+    if needed. They each provide a focused set of features and are at the core of
+    Aurelia:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`aurelia-dependency-injection`: A lightweight yet powerful dependency injection
+    container. It supports multiple lifetime management strategies and child containers.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`aurelia-logging`: A simple logger, supporting log levels and pluggable consumers.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`aurelia-event-aggregator`: A lightweight message bus, used for decoupled communication.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`aurelia-router`: A client-side router, supporting static, parameterized or
+    wildcard routes, and child routers.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`aurelia-binding`: An adaptive and pluggable data-binding library.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`aurelia-templating`: An extensible HTML templating engine.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Abstraction layers
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The following libraries mostly define interfaces and abstractions in order
+    to decouple concerns and enable extensibility and pluggable behaviors. This does
+    not mean that some of the libraries in the previous section do not expose their
+    own abstractions besides their features. Some of them do. But the libraries described
+    in the current section have almost no other purpose than defining abstractions:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`aurelia-loader`: An abstraction defining an interface for loading JS modules,
+    views, and other resources.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`aurelia-history`: An abstraction defining an interface for history management
+    used by routing.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`aurelia-pal`: An abstraction for platform-specific capabilities. It is used
+    to abstract away the platform on which the code is running, such as a browser
+    or Node.js. Indeed, this means that some Aurelia libraries can be used on the
+    server side.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Default implementations
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The following libraries are the default implementations of abstractions exposed
+    by libraries from the two previous sections:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`aurelia-loader-default`: An implementation of the `aurelia-loader` abstraction
+    for SystemJS and `require`-based loaders.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`aurelia-history-browser`: An implementation of the `aurelia-history` abstraction
+    based on standard browser hash change and push state mechanisms.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`aurelia-pal-browser`: An implementation of the `aurelia-pal` abstraction for
+    the browser.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`aurelia-logging-console`: An implementation of the `aurelia-logging` abstraction
+    for the browser console.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Integration layers
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The following libraries'' purpose is to integrate some of the core libraries
+    together. They provide interface implementations and adapters, along with default
+    configuration or behaviors:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`aurelia-templating-router`: An integration layer between the `aurelia-router`
+    and the `aurelia-templating` libraries.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`aurelia-templating-binding`: An integration layer between the `aurelia-templating`
+    and the `aurelia-binding` libraries.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`aurelia-framework`: An integration layer that brings together all of the core
+    Aurelia libraries into a full-featured framework.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`aurelia-bootstrapper`: An integration layer that brings default configuration
+    for `aurelia-framework` and handles application starting.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Additional tools and plugins
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: If you take a look at Aurelia's organization page on GitHub at [https://github.com/aurelia](https://github.com/aurelia),
+    you will see many more repositories. The libraries listed in the previous sections
+    are just the core of Aurelia - the tip of the iceberg, if I may. Many other libraries
+    exposing additional features or integrating third-party libraries are available
+    on GitHub, some of them developed and maintained by the Aurelia team, many others
+    by the community. We'll cover some of those additional libraries in further chapters,
+    but I strongly suggest that you explore the Aurelia ecosystem by yourself after
+    reading this book, as it is rapidly growing, and the Aurelia community is doing
+    some very exciting things.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tooling
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In the following section, we will go over the tools needed to develop our Aurelia
+    application.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Node.js and NPM
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Aurelia being a JavaScript framework, it just makes sense that its development
+    tools are also in JavaScript. This means that the first thing you need to do when
+    getting started with Aurelia is to install Node.js and NPM on your development
+    environment.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Node.js is a server-side runtime environment based on Google's V8 JavaScript
+    engine. It can be used to build complete websites or web APIs, but it is also
+    used by a lot of front-end projects for  development and to build tasks, such
+    as transpiling, linting, and minimizing.
+  prefs: []
+  type: TYPE_NORMAL
+- en: NPM is the de facto package manager for Node.js. It uses [http://www.npmjs.com](http://www.npmjs.com) 
+    as its main repository, where all available packages are stored. It is bundled
+    with Node.js, so if you install Node.js on your computer, NPM will also be installed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: To install Node.js and NPM on your development environment, you simply need
+    to go to  [https://nodejs.org/](https://nodejs.org/) and download the proper installer
+    for your environment.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'If Node.js and NPM are already installed, I strongly recommend that you make
+    sure to use at least version 3 of NPM, as older versions may have issues collaborating
+    with some of the other tools we''ll use. If you are not sure which version you
+    have, you can check it by running the following command in a console:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'If Node.js and NPM are already installed but you need to upgrade NPM, you can
+    do so by running the following command:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: The Aurelia CLI
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Even though an Aurelia application can be built using any package manager, build
+    system, or bundler you want, the preferred tool to manage an Aurelia project is
+    the command line interface, a.k.a. the CLI.
+  prefs: []
+  type: TYPE_NORMAL
+- en: At the time of writing, the CLI only supports NPM as its package manager and
+    `requirejs` as its module loader and bundler, probably because they are both the
+    most mature and stable. It also uses Gulp 4 behind the scenes as its build system.
+  prefs: []
+  type: TYPE_NORMAL
+- en: CLI-based applications are always bundled when running, even in development
+    environments. This means that the performance of an application during development
+    will be very close to what it should be like in production. This also means that
+    bundling is a recurring concern, as new external libraries must be added to some
+    bundles in order to be available at runtime. We'll see this in detail in [Chapter
+    10](ch10.html "Chapter 10. Bundling for Production"), *Bundling for Production*.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this book, we'll stick with the preferred solution and use the CLI. There
+    are, however, two appendices at the end of the book covering alternatives, a first
+    for Webpack, and a second for SystemJS with JSPM.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Installing the CLI
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'The CLI being a command line tool, it should be installed globally, by opening
+    a console and executing the following command:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: You may have to run this command with administrator privileges, depending on
+    your environment.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'If you already have it installed, make sure you have the latest version, by
+    running the following command:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: You can then compare the version this command outputs with the latest version
+    number tagged on GitHub, at [https://github.com/aurelia/cli/releases/latest](https://github.com/aurelia/cli/releases/latest).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'If you don''t have the latest version, you can simply update it by running
+    the following command:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'If for some reason the command to update the CLI fails, simply uninstall then
+    reinstall it:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: This should reinstall the latest version.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The project skeletons
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: As an alternative to the CLI, project skeletons are available at [https://github.com/aurelia/skeleton-navigation](https://github.com/aurelia/skeleton-navigation).
+    This repository contains multiple sample projects, sitting on different technologies
+    such as SystemJS with JSPM, Webpack, ASP .Net Core, or TypeScript.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Prepping up a skeleton is easy. You simply need to download and unzip the archive
+    from GitHub or clone the repository locally. Each directory contains a distinct
+    skeleton. Depending on which one you chose, you'll need to install different tools
+    and run setup commands. Generally, the instructions in the skeleton's `README.md`
+    file are pretty clear.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Those skeletons are other good starting points to begin a new application using
+    different technologies. The two appendices at the end of this book show how to
+    use some of them to build an application using either SystemJS with JSPM or Webpack.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Apart from those appendices, the rest of the book will keep using the CLI.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Our application
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Creating an Aurelia application using the CLI is extremely simple. You just
+    need to open a console in the directory where you want to create your project
+    and run the following command:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The CLI''s project creation process will start, and you should see something
+    like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Our application](img/image_01_001.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'The first thing the CLI will ask for is the name you want to give to your project.
+    This name will be used both to create the directory in which the project will
+    live and to set some values, such as the `name` property in the `package.json`
+    file it will create. Let''s name our application `learning-aurelia`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Our application](img/image_01_002.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Next, the CLI asks what technologies we want to use to develop our application.
+    Here, you can select a custom transpiler such as TypeScript and a CSS preprocessor
+    such as LESS or SASS.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The transpiler, little cousin of the compiler, translates one programming language
+    into another. In our case, it will be used to transform ESNext code, which may
+    not be supported by all browsers, into ES5, which is understood by all modern
+    browsers.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The default choice is to use ESNext and plain CSS, and this is what we will
+    choose:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Our application](img/image_01_003.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'The following steps simply recap the choices we made and ask for confirmation
+    to create the project, then ask if we want to install our project''s dependencies
+    which it does by default. At this point, the CLI will create the project and run
+    an `npm install` behind the scene. Once it completes, our application is ready
+    to roll:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Our application](img/image_01_004.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: At this point, the directory you ran `au new` in will contain a new directory
+    named `learning-aurelia`. This sub-directory will contain the Aurelia project.
+    We'll explore it a bit in the following section.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The CLI is likely to change and offer more options in the future, as there are
+    plans to support additional tools and technologies. Don't be surprised if you
+    see different or new options when you run it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The path we followed to create our project uses Visual Studio Code as the default
+    code editor. If you want to use another editor such as **Atom**, **Sublime**,
+    or **WebStorm**, which are the other supported options at the time of writing,
+    you simply need to select option #3 custom transpilers, CSS pre-processors and
+    more at the beginning of the creation process, then select the default answer
+    for each question until asked to select your default code editor. The rest of
+    the creation process should stay pretty much the same. Note that if you select
+    a different code editor, your own experience may differ from the examples and
+    screenshots you''ll find in this book, as Visual Studio Code is the editor that
+    was used during writing.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: If you are a TypeScript developer, you may want to create a TypeScript project.
+    I however recommend that you stick with plain ESNext, as every example and code
+    sample in this book has been written in JS. Trying to follow with TypeScript may
+    prove cumbersome, although you can try if you like the challenge.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The structure of a CLI-based project
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'If you open the newly created project in a code editor, you should see the
+    following file structure:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`node_modules`: The standard NPM directory containing the project''s dependencies'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`src`: The directory containing the application''s source code'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`test`: The directory containing the application''s automated test suites,
+    which we will explore in [Chapter 7](ch07.html "Chapter 7. Test All the Things"),
+    *Test all the Things*'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`.babelrc`: The configuration file for Babel, which is used by the CLI to transpile
+    our application''s ESNext code into ES5 so most browsers can run it'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`index.html`: The HTML page that loads and launches the application'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`karma.conf.js`: The configuration file for **Karma**, which is used by the
+    CLI to run unit tests;'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`package.json`: The standard Node.js project file'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The directory contains other files such as `.editorconfig`, `.eslintrc.json`,
+    and `.gitignore` that are of little interest for learning Aurelia, so we won't
+    cover them.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In addition to all of this, you should see a directory named `aurelia_project`.
+    This directory contains things related to the building and bundling of the application
+    using the CLI. Let's see what it's made of.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The aurelia.json file
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The first thing of importance in this directory is a file named `aurelia.json`.
+    This file contains the configuration used by the CLI to test, build, and bundle
+    the application. This file can change drastically depending on the choices you
+    make during the project creation process.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: There are very few scenarios where this file needs to be modified by hand. Adding
+    an external library to the application is such a scenario, which we will face
+    multiple times in next chapters. Apart from this, this file should mostly never
+    be updated manually.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The first interesting section in this file is the `platform`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: This section tells the CLI that the output directory where the bundles are written
+    is named `scripts`. It also tells that the HTML index page, which will load and
+    launch the application, is the `index.html` file.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The next interesting part is the `transpiler` section:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: This section tells the CLI to transpile the application's source code using
+    Babel. It also defines additional plugins as some are already configured in `.babelrc`
+    to be used when transpiling the source code. In this case, it adds a plugin that
+    will output transpiled files as AMD-compliant modules, for `requirejs` compatibility.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There are many other sections in this file, some of which we will cover in further
+    chapters, some others I've left for you to explore on your own.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tasks
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The `aurelia_project` directory contains a subdirectory named `tasks`. This
+    subdirectory contains various Gulp tasks to build, run, and test the application.
+    These tasks can be executed using the CLI.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The first thing you can try is to run `au` without any argument:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: This will list all available commands, along with their available arguments.
+    This list includes built-in commands such as `new`, which we've used already,
+    or `generate`, which we'll see in the next section along with the Gulp tasks declared
+    in the `tasks` directory.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To run one of those tasks, simply execute `au` with the name of the task as
+    its first argument:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: This command will run the `build` task which is defined in `aurelia_project/tasks/build.js`.
+    This task transpiles the application code using Babel, executes the CSS and markup
+    preprocessors if any, and bundles the code in the `scripts` directory.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'After running it, you should see two new files in `scripts`: `app-bundle.js`
+    and `vendor-bundle.js`. Those are the actual files that will be loaded by `index.html`
+    when the application is launched. The former contains all application code, and 
+    both JS files and templates, while the later contains all external libraries used
+    by the application including Aurelia libraries. We''ll learn how to customize
+    bundling in [Chapter 10](ch10.html "Chapter 10. Bundling for Production"), *Bundling
+    for Production*.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'You may have noticed a command named `run` in the list of available commands.
+    This task is defined in `aurelia_project/tasks/run.js`, and executes the `build`
+    task internally before spawning a local HTTP server to serve the application:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: By default, the HTTP server will listen for requests on port 9000, so you can
+    open your favorite browser and go to http://localhost:9000/ to see the default
+    demo application in action.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: If you ever need to change the port number on which the development HTTP server
+    runs, you just need to open `aurelia_project/tasks/run.js`, and locate the call
+    to the `browserSync` function. The object passed to this function contains a property
+    named `port`. You can change its value accordingly.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The `run` task can accept a `--watch` switch:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: If this switch is present, the task will keep monitoring the source code and,
+    when any code file changes, will rebuild the application and automatically refresh
+    the browser. This can be pretty useful during development.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Generators
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The CLI also offers a way to generate code, using classes defined in the `aurelia_project/generators`
+    directory. At the of writing, there are generators to create custom attributes,
+    custom elements, binding behaviors, value converters, and even tasks and generators,
+    yes, there is a generator to generate generators.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: If you are not familiar with Aurelia at all, most of those concepts, value converters,
+    binding behaviors, and custom attributes and elements probably mean nothing to
+    you. Don't worry, we will cover these topics in the next chapters.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'A generator can be executed using the built-in `generate` command:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: This command will run the custom attribute generator. It will ask for the name
+    of the attribute to generate then create it in the `src/resources/attributes`
+    directory.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If you take a look at this generator which is found in `aurelia_project/generators/attribute.js`,
+    you'll see that the file exports a single class named `AttributeGenerator`. This
+    class uses the `@inject` decorator (which we'll see in more detail in [Chapter
+    2](ch02.html "Chapter 2. Layout, Menu, and Getting Familiar"), *Layout, Menu,
+    and Getting Familiar)* to declare various classes from the `aurelia-cli` library
+    as dependencies and have instances of them injected in its constructor. It also
+    defines an `execute` method, which is called by the CLI when running the generator.
+    This method leverages the services provided by `aurelia-cli` to interact with
+    the user and generate code files.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The exact generator names available by default are `attribute`, `element`, `binding-behavior`,
+    `value-converter`, `task`, and `generator`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Environments
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: CLI-based applications support environment-specific configuration values. By
+    default, the CLI supports three environments-development, staging, and production.
+    The configuration object for each of these environments can be found in the different
+    files `dev.js`, `stage.js`, and `prod.js` located in the `aurelia_project/environments`
+    directory.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'A typical environment file looks like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`aurelia_project/environments/dev.js`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: By default, the environment files are used to enable debugging logging and test-only
+    templating features in the Aurelia framework depending on the environment. We'll
+    see this in a next section. The environment objects can, however, be enhanced
+    with whatever properties you may need. Typically, it could be used to configure
+    different URLs for a backend, depending on the environment.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Adding a new environment is simply a matter of adding a file for it in the `aurelia_project/environments`
+    directory. For example, you can add a `local` environment by creating a `local.js`
+    file in the directory.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Many tasks, basically `build` and all other tasks using it, such as `run` and
+    `test` expect an environment to be specified using the `env` argument:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here, the application will be built using the `prod.js` environment file.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If no `env` argument is provided, `dev` will be used by default.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: When executed, the `build` task just copies the proper environment file to `src/environment.js`
+    before running the transpiler and bundling the output. This means that `src/environment.js`
+    should never be modified by hand, as it will be automatically overwritten by the
+    `build` task.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The structure of an Aurelia application
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The previous section described the files and folders that are specific to a
+    CLI-based project. However, some parts of the project are pretty much the same
+    whatever the build system and package manager are. These are the more global topics
+    we will see in this section.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The hosting page
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The first entry point of an Aurelia application is the HTML page-loading and
+    hosting it. By default, this page is named `index.html` and is located at the
+    root of the project.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The default hosting page looks like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`index.html`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: When this page loads, the `script` element inside the `body` element loads the
+    `scripts/vendor-bundle.js` file, which contains `requirejs` itself along with
+    definitions for all external libraries and references to `app-bundle.js`. When
+    loading, `requirejs` checks the `data-main` attribute and uses its value as the
+    entry point module. Here, `aurelia-bootstrapper` kicks in.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The bootstrapper first looks in the DOM for elements with the `aurelia-app`
+    attribute. We can find such an attribute on the `body` element in the default
+    `index.html` file. This attribute identifies elements acting as application viewports.
+    The bootstrapper uses the attribute's value as the name of the application's main
+    module and locates the module, loads it, and renders the resulting DOM inside
+    the element, overwriting any previous content. The application is now running.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Even though the default application doesn't illustrate this scenario, it is
+    possible for an HTML file to host multiple Aurelia applications. It just needs
+    to contain multiple elements with an `aurelia-app` attribute, each element referring
+    to its own main module.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The main module
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: By convention, the main module referred to by the `aurelia-app` attribute is
+    named `main`, and as such is located under `src/main.js`. This file is expected
+    to export a `configure` function, which will be called by the Aurelia bootstrapping
+    process and will be passed a configuration object used to configure and boot the
+    framework.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'By default, the main `configure` function looks like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`src/main.js`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs: []
+  type: TYPE_PRE
+- en: The `configure` function starts by telling Aurelia to use its defaults configuration,
+    and to load the `resources` feature, we'll see how features work in [Chapter 2](ch02.html
+    "Chapter 2. Layout, Menu, and Getting Familiar"), *Layout, Menu, and Getting Familiar*. It
+    also conditionally loads the development logging plugin based on the environment's
+    `debug` property, and the testing plugin based on the environment's `testing`
+    property. This means that, by default, both plugins will be loaded in development,
+    while none will be loaded in production.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Lastly, the function starts the framework then attaches the root component to
+    the DOM.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The `start` method returns a `Promise`, whose resolution triggers the call to
+    `setRoot`. If you are not familiar with `Promise`s in JavaScript, I strongly suggest
+    that you look it up before going any further, as they are a core concept in Aurelia.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The root component
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: At the root of any Aurelia application is a single component, which contains
+    everything within the application. By convention, this root component is named
+    `app`. It is composed of two files `app.html`, which contains the template to
+    render the component, and `app.js`, which contains its view-model class.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In the default application, the template is extremely simple:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`src/app.html`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs: []
+  type: TYPE_PRE
+- en: This template is made of a single `h1` element, which will contain the value
+    of the view-model's `message` property as text, thanks to string interpolation
+    which we will explore more in details in [Chapter 3](ch03.html "Chapter 3. Displaying
+    Data"), *Displaying Data*.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The `app` view-model looks like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`src/app.js`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE21]'
+  prefs: []
+  type: TYPE_PRE
+- en: This file simply exports a class having a `message` property containing the
+    string `Hello World!`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This component will be rendered when the application starts. If you run the
+    application and navigate to the application in your favorite browser, you'll see
+    a `h1` element containing `Hello World!`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: You may notice that there is no reference to Aurelia in this component's code.
+    In fact, the view-model is just plain ESNext and it can be used by Aurelia as
+    is. Of course, we're going to leverage many Aurelia features in many of our view-models
+    later on, so most of our view-models will in fact have dependencies on Aurelia
+    libraries, but the key point here is that you don't have to use any Aurelia library
+    in your view-models if you don't want to, because Aurelia is designed to be as
+    unobtrusive as possible.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Conventional bootstrapping
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'It is possible to leave the `aurelia-app` attribute empty in the hosting page:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE22]'
+  prefs: []
+  type: TYPE_PRE
+- en: In such a case, the bootstrapping process is much simpler. Instead of loading
+    a main module containing a `configure` function, the bootstrapper will simply
+    use the framework's default configuration and load the `app` component as the
+    application root.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This can be a simpler way to get started for a very simple application; as it
+    negates the need for the `src/main.js` file you can simply delete it. However,
+    it means that you are stuck with the default framework configuration. You cannot
+    load features or plugins. For most real-life applications, you'll need to keep
+    the main module, which means specifying it as the `aurelia-app` attribute's value.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Customizing Aurelia configuration
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The `configure` function of the main module receives a configuration object,
+    which is used to configure the framework:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`src/main.js`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE23]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Here, the `standardConfiguration()` method is a simple helper that encapsulates
+    the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE24]'
+  prefs: []
+  type: TYPE_PRE
+- en: This is the default Aurelia configuration. It loads the default binding language,
+    the default templating resources, the browser history plugin, the router plugin,
+    and the event aggregator. This is the default set of features that a typical Aurelia
+    application uses. All those plugins will be covered at one point or another throughout
+    this book. All those plugins are optional except the binding language, which is
+    needed by the templating engine. If you don't need one, just don't load it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In addition to the standard configuration, some plugins are loaded depending
+    on the environment's settings. When the environment's `debug` property is `true`,
+    Aurelia's console logger is loaded using the `developmentLogging()` method, so
+    traces and errors can be seen in the browser console. When the environment's `testing`
+    property is `true`, the `aurelia-testing` plugin is loaded using the `plugin`
+    method. This plugin registers some resources that are useful when debugging components.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The last line in the `configure` function starts the application and displays
+    its root component, which is named `app` by convention. You may, however, bypass
+    the convention and pass the name of your root component as the first argument
+    to `setRoot`, if you named it otherwise:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE25]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here, the root component is expected to sit in the `src/root.html` and `src/root.js`
+    files.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Getting started with Aurelia is very easy, thanks to the CLI. Installing the
+    tooling and creating an empty project is simply a matter of running a couple of
+    commands, and it takes typically more time waiting for the initial NPM install
+    to complete than doing the actual setup.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the next chapter, we'll go over dependency injection and logging, and we'll
+    start building our application by adding components and configuring routes to
+    navigate between them.
+  prefs: []
+  type: TYPE_NORMAL

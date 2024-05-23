@@ -1,0 +1,1350 @@
+- en: Chapter 6. Testing More Complex Code
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Welcome to the sixth chapter. In this chapter, we will learn more about JavaScript
+    testing. More specifically, we'll learn how to test more complex code, where there
+    will be more interactions between entities. Until now, we have been performing
+    tests on relatively simple code, using fairly straightforward techniques.
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: 'More specifically, we''ll cover the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Types of errors that can occur when combining scripts
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How we can deal with the errors that occur when combining the scripts together
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Various JavaScript libraries available on the Internet right now, and the issues
+    that we need to consider when testing them
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to test the GUI, widgets add-ons for libraries, and other considerations
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to use the console log
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Performing exception handling by using JavaScript built-in objects
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Testing an application by using JavaScript built-in objects
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Let us get started with the basic concepts by covering the kinds of errors that
+    can occur when combining scripts.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Issues with combining scripts
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: So far, we have been focused on writing and testing only one JavaScript code
+    within our HTML document. Consider the real-life situation where we typically
+    use external JavaScript; what happens if we use more than one JavaScript file?
+    What kind of issues can we expect if we use more than one external JavaScript
+    file? We'll cover all of this in the subsections below. We'll start with the first
+    issue—combining event handlers.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Combining event handlers
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: You may or may not have realized this, but we have been dealing with event handlers
+    since [Chapter 3](ch03.html "Chapter 3. Syntax Validation"), *Syntax Validation*.
+    In fact, we actually mentioned events in *Chapter 1, What is JavaScript Testing*.
+    JavaScript helps to bring life to our web page by adding interactivity. Event
+    handlers are the heartbeat of interactivity. For example, we click on a button
+    and a pop-up window appears, or we move our cursor over an HTML `div` element
+    and the element changes color to provide visual feedback.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To see how we can combine event handlers, consider the following example, which
+    is found in the `source code` folder in the files `combine-event-handlers.html`
+    and `combine-event-handlers.js` as shown in the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In `combine-event-handlers.html`, we have:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: Notice that each of the `div` elements is handled by different functions, namely,
+    `changeOne(), changeTwo()`, and `changeThree()` respectively. The event handlers
+    are found in `combine-event-handlers.js:`
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: You might want to go ahead and test the program. As you click on the text, the
+    content changes based on what is defined in the functions.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'However, we can rewrite the code such that all of the events are handled by
+    one function. We can rewrite `combine-event-handlers.js` as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: When we use `if else` statements to check the `id` of the `div` elements that
+    we are working on, and change the HTML contents accordingly, we will save quite
+    a few lines of code. Take note that we have renamed the function to `combine()`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Because we have made some changes to the JavaScript code, we''ll need to make
+    the corresponding changes to our HTML. So `combine-event-handlers.html` will be
+    rewritten as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: Notice that the `div` elements are now handled by the same function, `combine()`.
+    These rewritten examples can be found in `combine-event-handlers-combined.html`
+    and `combine-event-handlers-combined.js`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Naming clashes
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Removing name clashes is the next issue that we need to deal with. Similar
+    to the issue of combining event handlers, naming clashes occur when two or more
+    variables, functions, events, or other objects have the same name. Although these
+    variables or objects can be contained in different files, these name clashes do
+    not allow our JavaScript program to run properly. Consider the following code
+    snippets:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In `nameclash.html`, we have the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'In `nameclash1.js`, we have the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'If you run this code by opening the file in your browser and clicking on the
+    text **Testing**, the HTML contents will be changed as expected. However, if we
+    add `<script type="text/javascript" src="img/nameclash2.js"></script>` after the`<title></title>`
+    tag, and if the content of `nameclash2.js` is as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: Then we will not be able to execute the code properly. We will see the alert
+    box instead of the HTML contents being changed. If we switch the arrangement of
+    the external JavaScript, then the HTML contents of the `div` elements will be
+    changed and we will not be able to see the alert box.
+  prefs: []
+  type: TYPE_NORMAL
+- en: With such naming clashes, our program becomes unpredictable; the solution to
+    this is to use unique names in your functions, classes, or events. If you have
+    a relatively large program, it would be advisable to use namespaces, which is
+    a common strategy in several JavaScript libraries such as YUI and jQuery.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using JavaScript libraries
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'There are many JavaScript libraries available right now. Some of the most commonly-used
+    ones are as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: JQuery ([http://jquery.com](http://jquery.com))
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: YUI (Yahoo! User Interface JavaScript library) ([http://developer.yahoo.com/yui/](http://developer.yahoo.com/yui/))
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Dojo ([http://dojotoolkit.org/](http://dojotoolkit.org/))
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Prototype ([http://www.prototypejs.org/](http://www.prototypejs.org/))
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Mootools ([http://mootools.net/](http://mootools.net/))
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Script.aculo.us ([http://script.aculo.us/](http://script.aculo.us/))
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: There are many more JavaScript libraries out there. For a complete list, feel
+    free to visit [http://en.wikipedia.org/wiki/List_of_JavaScript_libraries.](http://en.wikipedia.org/wiki/List_of_JavaScript_libraries.)
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'If you have considered using JavaScript libraries, you may be aware of the
+    benefits of using a JavaScript library. Issues such as event handling, and the
+    much dreaded cross-browser issues make it necessary to consider using a JavaScript
+    library. But you might want to know what you should look out for when selecting
+    a JavaScript library as a beginner JavaScript programmer. So here is a list of
+    things to consider:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The level of available support, in terms of documentation.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Whether tutorials are available, and whether they are free or paid for. This
+    helps you to speed up the programing process.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The availability of plugins and add-ons.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Does the library have a built-in testing suite? This is very important, especially
+    for our purposes here.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Do you need to test a library that someone else has written?
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Firstly, while we are learning about JavaScript testing, I would say that for
+    a beginner learning JavaScript programing, it might not be advisable to test JavaScript
+    libraries that someone else wrote. This is because we need to understand the code
+    in order to perform accurate tests. People who are able to conduct objective (and
+    accurate) tests are JavaScript experts, and although you are on your way to becoming
+    one, you are probably not there yet.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Secondly, from a practical standpoint, many such tests have already been done
+    for us. All you need to do is search for them on the Internet.
+  prefs: []
+  type: TYPE_NORMAL
+- en: But for learning purposes, let us have a brief look at what tests are usually
+    run against library code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: What sort of tests to run against library code
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In general, as a user of various JavaScript libraries, we would most commonly
+    perform performance testing and profiling testing.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Performance testing
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Performance testing, as the name suggests, is about testing the performance
+    of your code. This includes testing how fast your code runs (on various browsers)
+    in a manual way, or by using certain tools such as Firebug or others (more such
+    tools are covered in [Chapter 8](ch08.html "Chapter 8. Testing Tools")).
+  prefs: []
+  type: TYPE_NORMAL
+- en: In general, in order to generate accurate results for performance testing, it
+    is important for you to test your code (most preferably by using tools and test
+    suites) against all popular platforms. For example, a common way to performance
+    test JavaScript code id to install Firebug in Firefox and test your code using
+    that. But to think of it from a practical standpoint, Firefox users only make
+    up approximately a quarter (or a third at the most) of the total number of Internet
+    users. You will have to test your code against other platforms such as Internet
+    Explorer in order to make sure that your code is up to the mark. We'll cover more
+    of this in [Chapter 8](ch08.html "Chapter 8. Testing Tools").
+  prefs: []
+  type: TYPE_NORMAL
+- en: Profiling testing
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Profiling testing is similar to performance testing, except that it focuses
+    on bottlenecks in your code rather than the overall performance. Bottlenecks are,
+    in general, the main culprits for inefficient code. Fixing bottlenecks is (almost)
+    a sure way to enhance the performance of your code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: GUI and widget add-ons to libraries and considerations on how to test them
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: If you have checked the list of various JavaScript libraries that I pointed
+    you to, you may have noticed that some of the JavaScript libraries provide user
+    interface or widget add-ons as well. These are meant to enhance your application's
+    user interface, and most importantly will help you to save time and effort by
+    implementing commonly-used user interface components, such as dialog boxes, color
+    selectors, and so on.
+  prefs: []
+  type: TYPE_NORMAL
+- en: But that's where the problem starts—how do we test such user interface and widget
+    add-ons? There are many ways in which we can go about doing that, but the simplest
+    way (and perhaps the most cumbersome) would be to test visually and manually.
+    For example, if we are expecting a dialog box to appear at the top left-hand side
+    of the screen with a certain color, width, and height, and it does not appear
+    the way we want, then something is wrong.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Similarly, if we see something that we expect to see, then we can say that it
+    is correct—at least in a visual sense.
+  prefs: []
+  type: TYPE_NORMAL
+- en: However, more vigorous testing is required. Testing user interfaces can be a
+    daunting task, and hence I would suggest that you use testing tools such as Sahi,
+    which allows us to write automated web application UI tests in any programing
+    language. Tools such as Sahi are out of scope for this chapter. We will cover
+    Sahi in detail in [Chapter 8](ch08.html "Chapter 8. Testing Tools"). Meanwhile,
+    if you are eager to check out Sahi, feel free to visit their website at [http://sahi.co.in](http://sahi.co.in).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Deliberately throwing your own JavaScript errors
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this section, we will learn how to throw our own JavaScript errors and exceptions.
+    We will briefly cover the syntax of the error functions and commands. It may be
+    a little incomprehensible at this stage to just give you the syntax, but this
+    is necessary. Once you understand how to make use of these commands and reserved
+    words, you will see how you can make use of them to give yourself more specific
+    information (and hence more control) over the types of errors that you can catch
+    and create in the next section. So let us get started with the first reserved
+    word—`throw`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The throw statements
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '`throw` is a statement that allows you to create an exception or error. It
+    is a bit like the `break` statement, but `throw` allows you to break out of any
+    scope. In general, this is what we usually use to literally throw an error. The
+    syntax is as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We can use `throw(exception)` in the following ways:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'or:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: '`Error` is a built-in object that is commonly used in conjunction with the
+    `throw` statement; we will cover `Error` later. The important thing to understand
+    now is the syntax, and the fact that `throw` is also often used with `try, catch`,
+    and `finally`, which will help you to control the program flow and create accurate
+    error messages. Now let us move on to `catch`.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The try, catch, and finally statement
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The `try, catch`, and `finally` statement are JavaScript''s exception handling
+    mechanism, which, as mentioned previously, helps you control the program flow,
+    while catching your errors. The syntax of the `try, catch`, and `finally` statements
+    is as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: Notice that `try` is followed by `catch`, and then `finally` can be used optionally.
+    In general, the `catch` statement catches the exceptions that occur in the `try`
+    statement. An exception is an error. The `finally` statement is executed as long
+    as the `try` or `catch` statement terminates.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Now that we have covered the basic commands and reserved words for deliberately
+    throwing JavaScript errors, let us take a look at an example of how `try, catch`,
+    and `finally` can be used together. The following code can be found in the `source
+    code` folder of *Chapter 6*, in the HTML document named `try-catch-finally-correct-version.html`.
+    Check out the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: You can copy and paste the code above into your favorite text editor, save it,
+    and run it in your browser. Or you can run the sample file `try-catch-finally-correct-version.html`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: You will see a prompt window asking you to enter a positive integer. Go ahead
+    and enter a positive integer, say **3** for instance, and you will receive an
+    alert window telling you **3! = 6**. After that, you should receive another alert
+    window, which contains the message **ok, all is done!**, as the `finally` block
+    will be executed after `try` or `catch` terminates.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now, enter a negative number, say **-1**. If you are using Firefox, you will
+    receive an alert window that says that you have too much recursion. If you are
+    using Internet Explorer, you will receive an **[object Error]** message.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'After the first pop-up window, you will receive a second pop-up window. If
+    you are using Firefox, you will see an **InternalError: Too much recursion** message.
+    If you are using Internet Explorer, you will receive an **Out of stack space**
+    message.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Lastly, you should receive a final alert window, which contains the message
+    **ok, all is done!**, as the `finally` block will be executed after `try` or `catch`
+    terminates. While it is true that we have an error, the error message is not exactly
+    what we need, as it does not tell us that we have entered an illegal value.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This is where `throw` comes in. `throw` can be used to control the program flow
+    and give us the correct response for each type of error. Check out the following
+    code, which can also be found in the `source code` folder, in the file `try-catch-finally-throw-correct-version.html`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: Now go ahead and execute the program, and enter correct values, negative values,
+    and non-alphanumeric values. You should receive the correct error messages depending
+    on your input.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Notice the previous lines of code where we used the `throw` statement to control
+    the types of error messages, which will be shown to the user in the `catch` block.
+    This is one way in which `throw` statements can be used. Note that the string
+    that is defined after `throw` is used to create program logic to decide what error
+    messages should be called.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In case you are wondering what other capabilities this exception handling mechanism
+    has, remove the `factorial` function from `try-catch-finally-correct-version.html`.
+    Alternatively, you can open the file `try-catch-finally-wrong-version.html` and
+    run the program. Then try entering any value. You should receive an alert message
+    telling you that the `factorial` function is not defined, and after that you will
+    receive another alert box saying **ok, all is done!**. Notice that, in this case,
+    there is no need for us to write any form of message; `catch` is powerful enough
+    to tell us what went wrong.
+  prefs: []
+  type: TYPE_NORMAL
+- en: One thing to note, though, is that the JavaScript runtime may catch an exception
+    if you do not write an exception handler.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now that we have covered the basics of the exception handling mechanism, let
+    us move on to the specifics—built-in objects for handling errors.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Trapping errors by using built-in objects
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this section, we'll briefly describe what each type of built-in object is,
+    along with its syntax, before we show some examples of how each of the built-in
+    objects work. Do take note that the alert messages, which we will be using sparingly
+    in the examples, are based on the Firefox browser. If you try the code on Internet
+    Explorer, you might see different error messages.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The Error object
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'An `Error` is a generic exception, and it accepts an optional message that
+    provides details of the exception. We can use the `Error` object by using the
+    following syntax:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here's an example that shows the `Error` object in action. The source code for
+    this example can be found in the file `error-object.html.`
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: You may have noticed that the structure of this code is similar to the previous
+    examples, in which we demonstrated `try, catch, finally`, and `throw`. In this
+    example, we have made use of what we have learned, and instead of throwing the
+    error directly, we have used the `Error` object.
+  prefs: []
+  type: TYPE_NORMAL
+- en: I need you to focus on the code given above. Notice that we have used an integer
+    and a string as the message argument for `var error`, namely `new Error(1)` and
+    `new Error("it must be a number")`. Take note that we can make use of `alert()`
+    to create a pop-up window to inform the user of the error that has occurred and
+    the name of the error, which is **Error**, as it is an `Error` object. Similarly,
+    we can make use of the message property to create program logic for the appropriate
+    error message.
+  prefs: []
+  type: TYPE_NORMAL
+- en: It is important to see how the `Error` object works, as the following built-in
+    objects, which we are going to learn about, work similarly to how we have seen
+    for the `Error` object. (We might be able to show how we can use these errors
+    in the console log.)
+  prefs: []
+  type: TYPE_NORMAL
+- en: The RangeError object
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: A `RangeError` occurs when a number is out of its appropriate range. The syntax
+    is similar to what we have seen for the `Error` object. Here's the syntax for
+    `RangeError:`
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: '`message` can either be a string or an integer.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: We'll start with a simple example to show how this works. Check out the following
+    code that can be found in the `source code` folder, in the file `rangeerror.html:`
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: When you run this example, you should see an alert window informing you that
+    the array is of an invalid length. After this alert window, you should receive
+    another alert window telling you that **The error is RangeError**, as this is
+    a `RangeError` object. If you look at the code carefully, you will see that I
+    have deliberately created this error by giving a negative value to the array's
+    length (array's length must be positive).
+  prefs: []
+  type: TYPE_NORMAL
+- en: The ReferenceError object
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'A `ReferenceError` occurs when a variable, object, function, or array that
+    you have referenced does not exist. The syntax is similar to what you have seen
+    so far and it is as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: '`message` can either be a string or an integer.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: As this is pretty straightforward, I'll dive right into the next example. The
+    code for the following example can be found in the `source code` folder, in the
+    file `referenceerror.html`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Take note that `y` is not defined, and we are expecting to catch this error
+    in the `catch` block. Now try the previous example in your Firefox browser. You
+    should receive four alert windows regarding the errors, with each window giving
+    you a different message. The messages are as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**ReferenceError: y** is not **defined**'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**y is not defined**'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**ReferenceError**'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**ok, all is done**'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'If you are using Internet Explorer, you will receive slightly different messages.
+    You will see the following messages:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**[object Error] message**'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**y is undefined**'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**TypeError**'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**ok, all is done**'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The TypeError object
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'A `TypeError` is thrown when we try to access a value that is of the wrong
+    type. The syntax is as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'An example of `TypeError` is as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs: []
+  type: TYPE_PRE
+- en: If you try running this code in Firefox, you should receive an alert box stating
+    that it is a `TypeError`. This is because `test.foo()` is not a function, and
+    this results in a `TypeError`. JavaScript is capable of finding out what kind
+    of error has been caught. Similarly, you can use the traditional method of throwing
+    your own `TypeError()`, by uncommenting the code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The following built-in objects are less used, so we'll just move through quickly
+    with the syntax of the built-in objects.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The SyntaxError object
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'A `SyntaxError` occurs when there is an error in syntax. The syntax for `SyntaxError`
+    is as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE21]'
+  prefs: []
+  type: TYPE_PRE
+- en: Take note that the `filename` and `lineNumber` parameters are non-standard,
+    and they should be avoided if possible.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The URIError object
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'A `URIError` occurs when a malformed URI is encountered. The syntax is as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE22]'
+  prefs: []
+  type: TYPE_PRE
+- en: Similar to `SyntaxError`, take note that the `filename` and `lineNumber` parameters
+    are non-standard, and they should be avoided if possible.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The EvalError object
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: An `EvalError` occurs when an `eval` statement is used incorrectly or contains
+    an error other than a syntax error.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE23]'
+  prefs: []
+  type: TYPE_PRE
+- en: Similar to `SyntaxError` and `URIError`, take note that the `filename` and `lineNumber`
+    parameters are non-standard, and they should be avoided if possible.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using the error console log
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Firefox's console log is a tool that is powerful enough for you to log your
+    JavaScript messages. You can log error messages from the built-in objects, or
+    you can write your own messages.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Error messages
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: What we see in this section are error messages generated that are logged in
+    Firefox's error console log. Before we do that, I need you to open up your Firefox
+    browser, go to **Tools** on the menu bar, and select **Error Console**. Make sure
+    that you do not open any other tabs.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Now, open your code editor, and enter the following code into a new document:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE24]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Save the document as a `.html` file, and then run the file on your Firefox
+    browser. Alternatively, you can use the source code found in the `source code`
+    folder with the HTML document entitled: `error-message-console.html`. If you now
+    take a look at your console, you should receive the following error message: **invalid
+    array length**. This is because we have defined an array that is of negative length,
+    which is shown in the code above.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The trick here is to use the `throw` statement to throw error messages. Take
+    note that Firefox's error console does not show the `name` of the error.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now we will take a look at how to create custom error messages.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Writing your own messages
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Let us move on to creating our own error messages. The completed code is found
+    in the `source code` folder, in the file `test-custom.html`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Once again, open your code editor, create a new document, and enter the following
+    code into it:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE25]'
+  prefs: []
+  type: TYPE_PRE
+- en: What we have done here is that within the `try` block we have thrown two new
+    `Error` objects, each with a custom message, and then in the `catch` block, we
+    throw the `Error` object again. In the `try` block, we are creating a custom `Error`
+    object, and in the `catch` block, we are throwing the message into the **Error
+    Console**.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Take note of the highlighted lines. We have defined our own messages in the
+    `Error` object. Save the file, and then open up your Firefox browser. Go to **Tools
+    | Error Console**. In the **Error Console**, make sure you are in either the **All**
+    tab or the **Errors** tab. Now run your code in your Firefox browser. You will
+    receive the message **You must enter a number** in your error console if you enter
+    a non-numeric input. If you enter a number that is less than zero, you will receive
+    the message **Number must be bigger than zero**. The key here is to make use of
+    the provided methods and properties to throw your own error messages.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Modifying scripts and testing
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Now that we have covered the basic building blocks of throwing and catching
+    errors using built-in objects, and using the console to throw error messages,
+    it is time to learn how we can apply what we have learnt to a simple application.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Time for action—coding, modifying, throwing, and catching errors
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: I need you to focus and pay attention in this section because we will be applying
+    all that we have learnt previously when we first created an application. After
+    that, we will attempt to generate our own errors and throw various error messages
+    as a part of our testing process.
+  prefs: []
+  type: TYPE_NORMAL
+- en: What we will create is a mock movie booking system. I'm not sure about you,
+    but I've noticed that the folks at the service counter use some form of a movie
+    booking system that has a GUI to facilitate their booking process. Not only will
+    we be creating that, but we will also add more features, such as purchasing food
+    and drinks to go with the movie tickets.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Here are the details of the movie tickets booking system: as you click on each
+    seat, you are executing a booking action. If the seat is booked, a click on it
+    will execute a remove booking action.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Other important design rules are as follows: you cannot buy more meals than
+    the number of tickets that you have booked. For example, if you have booked four
+    tickets, you can only purchase up to four meals, be it a hotdog meal or a popcorn
+    meal. Similarly, for every meal that you have purchased, you can purchase one
+    Sky Walker. This means that if you have purchased three meals, you can only purchase
+    up to three Sky Walkers. Next, you can only pay in hundred dollar notes. This
+    means that you can only enter figures in hundreds for the **Please pay in $100
+    notes** input field.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: In case you are wondering about the pricing of the various merchandise, the
+    tickets are priced at $10 each. The hotdog meal costs $6 while the popcorn meal
+    costs $4\. Sky Walker costs $10 each.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Clear about the rules? If you are clear about the rules, we'll first start by
+    creating this application. After that, we will apply the exception catching mechanism
+    as the final step. By the way, the completed code for this example can be found
+    in the folder `cinema-incomplete` of *Chapter 6*.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Open up code editor and create a new file. Enter the following code into your
+    file.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE26]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: This will form the backbone of our program. Right now, it will not do anything,
+    nor will it show any design on your webpage. Therefore, we will start by creating
+    the layout of our application.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Enter the following code within the`<body>` tag of your HTML document.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE27]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: This code forms the basic control of our movie ticket booking application. You
+    may have noticed that there are various `div` elements with the class wrapper.
+    These elements will be used to create a grid-like user interface that represents
+    the seats in a cinema. So now we will start to create the grid that will be used
+    to represent the seats.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'We will first build the first row of the grid. For a start, type the following
+    code within the first `div` element with a wrapper class:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE28]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Notice that each of the `<div>` elements that you have typed within the first
+    `div` element with a wrapper class has a `class` and `id` property. In general,
+    the first `div` will have a class of `left1`, and an ID of `a1`. The next `div`
+    element will have a class of `left2` and an ID of `a2`, and so on. This is the
+    way that we will be designing our grid. Now, let us proceed to the next step.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Similar to step 3, we will build the next row of our grid. Enter the following
+    code into the second `div` element with a wrapper class:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE29]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Notice that the `div` elements that form the second row of the grid have an
+    ID starting with a "b" as opposed to an "a" as is the case in the first row of
+    the grid. This will be the way that we will name and continue to build the grid
+    as we go along. This means that the next row will have an ID beginning with "c",
+    the fourth row will have an ID beginning with "d", and so on.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: In all, we will be creating five rows. This means that we have three more rows
+    to go.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Now we will build the next three rows of the grid. Type the code given in the
+    previous step into the remaining `div` elements, but remember to change the `id`
+    of each element to suit the row number. At the same time, remember to include
+    the `onclick="checkBooking(this)`", as this will be used for executing our JavaScript
+    functions.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Once you are done with the HTML, it's time for us to add the CSS in order to
+    create the proper design and layout for our application.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: For this example, we will be using an external CSS. Therefore, insert the following
+    code after the`<title> </title>` tags.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE30]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Now we will create a CSS file. Open up a new document and save it as `cinema.css`,
+    as this is what we referred to in step 6\. Next, enter the following code into
+    `cinema.css:`
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE31]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: This is the code for the CSS classes and ID selectors that are used to build
+    the scaffold of our application. You might want to refresh yourself by going back
+    to [Chapter 1](ch01.html "Chapter 1. What is JavaScript Testing?"),*What is JavaScript
+    Testing*, if you have forgotten how CSS works.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Now, we will decide on the size of the *seats* on the grid, and other important
+    properties.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: We will define the width, height, background color, and text color of the seats.
+    Append the following code to `cinema.css:`
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE32]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: The previous code defines the size, color, and background for all of the "seats"
+    in our cinema. Now we are down to the final step in creating the layout and design
+    of our application.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: We will now define the layout and colors of our grid, which contains our seats.
+    The completed CSS code can be found in the `source code` folder `cinema-incomplete`,
+    in the file `cinema.css`. Append the following code to `cinema.css:`
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE33]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'This CSS code basically defines each column of the grid. Once you are done
+    with this, save it as `cinema.css` and `cinema.html`. Make sure that these files
+    are in the same folder. Open up `cinema.html` in your web browser, and you should
+    see something similar to the following screenshot:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '![Time for action—coding, modifying, throwing, and catching errors](img/0004_06_01.jpg)'
+  prefs:
+  - PREF_IND
+  type: TYPE_IMG
+- en: If you see something amiss, you might want to compare your code to the example
+    source code found in the folder `cinema-incomplete`.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Now that we are done with the design and layout of our application, it is time
+    for us to add in the behaviors of the application. The completed code example
+    for the following section can be found in the folder `cinema-complete` of *Chapter
+    6*.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'We will be using an external JavaScript file. So let us add the following code
+    snippet before the`</head>` tag:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE34]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Now let us create a new file, and name it `cinema.js`. We will focus on creating
+    the ticket booking mechanism. Because we will be booking tickets by clicking on
+    the seats, we need some mechanism to handle the click event. Because we have already
+    included the `onclick="checkBooking(this)`" in the HTML code, what we need to
+    do now is create a function that handles the click event. Add the following code
+    into `cinema.js:`
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE35]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Notice that the previous code checks for the `innerHTML` of the `div` element
+    and checks to see if it is `<p>Available</p>`. If it is, this means that the seat
+    is available and we can proceed with booking the seat. If not, the seat is booked
+    and a click on the `div` element will result in removing the booking of the seat.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: With that in mind, we need two more functions that will help us with the booking
+    and removal of the booking of the seats.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: We will now create two more functions, to book or to remove booking of the seats.
+    Prepend the following code to `cinema.js:`
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE36]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: We have used a global variable to keep track of the number of tickets or seats
+    booked. What the previous functions are doing is that they will increase or decrease
+    (as appropriate) `counterNumReservations` and, at the same time, change the HTML
+    contents of the `div` elements to reflect the status of the booking process. In
+    this case, the seat that is booked will be black in color.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Now, save your file and click on the seats. You should be able to receive visual
+    feedback on the booking process.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: We will move on to the form handling mechanism.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'The form handling mechanism basically handles the following: calculating total
+    spending, the total meal quantity, the amount of money that the user has paid,
+    the change (if any), and also other possible errors or conditions, such as whether
+    enough money is paid, if the money has been paid in hundreds, and so on. With
+    that in mind, we will create the following function:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE37]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: In order to create code that is modular, we have split the functionality down
+    into separate functions. For instance, `success()` and `failure()` are used to
+    create the HTML contents, which will show the status of the booking process.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Similarly, notice that we will need to create other functions for calculating
+    meal quantity, checking total money spent, and so on. These functions are created
+    based on what we have learnt from *Chapter 1* to *Chapter 5*, so I'll go on quickly.
+    So now, let us create these functions.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'We will now create various functions for calculating the meal quantity, the
+    total meal price, the total ticket price, and so on. We''ll start with calculating
+    the meal quantity:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE38]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Now, we''ll write the function for calculating the meal price:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[PRE39]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Next is the function for calculating the ticket price:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[PRE40]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'We''ll now write the function for calculating how much was spent on Sky Walker
+    by the user:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[PRE41]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Once this has been done, we''ll write a small function that checks how much
+    money has been received:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[PRE42]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Now that we are done with the functions that do the bulk of the calculations,
+    it''s time to write functions to check if the user has ordered too much Sky Walker:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[PRE43]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Once we are done with the previous step, it''s time to check if the user paid
+    too little money:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[PRE44]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'As stipulated at the beginning, we will also need to check to see if the user
+    paid in hundred dollar notes. This is done as follows:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[PRE45]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Finally, the functions for creating the HTML content that reflects the booking
+    status are as follows:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[PRE46]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Phew! That was quite a bit of coding! You might want to save your files and
+    test your application in your browser. You should have a full working application,
+    assuming that you have entered the code correctly. The completed code up to this
+    stage can be found in the `cinema-complete` folder.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Although we have just been through a tedious process, it was a necessary process.
+    You might ask why you are coding first instead of testing immediately. My answer
+    is that firstly, in the real business world, it is very likely that we need to
+    write code and then test the code that we have written. Secondly, if I were to
+    create a tutorial and ask you to test the code without knowing what the code is,
+    it might leave you hanging on the cliff, as you might not know what to test for.
+    Most importantly, the approach that we have taken allows you to practice your
+    coding skills and understand what the code is about.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: This will help you to understand how to apply the `try`, `catch`, and other
+    built-in exceptions object in your code; we will be doing this right now.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'We will now create a function that will be used to throw and catch our errors
+    by using built-in objects. Now, open `cinema.js` and prepend the following code
+    at the top of the document:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE47]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: The previous code will form the scaffold of our `catchError()` function. Basically,
+    what this function does is to catch the error (or potential error) and test to
+    see what type of error it is. We will be seeing two sample usages of this function
+    in this example.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: The first example is a simple example to show how we can use `catchError()`
+    in other functions so that we can catch any real or potential errors. In the second
+    example, we will throw and catch a `TypeError` by using `catchError()`.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: The completed code for this stage can be found in the folder `cinema-error-catching`.
+    Take note that the bulk of the code did not change, except for the addition of
+    the `catchError()` and some minor additions to the `addBooking()` function.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'We will now try to catch a `ReferenceError` (or `TypeError`, if you are using
+    Internet Explorer) by adding the following code snippet within the `try` block:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE48]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Next, add the following code at the top of the function `addBooking()`:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[PRE49]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: What we are trying to do here is to stop execution of our JavaScript code if
+    we find any errors. In the above code snippet, we pass a variable, `counterNumReservations`,
+    into `catchError()` as an example.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Now, save the file and test the program. The program should be working normally.
+    However, if you now change the code in the `try` block to:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[PRE50]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: where testing is not defined, you will receive a `ReferenceError` (if you are
+    using Firefox browser) or `TypeError` (if you are using Internet Explorer) when
+    you execute your application.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: The previous simple example shows that you can pass variables into the `catchError()`
+    function to check if it's what you want.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Now, let us move on to something more difficult.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'We will now try to `throw` and `catch` a `TypeError`. Let us first remove the
+    changes that we made in the previous example. Now what we are doing here is checking
+    to see if the object passed into the `addBooking()` function is the `nodeType`
+    that we want. We can achieve this by adding the following code at the top of the
+    `addBooking()` function:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE51]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Take note of the above lines in the code. What we have done is that we are getting
+    the `nodeType` of the `id` element. The result of this will be used as an argument
+    for the `catchError()` function. For some basic details about `nodeType`, please
+    visit [http://www.w3schools.com/htmldom/dom_nodes_info.asp](http://www.w3schools.com/htmldom/dom_nodes_info.asp).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Now, remove whatever changes you have done to `catchError()`, and add the following
+    code to the `try` block:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE52]'
+  prefs: []
+  type: TYPE_PRE
+- en: Notice that we are testing for the `nodeType` by checking the resulting integer.
+    Anything that is not correct (the `correct` variable is 1) will result in an error,
+    as shown in the `if` statement block.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Save the file, and then run your example. You should first receive an alert
+    box telling you that the **Correct nodeType is 1**, followed by the message **TypeError**.
+    Next, you will see the message **This is wrong** (which is a personalized message)
+    and finally the message **ok, all is done** indicating the end of the `catchError()`
+    function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: What we have done is that we have thrown our own errors in response to different
+    error types. In our case here, we wanted to make sure that we are passing the
+    correct `nodeType`. If not, it is an error and we can throw our own error.
+  prefs: []
+  type: TYPE_NORMAL
+- en: With that, we'll end this example.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Have a go hero—using catchError function to check input
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Now that you have covered quite a bit of code and gained new knowledge, you
+    might want to try this out: use the `catchError()` function to check the user''s
+    input for correctness. How would you go about doing that? Here are some ideas
+    to help you get going:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: You might want to make sure that the input values go through `catchError()`
+    before passing them to some other function.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Will you implement `catchError()` within other functions? Or are the values
+    passed to `catchError()` immediately upon input and then passed to other functions?
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: We have covered quite a few concepts in this chapter. The most important is
+    using JavaScript's exception handling mechanisms through the built-in objects,
+    and using these objects together with `try, catch`, and `finally` statements.
+    We then tried to apply these concepts into the cinema ticket booking application
+    that we created.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We also learnt the following topics:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Issues that occur when using scripts together, such as name clashing and combining
+    event handlers to make the code more compact
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Why we need to use JavaScript libraries, and the issues to consider, such as
+    the availability of documentation, tutorials, plugins, and a testing suite
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How we can make use of tools such as Selenium to test GUI and widgets add-ons
+    for libraries (these will be covered in more detail in [Chapter 8](ch08.html "Chapter 8. Testing
+    Tools"))
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How we can write error messages, or our own messages, to the console log
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to perform exception handling by using JavaScript built-in objects and using
+    these together with the `try, catch`, and `finally` statements
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to use JavaScript's exception handling mechanisms in a sample application
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Up to this chapter, we have been using manual ways to test our code, albeit
+    now using more advanced testing methods. In the next chapter, we will learn how
+    to use different debugging tools to make debugging, which is a part of testing,
+    easier. This will include using tools such as the IE8 Developer Tools, the Firebug
+    extension for Firefox, the Google Chrome Web Browser Inspector, and the JavaScript
+    debugger.
+  prefs: []
+  type: TYPE_NORMAL
+- en: What makes such tools powerful is that they allow us to test in a less obtrusive
+    manner; for instance, there's no need for us to use `alert()`, as we can, in general,
+    write error messages to the built-in consoles of these tools. This is a real time-saver
+    and will make our testing process a lot smoother. We will learn about these different
+    debugging tools in the
+  prefs: []
+  type: TYPE_NORMAL

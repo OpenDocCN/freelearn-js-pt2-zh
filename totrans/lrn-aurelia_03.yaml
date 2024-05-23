@@ -1,0 +1,2391 @@
+- en: Chapter 3. Displaying Data
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'To render views, Aurelia relies on two core libraries: `aurelia-templating`,
+    which provides a rich and extensible templating engine, and `aurelia-binding`,
+    which is a modern and adaptive data binding library. Since the templating engine
+    relies on an abstraction for data binding, which means other data binding libraries
+    can be used instead of Aurelia''s, the `aurelia-templating-binding` library acts
+    as a bridge between the two. Additionally, `aurelia-templating-resources` builds
+    on top of the templating engine and defines a set of standard behaviors and components.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this chapter, we will cover data binding and the basics of templating. We
+    will see the standard behaviors that Aurelia offers out-of-the-box and how to
+    use them in views.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Before rendering any data, it must first be obtained. Most of the time, single-page
+    web applications rely on some kind of web service. Therefore, we will see what
+    the Fetch API is, how to use Aurelia's Fetch client, and how to configure it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Lastly, before closing this chapter, we will put our new knowledge into practice
+    on our contact management application by adding views to display a list of contacts
+    and the details of a contact.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Templating basics
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: A template is an HTML file whose root element is a `template` element. It must
+    be valid HTML, as the templating engine relies on the browser to parse the file
+    and build a DOM tree out of it, which the engine will walk through, analyze, and
+    enrich with behaviors.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This means that the limitations applying to an HTML file apply to any Aurelia
+    template. For example, a `table` element can contain only certain types of element
+    as children, such as `thead`, `tbody`, or `tr`. As such, the following template
+    is illegal in most browsers:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here, we would like to use the `compose` element, which we will cover in a later section,
+    to insert a view containing the table head. Since `compose` is not a valid child
+    for `table`, most browsers will discard it when parsing the HTML file, so the
+    templating engine won't be able to see it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To get around such limitations, Aurelia looks for a special `as-element` attribute.
+    This attribute acts as an alias of the element''s name for the templating engine:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here, changing the name of the element from `compose` to `thead` makes it a
+    legitimate HTML snippet, and adding the `as-element="compose"` attribute tells
+    Aurelia's templating engine to see this `thead` element as a `compose` element.
+  prefs: []
+  type: TYPE_NORMAL
+- en: View resources
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: View resources are artifacts that are made available to the templating engine,
+    so they can be used by templates. For example, a custom element or a value converter
+    is a resource.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Like we saw in previous chapters, resources can be loaded globally, for example
+    by the application `configure` method, by a plugin, or by a feature. Such resources
+    are made available for every template in the application.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Locally loading resources
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'In addition to global resources, each template has its own set of resources.
+    A template that needs to use a resource that is not globally available must load
+    it first. This is done using the `require` element:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`src/some-module/some-template.html`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The `from` attribute must be the path of the resource to load. In the previous
+    example, the path is relative to the code root, which would normally be the `src`
+    directory. This means that `some-resource` is expected to sit directly in `src`.
+    The path can, however, be made relative to the directory the current template
+    file is in, by using the `./` prefix:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`src/some-module/some-template.html`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: In this example, `some-resource` is expected to sit in the `src/some-module`
+    directory.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Additionally, an `as` attribute can be specified. It is used to change the
+    local name of the resource, to solve a name conflict with another resource, for
+    example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: In this example, `some-resource` is made available as `another-resource` in
+    the template.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Resource types
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: By default, a resource is expected to be a JS file, in which case the path should
+    exclude the `.js` extension. For example, to load a value converter exported from
+    the `sort.js` file, a template would simply require `sort`. This is true no matter
+    the type of resource, value converter, binding behavior, custom element, and so
+    on, except for templates used as custom elements.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We'll see later how to create custom elements. We'll also see how to create
+    template-only components, without a view-model, when a component has no behavior.
+    In such a case, when loaded as a resource, the template-only component must be
+    referred to using its full filename, including its extension. For example, to
+    load a template-only component named `menu.html`, we need to require `menu.html`
+    and not simply `menu`. Otherwise, the templating engine won't know that it is
+    looking for an HTML file and not a JS file, and will try to load `menu.js`. We
+    will see real examples of this when we start breaking our application into components.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Loading CSS
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'In addition to locally loading a template resource, the `require` element can
+    be used to load a style sheet:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`src/my-component.html`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: In this example, the `my-component.css` style sheet will be loaded and added
+    to the head of the document.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Additionally, the `as="scoped"` attribute can be used to scope the style sheet
+    to the component:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`src/my-component.html`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: In this second example, if `my-component` uses the ShadowDOM and if the browser
+    supports it, the style sheet will be injected in the ShadowDOM root. Otherwise,
+    it will be injected into the component's view and the `scoped` attribute will
+    be set to the `style` element.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The ShadowDOM is an API that allows us to create isolated subtrees in the DOM.
+    Such subtrees can load their own style sheets and JavaScript in isolation, without
+    any risk of conflicts with the surrounding document. This technology is central
+    to pain-free web component development but, at the time of writing, it is still
+    not widely supported by browsers.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `scoped` attribute on a `style` element tells the browser to restrict the
+    scope of the style sheet to the containing element and its descendants. This prevents
+    styles from interfering with the rest of the document, without having to use a
+    ShadowDOM root. It is a useful alternative to the ShadowDOM, but is still not
+    widely supported by browsers.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Data binding
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Data binding is the action of linking template elements, using expressions,
+    to a data model, which is a JS object. This data model is called a binding context.
+    This context is used by Aurelia to expose, for example, the properties and methods
+    of a component's view-model to its template. Additionally, some of the behaviors
+    described in the following sections add information to their binding context.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Binding modes
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Data binding supports three different modes:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**One-way**: The expression is initially evaluated and the instruction is applied
+    and rendered in the view. The expression is observed so, whenever its value changes,
+    it can be re-evaluated and the instruction can update the view. It changes flow
+    only one way, from the model to the view.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Two-way**: Similar to one-way, but the updates flow both ways: if the template
+    element, such as an `input`, changes from user interaction, the model is updated.
+    It changes flow both ways, from the model to the view, and from the view to the
+    model.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_IND
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Of course, two-way binding restricts the kinds of expression that can be bound
+    to. Only assignable expressions (typically, expressions that can be used on the
+    left side of an equal (`=`) operator in a JavaScript assignation instruction)
+    can be used for two-way binding. For example, you cannot two-way bind to a conditional
+    ternary expression or a method call.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '**One-time**: The expression is initially evaluated and the instruction is
+    applied, but the expression is not observed, so any changes to the model occurring
+    after the initial rendering won''t be reflected on the view. Binding flows only
+    once, from the model to the view, when the view is rendered.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: String interpolation
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The most basic need when building a template is to display text. This can be
+    achieved using string interpolation:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: Similar to ES2015's string interpolation, such an instruction in an Aurelia
+    template evaluates the expression between `${` and `}`, and inserts the result
+    in the DOM as text.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'String interpolation works with more complex expressions:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here, we use the ternary expression to display the user's name if a user is
+    defined on the binding context, or a generic message otherwise.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'It can also be used inside an attribute:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: In this example, we use a ternary expression to conditionally assign the `emphasis`
+    CSS class to the `h1` element, only when the model's `isFirstTime` property is
+    truthy.
+  prefs: []
+  type: TYPE_NORMAL
+- en: By default, a string interpolation instruction is bound one-way. This means
+    that, whenever the value of the expression changes, it will be re-evaluated and
+    updated in the document.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Data binding commands
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'When analyzing an element in a template, the templating engine looks for attributes
+    with data binding commands. A data binding command is suffixed to an attribute
+    and separated by a dot. It instructs the engine to perform some kind of data binding
+    on this attribute. It has the following form: `attribute.command="expression"`.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let's walk through the various binding commands that Aurelia offers.
+  prefs: []
+  type: TYPE_NORMAL
+- en: bind
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'The `bind` command interprets the value of the attribute as an expression and
+    binds this expression to the attribute itself:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: In this example, the value of the `url` property on the binding context will
+    be bound to the `href` attribute of the `a` element.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The `bind` command is adaptive. It chooses its binding mode based on its target
+    element and attribute. By default, it uses one-way binding, except when the target
+    attribute can be changed by user interaction: the `value` of an `input`, for example.
+    In such cases, `bind` performs two-way binding, so changes caused by the user
+    are reflected on the model.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: One-way
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Similar to `bind`, this command performs data binding, but doesn't adapt to
+    its context; the binding is forced as one-way, no matter the type of target.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Two-way
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Similar to `bind`, this command performs data binding, but doesn't adapt to
+    its context, the binding is forced as two-way, no matter the type of target. Of
+    course, applying this command to an attribute that cannot be updated on its own
+    is useless.
+  prefs: []
+  type: TYPE_NORMAL
+- en: One-time
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Similar to `bind`, this command performs data binding, but forces a one-time
+    binding, meaning that any change to the model occurring after the initial rendering
+    is not reflected on the view.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: You may have already deduced that one-time binding is much lighter than real-time
+    binding, as provided by one-way and two-way binding. Indeed, since real-time binding
+    requires observation, it is more CPU and memory consuming. In a large application
+    with hundreds of data binding instructions, using one-time bindings whenever possible
+    can make a huge difference on a performance level. That's why it is considered
+    a good practice to stick to one-time binding as much as possible and to use real-time
+    binding only when necessary.
+  prefs: []
+  type: TYPE_NORMAL
+- en: trigger
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'The `trigger` command binds an event to an expression, which will be evaluated
+    each time the event is triggered. The `Event` object is available to the expression
+    as an `$event` variable:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: In this example, the `click` event of `button` will trigger a call to the binding
+    context's `open` method, which will be passed the `Event` object. Of course, using
+    `$event` is purely optional; here the click handler could be `open()`, in which
+    case the `Event` object would simply be ignored.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Note that the event name is spelled without any `on` prefix: the attribute
+    is named `click`, not `onclick`.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: delegate
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: While the `trigger` command attaches an event handler directly on the target
+    element, `delegate` leverages event delegation by attaching a single handler to
+    the document or the nearest ShadowDOM root. This handler will dispatch events
+    to their rightful target so the bound expression is evaluated.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Just like `trigger`, the `Event` object is available to the expression as an
+    `$event` variable, and the `on` prefix must be omitted in the attribute name.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Event delegation, as compared to event handlers directly attached to target
+    elements, consumes much less memory. Just like one-time binding versus real-time
+    binding, using delegation is mostly unnoticeable in smaller applications, but
+    it can make a difference to the memory footprint as the size of an application
+    grows. On the other hand, attaching event handlers directly to the element is required
+    in some scenarios, especially when firing custom events with disabled bubbling.
+  prefs: []
+  type: TYPE_NORMAL
+- en: call
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The `call` command is used to bind a function wrapping an expression to a custom
+    attribute or the property of a custom element. Those custom behaviors can then
+    call that function to evaluate the wrapped expression when a certain event occurs
+    or a given condition is fulfilled.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Additionally, a parameter object can be passed by the custom behavior, and
+    each property on this object will be made available as a variable in the context
+    of the expression:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here, we can imagine having a `person-form` custom element with a `save` property.
+    In this template, we bind the `save` property of `person-form` to a function wrapping
+    a call to the model's `createPerson` method, passing to it the value of a `person`
+    variable on the expression scope.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The `person-form` view-model would then call this function at some point. The
+    parameter object passed to this function will then be made available to the underlying
+    expression:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here, the `person-form` view-model calls the function bound on the `save` property,
+    passing to it a `person` parameter.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Obviously, this command is useless with native HTML elements.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We will see more concrete examples of this when we cover making custom elements.
+  prefs: []
+  type: TYPE_NORMAL
+- en: ref
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The `ref` command can be used to assign a reference of an HTML element or a
+    component part to the binding context. It can be useful if either the template
+    or the view-model needs access to an HTML element or some part of a component
+    used in the template.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In the following example, we first use `ref` to assign the `input` element
+    on the model as `nameInput`, and then use string interpolation to display in real
+    time the `value` of this `input`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The `ref` command must be used on a set of specific attributes:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`element.ref="someProperty"` (or the `ref="someProperty"` shorthand) will create
+    a reference to the HTML element as a property named `someProperty` on the binding
+    context'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: When put on an element having a `some-attribute` custom attribute, `some-attribute.ref="someProperty"`
+    will create a reference to this custom attribute's view-model as a property named
+    `someProperty` on the binding context
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: When put on a custom element, `view-model.ref="someProperty"` will create a
+    reference to the custom element's view-model as a property named `someProperty`
+    on the binding context
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: When put on a custom element, `view.ref="someProperty"` will create a reference
+    to the custom element's `view` instance as a property named `someProperty` on
+    the binding context
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: When put on a custom element, `controller.ref="someProperty"` will create a
+    reference to the custom element's `Controller` instance as a property named `someProperty`
+    on the binding context
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Binding literals
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The templating engine interprets the values of all attributes not having any
+    command as strings. For example, a `value="12"` attribute will be interpreted
+    as a `'12'` string.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Some components may have attributes requiring specific value types, such as
+    Booleans, numbers, or even arrays or objects. In such cases, you should use data
+    binding to force the templating engine to interpret the expression as the appropriate
+    type, even if the expression is a literal value that will never change. For example,
+    a `value.bind="12"` attribute will be interpreted as the number `12`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Similarly, an `options="{ value: 12 }"` attribute will be interpreted as a
+    `''{ value: 12 }''` string, while the `options.bind="{ value: 12 }"` attribute
+    will be interpreted as an object having a `value` property containing the number
+    `12`.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Of course, when data binding to literal values, it is better to use `one-time`
+    instead of `bind` in order to reduce the memory footprint of the application.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using built-in binding context properties
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Every binding contexts expose two properties which can be useful in some scenarios:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`$this`: A self-referencing property. It contains a reference on the context
+    itself. It can be useful, for example, to pass the whole context to a method or
+    to inject it in a component during composition.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`$parent`: A property that references the parent binding context. It can be
+    useful, for example, inside the scope of a `repeat.for` attribute to access a
+    property on the parent context that is overridden by the child context. It can
+    be chained to go higher up the binding context tree. For example, calling `$parent.$parent.$parent.name`
+    will try to access the `name` property of the great-grandparent context.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Binding to DOM properties
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Some standard DOM properties are exposed as attributes by Aurelia, so they can
+    be data-bound.
+  prefs: []
+  type: TYPE_NORMAL
+- en: innerhtml
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'The `innerhtml` attribute can be used to data-bind to the element''s `innerHTML`
+    property:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: In this example, we can imagine that the model's `htmlContent` property will
+    contain HTML code, which, being data-bound to the `innerHTML` property of , will
+    be displayed inside the `div`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: However, this HTML is not considered a template, so it won't be interpreted
+    by the templating engine. If it contains binding expressions or requires instructions,
+    for example, they won't be evaluated.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Displaying user-generated HTML is a well-known security risk, as it could contain
+    malicious scripts. It is strongly recommended to sanitize such HTML before displaying
+    it to any user.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`aurelia-templating-resources` ships with a simple value converter (we will
+    see later in this chapter what a value converter is), named `sanitizeHTML`, which
+    serves this purpose. You are, however, strongly encouraged to use a more complete
+    sanitizer, such as `sanitize-html`, which can be found at [https://www.npmjs.com/package/sanitize-html](https://www.npmjs.com/package/sanitize-html).'
+  prefs: []
+  type: TYPE_NORMAL
+- en: textcontent
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'The `textcontent` attribute can be used to data-bind to the element''s `textContent`
+    property:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: In this example, we can imagine that the model's `text` property will contain
+    some text, which, being data-bound to the `textContent` property of `div`, will
+    be displayed inside the `div`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Similarly to `innerhtml`, the text bound to `textcontent` is not considered
+    a template, so it won't be interpreted by the template engine.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'As mentioned earlier, the `bind` command tries to detect which binding mode
+    it should use. As such, if the element''s `contenteditable` attribute is set to
+    `true`, `bind` commands on `textcontent`, if any, will use two-way binding:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: In this example, the model's `text` property will be bound to the `textContent`
+    property of `div` and displayed inside the `div`. Additionally, since the content
+    of `div` is editable, any change to this content done by the user will be reflected
+    on the model's `text` property.
+  prefs: []
+  type: TYPE_NORMAL
+- en: style
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'The `style` attribute can be used to data-bind to the element''s `style` property.
+    It can be bound to either a string or an object:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Additionally, the `style` attribute can be used with string interpolation.
+    However, because of some technical limitations, it is not supported by Internet
+    Explorer. To work around this, and to make sure the application is compatible
+    with IE, the `css` alias should be used when using string interpolation:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here, the `div` would have its `color` and `background-color` styles data-bound
+    to the model's `color` and `bgColor` properties.
+  prefs: []
+  type: TYPE_NORMAL
+- en: scrolltop
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The `scrolltop` attribute can be used to bind to the element's `scrollTop` property.
+    Being bound two-way by default, this attribute can be used to either change the
+    horizontal scroll position of an element, or to assign its position to a property
+    on the context so it can be used.
+  prefs: []
+  type: TYPE_NORMAL
+- en: scrollleft
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The `scrollleft` attribute can be used to bind to the element's `scrollLeft`
+    property. Being bound two-way by default, this attribute can be used to either
+    change the vertical scroll position of an element, or to assign its position to
+    a property on the context so it can be used.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using built-in behaviors
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The core library, `aurelia-templating-resources`, provides a set of standard
+    behaviors, built on top of `aurelia-templating`, which can be used in any Aurelia
+    template.
+  prefs: []
+  type: TYPE_NORMAL
+- en: show
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The `show` attribute controls the visibility of the element, based on the value
+    of the expression it is bound to:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs: []
+  type: TYPE_PRE
+- en: In this example, the `p` element will be visible only when the model's `hasError`
+    property is truthy.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This attribute works by injecting a CSS class either in the document head or
+    in the nearest ShadowDOM root, and by adding this CSS class on the element whenever
+    it should be hidden. This CSS class simply sets the `display` property to `none`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: hide
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'This is similar to `show`, but with an inverted condition:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE21]'
+  prefs: []
+  type: TYPE_PRE
+- en: In this example, the `p` element will be hidden when the model's `isValid` property
+    is truthy.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Other than the inverted condition, this attribute works exactly like `show`
+    and uses the same CSS class.
+  prefs: []
+  type: TYPE_NORMAL
+- en: if
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The `if` attribute is very similar to `show`. The main difference is that, instead
+    of simply hiding the element when the bound expression evaluates to a `false`
+    value, it completely removes the element from the DOM.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE22]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'With the `if` attribute being a template controller, it is possible to put
+    it directly on a nested `template` element to control the visibility of multiple
+    elements:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE23]'
+  prefs: []
+  type: TYPE_PRE
+- en: In this example, both the `i` element and the text following it will be removed
+    from the DOM when `hasError` is `false`
+  prefs: []
+  type: TYPE_NORMAL
+- en: Actually, when the condition is falsey, the element on which it is, won't be
+    just removed from the DOM, its own behaviors and its children's will be unbound.
+    This is a very important distinction, as it has major performance implications.
+  prefs: []
+  type: TYPE_NORMAL
+- en: For the following example, let's imagine that `some-component` is huge, displays
+    lots of data, has many bindings, and is very memory and CPU consuming.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE24]'
+  prefs: []
+  type: TYPE_PRE
+- en: If we replace `if` with `show` here, the bindings for the whole component's
+    hierarchy would still exist, consuming memory and CPU even when it is not visible.
+    When using `if`, the component is unbound when `isVisible` becomes `false`, reducing
+    the number of active bindings in the application.
+  prefs: []
+  type: TYPE_NORMAL
+- en: On the other hand, this means that, when the condition becomes truthy, the element
+    and its descendants must be re-bound. In a scenario where the condition is often
+    toggled on and off, it can be better to use `show` or `hide`. Choosing between
+    `if` and `show`/`hide` is mainly a matter of balancing priorities between performance
+    and user experience, and should be backed with real performance tests.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: A template controller is an attribute that transforms the element it is on into
+    a template. It can then control how this template is rendered. The standard attributes
+    `if` and `repeat` are template controllers.
+  prefs: []
+  type: TYPE_NORMAL
+- en: repeat.for
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The `repeat` attribute, when used with the special `for` binding command, can
+    be used to repeat an element for a sequence of values:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE25]'
+  prefs: []
+  type: TYPE_PRE
+- en: In this example, the `li` element will be repeated and data-bound to each item
+    in the `items` array.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Instead of an array, a `Set` object can also be data-bound too.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Being a template controller, `repeat` actually transforms the element it is
+    on into a template. This template is then rendered for each item in the bounded
+    sequence. For each item, a child binding context is created, on which the item
+    itself is made available using the name at the left of the `of` keyword in the
+    binding expression. This means two things: you can name the item variable however
+    you want, and you can use it in the context of the item itself:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE26]'
+  prefs: []
+  type: TYPE_PRE
+- en: In this example, a `li` element will be inserted in the `ul` element for each
+    item in the `people` array. For each `li` element, a child context will be created,
+    exposing the current item as a `person` property, and an `important` CSS class
+    will be set on the `li` if the corresponding `isImportant` property of `person`.
+    Each `li` element will contain the `fullName` of its `person`, as text.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Additionally, the children contexts created by `repeat` inherit from the surrounding
+    context, so any property available outside the `li` element is available inside
+    it:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE27]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Here, the root binding context exposes two properties: a `people` array and `selectedPerson`.
+    When each `li` element is rendered, each child context has access to the current
+    `person` in addition to the parent context. That''s how the `li` element for `selectedPerson`
+    will have the `active` CSS class.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The `repeat` attribute uses one-way binding by default, which means that the
+    bounded array will be observed, and any change made to it will be reflected on
+    the view:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: If an item is added to the array, the template will be rendered into an additional
+    view and inserted at the appropriate position in the DOM.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If an item is removed from the array, the corresponding view element will be
+    removed from the DOM.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Binding to a map
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'The `repeat` attribute is able to work with `map` objects, using a slightly
+    different syntax:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE28]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here, the `repeat` attribute will create, for each entry in the `map`, a child
+    context having `key` and a `value` properties, respectively matching the `map`
+    entry's `key` and `value`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: It is important to remember that this syntax works only for `map` objects. In
+    the previous example, if `map` were anything else but a `Map` instance, the `key`
+    and `value` properties wouldn't be defined on the child binding context.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Repeat n times
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'The `repeat` attribute is also able to repeat a template a given number of
+    times, using the standard syntax, when binding to a number value:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE29]'
+  prefs: []
+  type: TYPE_PRE
+- en: In this example, assuming the `pageCount` is a number, the `li` element will
+    be repeated a number of times equal to `pageCount`, with `i` going from `0` to
+    `pageCount - 1` inclusively.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Repeating templating
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'If what needs to be repeated is composed of multiple elements without a single
+    container for each item, `repeat` can be used on a `template` element:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE30]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here, the rendered DOM will be a `div` element containing alternating `i` and
+    `p` elements.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Contextual variables
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'In addition to the current item itself, `repeat` adds other variables to the
+    child binding context:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`$index`: The index of the item in the array'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`$first`: `true` if the item is the first in the array; `false` otherwise'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`$last`: `true` if the item is the last in the array; `false` otherwise'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`$even`: `true` if the item''s index is an even number; `false` otherwise'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`$odd`: `true` if the item''s index is an odd number; `false` otherwise'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The with attribute
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The `with` attribute creates a child binding context using the expression it
+    is bound to. It can be used to re-scope part of a template, to prevent long access
+    paths.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'For example, the following template does not use `with`, and `person` is traversed
+    multiple times when its properties are accessed:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE31]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'By re-scoping the top `div` element to `person`, the access to its properties
+    can be simplified:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE32]'
+  prefs: []
+  type: TYPE_PRE
+- en: The preceding example is short, but you can imagine how a bigger template can
+    benefit from this.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Additionally, since `with` creates a child context, all variables available
+    to the outer scope will be accessible inside the inner scope.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The focus attribute
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The `focus` attribute can be used to data-bind an element's ownership of the
+    document's focus to an expression. It uses two-way binding by default, which means
+    that the variable it is bound to will be updated when the element gains or loses
+    `focus`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The following code snippet is an excerpt of `samples/chapter-3/binding-focus`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE33]'
+  prefs: []
+  type: TYPE_PRE
+- en: In the previous example, the `input` will get focused upon rendering if `hasFocus`
+    is `true`. When `hasFocus` changes to a `false` value, the `input` will lose `focus`.
+    Additionally, if the user gives `focus` to the `input`, `hasFocus` will be set
+    to `true`. Similarly, if the user moves away from the `input`, `hasFocus` will
+    be set to `false`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The compose element
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Composition is the action of instantiating a component and inserting it in a
+    view. The `aurelia-templating-resources` library exports a `compose` element,
+    allowing us to dynamically compose a component inside a view.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The code snippets in the following sections are excerpts of `samples/chapter-3/composition`.
+    While you read this section, you can run the sample application in parallel so
+    you can view live examples of composition.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Rendering a view-model
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'A component can be composed using the path of the JS file exporting its view-model:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE34]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here, when rendered, the `compose` element will load the `some-component` view-model,
+    instantiate it, locate its template, render the view, and insert it in the DOM.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Of course, the `view-model` attribute can be bound to or use string interpolation:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE35]'
+  prefs: []
+  type: TYPE_PRE
+- en: In this example, the `compose` element will display a component sitting inside
+    the `widgets` directory, based on the value of the `currentWidgetType` property
+    on the current binding context. Of course, this means that compose will swap the
+    component when `currentWidgetType` changes (unless a one-time binding is used).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Additionally, the `view-model` attribute can be bound to an instance of a view-model:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`src/some-component.js`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE36]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Here a component imports and instantiates the view-model of another component.
+    In its template, the `compose` element can then be bound directly to the instance
+    of `AnotherComponent`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`src/some-component.html`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE37]'
+  prefs: []
+  type: TYPE_PRE
+- en: Of course, this means that, if `anotherComponent` is assigned a new value, the
+    `compose` element will react accordingly and replace the previous component's
+    view with the new one.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Passing activation data
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: When rendering a component, the composition engine will try to call an `activate`
+    callback method on the component, if it exists. Similar to the router's screen
+    activating life cycle methods, this method can be implemented by components so
+    they can act when they are rendered. It can also be used to inject activation
+    data into the component.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `compose` element also supports a `model` attribute. This attribute's value
+    will be passed to the component's `activate` callback method, if any.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s imagine the following component:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`src/some-component.js`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE38]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'When composed without any `model` attribute, this component would display `<p>Activation
+    data: none</p>`. However, it would display `<p>Activation data: Some parameter</p>`
+    when composed like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE39]'
+  prefs: []
+  type: TYPE_PRE
+- en: Of course, `model` can use string interpolation or can be data-bound too, so
+    a complex object can be passed to the component's `activate` method.
+  prefs: []
+  type: TYPE_NORMAL
+- en: When used with a component that does not implement the `activate` method, the
+    `model` attribute's value is simply ignored.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Rendering a template
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'The `compose` element can also simply render a template, using the current
+    binding context:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE40]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here, `some-template.html` would be rendered into a view using the surrounding
+    binding context. This means that any variable available around the `compose` element
+    would also be available to `some-template.html`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: When used with the `view-model` attribute, the `view` attribute will override
+    the component's default template. It can be useful to reuse a view-model's behaviors
+    with a different template.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Value converters
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In the data-binding world, it is fairly common to have to transform data between
+    the view-model and the view during display, or to convert back user inputs when
+    a two-way binding updates the model.
+  prefs: []
+  type: TYPE_NORMAL
+- en: One of the ways this can be done is to use computed properties in the view-model
+    to perform transformation of another property's value back and forth. The downside
+    of this solution is that it is not reusable across view-models.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In Aurelia, value converters address this need. A value converter is an object
+    that can be plugged around a binding expression. Each time the binding needs to
+    either evaluate the expression to render its result or update the model in the
+    case of a two-way binding, the converter acts as an interceptor and can convert
+    the value.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using value converters
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Value converters are view resources. Like all view resources in Aurelia, in
+    order to be used in a template, it must be loaded, either globally by a `configure`
+    function or locally by a `require` element.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: See the *Templating basics* section if you don't remember how to load a resource.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In a template, a value converter can be wrapped around a data binding expression
+    using the pipe (`|`) operator:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE41]'
+  prefs: []
+  type: TYPE_PRE
+- en: In this example, we use the built-in `sanitizeHTML` value converter in the binding
+    of the `innerhtml` attribute. This value converter will be piped in the binding
+    process, and will clear any potentially dangerous elements from the bound value.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Value converters don't actually change the binding context value they operate
+    on. They simply act as interceptors and provide a replacement value for the binding
+    to use for rendering.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Passing a parameter
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Value converters can accept parameters, in which case they must be specified
+    in the binding expression using the colon (`:`) separator.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s imagine a value converter named `truncate`, which acts on a string value
+    and additionally expects a `length` parameter. During evaluation, it truncates
+    the provided value to the provided length, if longer, and returns the result.
+    Here''s how this converter would be used:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE42]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here, the `title` will be truncated to 20 characters if it is longer. Otherwise,
+    it will be displayed unchanged.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Passing multiple parameters
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Multiple parameters can be passed to a value converter. Simply keep using the
+    colon (`:`) separator. For example, if `truncate` could accept a second parameter
+    being the ellipsis appended to the truncated string, it would be passed like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE43]'
+  prefs: []
+  type: TYPE_PRE
+- en: Passing context variables as parameters
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Variables from the binding context can also be used as parameters, in which
+    case the binding expression will be re-evaluated when any of those variables change.
+    For example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`some-component.js`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE44]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here, the value of the string interpolation will depend on the view-model's
+    `title` and `maxTitleLength` properties. Whenever one of them changes, the expression
+    will be re-evaluated, the `truncate` converter will be re-executed, and the view
+    will be updated.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Chaining
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Value converters can be chained. In such a case, the value is piped through
+    the chain of converters, from left to right when evaluating the expression value,
+    and from right to left when updating the model:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE45]'
+  prefs: []
+  type: TYPE_PRE
+- en: In this example, the `title` would first be truncated, then capitalized before
+    being rendered.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Implementing a value converter
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'A value converter is a class that must implement at least one of the following
+    methods:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`toView(value: any [, ...args]): any`: This is called after evaluating the
+    bound expression, before rendering the result. The `value` parameter is the value
+    of the bound expression. The method must return the converted value, which will
+    either be passed to the next converter or rendered on the view.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`fromView(value: any [, ...args]): any`: This is called when updating the model
+    with the value of the binding target, before assigning the value to the model.
+    The `value` parameter is the value of the binding target. The method must return
+    the converted value, which will either be passed to the next converter or assigned
+    to the model.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'If the value converter is used with parameters, they will be passed as additional
+    parameters to the methods. For example, let''s imagine the following usage of
+    a value converter:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE46]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'In such a case, the `truncate` value converter''s `toView` method is expected
+    to look like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE47]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here, the `truncate` value converter's `toView` method expects, in addition
+    to the `value` on which it applies, a `length` parameter. It also accepts a third
+    parameter named `ellipsis`, which has a default value. If the provided `value`
+    is longer than the provided `length`, the method will truncate it, append the
+    `ellipsis` to it, and then return this new value. If the `value` is not too long,
+    it simply returns it unchanged.
+  prefs: []
+  type: TYPE_NORMAL
+- en: By default, Aurelia considers that any class loaded as a resource whose name
+    ends with `ValueConverter` is a value converter. The name of the value converter
+    will be the class name, without the `ValueConverter` suffix, camel-cased. For
+    example, a class named `OrderByValueConverter` will be made available to templates
+    as the `orderBy` value converter.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'However, when creating a converter that will be included inside a reusable
+    plugin or library, you should not rely on this convention. In such a case, the
+    class should be decorated with the `valueConverter` decorator:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE48]'
+  prefs: []
+  type: TYPE_PRE
+- en: This way, even if your plugin's users change the default naming convention,
+    your class will still be identified by Aurelia as a value converter.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Binding behaviors
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Binding behaviors are view resources, similar to value converters in that they
+    are applied to expressions. They, however, intercept the binding operation itself
+    and have access to the whole binding instruction, so they can modify it. This
+    opens many possibilities.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using binding behaviors
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'To decorate a binding expression with a binding behavior, it must be appended
+    at the end of the expression, using the `&` separator:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE49]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Of course, just like value converters, binding behaviors can be chained, in
+    which case they will be executed from left to right:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE50]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'If the expression also uses value converters, the binding behaviors must come
+    after them:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE51]'
+  prefs: []
+  type: TYPE_PRE
+- en: Passing parameters
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Just like value converters, binding behaviors can be passed arguments, using
+    the same syntax:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE52]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The behavior and its parameters must be separated by a colon (:), and the parameters
+    must be separated from each other in the same way:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE53]'
+  prefs: []
+  type: TYPE_PRE
+- en: Built-in binding behaviors
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The `aurelia-templating-resources` library ships with many binding behaviors.
+    Let's discover them.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The code snippets in the following sections are excerpts from `samples/chapter-3/binding-behaviors`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: oneTime
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'The `oneTime` behavior makes a binding go one-way only. It can be used on string
+    interpolation expressions:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE54]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here, the view-model's `quote` property won't be observed, so the text won't
+    be updated if it changes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Additionally, Aurelia ships with binding behaviors for the other binding modes:
+    `oneWay` and `twoWay`. They can be used exactly like `oneTime`.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: throttle
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The `throttle` binding behavior can be used to limit the rate at which the view-model
+    is updated for two-way bindings or the rate at which the view is updated for one-way
+    bindings. Put another way, a binding that is throttled by 500 milliseconds will
+    wait at least 500 milliseconds between two update notifications.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE55]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here, we see an example of those two scenarios. The first `throttle` is applied
+    on a string interpolation expression, which is one-way by default, and will throttle
+    the update of the text in the view when the view-model's `title` property changes.
+    The second one is applied on the binding of a `value` attribute of `input`, which
+    is two-way by default, and will throttle the update of the view-model's `value`
+    property when the `value` changes for `input`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `throttle` behavior can take as an argument the time gap between updates,
+    expressed as milliseconds. This argument can, however, be omitted, and 200 milliseconds
+    will be used by default.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE56]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here, we have the same example as before, but the bindings will be throttled
+    by 800 milliseconds.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Events can also be throttled. Whether it is used in a `trigger` or a `delegate`
+    binding command, the dispatching of events to the view-model will be throttled
+    accordingly:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE57]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here, the handler of the `div` element's `mousemove` event will assign the `Event`
+    object to the view-model's `position` property. However, this handler will be
+    throttled, so the `position` will be updated only once every 800 milliseconds.
+  prefs: []
+  type: TYPE_NORMAL
+- en: You can see some examples of the `throttle` behavior in `samples/chapter-3/binding-behaviors`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: debounce
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The `debounce` binding behavior is also a rate-limiting behavior. It makes sure
+    that no update is sent until a given delay has passed without any changes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'A common use case is a search input that automatically triggers calls to a
+    search API. To call such an API after every keystroke would be inefficient and
+    resource-consuming at best. It would be much better to wait a given time interval
+    after the user stopped typing before calling the search API. This can be done
+    using `debounce`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE58]'
+  prefs: []
+  type: TYPE_PRE
+- en: In this example, the view-model would observe the `searchTerms` property and
+    trigger a search each time it changes. The `debounce` behavior would ensure that
+    `searchTerms` gets updated only after the user has stopped typing for 200 milliseconds.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This means that, when applied to a two-way binding, `debounce` limits the update
+    rate of the view-model. However, when applied to a one-way binding, it limits
+    the update rate of the view:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE59]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here, `debounce` is applied to the string interpolation expression, so the displayed
+    text is updated only after the user has stopped typing in the input for 500 milliseconds.
+    The distinction is important here. The `text` property will still be updated in
+    real time. Only the string interpolation binding will be delayed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Just like `throttle`, `debounce` can be applied to events, using either the
+    trigger or delegate binding commands:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE60]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here, the handler of the `div` element's `mousemove` event will assign the `Event`
+    object to the view-model's `position` property. However, this handler will be
+    debounced, so the `position` will be updated only when the mouse has stopped moving
+    on the `div` for 800 milliseconds.
+  prefs: []
+  type: TYPE_NORMAL
+- en: You probably noticed in the previous examples that, like `throttle`, `debounce`
+    can take the delay, expressed in milliseconds, as a parameter. When omitted, the
+    delay also defaults to 200 milliseconds.
+  prefs: []
+  type: TYPE_NORMAL
+- en: updateTrigger
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The `updateTrigger` binding behavior is used to change the events triggering
+    a view-model update. Implicitly, this means that it can be used only with two-way
+    bindings, and only on attributes of elements supporting two-way binding, such
+    as `value` of `input`, `value` of `select`, or the `textcontent` attribute of
+    a `div` with `contenteditable="true"`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'When used, it expects the names of the events as parameters, and requires at
+    least one:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE61]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here, the view-model's `title` property will be updated each time the `input`
+    triggers a `change` or `input` event.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Actually, the `change` and `input` events are the default triggers in Aurelia.
+    In addition to those two, the `blur`, `keyup`, and `paste` events can also be
+    used as triggers.
+  prefs: []
+  type: TYPE_NORMAL
+- en: signal
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The signal binding behavior allows programmatically triggering a binding update.
+    This is especially useful when the bound value is not observable, or must be refreshed
+    at specific time intervals.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let's imagine a value converter named `timeInterval` that takes a `Date` object
+    in, calculates the interval between the input and the current date and time, and
+    outputs this time interval as a user-friendly string, such as `a minute ago`,
+    `in 2 hours`, or `3 years ago`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Since the result depends on the current date and time, it will quickly get
+    outdated if it is not refreshed periodically. The `signal` behavior can be used
+    to do that:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`src/some-component.html`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE62]'
+  prefs: []
+  type: TYPE_PRE
+- en: In this template, `lastUpdatedAt` is displayed using the `timeInterval` value
+    converter, and its binding is decorated by a `signal` named `now`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`src/some-component.js`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE63]'
+  prefs: []
+  type: TYPE_PRE
+- en: In the view-model, after injecting a `BindingSignaler` instance and storing
+    it in an instance variable, the `activate` method creates an interval loop that
+    will trigger a signal named `now` every 5 seconds. Each time the signal is triggered,
+    the string interpolation binding in the template will be updated, making the displayed
+    time interval at the most 5 seconds later than the current time. Of course, to
+    prevent memory leaks, the interval handle is stored in an instance variable and
+    destroyed using the `clearInterval` function when the component is deactivated.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Multiple signal names can be passed as parameters to a `signal`. In such a
+    case, the binding will be refreshed each time any one of the signals is triggered:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE64]'
+  prefs: []
+  type: TYPE_PRE
+- en: Additionally, it can only be used on string interpolations and property bindings;
+    it makes no sense to signal a `trigger`, a `call`, or a `ref` expression.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Computed properties
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Efficient data binding is a complex matter. Aurelia's data binding library is
+    adaptive and uses a variety of techniques to observe view-models and DOM elements
+    as efficiently as possible. It leverages things such as DOM events and the Reflect
+    API when possible before falling back on dirty checking when no other strategy
+    is applicable.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Dirty checking is an observation mechanism that uses a timeout loop to recurrently
+    evaluate an expression, check if its value has changed since its last evaluation,
+    and update the associated binding if it has.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'One of the scenarios where dirty checking is often used is computed properties.
+    Take this example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE65]'
+  prefs: []
+  type: TYPE_PRE
+- en: When applying a binding to `fullName`, Aurelia has no way to know how its value
+    is calculated, and must rely on dirty checking to detect changes. In this example,
+    the getter for `fullName` is quick to evaluate, so dirty checking it is absolutely
+    fine.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'However, some computed properties may end up doing heavy work: searching or
+    aggregating data from a large array, for example. In such a scenario, relying
+    on dirty checking means that the property will be evaluated several times every
+    second, which can overburden the browser.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: computedFrom
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The `aurelia-binding` library exports a `computedFrom` decorator that can be
+    used to solve this issue. When decorating a computed property, it informs the
+    binding system of the dependencies on which the property relies to compute its
+    result.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE66]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here, to observe `matchCount`, the binding system would observe `searchTerm`.
+    Only when it changes would it re-evaluate `matchCount`. This is much more efficient
+    than evaluating the property multiple times every second to check if its result
+    has changed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The `computedFrom` decorator accepts access paths as dependencies, which are
+    relative to the instance of the class it is on:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE67]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here, we can see that `matchCount` depends on the `searchTerm` property of the
+    object stored as the view-model's `model` property.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Of course, it expects at least one dependency to be passed as a parameter.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The `computedFrom` decorator observes properties, or paths. It is not able
+    to observe the content of an array. This means that the following example wouldn''t
+    work:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE68]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here, if `items` gets an item added or removed, `computedFrom` won't detect
+    it and won't re-evaluate `matchCount`. The only thing it can detect is whether
+    a whole new array is assigned to the `items` property.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `computedFrom` decorator is useful in very specific cases. It should not
+    replace value converters, as those are the preferred way of transforming data.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Fetching data from an endpoint
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The Fetch API
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The Fetch API has been designed for fetching resources, including over the network.
+    At the time of writing, its specification, although really promising, has still
+    not been approved. However, many modern browsers such as Chrome, Edge, and Firefox
+    already support it. For the others, a polyfill is required.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The Fetch API relies on the notions of requests and responses. This allows for
+    interception pipelines that can modify requests before they are sent and responses
+    when they are received. It makes working with things such as authentication and
+    CORS much easier.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In the following sections, the terms `Request` and `Response` refer to the
+    Fetch API''s classes. The Mozilla developer network has extensive documentation
+    about this API: [https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API).'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using the Fetch client
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Aurelia's Fetch client is a wrapper around the native or polyfilled Fetch API.
+    It supports default request configuration, along with a pluggable interception
+    mechanism. It consists of a class named `HttpClient`. This class exposes methods
+    to fetch resources over HTTP.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Configuration
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The `HttpClient` class has a `configure` method. It expects as a parameter
+    a callback function receiving a configuration object, which exposes methods that
+    can be used to configure the client:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`withBaseUrl(baseUrl: string)`: This sets the base URL for the client. All
+    requests to relative URLs will be made relative to this URL.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`withDefaults(defaults: RequestInit)`: This sets the default properties passed
+    to the `Request` constructor.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`withInterceptor(interceptor: Interceptor)`: This adds an `Interceptor` object
+    to the interception pipeline.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`rejectErrorReponses()`: The `fetch` method returns a `Promise` of a `Response`
+    object. This `Promise` is rejected only when a network error occurs, or when a
+    similar scenario prevents the request from completing. Otherwise, whatever HTTP
+    status the server may answer with, the `Promise` is resolved successfully with
+    the `Response`. This method adds an interceptor that rejects `Promises` when the
+    response''s status is not a success code. The HTTP success code is between `200` and `299`.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`useStandardConfiguration()`: The standard configuration includes the `same-origin`
+    credentials setting (see the official Fetch API documentation to know more about
+    this setting) and the rejection of error responses (see the preceding `rejectErrorResponses`
+    method).'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: In addition to a callback configuration function, the `configure` method can
+    be passed a `RequestInit` object directly. In such a case, this `RequestInit`
+    object will be used as the default properties of all requests.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This means that, if we had a `RequestInit` object stored in a `defaultProperties`
+    variable, the following two lines would do the exact same thing:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE69]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'A `RequestInit` object corresponds to the second parameter expected by the
+    Fetch API''s `Request` constructor. It is used to specify various properties for
+    a `Request`. The most commonly used are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`method`: The HTTP method, for example GET, POST'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`headers`: An object containing the HTTP headers for the request'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`body`: The body of the request, for example a `Blob`, `BufferSource`, `FormData`,
+    `URLSearchParams`, or `USVString` instance'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_IND
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: I will let you look at the official documentation for more details about the
+    available `Request` properties.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: As you can see, a `RequestInit` object can be used to specify an HTTP method
+    and a request body, so we will be able to perform POST and PUT requests to create
+    and update `person` objects. We will see examples of this in the next chapter,
+    when we start building forms.
+  prefs: []
+  type: TYPE_NORMAL
+- en: A common pitfall
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: As we saw in [Chapter 2](ch02.html "Chapter 2. Layout, Menu, and Getting Familiar"),
+    *Layout, Menu, and Getting Familiar*, the DI container automatically registers
+    all classes as application singletons by default. This means that, if your application
+    contains multiple services, which have dependency on what should be distinct instances
+    of `HttpClient` and configure their respective `HttpClient` differently, you'll
+    run into strange problems.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s imagine the two following services:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE70]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here, we have two services, named `ContactService` and `AddressService`. They
+    are both injected as an `HttpClient` instance in their constructor, and configure
+    their own instance using different base URLs.
+  prefs: []
+  type: TYPE_NORMAL
+- en: By default, the same `HttpClient` instance will be injected in both services,
+    because it is considered an application singleton by default by the DI container.
+    Do you see the problem? The second service to be created will override the base
+    URL of the first one, so the first service will end up trying to perform HTTP
+    calls to the wrong URL.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Such a scenario has many possible solutions. You can use the `NewInstance`
+    resolver to force a new instance to be injected in each service:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE71]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Another solution would be to register the `HttpClient` class as transient in
+    your application''s main `configure` method:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE72]'
+  prefs: []
+  type: TYPE_PRE
+- en: Interceptors
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Interceptors are objects which can intercept requests and responses at various
+    times during an HTTP call. An `Interceptor` object can implement any of the following
+    callback methods:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`request(request: Request): Request|Response|Promise<Request|Response>`: This
+    is called before the request is sent. It can modify the request, or return a new
+    one in its place. It can also return a response to short-circuit the rest of the
+    process. In such a case, the `request` method of the next interceptors will be
+    skipped and the response will be used as if the request had been sent. `Promise`s
+    are supported.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`requestError(error: any): Request|Response|Promise<Request|Response>`: This
+    is called when a previous interceptor''s `request` method throws an error. It
+    may re-throw the error to propagate it, or return a new request or response to
+    recover from the failure. `Promise`s are supported.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`response(response: Response, request?: Request): Response|Promise<Response>`:
+    This is called after the response is received. It can modify the response, or
+    return a new one in its place. `Promise`s are supported.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`responseError(error: any, request?: Request): Response|Promise<Response>`:
+    This is called when a previous interceptor''s `response` method throws an error.
+    It may re-throw the error to propagate it, or return a new response to recover
+    from the failure. `Promise`s are supported.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'For example, we could define the following interceptor class:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE73]'
+  prefs: []
+  type: TYPE_PRE
+- en: This interceptor expects a `Bearer` authentication token to be passed to its
+    constructor. When added to a Fetch client, it adds an `Authorization` header to
+    every request, allowing an already authenticated user to access a secured endpoint.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Our application
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'At this point, we have covered everything we will need for the next step in
+    our application: querying our HTTP endpoint, displaying the contact list, and
+    allowing navigation to the details of a given contact.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To make our application a little sexier, we will leverage Font Awesome, a CSS
+    library that offers scalable vector icons. Let''s first install it:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE74]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Next, we need to include it in our application:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`index.html`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE75]'
+  prefs: []
+  type: TYPE_PRE
+- en: Our contact gateway
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We could go and make HTTP calls directly in our view-models. However, this would
+    blur the boundary between responsibilities. The view-model would be responsible
+    for making calls, parsing requests, handling errors, and eventually caching responses,
+    all of this in addition to data display, which is its primary task.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Instead, we will create a contact gateway class, which will be responsible
+    for fetching the data from the endpoint, will be reusable, and will be able to
+    evolve on its own:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`src/contact-gateway.js`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE76]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here, we first declare a class whose constructor expects an instance of `HttpClient`,
+    which is Aurelia's Fetch client. In this constructor, we configure the client
+    so it uses the standard configuration, which we saw in the *Configuration* section,
+    and we use the `environment` object's `contactsUrl` property as its base URL.
+    This means that all requests with a relative URL will be made relative to this
+    URL.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Our contact gateway exposes two methods: one to get all contacts, and a second
+    to get a single contact by its ID. They work by calling the client''s `fetch`
+    method, which by default sends a GET request to the provided URL. Here, since
+    the URLs are relative paths, they will be made relative to the base URL configured
+    in the constructor.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: When the HTTP request is completed, the `Promise` returned by `fetch` is resolved,
+    and the `json` method is called on the resolved `Response` object to deserialize
+    the response body as JSON. The `json` method also returns a `Promise`, so when
+    this second `Promise` resolves, we transform the untyped data transfer objects
+    in instances of the `Contact` class, which we'll write later.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This means that, based on what the endpoints return, `getAll` returns a `Promise`
+    of an array of `Contact` objects, and `getById` a `Promise` of a single `Contact`
+    object.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Prerequisites
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'For all of this to work, we need to do two things. First, we''ll install the
+    Fetch client, by running the following command in a console after having moved
+    to the application directory:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE77]'
+  prefs: []
+  type: TYPE_PRE
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: All the code written for this book has been run on Google Chrome. If you use
+    another browser, you may need to install polyfills for various APIs, such as Fetch.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Additionally, you need to let the Aurelia bundler know about this library.
+    In `aurelia_project/aurelia.json`, under `build`, then `bundles`, in the definition
+    of the bundle named `vendor-bundle.js`, add `aurelia-fetch-client` to the `dependencies`
+    array:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`aurelia_project/aurelia.json`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE78]'
+  prefs: []
+  type: TYPE_PRE
+- en: This is required in order for the `aurelia-fetch-client` library to be bundled
+    with the other vendor libraries so our application can use it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Lastly, the `contactsUrl` property does not exist by default on the `environment`
+    configuration object. We need to add it:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`aurelia_project/environments/dev.js`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE79]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here we assign the URL on which our endpoint runs by default to the `contactsUrl`
+    property. In a real-world scenario, we would also set it in `stage.js` and `prod.js`,
+    so our endpoint is configured for all environments. I will leave this as an exercise
+    for the reader.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Displaying the contacts
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Let's now add some code in our empty `contact-list` component. We will leverage
+    our new `ContactGateway` class to fetch the contact list and display it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`src/contact-list.js`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE80]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here, we first inject a `ContactGateway` instance in the view-model of our `contact-list`
+    component. In the `activate` method, we use `getAll` contacts and, once the `Promise`
+    resolves, we make sure to clear the contacts array; then we add the loaded contacts
+    to it, so they are available for the template.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this case, mutating the array is considered a better practice than overwriting
+    the whole `contacts` property, because the `repeat.for` binding in the view observes
+    mutation of the array instance, but doesn't observe the property itself, so the
+    view won't be refreshed if `contacts` is overwritten after the view is rendered.
+  prefs: []
+  type: TYPE_NORMAL
+- en: You may have noticed how the `Promise` returned by `getAll` is returned by `activate`.
+    This makes the call to the HTTP endpoint run as part of the screen activation
+    life cycle. Without this, the navigation could end before the contacts are loaded,
+    and the screen would display as empty. Here, we are guaranteed that the contacts
+    are available when the components get rendered by the router.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We also need to define the `Contact` class. It has computed properties that
+    will be useful in the list and detailed views:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`src/models.js`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE81]'
+  prefs: []
+  type: TYPE_PRE
+- en: This class has a static method called `fromObject`, which acts as a factory
+    method. It expects a source object as its parameter, creates a new instance of
+    `Contact`, and assigns all the properties of the source object to it. Additionally,
+    it defines an `isPerson` property, which returns `true` if the contact has at
+    least a first name or a last name and will be used in templates to distinguish
+    people from companies. It also defines a `fullName` property, which will return
+    either the first and last names, if the contact represents a person, or the company
+    name if the contact is a company.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Now, the only thing missing is the `contact-list` template:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`src/contact-list.html`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE82]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here we simply render the contacts as an unordered list.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'You can test it now:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE83]'
+  prefs: []
+  type: TYPE_PRE
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Don't forget to launch the HTTP endpoint by running `npm start` in the `api`
+    directory. Of course, if you have not run it before, you'll need to `npm install`
+    its dependencies first.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If you didn't omit any step, you should see the contact list appear when you
+    navigate to http://localhost:9000/ .
+  prefs: []
+  type: TYPE_NORMAL
+- en: Grouping and sorting the contacts
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Right now, the contact list is lame. The contacts are displayed in a bullet
+    list and are not even sorted. We could greatly enhance the usability of this screen
+    by grouping the contacts by the first letter of their name and having those groups
+    sorted alphabetically. This would make navigating through the list and finding
+    a contact much easier.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To implement this, we have two possibilities: we can either group and then
+    sort the contacts in the view-model, or we can isolate this logic in the value
+    converters, so we can re-use them later. We''ll go with the latter, as it respects
+    the single-responsibility principle and makes our code DRYer.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Creating the orderBy value converter
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Our `orderBy` value converter will apply on an array and will expect as its
+    first parameter the name of the property used to sort the items.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Our value converter will also accept an optional second parameter, which will
+    be the sort direction, as an `'asc'` or a `'desc'` string. When omitted, the sort
+    order will be ascending.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`src/resources/value-converters/order-by.js`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE84]'
+  prefs: []
+  type: TYPE_PRE
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: One important bit is the call to `slice` before the call to `sort`. It makes
+    sure a copy is taken of the array, because the `sort` method modifies the array
+    on which it is called. Without the `slice` call, the original array would be modified.
+    This would be bad; value converters should absolutely not modify their source
+    value. It is not the expected behavior, so such a converter would be surprising,
+    in a really bad way, to developers using it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: You should really pay close attention when designing a value converter to avoid
+    such side-effects.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To make this new converter available to templates, instead of having to manually
+    `require` it each time we need it, let''s load it in the `resources` feature:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`src/resources/index.js`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE85]'
+  prefs: []
+  type: TYPE_PRE
+- en: You can already test it by changing to the `repeat.for` instruction for `contact
+    of contacts | orderBy:'fullName'` in the `contact-list` template.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Creating the groupBy value converter
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Next, our `groupBy` value converter will work in almost the same way; it will
+    apply on an array, and expect a single parameter, which will be the name of the
+    property used to group the items. It will return an array of objects, each of
+    which will contain two properties: the value used to group as a `key`, and the
+    items in the group as an `items` array:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`src/resources/value-converters/group-by.js`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE86]'
+  prefs: []
+  type: TYPE_PRE
+- en: This value converter also needs to be loaded in the `resources` feature's `configure`
+    function. I'll let you do that on your own.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Updating the contact list
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'To leverage our value converters, we will first need to add a new property
+    to the `Contact` class:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`src/models.js`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE87]'
+  prefs: []
+  type: TYPE_PRE
+- en: This new `firstLetter` property takes the first letter of the last name, the
+    first name, or the company name of the contact. It will be used to group contacts
+    together.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Next, let''s throw away our previous template for the contact list and start
+    over again:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`src/contact-list.html`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE88]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here, we first group the contacts by the value of their `firstLetter` property.
+    The `groupBy` converter returns an array of group objects, which are then ordered
+    by their `key` property and repeated into panels. For each group, the letter by
+    which the contacts were grouped is rendered in a panel header, then the contacts
+    of the group are sorted by their `fullName` property and rendered into a list
+    group. For each contact, a link to its detailed view is rendered, with either
+    its person or company name.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Filtering contacts
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Even with the contacts being grouped and sorted, finding a given contact may
+    be troublesome, especially if the user does not know the full name of the contact.
+    Let's add a search box, which will be used to filter the list of contacts in real
+    time.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We will first need to create another value converter to filter the array of
+    contacts:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`src/resources/value-converters/filter-by.js`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE89]'
+  prefs: []
+  type: TYPE_PRE
+- en: Our `filterBy` value converter expects a first parameter, which is the value
+    to be searched for. Additionally, it considers the following parameters to be
+    the properties on which the value will be searched for. Any contact for which
+    none of the specified properties contains the searched value will be filtered
+    out of the result.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Do not forget to load the `filterBy` value converter in the `resources` feature's
+    `configure` function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Next, we need to add the search box and apply our value converter in the `contact-list`
+    template:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`src/contact-list.html`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE90]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here, we first add a search box, in the form of an `input` element whose `value`
+    is bound to a `filter` property. This binding is debounced, so the property will
+    be updated only after the user stops typing for 200 milliseconds.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Additionally, a button is displayed beside the `input` when `filter` is not
+    empty. This button, when clicked, simply assigns an empty string to `filter`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Lastly, we apply `filterBy` to `contacts` in the `repeat.for` binding, passing
+    `filter` as the searched value, followed by the names of the `firstName`, `lastName`,
+    and `company` properties, which will be searched into.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: An interesting thing to notice here is that we didn't even declare the `filter`
+    property on our view-model. It is used only in the view. Since it is bound to
+    an input element's value attribute, the binding will be two-way by default, and
+    the binding will just assign its value to the view-model. The view-model doesn't
+    need to know about this property.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The contact detailed view
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'If you click on a contact, you should see an error in the browser console.
+    The reason is simple: the route that should display the details of a contact refers
+    to a `contact-details` component, which does not exist yet. Let''s correct this.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The view-model
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'The view-model will leverage some of the classes we wrote previously:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`src/contact-details.js`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE91]'
+  prefs: []
+  type: TYPE_PRE
+- en: This code is pretty straightforward. The view-model expects an instance of `ContactGateway`
+    to be injected in its constructor, and implements the `activate` life cycle callback
+    method. This method uses the `id` route parameter and asks the gateway for the
+    proper contact object. It returns the gateway's `Promise`, so the navigation will
+    complete only when the contact is loaded. When this `Promise` resolves, the contact
+    object is assigned to the view-model's `contact` property. Additionally, the route
+    `config` object is used to dynamically assign the document title to the contact's
+    `fullName`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The template
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The template for the contact details is large, so let's break it down into parts.
+    You can follow this section and gradually build the template, step by step.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'First, let''s add a header that will display the picture and the name of the
+    contact:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE92]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The rest of the template, which should be placed just before the closing `section`
+    tag, is enclosed inside a `div` element with the `form-horizontal` class:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE93]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Inside this element, we''ll first display the date and time at which the contact
+    was created and last modified:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE94]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Next, we''ll display the contact''s birthday, but only if the contact has one:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE95]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'After that, we''ll display the contact''s phone numbers:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE96]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Here, the block is enclosed in a template that is rendered only if the contact
+    has at least one phone number. Each phone number is displayed with its type: home,
+    office, or mobile, for example.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The next blocks all follow the same pattern as the phone numbers. They''ll
+    display the e-mail addresses, the geographical addresses, and the social profiles
+    of the contact:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE97]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Lastly, we''ll display the contact''s note, if any:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE98]'
+  prefs: []
+  type: TYPE_PRE
+- en: Since the loaded contact never changes during the life cycle of the component,
+    this template could be improved a lot by making its bindings one-time. This would
+    mean replacing all `bind` commands with the `one-time` command, and decorating
+    all string interpolations with the `oneTime` binding behavior. I'll leave this
+    as an exercise to the reader.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: As you can see, Aurelia's data binding language is clear and concise. It is
+    pretty self-explanatory, making templates easy to understand, even for developers
+    not familiar with Aurelia. Additionally, it is adaptive, making it as easy as
+    possible to write performant applications.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In addition to the convenience of the Fetch client, those qualities combined
+    with the flexibility and reusability of the value converter and binding behavior
+    system make writing data-displaying components a breeze.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Building forms to create and edit data is not much more complicated. We will
+    see this, along with form validation, in the next chapter.
+  prefs: []
+  type: TYPE_NORMAL

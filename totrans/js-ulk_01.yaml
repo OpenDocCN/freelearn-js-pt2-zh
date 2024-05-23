@@ -1,0 +1,838 @@
+- en: Chapter 1. Diving into the JavaScript Core
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'You may have owned an iPhone for years and regard yourself as an experienced
+    user. At the same time, you keep removing unwanted characters one at a time while
+    typing by pressing delete. However, one day you find out that a quick shake allows
+    you to delete the whole message in one tap. Then you wonder why on earth you didn''t
+    know this earlier. The same thing happens with programming. We can be quite satisfied
+    with our coding until, all of sudden, we run into a trick or a lesser-known language
+    feature that makes us reconsider the entire work done over the years. It turns
+    out that we could do this in a cleaner, more readable, more testable, and more
+    maintainable way. So it''s presumed that you already have experience with JavaScript;
+    however, this chapter equips you with the best practices to improve your code.
+    We will cover the following topics:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Making your code readable and expressive
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Mastering multiline strings in JavaScript
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Manipulating arrays in the ES5 way
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Traversing an object in an elegant, reliable, safe, and fast way
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The most effective way of declaring objects
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to magic methods in JavaScript
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Make your code readable and expressive
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: There are numerous practices and heuristics to make a code more readable, expressive,
+    and clean. We will cover this topic later on, but here we will talk about syntactic
+    sugar. The term means an alternative syntax that makes the code more expressive
+    and readable. In fact, we already had some of this in JavaScript from the very
+    beginning. For instance, the increment/decrement and addition/subtraction assignment
+    operators inherited from C. *foo++* is syntactic sugar for *foo = foo + 1*, and
+    *foo += bar* is a shorter form for *foo = foo + bar*. Besides, we have a few tricks
+    that serve the same purpose.
+  prefs: []
+  type: TYPE_NORMAL
+- en: JavaScript applies logical expressions to so-called **short-circuit** evaluation.
+    This means that an expression is read left to right, but as soon as the condition
+    result is determined at an early stage, the expression tail is not evaluated.
+    If we have *true || false || false*, the interpreter will know from the first
+    test that the result is true regardless of other tests. So the *false || false*
+    part is not evaluated, and this opens a way for creativity.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Function argument default value
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'When we need to specify default values for parameters we can do like that:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: What is going on here? When `foo` is `true` (`not undefined`, `NaN`, `null`,
+    `false`, `0`, or `""`), the result of the logical expression is `foo` otherwise
+    the expression is evaluated until `Default value` and this is the final result.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Starting with 6th edition of EcmaScript (specification of JavaScript language)
+    we can use nicer syntax:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: Conditional invocation
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: While composing our code we shorten it on conditions:"
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: In the preceding example, we used the AND (`&&`) operator to invoke `console.log`
+    if the left-hand condition is Truthy. The OR (`||`) operator does the opposite,
+    it calls `console.log` if the condition is `Falsy`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'I think the most common case in practice is the shorthand condition where the
+    function is called only when it is provided:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The following is one more example on this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: Syntactic sugar was introduced to its full extent to the JavaScript world only
+    with the advance in CoffeeScript, a subset of the language that trans-compiles
+    (compiles source-to-source) into JavaScript. Actually CoffeeScript, inspired by
+    Ruby, Python, and Haskell, has unlocked arrow-functions, spreads, and other syntax
+    to JavaScript developers. In 2011, Brendan Eich (the author of JavaScript) admitted
+    that CoffeeScript influenced him in his work on EcmaScript Harmony, which was
+    finalized this summer in ECMA-262 6th edition specification. From a marketing
+    perspective, the specification writers agreed on using a new name convention that
+    calls the 6th edition as EcmaScript 2015 and the 7th edition as EcmaScript 2016\.
+    Yet the community is used to abbreviations such as ES6 and ES7\. To avoid confusion
+    further in the book, we will refer to the specifications by these names. Now we
+    can look at how this affects the new JavaScript.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Arrow functions
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Traditional function expression may look like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'When declaring an expression using the arrow function (aka fat arrow function)
+    syntax, we will have this in a less verbose form, as shown in the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'In my opinion, we don''t gain much with this. But if we need, let''s say, an
+    array method callback, the traditional form would be as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Now the equivalent arrow function becomes shorter, as shown here:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We may do filtering in an array this way:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Using an array function, we can do filtering in a cleaner form:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Besides shorter function declaration syntax, the arrow functions bring the
+    so called lexical `this`. Instead of creating its own context, it uses the context
+    of the surrounding object as shown here:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'In the preceding example, we subscribed a handler function to a DOM event (`click`).
+    Within the scope of the handler, we still have access to the view context (`this`),
+    so we don''t need to bind the handler to the outer scope or pass it as a variable
+    through the closure:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: Method definitions
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'As mentioned in the preceding section, arrow functions can be quite handy when
+    declaring small inline callbacks, but always applying it for a shorter syntax
+    is controversial. However, ES6 provides new alternative method definition syntax
+    besides the arrow functions. The old-school method declaration may look as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'In ES6 we can get rid of the function keyword and the colon. So the preceding
+    code can be put this way:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: The rest operator
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Another syntax structure that was borrowed from CoffeeScript came to JavaScript
+    as the rest operator (albeit, the approach is called *splats* in CoffeeScript).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'When we had a few mandatory function parameters and an unknown number of rest
+    parameters, we used to do something like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Now check out how expressive this code becomes in ES6:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Function parameters aren''t the only application of the rest operator. For
+    example, we can use it in destructions as well, as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: The spread operator
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Similarly, we can spread array elements into arguments:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: ES6 also provides expressive syntactic sugar for object creation and inheritance,
+    but we will examine this later in *The most effective way of declaring objects*
+    section.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Mastering multiline strings in JavaScript
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Multi-line strings aren''t a good part of JavaScript. While they are easy to
+    declare in other languages (for instance, NOWDOC), you cannot just keep single-quoted
+    or double-quoted strings in multiple lines. This will lead to syntax error as
+    every line in JavaScript is considered as a possible command. You can set backslashes
+    to show your intention:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs: []
+  type: TYPE_PRE
+- en: This kind of works. However, as soon as you miss a trailing space, you get a
+    syntax error, which is not easy to spot. While most script agents support this
+    syntax, it's, however, not a part of the EcmaScript specification.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In the times of **EcmaScript for XML** (**E4X**), we could assign a pure XML
+    to a string, which opened a way for declarations such as these:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs: []
+  type: TYPE_PRE
+- en: Nowadays E4X is deprecated, it's not supported anymore.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Concatenation versus array join
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'We can also use string concatenation. It may feel clumsy, but it''s safe:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE21]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'You may be surprised, but concatenation is slower than array joining. So the
+    following technique will work faster:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE22]'
+  prefs: []
+  type: TYPE_PRE
+- en: Template literal
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'What about ES6? The latest EcmaScript specification introduces a new sort of
+    string literal, template literal:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE23]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Now the syntax looks elegant. But there is more. Template literals really remind
+    us of NOWDOC. You can refer any variable declared in the scope within the string:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE24]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The output is as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE25]'
+  prefs: []
+  type: TYPE_PRE
+- en: If you wonder when can you safely use this syntax, I have a good news for you—this
+    feature is already supported by (almost) all the major script agents ([http://kangax.github.io/compat-table/es6/](http://kangax.github.io/compat-table/es6/)).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Multi-line strings via transpilers
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'With the advance of ReactJS, Facebook''s EcmaScript language extension named
+    JSX ([https://facebook.github.io/jsx/](https://facebook.github.io/jsx/)) is now
+    really gaining momentum. Apparently influenced by previously mentioned E4X, they
+    proposed a kind of string literal for XML-like content without any screening at
+    all. This type supports template interpolation similar to ES6 templates:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE26]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Another way to declare multiline strings is by using CommonJS Compiler ([http://dsheiko.github.io/cjsc/](http://dsheiko.github.io/cjsc/)).
+    While resolving the ''require'' dependencies, the compiler transforms any content
+    that is not `.js`/`.json` content into a single-line string:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**foo.txt**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE27]'
+  prefs: []
+  type: TYPE_PRE
+- en: '**consumer.js**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE28]'
+  prefs: []
+  type: TYPE_PRE
+- en: You can find an example of JSX use in [Chapter 6](part0042_split_000.html#181NK2-f4ff6b81796e4f78aa983a623fb95daf
+    "Chapter 6. A Large-Scale JavaScript Application Architecture"), *A Large-Scale
+    JavaScript Application Architecture*.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Manipulating arrays in the ES5 way
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Some years ago when the support of ES5 features was poor (EcmaScript 5th edition
+    was finalized in 2009), libraries such as Underscore and Lo-Dash got highly popular
+    as they provided a comprehensive set of utilities to deal with arrays/collections.
+    Today, many developers still use third-party libraries (including jQuery/Zepro)
+    for methods such as `map`, `filter`, `every`, `some`, `reduce`, and `indexOf`,
+    while these are available in the native form of JavaScript. It still depends on
+    how you use such libraries, but it may likely happen that you don't need them
+    anymore. Let's see what we have now in JavaScript.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Array methods in ES5
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '`Array.prototype.forEach` is probably the most used method of the arrays. That
+    is, it is the native implementation of `_.each`, or for example, of the `$.each`
+    utilities. As parameters, `forEach` expects an `iteratee` callback function and
+    optionally a context in which you want to execute the callback. It passes to the
+    callback function an element value, an index, and the entire array. The same parameter
+    syntax is used for most array manipulation methods. Note that jQuery''s `$.each`
+    has the inverted callback parameters order:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE29]'
+  prefs: []
+  type: TYPE_PRE
+- en: '`Array.prototype.map` produces a new array by transforming the elements of
+    a given array:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE30]'
+  prefs: []
+  type: TYPE_PRE
+- en: '`Array.prototype.filter` returns an array, which consists of given array values
+    that meet the callback''s condition:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE31]'
+  prefs: []
+  type: TYPE_PRE
+- en: '`Array.prototype.reduce`/`Array.prototype.reduceRight` retrieves the product
+    of values in an array. The method expects a callback function and optionally the
+    initial value as arguments. The callback function receive four parameters: the
+    accumulative value, current one, index and original array. So we can, for an instance,
+    increment the accumulative value by the current one (return acc += cur;) and,
+    thus, we will get the sum of array values.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Besides calculating with these methods, we can concatenate string values or
+    arrays:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE32]'
+  prefs: []
+  type: TYPE_PRE
+- en: '`Array.prototype.some` tests whether any (or some) values of a given array
+    meet the callback condition:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE33]'
+  prefs: []
+  type: TYPE_PRE
+- en: In this example, we checked whether any of the bar array values are available
+    in the `foo` array. For testability, we need to pass a reference of the `foo`
+    array into the callback. Here we inject it as context. If we need to pass more
+    references, we would push them in a key-value object.
+  prefs: []
+  type: TYPE_NORMAL
+- en: As you probably noticed, we used in this example `Array.prototype.indexOf`.
+    The method works the same as `String.prototype.indexOf`. This returns an index
+    of the match found or `-1`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`Array.prototype.every` tests whether every value of a given array meets the
+    callback condition:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE34]'
+  prefs: []
+  type: TYPE_PRE
+- en: If you are still concerned about support for these methods in a legacy browser
+    as old as IE6-7, you can simply shim them with [https://github.com/es-shims/es5-shim](https://github.com/es-shims/es5-shim).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Array methods in ES6
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In ES6, we get just a few new methods that look rather like shortcuts over the
+    existing functionality.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`Array.prototype.fill` populates an array with a given value, as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE35]'
+  prefs: []
+  type: TYPE_PRE
+- en: '`Array.prototype.includes` explicitly checks whether a given value exists in
+    the array. Well, it is the same as `arr.indexOf( val ) !== -1`, as shown here:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE36]'
+  prefs: []
+  type: TYPE_PRE
+- en: '`Array.prototype.find` filters out a single value matching the callback condition.
+    Again, it''s what we can get with `Array.prototype.filter`. The only difference
+    is that the filter method returns either an array or a null value. In this case,
+    this returns a single element array, as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE37]'
+  prefs: []
+  type: TYPE_PRE
+- en: Traversing an object in an elegant, reliable, safe, and fast way
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'It is a common case when we have a key-value object (let''s say options) and
+    need to iterate it. There is an academic way to do this, as shown in the following
+    code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE38]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The preceding code outputs the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE39]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Now let''s imagine that any of the third-party libraries that you load in the
+    document augments the built-in `Object`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE40]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Now when we run our example code, we will get an extra undesired entry:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE41]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The solution to this problem is well known, we have to test the keys with the
+    `Object.prototype.hasOwnProperty` method:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE42]'
+  prefs: []
+  type: TYPE_PRE
+- en: Iterating the key-value object safely and fast
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Let''s face the truth—the structure is clumsy and requires optimization (we
+    have to perform the `hasOwnProperty` test on every given key). Luckily, JavaScript
+    has the `Object.keys` method that retrieves all string-valued keys of all enumerable
+    own (non-inherited) properties. This gives us the desired keys as an array that
+    we can iterate, for instance, with `Array.prototype.forEach`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE43]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Besides the elegance, we get a better performance this way. In order to see
+    how much we gain, you can run this online test in distinct browsers such as: [http://codepen.io/dsheiko/pen/JdrqXa](http://codepen.io/dsheiko/pen/JdrqXa).'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Enumerating an array-like object
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Objects such as `arguments` and `nodeList` (`node.querySelectorAll`, `document.forms`)
+    look like arrays, in fact they are not. Similar to arrays, they have the `length`
+    property and can be iterated in the `for` loop. In the form of objects, they can
+    be traversed in the same way that we previously examined. But they do not have
+    any of the array manipulation methods (`forEach`, `map`, `filter`, `some` and
+    so on). The thing is we can easily convert them into arrays as shown here:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE44]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The preceding code can be even shorter:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE45]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'It''s a pretty convenient solution, but looks like a trick. In ES6, we can
+    do the same conversion with a dedicated method:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE46]'
+  prefs: []
+  type: TYPE_PRE
+- en: The collections of ES6
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'ES6 introduces a new type of objects—iterable objects. These are the objects
+    whose elements can be retrieved one at a time. They are quite the same as iterators
+    in other languages. Beside arrays, JavaScript received two new iterable data structures,
+    `Set` and `Map`. `Set` which are a collection of unique values:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE47]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The map is similar to a key-value object, but may have arbitrary values for
+    the keys. And this makes a difference. Imagine that we need to write an element
+    wrapper that provides jQuery-like events API. By using the `on` method, we can
+    pass not only a handler callback function but also a context (`this`). We bind
+    the given callback to the `cb.bind( context )` context. This means `addEventListener`
+    receives a function reference different from the callback. How do we unsubscribe
+    the handler then? We can store the new reference in `Map` by a key composed from
+    an event name and a `callback` function reference:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE48]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Any iterable object has methods, `keys`, `values`, and `entries`, where the
+    keys work the same as `Object.keys` and the others return array values and an
+    array of key-value pairs respectively. Now let''s see how we can traverse the
+    iterable objects:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE49]'
+  prefs: []
+  type: TYPE_PRE
+- en: Iterable objects have manipulation methods such as arrays. So we can use `forEach`.
+    Besides, they can be iterated by `for...in` and `for...of` loops. The first one
+    retrieves indexes and the second, the values.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The most effective way of declaring objects
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: How do we declare an object in JavaScript? If we need a namespace, we can simply
+    use an object literal. But when we need an object type, we need to think twice
+    about what approach to take, as it affects the maintainability of our object-oriented
+    code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Classical approach
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'We can create a constructor function and chain the members to its context:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE50]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We can also assign the members to the constructor prototype. The result will
+    be the same as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE51]'
+  prefs: []
+  type: TYPE_PRE
+- en: In the first case, we have the object structure within the constructor function
+    body mixed with the construction logic. In the second case by repeating `Constructor.prototype`,
+    we violate the **Do Not Repeat Yourself** (**DRY**) principle.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Approach with the private state
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'So how can we do it otherwise? We can return an object literal by the constructor
+    function:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE52]'
+  prefs: []
+  type: TYPE_PRE
+- en: The advantage of this approach is that any variables declared in the scope of
+    the constructor are in the same closure as the returned object, and therefore,
+    available through the object. We can consider such variables as private members.
+    The bad news is that we will lose the constructor prototype. When a constructor
+    returns an object during instantiation, this object becomes the result of a whole
+    new expression.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Inheritance with the prototype chain
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'What about inheritance? The classical approach would be to make the subtype
+    prototype an instance of supertype:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE53]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'You may run into some code, where for instantiation `Object.create` is used
+    instead of the new operator. Here you have to know the difference between the
+    two. `Object.create` takes an object as an argument and creates a new one with
+    the passed object as a prototype. In some ways, this reminds us of cloning. Examine
+    this, you declare an object literal (proto) and create a new object (instance)
+    with `Object.create` based on the first one. Whatever changes you do now on the
+    newly created object, they won''t be reflected on the original (proto). But if
+    you change a property of the original, you will find the property changed in its
+    derivative (instance):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE54]'
+  prefs: []
+  type: TYPE_PRE
+- en: Inheriting from prototype with Object.create
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'In contrast to the new operator, `Object.create` does not invoke the constructor.
+    So when we use it to populate a subtype prototype, we are losing all the logic
+    located in a `supertype` constructor. This way, the `supertype` constructor is
+    never called:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE55]'
+  prefs: []
+  type: TYPE_PRE
+- en: Inheriting from prototype with Object.assign
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'When looking for an optimal structure, I would like to declare members via
+    an object literal, but still have the link to the prototype. Many third-party
+    projects leverage a custom function (*extend*) that merge the structure object
+    literal into the constructor prototype. Actually, ES6 provides an `Object.assign`
+    native method. We can use it as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE56]'
+  prefs: []
+  type: TYPE_PRE
+- en: This looks almost as required, except there is one inconvenience. `Object.assign`
+    simply assigns the values of source objects to the target ones regardless of their
+    type. So if you have a source property with an object (for instance, an `Object`
+    or `Array` instance), the target object receives a reference instead of a value.
+    So you have to reset manually any object properties during initialization.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Approach with ExtendClass
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'ExtendClass, proposed by Simon Boudrias, is a solution that seems flawless
+    ([https://github.com/SBoudrias/class-extend](https://github.com/SBoudrias/class-extend)).
+    His little library exposes the `Base` constructor with the **extend** static method.
+    We use this method to extend this pseudo-class and any of its derivatives:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE57]'
+  prefs: []
+  type: TYPE_PRE
+- en: Classes in ES6
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'TC39 (the EcmaScript working group) is pretty aware of the problem, so the
+    new language specification provides extra syntax to structure object types:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE58]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The syntax looks class-based, but in fact this a syntactic sugar over existing
+    prototypes. You can check with the type of `ConcreteClass`, and it will give you
+    *function* because `ConcreteClass` is a canonical constructor. So we don''t need
+    any trick to extend `supertypes`, no trick to refer the `supertype` constructor
+    from subtype, and we have a clean readable structure. However, we cannot assign
+    properties the same C-like way as we do now with methods. This is still in discussion
+    for ES7 ([https://esdiscuss.org/topic/es7-property-initializers](https://esdiscuss.org/topic/es7-property-initializers)).
+    Besides this, we can declare a class''s static methods straight in its body:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE59]'
+  prefs: []
+  type: TYPE_PRE
+- en: Actually, there are many in the JavaScript community who consider the new syntax
+    as a deviation from the prototypical OOP approach. On the other hand, the ES6
+    classes are backwards compatible with most of the existing code. Subclasses are
+    now supported by the language and no extra libraries are required for inheritance.
+    And what I personally like the most is that this syntax allows us to make the
+    code cleaner and more maintainable.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to – magic methods in JavaScript
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'In the PHP world, there are things such as *overloading methods*, which are
+    also known as magic methods ([http://www.php.net/manual/en/language.oop5.overloading.php](http://www.php.net/manual/en/language.oop5.overloading.php)).
+    These methods allow us to set a logic that triggers when a nonexisting property
+    of a method is being accessed or modified. In JavaScript, we control access to
+    properties (value members). Imagine we have a custom collection object. In order
+    to be consistent in the API, we want to have the `length` property that contains
+    the size of the collection. So we declare a `getter` (get length), which does
+    the required computation whenever the property is accessed. On attempting to modify
+    the property value, the setter will throw an exception:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE60]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'If we want to declare getters/setters on an existing object, we can use the
+    following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE61]'
+  prefs: []
+  type: TYPE_PRE
+- en: '`Object.defineProperty` as well as the second parameter of `Object.create`
+    specifies a property configuration (whether it is enumerable, configurable, immutable,
+    and how it can be accessed or modified). So, we can achieve a similar effect by
+    configuring the property as read-only:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE62]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'By the way, if you want to get rid of the property accessor in the object,
+    you can simply remove the property:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE63]'
+  prefs: []
+  type: TYPE_PRE
+- en: Accessors in ES6 classes
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Another way by which we can declare accessors is using the ES6 classes:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE64]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Besides public properties, we can control access to static ones as well:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE65]'
+  prefs: []
+  type: TYPE_PRE
+- en: Controlling access to arbitrary properties
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'All these examples show access control to known properties. However, there
+    might be a case when I want a custom storage with a variadic interface similar
+    to `localStorage`. This must be a storage that has the `getItem` method to retrieve
+    stored values and the `setItem` method to set them. Besides, this must work the
+    same way as when you directly access or set a pseudo-property (`val = storage.aKey`
+    and `storage.aKey = "value"`). These can be achieved by using the ES6 Proxy:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE66]'
+  prefs: []
+  type: TYPE_PRE
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: This chapter gives practices and tricks on how to use the JavaScript core features
+    for the maximum effect. In the next chapter, we will talk about module concepts
+    and we will do a walkthrough on scopes and closures. The next chapter will explain
+    the scope context and the ways to manipulate it.
+  prefs: []
+  type: TYPE_NORMAL
