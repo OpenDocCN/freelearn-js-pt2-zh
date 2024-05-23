@@ -1,4 +1,5 @@
 - en: Chapter 7. Test All the Things
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
@@ -6,6 +7,7 @@
     processes. Agile methodologies and approaches such as software craftsmanship emphasize
     the importance of automated tests and often advocate the practice of full-blown
     test-driven development, or TDD.
+  id: totrans-1
   prefs: []
   type: TYPE_NORMAL
 - en: A good suite of automated tests adds tremendous value to a project, because
@@ -13,10 +15,12 @@
     unnoticed. As such, tests build confidence. Thanks to them, developers are not
     afraid to change things, to play with ideas, to refactor, to make the code better.
     They are in control of their own code base.
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
 - en: Whether you practice TDD or not, it is likely that you may wish to automatically
     test your Aurelia application to some extent. This is what this chapter is about.
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
 - en: To make testing Aurelia projects easier, the Aurelia team selected a set of
@@ -24,71 +28,90 @@
     and **Protractor**, and included them in the project skeletons and the CLI project
     generator, along with their respective configuration and the tasks to run the
     tests in the project.
+  id: totrans-4
   prefs: []
   type: TYPE_NORMAL
 - en: Jasmine is a popular testing framework for JS that we will use for both unit
     and end-to-end tests. It can be found at [http://jasmine.github.io/](http://jasmine.github.io/).
+  id: totrans-5
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Karma is a test runner that is used under the hood by testing tasks. It can
     be found at [https://karma-runner.github.io/](https://karma-runner.github.io/).
+  id: totrans-6
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Protractor is an end-to-end testing framework that offers a rich API to interact
     with the browser. It can be found at [http://www.protractortest.org/](http://www.protractortest.org/).
+  id: totrans-7
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Unit tests
+  id: totrans-8
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: In the following section, we will explore how we can unit-test an Aurelia application,
     mainly by adding unit tests in our contact management application.
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
 - en: Note
+  id: totrans-10
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: 'If you are not familiar with Jasmine, you should keep its documentation handy,
     as you may want to look it up while reading this chapter: [http://jasmine.github.io/2.0/introduction.html](http://jasmine.github.io/2.0/introduction.html).'
+  id: totrans-11
   prefs: []
   type: TYPE_NORMAL
 - en: Running unit tests
+  id: totrans-12
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: Projects created using the CLI include a task to run unit tests. This task is
     defined in the `aurelia_project/tasks/test.js` file and simply launches Karma
     using the configuration file, `karma.conf.js`, located at the root of the project.
+  id: totrans-13
   prefs: []
   type: TYPE_NORMAL
 - en: 'This task can be executed by opening a console in the project directory and
     running the following command:'
+  id: totrans-14
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE0]'
+  id: totrans-15
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: This command will launch a single test run and will output the result in the
     console.
+  id: totrans-16
   prefs: []
   type: TYPE_NORMAL
 - en: 'Similar to the `run` task, the `test` task can be modified with the `watch`
     switch to make it watch the test files and rerun every time a change is detected:'
+  id: totrans-17
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE1]'
+  id: totrans-18
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: This command will launch a test run and will monitor the test files to rerun
     the tests after each change.
+  id: totrans-19
   prefs: []
   type: TYPE_NORMAL
 - en: Configuring validation
+  id: totrans-20
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -97,68 +120,89 @@
     used. This is because the methods exposed by `ValidationRules` expect the class
     to be statically initialized with a `ValidationParser` instance in order to, among
     other things, parse string interpolation in error messages.
+  id: totrans-21
   prefs: []
   type: TYPE_NORMAL
 - en: Since our model classes,  `Contact`, `PhoneNumber`, `Address`, and so on, rely
     on the `ValidationRules` class in their constructor, we won't be able to use any
     of those model classes in any of our tests if we don't initialize it first. Additionally,
     our custom validation rules must also be loaded before they can be used.
+  id: totrans-22
   prefs: []
   type: TYPE_NORMAL
 - en: 'As such, let''s add a setup file, which will initialize validation at the start
     of every test run:'
+  id: totrans-23
   prefs: []
   type: TYPE_NORMAL
 - en: '`test/unit/setup-validation.js`'
+  id: totrans-24
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE2]'
+  id: totrans-25
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: Here, we start by importing the `rules` file, so our custom validation rules
     are properly registered.
+  id: totrans-26
   prefs: []
   type: TYPE_NORMAL
 - en: Next, we create a DI container and initialize the binding language implementation
     needed by the parser, then use it to create a `ValidationParser` instance, which
     we use to initialize the `ValidationRules` class.
+  id: totrans-27
   prefs: []
   type: TYPE_NORMAL
 - en: 'Lastly, let''s add this file to the unit test setup:'
+  id: totrans-28
   prefs: []
   type: TYPE_NORMAL
 - en: '`test/aurelia-karma.js`'
+  id: totrans-29
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE3]'
+  id: totrans-30
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: Here, we simply add the `setup-validation.js` file to the list of files loaded
     by Karma using `require` when starting a test run.
+  id: totrans-31
   prefs: []
   type: TYPE_NORMAL
 - en: Configuring Bluebird warnings
+  id: totrans-32
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: 'Let''s also configure the Bluebird Promise library''s warnings so our console
     is not flooded with warnings:'
+  id: totrans-33
   prefs: []
   type: TYPE_NORMAL
 - en: '`test/unit/setup.js`'
+  id: totrans-34
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE4]'
+  id: totrans-35
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: Here, we simply copy and paste the `Promise` configuration that sits at the
     top of `src/main.js`.
+  id: totrans-36
   prefs: []
   type: TYPE_NORMAL
 - en: At this point, we can start writing unit tests comfortably.
+  id: totrans-37
   prefs: []
   type: TYPE_NORMAL
 - en: Note
+  id: totrans-38
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
@@ -166,138 +210,183 @@
     created by the CLI when initiating the project. As this component has completely
     changed since we started, those tests are no longer relevant and will fail, so
     you should delete this file.
+  id: totrans-39
   prefs: []
   type: TYPE_NORMAL
 - en: By convention, files containing unit tests have the `.spec.js` extension. The
     default Karma configuration in Aurelia projects expects tests to sit in files
     following this naming convention, so we will follow it in our contact management
     application.
+  id: totrans-40
   prefs: []
   type: TYPE_NORMAL
 - en: Unit-testing models
+  id: totrans-41
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: We will start by testing model classes. They contain a couple of critical features
     that we want to make sure are properly working.
+  id: totrans-42
   prefs: []
   type: TYPE_NORMAL
 - en: 'However, let''s first make sure that our bundles are up-to-date by opening
     a console and running a build:'
+  id: totrans-43
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE5]'
+  id: totrans-44
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: 'Then, to make the process of writing tests flow more easily, let''s first launch
     a console and start a continuous test process:'
+  id: totrans-45
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE6]'
+  id: totrans-46
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: 'The task should start running, and should show something like this:'
+  id: totrans-47
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE7]'
+  id: totrans-48
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: The test run returns an error simply because it cannot find any test to run.
     Let's change that.
+  id: totrans-49
   prefs: []
   type: TYPE_NORMAL
 - en: Testing static factory methods
+  id: totrans-50
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: 'The first test we will write will make sure that calling the `fromObject` method
     with an empty object creates an empty `PhoneNumber` object:'
+  id: totrans-51
   prefs: []
   type: TYPE_NORMAL
 - en: '`test/unit/contacts/models/phone-number.spec.js`'
+  id: totrans-52
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE8]'
+  id: totrans-53
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: Here, we define a single test case that calls the `fromObject` static method
     using an empty object, then makes sure the result is equal to an empty `PhoneNumber`
     object.
+  id: totrans-54
   prefs: []
   type: TYPE_NORMAL
 - en: 'If you save the file and take a look at the console, you should see a message
     that looks somewhat like this:'
+  id: totrans-55
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE9]'
+  id: totrans-56
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: 'Let''s write another test, which will test another angle of `fromObject`. It
     will make sure scalar properties are properly copied to the new `PhoneNumber`
     object:'
+  id: totrans-57
   prefs: []
   type: TYPE_NORMAL
 - en: '`test/unit/contacts/models/phone-number.spec.js`'
+  id: totrans-58
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE10]'
+  id: totrans-59
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE10]'
 - en: 'Here, our new test calls the `fromObject` static method using an object with
     the expected scalar properties: `type` and `number`. Then,  we ensure each property
     has been properly copied to the resulting `PhoneNumber` object.'
+  id: totrans-60
   prefs: []
   type: TYPE_NORMAL
 - en: 'Such tests should also be added for the `EmailAddress`, `Address`, and `SocialProfile`
     classes, each in its own file:  `email-address.spec.js`, `address.spec.js`, and
     `social-profile.spec.js`, following the same pattern. I''ll leave this as an exercise
     to the reader. The chapter''s sample application can be used as a reference.'
+  id: totrans-61
   prefs: []
   type: TYPE_NORMAL
 - en: 'Now that the list item classes are tested, let''s write tests for the `Contact`
     class. We''ll start with the same kind of tests we wrote previously:'
+  id: totrans-62
   prefs: []
   type: TYPE_NORMAL
 - en: '`test/unit/contacts/models/contact.spec.js`'
+  id: totrans-63
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE11]'
+  id: totrans-64
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE11]'
 - en: 'However, the `Contact` class'' `fromObject` method does a little more than
     just copying properties, it also maps the list items to their respective model
     classes. Let''s add tests to ensure this works properly:'
+  id: totrans-65
   prefs: []
   type: TYPE_NORMAL
 - en: '`test/unit/contacts/models/contact.spec.js`'
+  id: totrans-66
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE12]'
+  id: totrans-67
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE12]'
 - en: Here, we add `import` statements for the list item classes. Then we add four
     test cases, one for each list item classes, making sure in each case that an array
     of objects is properly mapped to the corresponding class.
+  id: totrans-68
   prefs: []
   type: TYPE_NORMAL
 - en: Testing computed properties
+  id: totrans-69
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: 'When it comes to unit testing, computed properties are no different from functions.
     Let''s write some tests to cover the `Contact` class'' `isPerson` property:'
+  id: totrans-70
   prefs: []
   type: TYPE_NORMAL
 - en: '`test/unit/contacts/models/contact.spec.js`'
+  id: totrans-71
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE13]'
+  id: totrans-72
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE13]'
 - en: Here, we add four test cases to make sure the `isPerson` property behaves correctly.
+  id: totrans-73
   prefs: []
   type: TYPE_NORMAL
 - en: Note
+  id: totrans-74
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
@@ -305,14 +394,17 @@
     which stands for system under test. It is considered a standard term by many authors
     in automated testing. I like to use this acronym, as it clearly identifies who
     the subject of the test is.
+  id: totrans-75
   prefs: []
   type: TYPE_NORMAL
 - en: I'll leave it as an exercise to the reader to write test cases for the `fullName`
     and the `firstLetter` properties. This chapter's sample application can be used
     as a reference.
+  id: totrans-76
   prefs: []
   type: TYPE_NORMAL
 - en: Unit-testing services
+  id: totrans-77
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -320,23 +412,29 @@
     application, we have a single service: the `ContactGateway`. It is however not
     very testing-friendly at the moment, mainly because of its constructor, which
     configures the `HttpClient` instance.'
+  id: totrans-78
   prefs: []
   type: TYPE_NORMAL
 - en: Removing configuration from the gateway constructor
+  id: totrans-79
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: 'Let''s refactor our gateway to make it more easily testable. We will move the
     `HttpClient` configuration to the feature''s `configure` function, so the constructor
     of `ContactGateway` doesn''t contain any configuration logic:'
+  id: totrans-80
   prefs: []
   type: TYPE_NORMAL
 - en: '`src/contacts/index.js`'
+  id: totrans-81
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE14]'
+  id: totrans-82
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE14]'
 - en: Here, we create an instance of `HttpClient` using the DI container and configure
     it, then create a `ContactGateway` instance, which we register in the DI container.
     You may notice that we don't register the `HttpClient` itself in the container.
@@ -344,80 +442,103 @@
     our features to be as independent as possible and other features could possibly
     use distinct `HttpClient` instances to call different backends, we don't register
     this one because it could mess with the other features.
+  id: totrans-83
   prefs: []
   type: TYPE_NORMAL
 - en: 'Next, we can remove the configuration code from the constructor of `ContactGateway`:'
+  id: totrans-84
   prefs: []
   type: TYPE_NORMAL
 - en: '`src/contacts/services/gateway.js`'
+  id: totrans-85
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE15]'
+  id: totrans-86
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE15]'
 - en: The constructor of `ContactGateway` is now free of any configuration logic.
+  id: totrans-87
   prefs: []
   type: TYPE_NORMAL
 - en: 'Since we changed code in our application, we need to rebuild it before adding
     tests:'
+  id: totrans-88
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE16]'
+  id: totrans-89
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE16]'
 - en: Testing read methods
+  id: totrans-90
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: 'Let''s start by writing a couple of tests for the two read methods of `ContactGateway`:'
+  id: totrans-91
   prefs: []
   type: TYPE_NORMAL
 - en: '`test/unit/contacts/services/gateway.spec.js`'
+  id: totrans-92
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE17]'
+  id: totrans-93
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE17]'
 - en: Here, we start by defining a test setup using Jasmine's `beforeEach` function.
     This test setup will be executed before each test case. In this setup, we first
     create a mock for the `HttpClient`, then we create the `ContactGateway` instance
     on which our test will apply.
+  id: totrans-94
   prefs: []
   type: TYPE_NORMAL
 - en: 'Next, we define two helper functions: the first one to create a `Contact` object,
     and the second one to create a mock for a response object with a JSON body. Those
     two functions will be used by our test cases.'
+  id: totrans-95
   prefs: []
   type: TYPE_NORMAL
 - en: 'Lastly, we write test cases to verify that the `getAll` and the `getById` methods
     work properly. The two test cases are asynchronous tests, so they ask for a `done`
     function to be passed as parameter, which they will call when the test is completed.
     They both follow the same pattern:'
+  id: totrans-96
   prefs: []
   type: TYPE_NORMAL
 - en: Create the `Contact` object(s) that should be returned by the tested method.
+  id: totrans-97
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: Configure the mocked `fetch` method of `HttpClient`, so it returns a `Promise`
     resolving to a mocked response object, which exposes the data to return as a JSON
     body.
+  id: totrans-98
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: 'Call the tested method and, when it resolves:'
+  id: totrans-99
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: Check that the returned `Promise` resolves to the expected data
+  id: totrans-100
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Check that the `fetch` method of `HttpClient` was called with the proper arguments
+  id: totrans-101
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Testing write methods
+  id: totrans-102
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
@@ -425,18 +546,23 @@
     as the HTML5 File API offers no easy way to compare `Blob` objects at the moment.
     So in order to test the bodies of the requests sent by our gateway, we need to
     write some helper functions:'
+  id: totrans-103
   prefs: []
   type: TYPE_NORMAL
 - en: '`test/unit/contacts/services/gateway.spec.js`'
+  id: totrans-104
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE18]'
+  id: totrans-105
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE18]'
 - en: The first helper function, named `readBlob`, simply takes a `Blob` object as
     its parameter and returns a `Promise`, which resolves to the content of the `Blob`
     as a string. Since the process of reading `Blob` content is asynchronous, it just
     wraps this process in a `Promise`.
+  id: totrans-106
   prefs: []
   type: TYPE_NORMAL
 - en: The second helper function, named `expectBlobsToBeEqual`, expects two `Blob`
@@ -444,6 +570,7 @@
     to make sure they are equal, then uses `readBlob` to retrieve the content of the
     two `Blob` objects and compares the results to make sure they also are equal,
     returning the resulting `Promise`.
+  id: totrans-107
   prefs: []
   type: TYPE_NORMAL
 - en: The last helper function, named `expectFetchToHaveBeenCalled`, receives the
@@ -455,149 +582,189 @@
     Lastly, if an expected body was provided, it calls the `expectBlobsToBeEqual`
     function using both the body passed to the last call to `fetch` and the expected
     body, and returns the resulting `Promise`.
+  id: totrans-108
   prefs: []
   type: TYPE_NORMAL
 - en: 'This last helper function will help us write assertions on how our gateway
     calls the `fetch` method of its `HttpClient`. Let''s start with a test for the
     `create` method:'
+  id: totrans-109
   prefs: []
   type: TYPE_NORMAL
 - en: '`test/unit/contacts/services/gateway.spec.js`'
+  id: totrans-110
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE19]'
+  id: totrans-111
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE19]'
 - en: Here, we start by importing the `json` function from the Fetch client. We will
     use it to transform the expected request payload in a JSON-encoded `Blob` object.
+  id: totrans-112
   prefs: []
   type: TYPE_NORMAL
 - en: 'The test by itself is pretty straightforward and sets the path for the next
     tests, which will follow the same pattern:'
+  id: totrans-113
   prefs: []
   type: TYPE_NORMAL
 - en: Create a `Contact` object that will be passed to the tested method.
+  id: totrans-114
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: Configure the mocked `fetch` method of `HttpClient` so it returns a resolved
     `Promise`.
+  id: totrans-115
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: Call the tested method and, when it resolves, check that the `fetch` method
     of `HttpClient` was called with the proper arguments.
+  id: totrans-116
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: 'The tests for the `update` and `updatePhoto` methods are pretty similar:'
+  id: totrans-117
   prefs: []
   type: TYPE_NORMAL
 - en: '`test/unit/contacts/services/gateway.spec.js`'
+  id: totrans-118
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE20]'
+  id: totrans-119
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE20]'
 - en: Those two tests follow the same pattern as the previous one.
+  id: totrans-120
   prefs: []
   type: TYPE_NORMAL
 - en: Unit-testing value converters
+  id: totrans-121
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: Testing value converters is not much different from testing services. Of course,
     it depends on the complexity of the converters you need to test. In our contact
     management application, the value converters are pretty simple.
+  id: totrans-122
   prefs: []
   type: TYPE_NORMAL
 - en: 'Let''s write a test or two for our `orderBy` value converter to get a feel
     for it:'
+  id: totrans-123
   prefs: []
   type: TYPE_NORMAL
 - en: '`test/unit/resources/value-converters/order-by.spec.js`'
+  id: totrans-124
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE21]'
+  id: totrans-125
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE21]'
 - en: Here, we first define a simple test setup that creates the test subject, then
     we add two test cases. The first one verifies that the array passed to the `toView`
     method is properly sorted using the specified property. The second verifies that
     the array passed to the `toView` method is sorted in reverse order when `"desc"`
     is passed as the third parameter.
+  id: totrans-126
   prefs: []
   type: TYPE_NORMAL
 - en: Of course, if the value converter to the test supports two-way binding and has
     a `fromView` method, additional test cases should be added to cover this second
     method.
+  id: totrans-127
   prefs: []
   type: TYPE_NORMAL
 - en: I'll leave it as an exercise to the reader to write tests for the `groupBy`
     and `filterBy` value converters. This chapter's sample application can be used
     as a reference.
+  id: totrans-128
   prefs: []
   type: TYPE_NORMAL
 - en: Unit-testing custom elements and attributes
+  id: totrans-129
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: All the tests we've written so far have little to do with Aurelia. The code
     we tested could be used in a whole different UI framework, and the chances are
     nothing would need to change. This is because we didn't test anything visual yet.
+  id: totrans-130
   prefs: []
   type: TYPE_NORMAL
 - en: When testing custom elements and attributes, we could settle for the types of
     test we wrote previously and test only their view-models. The tests would cover
     only the behavioral aspect of the components. However, having tests that can cover
     components as a whole, including their view counterpart, would be much more powerful.
+  id: totrans-131
   prefs: []
   type: TYPE_NORMAL
 - en: The component tester
+  id: totrans-132
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: 'Thankfully, Aurelia offers the `aurelia-testing` library, which can be used
     to fully test components. As such, it exports two important classes: `StageComponent`
     and `ComponentTester`.'
+  id: totrans-133
   prefs: []
   type: TYPE_NORMAL
 - en: 'The `StageComponent` class has a single static method:'
+  id: totrans-134
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE22]'
+  id: totrans-135
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE22]'
 - en: 'This method simply creates an instance of the `ComponentTester` class behind
     the scenes, calls its own `withResources` method, and then returns it. `StageComponent`
     is basically just API sugar over the component tester. The two following lines
     could be switched without any effect:'
+  id: totrans-136
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE23]'
+  id: totrans-137
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE23]'
 - en: 'The `ComponentTester` class offers an API to configure a short-lived, sandboxed
     Aurelia application, in which the tested component will live during the test:'
+  id: totrans-138
   prefs: []
   type: TYPE_NORMAL
 - en: '`withResources(resources: string | string[]): ComponentTester`: Loads the provided
     resources as global resources in the sandbox application.'
+  id: totrans-139
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '`inView(html: string): ComponentTester`: Uses the provided HTML as the root
     view of the sandbox application.'
+  id: totrans-140
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '`boundTo(bindingContext: any): ComponentTester`: Uses the provided value as
     the binding context for the root view of the sandbox application.'
+  id: totrans-141
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '`manuallyHandleLifecycle(): ComponentTester`: Tells the component tester that
     the life cycle of the application should be handled manually by the test case.'
+  id: totrans-142
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
@@ -605,6 +772,7 @@
     function to configure the sandboxed Aurelia application. By default, the application
     is configured using `aurelia.use.standardConfiguration()`. This method can be
     used to load additional plugins or features required by a component.'
+  id: totrans-143
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
@@ -612,139 +780,176 @@
     the sandbox application using the provided bootstrapping function. Most commonly,
     the `aurelia-bootstrapper` library''s `bootstrap` function will be used here.
     The returned `Promise` is resolved when the application is loaded and has booted.'
+  id: totrans-144
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '`bind(): Promise<void>`: Binds the sandbox application. It can only be used
     when the application life cycle is handled manually.'
+  id: totrans-145
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '`attached(): Promise<void>`: Attaches the sandbox application to the DOM. It
     can only be used when the application life cycle is handled manually.'
+  id: totrans-146
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '`detached(): Promise<void>`: Detaches the sandbox application from the DOM.
     It can only be used when the application life cycle is handled manually.'
+  id: totrans-147
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '`unbind(): Promise<void>`: Unbinds the sandbox application. It can only be
     used when the application life cycle is handled manually.'
+  id: totrans-148
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '`dispose()`: Disposes all resources of the sandbox application and completely
     removes it from the DOM.'
+  id: totrans-149
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: At the time of writing, the `aurelia-testing` library is still in beta, so there
     will probably be some new features added to it before its release.
+  id: totrans-150
   prefs: []
   type: TYPE_NORMAL
 - en: Testing the file-drop-target attribute
+  id: totrans-151
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: 'Let''s see how to use the component tester by writing a test suite for the
     `file-drop-target` custom attribute we wrote in [Chapter 5](ch05.html "Chapter 5. Making
     Reusable Components"), *Making Reusable Components*:'
+  id: totrans-152
   prefs: []
   type: TYPE_NORMAL
 - en: '`test/unit/resources/attributes/file-drop-target.spec.js`'
+  id: totrans-153
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE24]'
+  id: totrans-154
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE24]'
 - en: Here, we start by creating an empty test suite, which contains a test setup
     using the `beforeEach` function and a test teardown using the `afterEach` function.
     In the test setup, we first create a `viewModel` object with a `files` property,
     which will be bound to our `file-drop-target` attribute. Secondly, we use the
     `StageComponent` class to create a sandboxed Aurelia application in which our
     custom attribute will live during each test.
+  id: totrans-155
   prefs: []
   type: TYPE_NORMAL
 - en: This sandboxed application will load the `file-drop-target` attribute as a global
     resource. Its root view will be a `div` element with the `file-drop-target` attribute
     on it, bound to the `files` property of the root binding context, which will be
     the `viewModel` object.
+  id: totrans-156
   prefs: []
   type: TYPE_NORMAL
 - en: We also define a `create` helper function, which will create and boot the sandboxed
     application and will retrieve the `element` hosting our `file-drop-target` attribute
     once the application is rendered.
+  id: totrans-157
   prefs: []
   type: TYPE_NORMAL
 - en: Lastly, in the test teardown, we simply `dispose` the sandbox.
+  id: totrans-158
   prefs: []
   type: TYPE_NORMAL
 - en: 'In order to test the `file-drop-target` custom attribute, we will need to fire
     drag and drop events on the `element` hosting the tested attribute. As such, let''s
     start by writing a factory function to create such events:'
+  id: totrans-159
   prefs: []
   type: TYPE_NORMAL
 - en: '`test/unit/resources/attributes/file-drop-target.spec.js`'
+  id: totrans-160
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE25]'
+  id: totrans-161
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE25]'
 - en: This function is pretty straightforward. It simply creates an `Event` object
     using the `type` of event passed as a parameter. It also tells the event that
     it should bubble up the DOM when fired. Lastly, it assigns the provided `dataTransfer`
     object on the event, before returning it.
+  id: totrans-162
   prefs: []
   type: TYPE_NORMAL
 - en: 'We will use this function in a bunch of other functions, which will be used
     to trigger the various steps of a drag and drop process:'
+  id: totrans-163
   prefs: []
   type: TYPE_NORMAL
 - en: '`test/unit/resources/attributes/file-drop-target.spec.js`'
+  id: totrans-164
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE26]'
+  id: totrans-165
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE26]'
 - en: These three functions each create and dispatch a specific drag and drop event.
     They also return a `Promise` whose resolution will occur once the browser's event
     queue has been emptied.
+  id: totrans-166
   prefs: []
   type: TYPE_NORMAL
 - en: Updating a binding is often an asynchronous process, depending on the type of
     binding. Aurelia's binding engine heavily relies on the browser's event loop to
     make the process of updating bindings as smooth as possible.
+  id: totrans-167
   prefs: []
   type: TYPE_NORMAL
 - en: As such, returning a `Promise` whose `resolve` function is pushed at the end
     of the browser's event queue using `setTimeout` is a technique used in tests to
     make sure that bindings that may need to react to a property being updated or
     an event being dispatched have the time to update themselves.
+  id: totrans-168
   prefs: []
   type: TYPE_NORMAL
 - en: 'Lastly, we will need to create `File` objects to use in our tests:'
+  id: totrans-169
   prefs: []
   type: TYPE_NORMAL
 - en: '`test/unit/resources/attributes/file-drop-target.spec.js`'
+  id: totrans-170
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE27]'
+  id: totrans-171
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE27]'
 - en: 'Now we have all the tools we need to write a first test case:'
+  id: totrans-172
   prefs: []
   type: TYPE_NORMAL
 - en: '`test/unit/resources/attributes/file-drop-target.spec.js`'
+  id: totrans-173
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE28]'
+  id: totrans-174
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE28]'
 - en: This test makes sure that, when dragging and then dropping a list of files on
     the element hosting our custom attribute, the files in the drop event are assigned
     to the property bound to the attribute.
+  id: totrans-175
   prefs: []
   type: TYPE_NORMAL
 - en: This test starts by creating a list of `files` and dispatching a `dragover`
@@ -752,63 +957,82 @@
     of a drag and drop operation. Next, it dispatches a `drop` event using the `files`
     created previously. Lastly, it makes sure that the `files` were correctly assigned
     to the `files` property of the `viewModel`.
+  id: totrans-176
   prefs: []
   type: TYPE_NORMAL
 - en: 'Lastly, let''s add another test case to make sure that the event''s data is
     properly cleared:'
+  id: totrans-177
   prefs: []
   type: TYPE_NORMAL
 - en: '`test/unit/resources/attributes/file-drop-target.spec.js`'
+  id: totrans-178
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE29]'
+  id: totrans-179
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE29]'
 - en: If you run the tests now, they should all be green.
+  id: totrans-180
   prefs: []
   type: TYPE_NORMAL
 - en: Testing the list-editor element
+  id: totrans-181
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: 'Unit-testing a custom element is very similar. Let''s see how it works by testing
     the `list-editor` custom element we wrote previously:'
+  id: totrans-182
   prefs: []
   type: TYPE_NORMAL
 - en: '`test/unit/resources/elements/list-editor.spec.js`'
+  id: totrans-183
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE30]'
+  id: totrans-184
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE30]'
 - en: Here, we start by creating a test suite with a test setup that creates an empty
     array of `items` and mocks a function to create new items. It also creates a component
     tester that will load the `list-editor` as a global resource, use the `list-editor`
     element in its root view, and define as the root binding context an object containing
     the array of `items` and the mocked `createItem` function, which will be bound
     to the `list-editor` instance.
+  id: totrans-185
   prefs: []
   type: TYPE_NORMAL
 - en: We also define a `create` function, which will create and bootstrap the sandboxed
     application in which the tested element will live during each test. It will also
     retrieve the `list-editor` DOM element once the application is booted.
+  id: totrans-186
   prefs: []
   type: TYPE_NORMAL
 - en: Lastly, we define a test teardown that will simply `dispose` the component tester.
+  id: totrans-187
   prefs: []
   type: TYPE_NORMAL
 - en: 'Of course, we''ll need objects to use as items. Let''s create a simple class
     that we can use in our test cases:'
+  id: totrans-188
   prefs: []
   type: TYPE_NORMAL
 - en: '`test/unit/resources/elements/list-editor.spec.js`'
+  id: totrans-189
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE31]'
+  id: totrans-190
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE31]'
 - en: This simple `Item` class expects a `text` value in its constructor, and returns
     this `text` when converted to string.
+  id: totrans-191
   prefs: []
   type: TYPE_NORMAL
 - en: In our tests, we'll need to retrieve various elements that are rendered by the
@@ -817,49 +1041,65 @@
     classes will help us select specific elements without relying on the HTML structure
     itself, which would make the tests brittle, because any change to the HTML structure
     could break them.
+  id: totrans-192
   prefs: []
   type: TYPE_NORMAL
 - en: '`src/resources/elements/list-editor.html`'
+  id: totrans-193
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE32]'
+  id: totrans-194
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE32]'
 - en: Here, we simply add a `le-item` CSS class on each element acting as the root
     of each item. We also add a `le-remove-btn` CSS class to each button allowing
     us to remove items from the list. Lastly, we add a `le-add-btn` CSS class to the
     button allowing us to add an item to the list.
+  id: totrans-195
   prefs: []
   type: TYPE_NORMAL
 - en: Note
+  id: totrans-196
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: The `le` prefix stands for list editor. It's not an attempt to write French
     cartoon.
+  id: totrans-197
   prefs: []
   type: TYPE_NORMAL
 - en: 'Just like we did before, we have to rebuild the application, so the bundles
     are up-to-date and include the new CSS classes in the `list-editor` template:'
+  id: totrans-198
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE33]'
+  id: totrans-199
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE33]'
 - en: 'Let''s add a couple of helper functions to retrieve elements, perform actions,
     or assert results on the rendered DOM inside our tested element:'
+  id: totrans-200
   prefs: []
   type: TYPE_NORMAL
 - en: '`test/unit/resources/elements/list-editor.spec.js`'
+  id: totrans-201
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE34]'
+  id: totrans-202
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE34]'
 - en: 'Here, we define the following functions:'
+  id: totrans-203
   prefs: []
   type: TYPE_NORMAL
 - en: '`getItemsViews`: Retrieves elements (the roots of each `items`).'
+  id: totrans-204
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
@@ -867,61 +1107,80 @@
     given index and triggers a `click` event on it. It returns a `Promise` that will
     resolve when the browser''s event queue is emptied, to make sure all bindings
     are up-to-date.'
+  id: totrans-205
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '`clickAddButton`: Retrieves the **Add** button and triggers a `click` event
     on it. It returns a `Promise` that will resolve when the browser''s event queue
     is emptied, to make sure all bindings are up-to-date.'
+  id: totrans-206
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '`isItemRendered`: Returns `true` if the provided item has been rendered in
     the DOM of `list-editor` and `false` otherwise.'
+  id: totrans-207
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '`areAllItemsRendered`: Returns `true` if the items have all been rendered in
     the DOM of `list-editor` and `false` otherwise.'
+  id: totrans-208
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: At this point, we have everything we need to write our tests.
+  id: totrans-209
   prefs: []
   type: TYPE_NORMAL
 - en: 'Let''s first verify that all the items are properly rendered:'
+  id: totrans-210
   prefs: []
   type: TYPE_NORMAL
 - en: '`test/unit/resources/elements/list-editor.spec.js`'
+  id: totrans-211
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE35]'
+  id: totrans-212
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE35]'
 - en: 'Next, let''s add tests to make sure that, when clicking on an item''s **Remove**
     button, the item gets deleted:'
+  id: totrans-213
   prefs: []
   type: TYPE_NORMAL
 - en: '`test/unit/resources/elements/list-editor.spec.js`'
+  id: totrans-214
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE36]'
+  id: totrans-215
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE36]'
 - en: 'Lastly, let''s add a test case to make sure that a click on the **Add** button
     will create a new item and will add it to the list:'
+  id: totrans-216
   prefs: []
   type: TYPE_NORMAL
 - en: '`test/unit/resources/elements/list-editor.spec.js`'
+  id: totrans-217
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE37]'
+  id: totrans-218
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE37]'
 - en: At this point, all the tests should pass.
+  id: totrans-219
   prefs: []
   type: TYPE_NORMAL
 - en: Unit-testing route components
+  id: totrans-220
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -930,50 +1189,66 @@
     tests to verify the view. The Aurelia team, however, plans to add this feature;
     you should check it out, in case it has already been released when you read this
     book.
+  id: totrans-221
   prefs: []
   type: TYPE_NORMAL
 - en: 'Unit-testing the view-model of such components is not very different from most
     of the tests we already wrote, but let''s see a quick example by writing a test
     suite for the contact creation component:'
+  id: totrans-222
   prefs: []
   type: TYPE_NORMAL
 - en: '`test/unit/contacts/components/creation.spec.js`'
+  id: totrans-223
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE38]'
+  id: totrans-224
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE38]'
 - en: Here, we start by creating a test suite with a test setup that creates a bunch
     of mocks, and then creates the SUT using those mocks.
+  id: totrans-225
   prefs: []
   type: TYPE_NORMAL
 - en: 'Let''s also add a helper function to create a validation error:'
+  id: totrans-226
   prefs: []
   type: TYPE_NORMAL
 - en: '`test/unit/contacts/components/creation.spec.js`'
+  id: totrans-227
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE39]'
+  id: totrans-228
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE39]'
 - en: 'Lastly, let''s add a first test case to make sure nothing happens when trying
     to save an invalid contact, and a second test case to make sure that saving a
     valid contact does the right thing:'
+  id: totrans-229
   prefs: []
   type: TYPE_NORMAL
 - en: '`test/unit/contacts/components/creation.spec.js`'
+  id: totrans-230
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE40]'
+  id: totrans-231
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE40]'
 - en: This gives a good idea of how to test the view-model of a route component. I'll
     leave it as an exercise to the reader to add tests for the other route components
     in the `contacts` feature. This chapter's sample application can be used as a
     reference.
+  id: totrans-232
   prefs: []
   type: TYPE_NORMAL
 - en: End-to-end tests
+  id: totrans-233
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
@@ -982,88 +1257,115 @@
     can go to various depths. Their scope may be limited to the client application
     itself. In such a case, any distant service used by the application needs be mocked
     one way or another.
+  id: totrans-234
   prefs: []
   type: TYPE_NORMAL
 - en: They can also cover the whole system. Most of the time, this means that the
     services backing the application must be deployed to a test location and initialized
     with well-controlled test data.
+  id: totrans-235
   prefs: []
   type: TYPE_NORMAL
 - en: Whatever your end-to-end test strategy is, the technology stays pretty much
     the same. In this section, we will see how to leverage Protractor to write functional
     test scenarios for our contact management application.
+  id: totrans-236
   prefs: []
   type: TYPE_NORMAL
 - en: Setting things up
+  id: totrans-237
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: At the time of writing, the CLI doesn't include a Protractor setup. Since we
     started our project using the CLI, let's see how we can add support for end-to-end
     tests to our application.
+  id: totrans-238
   prefs: []
   type: TYPE_NORMAL
 - en: 'We first need to install the `protractor` plugin for Gulp, along with the `del`
     library. Open a console in the project''s directory and run the following command:'
+  id: totrans-239
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE41]'
+  id: totrans-240
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE41]'
 - en: 'Next, we need to store some configuration values about the end-to-end testing
     process. Let''s add these to the `aurelia.json` file:'
+  id: totrans-241
   prefs: []
   type: TYPE_NORMAL
 - en: '`aurelia_project/aurelia.json`'
+  id: totrans-242
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE42]'
+  id: totrans-243
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE42]'
 - en: This new section contains paths and transpiler options that will be used by
     our E2E task.
+  id: totrans-244
   prefs: []
   type: TYPE_NORMAL
 - en: 'This task is pretty straightforward: it transpiles the test suite using Babel,
     so it can run on Node, and then launches Protractor. Let''s first write the task
     descriptor:'
+  id: totrans-245
   prefs: []
   type: TYPE_NORMAL
 - en: '`aurelia_project/tasks/e2e.json`'
+  id: totrans-246
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE43]'
+  id: totrans-247
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE43]'
 - en: 'Next, let''s write the task itself:'
+  id: totrans-248
   prefs: []
   type: TYPE_NORMAL
 - en: '`aurelia_project/tasks/e2e.js`'
+  id: totrans-249
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE44]'
+  id: totrans-250
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE44]'
 - en: 'If you are not familiar with Gulp, let me quickly explain what this task does:'
+  id: totrans-251
   prefs: []
   type: TYPE_NORMAL
 - en: It updates WebDriver if needed
+  id: totrans-252
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: It cleans the output directory, where the transpiled test suite sits
+  id: totrans-253
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: It transpiles the test suite in the output directory
+  id: totrans-254
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: It launches Protractor.
+  id: totrans-255
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Note
+  id: totrans-256
   prefs:
   - PREF_IND
   - PREF_H3
@@ -1071,19 +1373,24 @@
 - en: Protractor is mostly an API that sits over Selenium, which is the actual engine
     allowing us to play scenarios in a browser. WebDriver is the Node bindings that
     allow us to communicate with Selenium.
+  id: totrans-257
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
 - en: 'You may have noticed that a configuration file path is passed to Protractor.
     Let''s write this configuration:'
+  id: totrans-258
   prefs: []
   type: TYPE_NORMAL
 - en: '`protractor.conf.js`'
+  id: totrans-259
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE45]'
+  id: totrans-260
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE45]'
 - en: Exploring Protractor in any depth is outside the scope of this book. However,
     you can probably understand from this configuration that it will use Google Chrome
     to run the tests, that it expects the test files to sit in the `test/e2e/dist`
@@ -1091,13 +1398,16 @@
     and that a plugin is loaded from the `aurelia-tools` package. The `aurelia-tools`
     library is already included in CLI-based projects, so there no need to install
     it.
+  id: totrans-261
   prefs: []
   type: TYPE_NORMAL
 - en: This last part is pretty important, since this plugin adds some Aurelia-specific
     methods to the Protractor API. We'll see those in the following section.
+  id: totrans-262
   prefs: []
   type: TYPE_NORMAL
 - en: Mocking the backend
+  id: totrans-263
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -1106,53 +1416,67 @@
     As such, we need a controlled version of the API, a kind of mock, actually, which
     will contain a predefined set of data, and which we can reset to its original
     state before each test.
+  id: totrans-264
   prefs: []
   type: TYPE_NORMAL
 - en: You can take this mocked API from this book's artifacts. Simply copy the `chapter-7\app\test\e2e\api-mock`
     directory from the samples and paste it in the `test\e2e` directory of your own
     project. You will probably need to create the `e2e` directory first.
+  id: totrans-265
   prefs: []
   type: TYPE_NORMAL
 - en: 'Once this is done, make sure you restore all dependencies needed by the API
     mock by opening a console in the `api-mock` directory and running the following
     command:'
+  id: totrans-266
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE46]'
+  id: totrans-267
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE46]'
 - en: The API mock is now ready to run.
+  id: totrans-268
   prefs: []
   type: TYPE_NORMAL
 - en: 'In order to reset the data set before each test, we''ll need a helper function:'
+  id: totrans-269
   prefs: []
   type: TYPE_NORMAL
 - en: '`test/e2e/src/contacts/api-mock.js`'
+  id: totrans-270
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE47]'
+  id: totrans-271
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE47]'
 - en: In case you didn't know, Protractor runs on Node, not in the browser. As such,
     we start by importing the `http` Node module. Next, we define and export a `resetApi`
     function, which simply sends a `POST` request to the `/reset` endpoint of our
     HTTP API. It also returns a `Promise`, which is resolved when the HTTP request
     completes.
+  id: totrans-272
   prefs: []
   type: TYPE_NORMAL
 - en: This function tells the backend to reset its dataset to its original state.
     We will call it before every test, so each test can be sure to work with the same
     set of data, even if a previous test created a new contact or updated an existing
     one.
+  id: totrans-273
   prefs: []
   type: TYPE_NORMAL
 - en: The page object pattern
+  id: totrans-274
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: A typical E2E test will load a given URL, retrieve one or many DOM elements
     from the document, perform an action or dispatch an event on this or those elements,
     and then verify that the expected outcome was achieved.
+  id: totrans-275
   prefs: []
   type: TYPE_NORMAL
 - en: As such, selecting elements and performing actions on them can quickly bloat
@@ -1160,27 +1484,34 @@
     of elements in multiple test cases. Having to duplicate the selection code in
     many places makes the code rigid and hard to change. The tests becomes more restrictive
     than liberating.
+  id: totrans-276
   prefs: []
   type: TYPE_NORMAL
 - en: To make our tests more self-descriptive and easier to change, we will use the
     page object pattern. This pattern describes how we create a class to represent
     the UI of a given page or component in order to encapsulate the logic of selecting
     specific elements and performing actions on them.
+  id: totrans-277
   prefs: []
   type: TYPE_NORMAL
 - en: 'Let''s illustrate this by creating such a class for the contact list component:'
+  id: totrans-278
   prefs: []
   type: TYPE_NORMAL
 - en: '`test/e2e/src/contacts/list.po.js`'
+  id: totrans-279
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE48]'
+  id: totrans-280
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE48]'
 - en: This class starts with a `getAllContacts` method. This method uses the Protractor
     API to select all elements with the `cl-details-link` CSS class, and then maps
     them to their text content. This method allows us to get an array containing the
     full name of all displayed contacts.
+  id: totrans-281
   prefs: []
   type: TYPE_NORMAL
 - en: Next, it exposes a `clickContactLink` method, which retrieves the element at
@@ -1190,9 +1521,11 @@
     provided by Aurelia's Protractor plugin to wait for the router to complete its
     navigation cycle, which would be triggered by clicking on the link and return
     the resulting `Promise`, whose result is changed for the `result` object.
+  id: totrans-282
   prefs: []
   type: TYPE_NORMAL
 - en: Note
+  id: totrans-283
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
@@ -1201,34 +1534,41 @@
     all methods in the Protractor API return `Promise`s, but that it is often unnecessary
     to chain them using `then` because Protractor internally queues all asynchronous
     operations.
+  id: totrans-284
   prefs: []
   type: TYPE_NORMAL
 - en: I strongly suggest that you get familiar with this aspect of Protractor before
     trying to write extensive E2E test suites.
+  id: totrans-285
   prefs: []
   type: TYPE_NORMAL
 - en: The `clickNewButton` method is pretty simple; it selects the element with the
     `cl-create-btn` CSS class and performs a click on it, before waiting for the router
     to complete its navigation cycle.
+  id: totrans-286
   prefs: []
   type: TYPE_NORMAL
 - en: The `setFilter` method uses another of the Protractor's Aurelia plugin extension
     methods to select the element data-bound to the `filter` property and decorated
     with the `debounce` binding behavior. It then clears its value and sends a given
     sequence of key strokes to it, before letting the browser sleep for 200 milliseconds.
+  id: totrans-287
   prefs: []
   type: TYPE_NORMAL
 - en: Lastly, the `clickClearFilter` method selects the element with the `cl-clear-filter-btn`
     CSS class and performs a click on it. It then makes the browser sleep for 200
     milliseconds.
+  id: totrans-288
   prefs: []
   type: TYPE_NORMAL
 - en: Note
+  id: totrans-289
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: At the time of writing, a `sleep` instruction after an action is necessary to
     make sure all bindings that may need to react to the action have been updated.
+  id: totrans-290
   prefs: []
   type: TYPE_NORMAL
 - en: The purpose of a page object is to encapsulate and abstract away interactions
@@ -1238,69 +1578,91 @@
     themselves will only have to deal with this high-level API over the view, not
     with the intricacies of the HTML structure itself. Most calls to the Protractor
     API will be hidden inside our page objects.
+  id: totrans-291
   prefs: []
   type: TYPE_NORMAL
 - en: 'You may have noticed that most selectors in the previous code snippet use new
     CSS classes to select elements. Let''s add those to the contacts list template:'
+  id: totrans-292
   prefs: []
   type: TYPE_NORMAL
 - en: '`src/contacts/components/list.html`'
+  id: totrans-293
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE49]'
+  id: totrans-294
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE49]'
 - en: 'Lastly, before diving in our first test case, let''s quickly add two other
     page objects we''ll need in our tests:'
+  id: totrans-295
   prefs: []
   type: TYPE_NORMAL
 - en: '`test/e2e/src/contacts/creation.po.js`'
+  id: totrans-296
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE50]'
+  id: totrans-297
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE50]'
 - en: '`test/e2e/src/contacts/details.po.js`'
+  id: totrans-298
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE51]'
+  id: totrans-299
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE51]'
 - en: The first page object encapsulates the contact creation component. It simply
     exposes a `getTitle` method, which selects the `h1` element and returns its text
     content.
+  id: totrans-300
   prefs: []
   type: TYPE_NORMAL
 - en: The second one is for the contact details component. It has a `getFullName`
     method, which allows us to retrieve the displayed full name of the contact by
     selecting the `h1` element and returning its text content.
+  id: totrans-301
   prefs: []
   type: TYPE_NORMAL
 - en: Writing a first test case
+  id: totrans-302
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: 'Now that all the tools we need are ready, let''s write a first test case for
     the contacts list component:'
+  id: totrans-303
   prefs: []
   type: TYPE_NORMAL
 - en: '`test/e2e/src/contacts/list.spec.js`'
+  id: totrans-304
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE52]'
+  id: totrans-305
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE52]'
 - en: Here, we start with a test setup, which creates an instance of the contacts
     list page object, resets the API, then uses another of the extension methods offered
     by Aurelia's Protractor plugin to load a given URL, and then wait for the Aurelia
     application to finish booting.
+  id: totrans-306
   prefs: []
   type: TYPE_NORMAL
 - en: Next, we define a first test case, which uses the page object's methods to ensure
     that some contacts are displayed.
+  id: totrans-307
   prefs: []
   type: TYPE_NORMAL
 - en: Note
+  id: totrans-308
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
@@ -1308,182 +1670,232 @@
     there is no need to use Jasmine's `done` function to let the framework know when
     a test case is finished, because Protractor modifies Jasmine's functions to handle
     asynchronicity itself using its own internal task queue.
+  id: totrans-309
   prefs: []
   type: TYPE_NORMAL
 - en: The exception to this rule is when performing an asynchronous operation that
     is not handled by Protractor, such as in the `beforeEach` function where we reset
     the API using an asynchronous HTTP request.
+  id: totrans-310
   prefs: []
   type: TYPE_NORMAL
 - en: Running tests
+  id: totrans-311
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: 'At this point, we have everything ready and run our E2E tests. To do this,
     we first need to run the API mock, by opening a console in the `test/e2e/api-mock`
     directory inside our project and executing the following command:'
+  id: totrans-312
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE53]'
+  id: totrans-313
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE53]'
 - en: 'Once the API is running, we must also launch the application itself, by opening
     a console in the project''s directory and running the command:'
+  id: totrans-314
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE54]'
+  id: totrans-315
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE54]'
 - en: Those two commands are necessary, because the E2E tests will need to load our
     application in a browser in order to execute, and will need to call the API to
     reset its data before each test. Of course, the application itself also needs
     the API to request data and perform actions.
+  id: totrans-316
   prefs: []
   type: TYPE_NORMAL
 - en: 'Once the API mock and the application are both running, we can launch the E2E
     tests by opening a third console in the project directory and running the following
     command:'
+  id: totrans-317
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE55]'
+  id: totrans-318
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE55]'
 - en: 'You will see the task start, and during the process a Chrome instance will
     show up. You will see the application load and the test case scenario play live
     before your eyes, before Chrome shuts down and the task completes. The complete
     output should be similar to this:'
+  id: totrans-319
   prefs: []
   type: TYPE_NORMAL
 - en: '![Running tests](img/image_07_001.jpg)'
+  id: totrans-320
   prefs: []
   type: TYPE_IMG
 - en: Note
+  id: totrans-321
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: The `e2e` task may occasionally take some time to start when the WebDriver needs
     to update itself first.
+  id: totrans-322
   prefs: []
   type: TYPE_NORMAL
 - en: Testing the contacts list
+  id: totrans-323
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: 'Now that we know that everything works correctly, let''s add some tests for
     the contacts list component:'
+  id: totrans-324
   prefs: []
   type: TYPE_NORMAL
 - en: '`test/e2e/src/contacts/list.spec.js`'
+  id: totrans-325
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE56]'
+  id: totrans-326
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE56]'
 - en: The first of those new test cases makes sure that, when clicking on a contact
     entry in the list, the application navigates to the contact's details component
+  id: totrans-327
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: The second one makes sure that, when clicking on the **New** button, the application
     navigates to the contact creation component
+  id: totrans-328
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: The third one makes sure that, when typing a search term in the filter textbox,
     the list is filtered down using this search term
+  id: totrans-329
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Lastly, the fourth one makes sure that, when clearing the filter textbox after
     a search, the list is restored unfiltered
+  id: totrans-330
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: This test suite now covers all the features of the contacts list component.
     If you run the E2E tests at this point, you should see the five test cases pass.
+  id: totrans-331
   prefs: []
   type: TYPE_NORMAL
 - en: Testing contact creation
+  id: totrans-332
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: Let's try to complicate things a bit by adding a test suite for the contact
     creation component, which includes a complex form with validation rules.
+  id: totrans-333
   prefs: []
   type: TYPE_NORMAL
 - en: First, we'll write a reusable class following the page object pattern, which
     will encapsulate the contact form view. This way, we'll be able to use this class
     to test contact creation, and also to eventually test the contact edition.
+  id: totrans-334
   prefs: []
   type: TYPE_NORMAL
 - en: We'll start with a base page object for list editors. This class will encapsulate
     the details about how to access and perform actions on parts of one of the `list-editor`
     elements on the contact form component.
+  id: totrans-335
   prefs: []
   type: TYPE_NORMAL
 - en: '`test/e2e/src/contacts/form.po.js`'
+  id: totrans-336
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE57]'
+  id: totrans-337
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE57]'
 - en: 'Here, we start by defining a base class named `ListEditorPO`. This class encapsulates
     interaction with a single `list-editor` element in the contact form and knows
     how to:'
+  id: totrans-338
   prefs: []
   type: TYPE_NORMAL
 - en: Select a given `option` in a `select` bound to a given property at a given index
     in the list.
+  id: totrans-339
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: Send a given sequence of keys into a field bound to a given property at a given
     index in the list.
+  id: totrans-340
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: Click the **Remove** button at a given index in the list.
+  id: totrans-341
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: Click the **Add** button.
+  id: totrans-342
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: 'Next, we''ll extend this class by writing four specialized page objects, one
     for each type of item a contact can have:'
+  id: totrans-343
   prefs: []
   type: TYPE_NORMAL
 - en: '`test/e2e/src/contacts/form.po.js`'
+  id: totrans-344
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE58]'
+  id: totrans-345
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE58]'
 - en: 'Here, we define a bunch of classes that extend the base `ListEditorPO` class:
     `PhoneNumberListEditorPO`, `EmailAddressListEditorPO`, `AddressListEditorPO`,
     and `SocialProfileListEditorPO`. They all:'
+  id: totrans-346
   prefs: []
   type: TYPE_NORMAL
 - en: Specify the property which the underlying `list-editor` element is bound to
+  id: totrans-347
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Add specialized methods to set the value of the fields of each item in the underlying
     `list-editor`, such as `setType` and `setNumber` for phone numbers, or `setStreet`
     and `setCity` for addresses
+  id: totrans-348
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: 'Lastly, we''ll write a page object for the contact form itself:'
+  id: totrans-349
   prefs: []
   type: TYPE_NORMAL
 - en: '`test/e2e/src/contacts/form.po.js`'
+  id: totrans-350
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE59]'
+  id: totrans-351
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE59]'
 - en: Here, we export a class named `ContactFormPO`, which encapsulates interaction
     with the view of the contact form. It has one instance of each of the classes
     extending `ListEditorPO`, so tests can interact with the various `list-editor`
@@ -1491,46 +1903,60 @@
     It also has methods allowing us to set the value of the first name, last name,
     company, birthday, and note. Finally, it has a method allowing us to retrieve
     all the validation error messages on the form.
+  id: totrans-352
   prefs: []
   type: TYPE_NORMAL
 - en: 'Before being able to write our new tests, we need to connect this form page
     object with the page object for the contact creation component. We''ll also add
     a couple of methods to it:'
+  id: totrans-353
   prefs: []
   type: TYPE_NORMAL
 - en: '`test/e2e/src/contacts/creation.po.js`'
+  id: totrans-354
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE60]'
+  id: totrans-355
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE60]'
 - en: Here, we first make the `ContactCreationPO` class inherit the `ContactFormPO`
     class, Then, we add a first method to click on the **Save** button, and another
     method to click on the **Cancel** link.
+  id: totrans-356
   prefs: []
   type: TYPE_NORMAL
 - en: 'With this ready, it is pretty straightforward to write a test suite for the
     contact creation component:'
+  id: totrans-357
   prefs: []
   type: TYPE_NORMAL
 - en: '`test/e2e/src/contacts/creation.spec.js`'
+  id: totrans-358
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE61]'
+  id: totrans-359
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE61]'
 - en: In this test suite's setup, we start by creating page objects for the list and
     the creation components. We reset the API's data, then load the application, and
     click on the **New** button to navigate to the contact creation component.
+  id: totrans-360
   prefs: []
   type: TYPE_NORMAL
 - en: 'We can now enrich this test suite with some cases that verify the behavior
     of the contact creation component:'
+  id: totrans-361
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE62]'
+  id: totrans-362
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE62]'
 - en: Here, we define three test cases. The first one makes sure that, when the form
     is in an invalid state and the **Save** button is clicked, no navigation occurs
     and the proper validation messages are displayed. The second one makes sure that,
@@ -1539,9 +1965,11 @@
     is displayed in the list. The third test case makes sure that clicking on **Cancel**
     makes the application navigate back to the contacts list component. It also ensures
     that no new contact is displayed in the list.
+  id: totrans-363
   prefs: []
   type: TYPE_NORMAL
 - en: Further testing
+  id: totrans-364
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -1550,30 +1978,42 @@
     experience of Aurelia in itself. End-to-end testing an Aurelia application with
     Protractor is a topic that deserves its own book. However, the goal of the present
     section was to give you a taste of it and get you started. Hopefully, it did.
+  id: totrans-365
   prefs: []
   type: TYPE_NORMAL
+  zh: 这一章节本可以更长，通过添加我们应用程序中其他功能的测试来扩展，但编写额外的测试对Aurelia本身的学习体验增加的价值不大。使用Protractor对Aurelia应用程序进行端到端测试是一个值得单独成书的话题。然而，当前节点的目标只是让你稍稍了解一下并开始入门。希望，它做到了。
 - en: Summary
+  id: totrans-366
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 总结
 - en: Being able to test at both the micro level using unit tests and at the macro
     level using end to end tests is a very valuable quality for a framework. Thanks
     to its modular architecture and its orientation towards components, Aurelia makes
     it fairly easy to write such tests.
+  id: totrans-367
   prefs: []
   type: TYPE_NORMAL
+  zh: 能够既使用单元测试在微观层面测试，又使用端到端测试在宏观层面测试，对于一个框架来说是非常有价值的品质。得益于其模块化架构和面向组件的特性，Aurelia使得编写这类测试相对容易。
 - en: Indeed, automated testing is a vast subject. Books are written about this topic,
     so it would be vain to try and cover it in depth in a single chapter. However,
     you should have at this point the minimum knowledge to start writing automated
     tests for your own Aurelia application.
+  id: totrans-368
   prefs: []
   type: TYPE_NORMAL
+  zh: 事实上，自动化测试是一个广泛的主题。有专门关于这个话题的书籍，因此试图在单个章节中深入探讨它是徒劳的。然而，此时你应该已经拥有开始为你的Aurelia应用程序编写自动化测试的最基本知识了。
 - en: At this point in the book, most of the major tools required to build a single-page
     application using Aurelia should be on your belt. You may not have mastered them
     all yet, but you know what they are and what their purpose is.
+  id: totrans-369
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这本书的这个阶段，构建使用Aurelia的单页应用程序所需的大部分主要工具应该已经掌握在你手中了。你可能还没有完全掌握它们，但你知道它们是什么以及它们的用途是什么。
 - en: However, there are still a couple of subjects missing, and one of them is internationalization.
     This is what we'll talk about in the next chapter.
+  id: totrans-370
   prefs: []
   type: TYPE_NORMAL
+  zh: 然而，还有一些主题尚未涉及，其中之一就是国际化。这是我们将在下一章讨论的内容。

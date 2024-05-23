@@ -1572,6 +1572,7 @@
   id: totrans-235
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们还指定`file-picker`的文件选择对话框应只显示图片文件，使用`accept`属性，并将`files`属性绑定到`photo`属性上。此外，这个绑定说明被`validate`绑定行为装饰，所以选中或拖放的文件将会得到适当的验证。
 - en: Lastly, we leverage content projection to inject inside our `file-picker` a
     `strong` line of text, which is displayed only when no `preview` is available,
     and an `img` element, which is visible only when a `preview` is available and
@@ -1580,6 +1581,7 @@
   id: totrans-236
   prefs: []
   type: TYPE_NORMAL
+  zh: 最后，我们利用内容投射，在`file-picker`内部注入一条`strong`文本，当没有`preview`可用时显示，以及一个`img`元素，当有`preview`可用时可见，并使用我们的`blob-src`自定义属性显示预览。这部分内容将在`file-picker`的DOM树中的`slot`位置投射。
 - en: If you run the application at this point, you should be able to either click
     on the `file-picker` to select a file using the selection dialog or drag and drop
     an image file on the element, and the selected or dropped file should show up
@@ -1587,11 +1589,13 @@
   id: totrans-237
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你在这个时候运行应用程序，你应该能够点击`file-picker`来使用选择对话框选择文件，或者将图片文件拖放到元素上，如果文件有效，选中或拖放的文件应该会显示在预览区域。
 - en: Validating custom elements
   id: totrans-238
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 验证自定义元素
 - en: Since the `aurelia-validation` library validates any two-way binding, the `validate`
     binding behavior can be used on custom element bindings without any problem. We
     actually used it in the previous section to validate our `file-picker`, in case
@@ -1600,6 +1604,7 @@
   id: totrans-239
   prefs: []
   type: TYPE_NORMAL
+  zh: 由于`aurelia-validation`库验证任何双向绑定，`validate`绑定行为可以不用任何问题地用在自定义元素绑定上。实际上，我们在上一节中就是用它来验证我们的`file-picker`的，如果你没有注意到的话。然而，`file-picker`的验证正确工作的原因是因为我们的`contact-photo`组件使用了`change`作为`validateTrigger`。
 - en: In order to have a custom element work seamlessly with the `blur``validateTrigger`,
     the custom element must publish `blur` events. Additionally, in order to respect
     the API implemented by all native form-related elements, it is considered good
@@ -1608,11 +1613,13 @@
   id: totrans-240
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了使自定义元素与`blur``validateTrigger`无缝工作，自定义元素必须发布`blur`事件。另外，为了尊重所有原生表单相关元素实现的API，如果您的元素的用户输入目的是表单相关元素，实现一个`focus`方法被认为是一个好习惯，它将委派焦点到包含的任何表单相关元素。
 - en: 'To illustrate this, let''s imagine a `my-widget` custom element encapsulating
     an `input` element such as this:'
   id: totrans-241
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了说明这一点，让我们想象一个`my-widget`自定义元素，它包含一个`input`元素，像这样：
 - en: '[PRE36]'
   id: totrans-242
   prefs: []
@@ -1622,6 +1629,7 @@
   id: totrans-243
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们也想象一个非常基础的视图模型：
 - en: '[PRE37]'
   id: totrans-244
   prefs: []
@@ -1632,6 +1640,7 @@
   id: totrans-245
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了符合`aurelia-validation`的要求，这个模板必须进行修改：
 - en: '[PRE38]'
   id: totrans-246
   prefs: []
@@ -1643,10 +1652,12 @@
   id: totrans-247
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这里，我们在视图模型上创建了一个名为`input`的新属性，它将包含`input`元素的引用。接下来，我们为`blur`事件添加了一个委派事件处理程序，当触发时会调用`blur`方法。
 - en: 'Next, let''s modify the view-model to implement the new requirements:'
   id: totrans-248
   prefs: []
   type: TYPE_NORMAL
+  zh: 接下来，让我们修改视图模型以实现新要求：
 - en: '[PRE39]'
   id: totrans-249
   prefs: []
@@ -1660,10 +1671,12 @@
   id: totrans-250
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这里，我们首先声明了对DOM元素本身的依赖，并在构造函数中注入。另外，我们在`my-widget`元素上定义了一个`focus`方法，当调用时它会调用`input`的`focus`方法。最后，我们创建了一个`blur`方法，当调用时会在`my-widget`元素上创建并分发一个`blur`事件。
 - en: Now the `my-widget` element can be used with the default `blur``validateTrigger`.
   id: totrans-251
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在`my-widget`元素可以使用默认的`blur``validateTrigger`。
 - en: As for our `file-picker`, in order to have it working with the `blur``validateTrigger`,
     it should be modified so it publishes a `blur` event when the files are either
     selected or dropped. Even though the element has no focusable content because
@@ -3266,20 +3279,24 @@
   id: totrans-502
   prefs: []
   type: TYPE_NORMAL
+  zh: 与可绑定属性类似，一个`children`属性也可以实现一个使用相同命名规则的变化处理方法，以响应变化。在这个例子中，如果存在`itemsChanged`方法，那么在渲染时，在属性初始化期间，以及每次`items`数组发生变化时，该方法将被调用。
 - en: child
   id: totrans-503
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 孩子
 - en: The `child` decorator is very similar to `children`, except that it targets
     a single element.
   id: totrans-504
   prefs: []
   type: TYPE_NORMAL
+  zh: '`child`装饰器与`children`非常相似，只不过它针对的是一个单一的元素。'
 - en: 'To illustrate this, let''s adapt the previous example:'
   id: totrans-505
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了说明这个问题，让我们调整一下之前的例子：
 - en: '[PRE87]'
   id: totrans-506
   prefs: []
@@ -3289,6 +3306,7 @@
   id: totrans-507
   prefs: []
   type: TYPE_NORMAL
+  zh: 假设元素像这样使用：
 - en: '[PRE88]'
   id: totrans-508
   prefs: []
@@ -3301,11 +3319,13 @@
   id: totrans-509
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这里，`child-children-sample`实例会将`header`元素分配给它的`header`属性。另外，如果存在`headerChanged`方法，那么在渲染时，在属性初始化期间，以及每次元素被移除、添加或替换时，该方法将被调用。
 - en: Bonus – preventing multiple submits
   id: totrans-510
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 奖励 - 防止多次提交
 - en: At the moment, our contact management application doesn't handle form submits
     very well. Indeed, in the `contact-creation`, `contact-edition`, and `contact-photo`
     components, if the **Save** button is clicked once, then clicked again before
@@ -3315,11 +3335,13 @@
   id: totrans-511
   prefs: []
   type: TYPE_NORMAL
+  zh: 目前，我们的联系人管理应用程序处理表单提交并不好。实际上，在`contact-creation`、`contact-edition`和`contact-photo`组件中，如果**保存**按钮点击一次，然后再次点击，在底层`Fetch`调用完成之前，路由导航离开表单之前，将同时执行后端的多项调用。有时候，这并不重要。然而，在许多场景下，这也可能是一个问题。
 - en: Creating the submit task attribute
   id: totrans-512
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 创建提交任务属性
 - en: 'To fix this, we will create a custom attribute named `submit-task`, which will
     replace the `submit` handler of the `form` elements. It will be bound using the
     `call` command to a method, which is expected to return a `Promise`. When the
@@ -3329,10 +3351,12 @@
   id: totrans-513
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了解决这个问题，我们将创建一个名为`submit-task`的自定义属性，它将替代`form`元素的`submit`处理程序。它将使用`call`命令绑定到一个方法，该方法预期返回一个`Promise`。当`form`提交时，属性将切换一个标志，当返回的`Promise`完成时，它将再次切换回来。这个标志将指示表单是否正在等待一个提交任务完成：
 - en: '`src/resources/attributes/submit-task.js`'
   id: totrans-514
   prefs: []
   type: TYPE_NORMAL
+  zh: '`src/resources/attributes/submit-task.js`'
 - en: '[PRE89]'
   id: totrans-515
   prefs: []
@@ -3344,6 +3368,7 @@
   id: totrans-516
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这里，我们首先使用命名约定来识别这个类作为一个自定义属性。我们还声明了对属性所在的DOM元素的依赖，我们在构造函数中注入这个元素。
 - en: Here, when our custom attribute is `attached` to the document, we add a listener
     on the element's `submit` event, which will call the `trySubmit` method when triggered.
     Additionally, a new `isSubmitTaskExecuting` property is created on the element
@@ -3351,6 +3376,7 @@
   id: totrans-517
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这里，当我们的自定义属性被`attached`到文档时，我们在元素的`submit`事件上添加一个监听器，当被触发时将调用`trySubmit`方法。另外，在元素上创建了一个新的`isSubmitTaskExecuting`属性，并初始化为`false`。
 - en: When the element publishes a `submit` event, we start by making sure that no
     submit `task` is currently running. If one already is, we simply return. If none
     is, the element's `isSubmitTaskExecuting` property is set to `true`, and the function
@@ -3361,26 +3387,31 @@
   id: totrans-518
   prefs: []
   type: TYPE_NORMAL
+  zh: 当元素发布一个`submit`事件时，我们首先要确保当前没有正在运行的提交`task`。如果已经有了，我们就直接返回。如果没有，元素的`isSubmitTaskExecuting`属性被设置为`true`，然后调用与自定义属性`value`绑定的函数。保证得到的结果是一个`Promise`，并且在这个`Promise`上附上一个回调，无论`Promise`成功还是失败，当`Promise`完成时，`isSubmitTaskExecuting`都会被设置回`false`。
 - en: Lastly, when the attribute is `detached` from the document, we simply remove
     the `submit` event listener.
   id: totrans-519
   prefs: []
   type: TYPE_NORMAL
+  zh: 最后，当属性从文档中`detached`时，我们简单地移除了`submit`事件监听器。
 - en: Using the submit task attribute
   id: totrans-520
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 使用提交任务属性
 - en: 'Now we can go into the various components with a `form` element and replace
     the `submit` event handler with the new `submit-task` attribute, bound using the
     `call` command to the `save` method:'
   id: totrans-521
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在我们可以进入带有`form`元素的各个组件，并将`submit`事件处理程序替换为新的`submit-task`属性，使用`call`命令将其绑定到`save`方法：
 - en: '`src/contact-creation.html`'
   id: totrans-522
   prefs: []
   type: TYPE_NORMAL
+  zh: '`src/contact-creation.html`'
 - en: '[PRE90]'
   id: totrans-523
   prefs: []
@@ -3391,10 +3422,12 @@
   id: totrans-524
   prefs: []
   type: TYPE_NORMAL
+  zh: 当然，为了让这正常工作，我们需要修改`save`方法，使其返回跟踪Fetch调用的`Promise`：
 - en: '`src/contact-creation.js`'
   id: totrans-525
   prefs: []
   type: TYPE_NORMAL
+  zh: '`src/contact-creation.js`'
 - en: '[PRE91]'
   id: totrans-526
   prefs: []
@@ -3405,16 +3438,19 @@
   id: totrans-527
   prefs: []
   type: TYPE_NORMAL
+  zh: 我将留给读者作为练习，也将这些更改应用于`contact-edition`和`contact-photo`组件。
 - en: At this point, if you run the application, you shouldn't be able to trigger
     multiple submits when one is already in progress.
   id: totrans-528
   prefs: []
   type: TYPE_NORMAL
+  zh: 此时，如果你运行应用程序，当你已经进行一个提交任务时，你不应该能够触发多个提交。
 - en: Creating the submit button
   id: totrans-529
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 创建提交按钮
 - en: 'Another thing that would be great is to display a visual indicator to the user
     that a submit task is in progress. Now that we have a custom attribute that creates
     and manages the appropriate flag, let''s create a `submit-button` custom element
@@ -3422,10 +3458,12 @@
   id: totrans-530
   prefs: []
   type: TYPE_NORMAL
+  zh: 另一个很好的功能是向用户显示一个视觉指示器，表明一个提交任务正在进行。现在我们已经有了一个自定义属性，用于创建和管理适当的标志，让我们创建一个`submit-button`自定义元素，当其表单正在提交时，显示一个旋转的动画图标：
 - en: '`src/resources/elements/submit-button.html`'
   id: totrans-531
   prefs: []
   type: TYPE_NORMAL
+  zh: '`src/resources/elements/submit-button.html`'
 - en: '[PRE92]'
   id: totrans-532
   prefs: []
@@ -3437,6 +3475,7 @@
   id: totrans-533
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这里，我们首先在模板元素上声明了一个`disabled`可绑定属性。这意味着这个元素将由这个模板组成；它将没有视图模型。
 - en: Next, we declare a `button` element, with a `submit type`. We also use the `ref`
     attribute to assign a reference of this button to the `button` property on the
     binding context, and we bind the button's `disabled` attribute to the `disabled`
@@ -3444,47 +3483,56 @@
   id: totrans-534
   prefs: []
   type: TYPE_NORMAL
+  zh: 接下来，我们声明了一个`button`元素，具有`submit`类型。我们还使用`ref`属性将这个按钮的引用分配给绑定上下文的`button`属性，并将按钮的`disabled`属性绑定到`disabled`可绑定属性。
 - en: Inside the button, we add a `span` which will be hidden when the `isSubmitTaskExecuting`
     property of the button's `form` element is `true`. Inside this `span`, we define
     an `icon` slot, whose default content is a check icon.
   id: totrans-535
   prefs: []
   type: TYPE_NORMAL
+  zh: 在按钮内部，我们添加一个`span`，当按钮的`form`元素的`isSubmitTaskExecuting`属性为`true`时，将其隐藏。在这个`span`内部，我们定义一个`icon`插槽，其默认内容是一个复选标记。
 - en: We also add a spinner icon inside the button, which will be displayed only when
     the `isSubmitTaskExecuting` property of the button's `form` element is `true`.
   id: totrans-536
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们还在按钮内部添加一个旋转图标，只有在按钮的`form`元素的`isSubmitTaskExecuting`属性为`true`时，才会显示。
 - en: Lastly, we define a default slot, which contains the `Submit` text as its default
     content.
   id: totrans-537
   prefs: []
   type: TYPE_NORMAL
+  zh: 最后，我们定义一个默认插槽，其中包含`Submit`文本作为其默认内容。
 - en: This custom element will simply show a check icon when no submit is in progress,
     and will replace this check icon with a spinner during any submit task. It will
     then toggle back to the check icon when the submit task completes.
   id: totrans-538
   prefs: []
   type: TYPE_NORMAL
+  zh: 这个自定义元素将在没有提交任务进行时简单地显示一个复选标记，并在任何提交任务期间替换这个复选标记为一个旋转图标。然后在提交任务完成后，切换回复选标记。
 - en: Additionally, the `icon` slot will allow instances to override the default check
     icon, and the unnamed slot will allow instances to override the `Submit` label.
   id: totrans-539
   prefs: []
   type: TYPE_NORMAL
+  zh: 此外，`icon`插槽将允许实例覆盖默认的复选标记，而未命名插槽将允许实例覆盖`Submit`标签。
 - en: Using the submit button
   id: totrans-540
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 使用提交按钮
 - en: 'Now we can go into the various components with a `form` element and replace
     the **Save** button with the new `submit-button` element:'
   id: totrans-541
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在我们可以进入带有`form`元素的各个组件，并将**Save**按钮替换为新的`submit-button`元素：
 - en: '`src/contact-creation.html`'
   id: totrans-542
   prefs: []
   type: TYPE_NORMAL
+  zh: '`src/contact-creation.html`'
 - en: '[PRE93]'
   id: totrans-543
   prefs: []
@@ -3495,21 +3543,25 @@
   id: totrans-544
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这里，我们简单地定义了一个`submit-button`元素，并在默认插槽上投影了`Save`文本，这覆盖了其默认标签。
 - en: I'll leave it as an exercise to the reader to also apply those changes to the
     `contact-edition` and `contact-photo` components.
   id: totrans-545
   prefs: []
   type: TYPE_NORMAL
+  zh: 我将留给读者作为练习，也将这些更改应用于`contact-edition`和`contact-photo`组件。
 - en: At this point, if you run the application, you should see the check icon of
     the various **Save** buttons replaced by a spinner when a submit task is in progress.
   id: totrans-546
   prefs: []
   type: TYPE_NORMAL
+  zh: 此时，如果你运行应用程序，你应该看到各种**Save**按钮的复选标记被旋转图标替换，当一个提交任务进行时。
 - en: Customizing the view location strategy
   id: totrans-547
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 自定义视图位置策略
 - en: View location is the process of locating the template or view for a given component.
     By convention, the template should be a file sitting in the same directory as
     the view-model and having the same name, apart from the extension, which should
