@@ -1,4 +1,5 @@
 - en: Preface
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
@@ -17,22 +18,27 @@
     part of the development workflow. Though the language seems to be changing, it
     is built on some very solid and constant ideas. This book emphasizes on these
     fundamental ideas.
+  id: totrans-1
   prefs: []
   type: TYPE_NORMAL
 - en: While the book was being written, things kept changing in the JavaScript landscape.
     Luckily, we were able to include all the important and relevant updates in this
     book.
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
 - en: '*Mastering JavaScript* provides you with a detailed overview of the language''s
     fundamentals and some of the modern tools and libraries, such as jQuery, Underscore.js,
     and Jasmine.'
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
 - en: We hope that you enjoy this book as much as we enjoyed writing it.
+  id: totrans-4
   prefs: []
   type: TYPE_NORMAL
 - en: What this book covers
+  id: totrans-5
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
@@ -42,6 +48,7 @@
     the trickier parts of variable scoping and loops and best practices for using
     types and data structures. We will also cover a lot of ground on the coding style
     and recommended code organization patterns.'
+  id: totrans-6
   prefs: []
   type: TYPE_NORMAL
 - en: '[Chapter 2](part0018_split_000.html#H5A41-437400f9e6be4fb8bff7752407036263
@@ -50,6 +57,7 @@
     involved in using functional aspects with different treatment for closures in
     JavaScript. This is a careful and elaborate discussion that will prepare you to
     explore more advanced design patterns further on.'
+  id: totrans-7
   prefs: []
   type: TYPE_NORMAL
 - en: '[Chapter 3](part0030_split_000.html#SJGS1-437400f9e6be4fb8bff7752407036263
@@ -58,6 +66,7 @@
     data type in JavaScript and this chapter will help you work effectively with arrays.
     Regular expressions can make your code concise—we will take a detailed look at
     how to use RegEx effectively in your code.'
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
 - en: '[Chapter 4](part0042_split_000.html#181NK2-437400f9e6be4fb8bff7752407036263
@@ -66,6 +75,7 @@
     chain and focus on understanding the prototypal inheritance model that JavaScript
     offers. We will also discuss how different this model is from other object-oriented
     models to help Java or C++ programmers get familiarized with the change.'
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
 - en: '[Chapter 5](part0047_split_000.html#1CQAE1-437400f9e6be4fb8bff7752407036263
@@ -73,6 +83,7 @@
     patterns and how to implement them in JavaScript. Once you master the object-oriented
     model for JavaScript, it is easier to understand design and programming patterns
     to write modular and easy-to-maintain code.'
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
 - en: '[Chapter 6](part0058_split_000.html#1NA0K2-437400f9e6be4fb8bff7752407036263
@@ -80,151 +91,189 @@
     methods to test and debug issues in JavaScript code. We will also explore continuous
     testing and test-driven methodologies for JavaScript. We will use Jasmine as the
     test framework.'
+  id: totrans-11
   prefs: []
   type: TYPE_NORMAL
 - en: '[Chapter 7](part0061_split_000.html#1Q5IA1-437400f9e6be4fb8bff7752407036263
     "Chapter 7. ECMAScript 6"), *ECMAScript 6*, focuses on the newer language features
     introduced by ECMAScript 6 (ES6). It makes JavaScript more powerful and this chapter
     will help you understand the newer features and how to use them in your code.'
+  id: totrans-12
   prefs: []
   type: TYPE_NORMAL
 - en: '[Chapter 8](part0065_split_000.html#1TVKI2-437400f9e6be4fb8bff7752407036263
     "Chapter 8. DOM Manipulation and Events"), *DOM Manipulation and Events*, takes
     a detailed look at JavaScript as a language of the browser. This chapter discusses
     DOM manipulation and browser events.'
+  id: totrans-13
   prefs: []
   type: TYPE_NORMAL
 - en: '[Chapter 9](part0074_split_000.html#26I9K2-437400f9e6be4fb8bff7752407036263
     "Chapter 9. Server-Side JavaScript"), *Server-Side JavaScript*, explains how we
     can use Node.js to write scalable server systems in JavaScript. We will discuss
     the architecture of Node.js and several useful techniques.'
+  id: totrans-14
   prefs: []
   type: TYPE_NORMAL
 - en: What you need for this book
+  id: totrans-15
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 'All the examples in this book can be run on any modern browser. For the last
     chapter, you will need Node.js. You will need the following prerequisites to run
     the examples and samples from this book:'
+  id: totrans-16
   prefs: []
   type: TYPE_NORMAL
 - en: A computer with Windows 7 or higher, Linux, or Mac OS X installed.
+  id: totrans-17
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: The latest version of the Google Chrome or Mozilla Firefox browser.
+  id: totrans-18
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: A text editor of your choice. Sublime Text, vi, Atom, or Notepad++ would be
     ideal. The choice is entirely yours.
+  id: totrans-19
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Who this book is for
+  id: totrans-20
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 'This book is intended to equip you with the details necessary to master JavaScript.
     This book will be useful for the following audience:'
+  id: totrans-21
   prefs: []
   type: TYPE_NORMAL
 - en: Experienced developers familiar with other object-oriented languages. Information
     in this book will enable them to transition to JavaScript using their existing
     experience.
+  id: totrans-22
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Web developers with some amount of experience with JavaScript. This book will
     help them learn advanced concepts of JavaScript and refine their programming style.
+  id: totrans-23
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Beginners who want to understand and eventually master JavaScript. This book
     has the necessary information for them to get started.
+  id: totrans-24
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Conventions
+  id: totrans-25
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: In this book, you will find a number of text styles that distinguish between
     different kinds of information. Here are some examples of these styles and an
     explanation of their meaning.
+  id: totrans-26
   prefs: []
   type: TYPE_NORMAL
 - en: 'Code words in text, database table names, folder names, filenames, file extensions,
     pathnames, dummy URLs, user input, and Twitter handles are shown as follows: "First,
     the `<script>` tag in `<head>` imports JavaScript, while the second `<script>`
     tag is used to embed inline JavaScript."'
+  id: totrans-27
   prefs: []
   type: TYPE_NORMAL
 - en: 'A block of code is set as follows:'
+  id: totrans-28
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE0]'
+  id: totrans-29
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: 'When we wish to draw your attention to a particular part of a code block, the
     relevant lines or items are set in bold:'
+  id: totrans-30
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE1]'
+  id: totrans-31
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: 'Any command-line input or output is written as follows:'
+  id: totrans-32
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE2]'
+  id: totrans-33
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: '**New terms** and **important words** are shown in bold. Words that you see
     on the screen, for example, in menus or dialog boxes, appear in the text like
     this: "You can run the page and inspect using Chrome''s **Developer Tool**"'
+  id: totrans-34
   prefs: []
   type: TYPE_NORMAL
 - en: Note
+  id: totrans-35
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: Warnings or important notes appear in a box like this.
+  id: totrans-36
   prefs: []
   type: TYPE_NORMAL
 - en: Tip
+  id: totrans-37
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: Tips and tricks appear like this.
+  id: totrans-38
   prefs: []
   type: TYPE_NORMAL
 - en: Reader feedback
+  id: totrans-39
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: Feedback from our readers is always welcome. Let us know what you think about
     this book—what you liked or disliked. Reader feedback is important for us as it
     helps us develop titles that you will really get the most out of.
+  id: totrans-40
   prefs: []
   type: TYPE_NORMAL
 - en: To send us general feedback, simply e-mail `<[feedback@packtpub.com](mailto:feedback@packtpub.com)>`,
     and mention the book's title in the subject of your message.
+  id: totrans-41
   prefs: []
   type: TYPE_NORMAL
 - en: If there is a topic that you have expertise in and you are interested in either
     writing or contributing to a book, see our author guide at [www.packtpub.com/authors](http://www.packtpub.com/authors).
+  id: totrans-42
   prefs: []
   type: TYPE_NORMAL
 - en: Customer support
+  id: totrans-43
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: Now that you are the proud owner of a Packt book, we have a number of things
     to help you to get the most from your purchase.
+  id: totrans-44
   prefs: []
   type: TYPE_NORMAL
 - en: Downloading the example code
+  id: totrans-45
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -232,18 +281,22 @@
     for all the Packt Publishing books you have purchased. If you purchased this book
     elsewhere, you can visit [http://www.packtpub.com/support](http://www.packtpub.com/support)
     and register to have the files e-mailed directly to you.
+  id: totrans-46
   prefs: []
   type: TYPE_NORMAL
 - en: Downloading the color images of this book
+  id: totrans-47
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: We also provide you with a PDF file that has color images of the screenshots/diagrams
     used in this book. The color images will help you better understand the changes
     in the output. You can download this file from [https://www.packtpub.com/sites/default/files/downloads/MasteringJavaScript_ColorImages.pdf](https://www.packtpub.com/sites/default/files/downloads/MasteringJavaScript_ColorImages.pdf).
+  id: totrans-48
   prefs: []
   type: TYPE_NORMAL
 - en: Errata
+  id: totrans-49
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -256,37 +309,56 @@
     the details of your errata. Once your errata are verified, your submission will
     be accepted and the errata will be uploaded to our website or added to any list
     of existing errata under the Errata section of that title.
+  id: totrans-50
   prefs: []
   type: TYPE_NORMAL
+  zh: 虽然我们已经尽一切努力确保我们内容的准确性，但错误确实会发生。如果您在我们的某本书中发现错误——可能是文本或代码中的错误——我们将非常感激如果您能向我们报告。通过这样做，您可以节省其他读者不必要的挫折，并帮助我们改进本书的后续版本。如果您发现任何错误，请通过访问
+    [http://www.packtpub.com/submit-errata](http://www.packtpub.com/submit-errata)，选择您的书籍，点击**错误提交表单**链接，并输入您错误的详细信息。一旦您的错误得到验证，您的提交将被接受，错误将被上传到我们的网站，或添加到该标题的错误部分已有的错误列表中。
 - en: To view the previously submitted errata, go to [https://www.packtpub.com/books/content/support](https://www.packtpub.com/books/content/support)
     and enter the name of the book in the search field. The required information will
     appear under the **Errata** section.
+  id: totrans-51
   prefs: []
   type: TYPE_NORMAL
+  zh: 要查看之前提交的错误，请前往 [https://www.packtpub.com/books/content/support](https://www.packtpub.com/books/content/support)
+    并在搜索框中输入书籍名称。所需信息将在**错误**部分出现。
 - en: Piracy
+  id: totrans-52
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 盗版
 - en: Piracy of copyrighted material on the Internet is an ongoing problem across
     all media. At Packt, we take the protection of our copyright and licenses very
     seriously. If you come across any illegal copies of our works in any form on the
     Internet, please provide us with the location address or website name immediately
     so that we can pursue a remedy.
+  id: totrans-53
   prefs: []
   type: TYPE_NORMAL
+  zh: 互联网上的版权材料盗版是一个持续存在的问题，涉及所有媒体。在 Packt，我们非常严肃地对待我们版权和许可的保护。如果您在互联网上以任何形式发现我们作品的非法副本，请立即提供给我们位置地址或网站名称，这样我们可以寻求一个补救措施。
 - en: Please contact us at `<[copyright@packtpub.com](mailto:copyright@packtpub.com)>`
     with a link to the suspected pirated material.
+  id: totrans-54
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果您发现可疑的盗版材料，请联系我们 `<[copyright@packtpub.com](mailto:copyright@packtpub.com)>`并提供链接。
 - en: We appreciate your help in protecting our authors and our ability to bring you
     valuable content.
+  id: totrans-55
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们感激您在保护我们的作者和我们提供有价值内容的能力方面所提供的帮助。
 - en: Questions
+  id: totrans-56
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 问题
 - en: If you have a problem with any aspect of this book, you can contact us at `<[questions@packtpub.com](mailto:questions@packtpub.com)>`,
     and we will do our best to address the problem.
+  id: totrans-57
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果您在这本书的任何方面遇到问题，您可以通过 `<[questions@packtpub.com](mailto:questions@packtpub.com)>`
+    联系我们，我们会尽最大努力解决问题。
