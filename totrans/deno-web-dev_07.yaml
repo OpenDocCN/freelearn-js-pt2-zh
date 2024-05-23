@@ -1087,11 +1087,13 @@
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 基准测试应用程序的部分
 - en: When it comes to writing benchmarks in JavaScript, the language itself provides
     a few functions, all of which are included in the High Resolution Time API.
   id: totrans-160
   prefs: []
   type: TYPE_NORMAL
+  zh: 当涉及到用JavaScript编写基准测试时，该语言本身提供了一些函数，所有这些函数都包含在高级分辨率时间API中。
 - en: As Deno is fully ES6 compatible, these same features are available. If you've
     had the time to look at Deno's standard library or the official website, you'll
     have seen that benchmarks are taken into a lot of consideration and are tracked
@@ -1101,12 +1103,14 @@
   id: totrans-161
   prefs: []
   type: TYPE_NORMAL
+  zh: 由于Deno完全兼容ES6，这些相同的功能都可以使用。如果你有机会查看Deno的标准库或官方网站，你会发现人们对基准测试给予了大量的关注，并且在Deno各个版本中跟踪它们([https://deno.land/benchmarks](https://deno.land/benchmarks))。在检查Deno的源代码时，你会发现有关如何编写它们的非常不错的示例集。
 - en: For our application, we could easily use the APIs available on the browser,
     but Deno itself provides functionality in the standard library to help with writing
     and running benchmarks, so that's what we'll use here.
   id: totrans-162
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于我们的应用程序，我们本可以轻松地使用浏览器上可用的API，但Deno本身在其标准库中提供了帮助编写和运行基准测试的功能，因此我们将在这里使用它。
 - en: To start, we need to know Deno's standard library benchmark utilities so that
     we know what we can do ([https://github.com/denoland/deno/blob/ae86cbb551f7b88f83d73a447411f753485e49e2/std/testing/README.md#benching](https://github.com/denoland/deno/blob/ae86cbb551f7b88f83d73a447411f753485e49e2/std/testing/README.md#benching)).
     In this section, we'll write a very simple benchmark using two of the available
@@ -1115,6 +1119,7 @@
   id: totrans-163
   prefs: []
   type: TYPE_NORMAL
+  zh: 首先，我们需要了解Deno的标准库基准工具，以便我们知道可以做什么（[https://github.com/denoland/deno/blob/ae86cbb551f7b88f83d73a447411f753485e49e2/std/testing/README.md#benching](https://github.com/denoland/deno/blob/ae86cbb551f7b88f83d73a447411f753485e49e2/std/testing/README.md#benching)）。在本节中，我们将使用两个可用的函数编写一个非常简单的基准测试；即，`bench`和`runBenchmarks`。第一个将定义一个基准测试，而第二个将运行它并将结果打印到控制台。
 - en: 'Remember the function we wrote in [*Chapter 5*](B16380_05_Final_JM_ePub.xhtml#_idTextAnchor124),
     *Adding Users and Migrating to Oak*, to generate a hash and a salt, which enabled
     us to store the user credentials safely on the database? We''ll write a benchmark
@@ -1122,17 +1127,20 @@
   id: totrans-164
   prefs: []
   type: TYPE_NORMAL
+  zh: 记得我们在[第5章](B16380_05_Final_JM_ePub.xhtml#_idTextAnchor124)中编写的函数吗？*添加用户和迁移到Oak*，用于生成散列值和盐值，这使我们能够将用户凭据安全地存储在数据库上？我们将通过以下步骤为此编写基准测试：
 - en: To start, create a file alongside `src/users/util.ts` named `utilBenchmarks.ts`.
   id: totrans-165
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 首先，在`src/users/util.ts`旁边创建一个名为`utilBenchmarks.ts`的文件。
 - en: 'Import the two functions from `util` that we want to test; that is, `generateSalt`
     and `hashWithSalt`:'
   id: totrans-166
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 从`util`模块中导入我们想要测试的两个函数，即`generateSalt`和`hashWithSalt`：
 - en: '[PRE36]'
   id: totrans-167
   prefs:
@@ -1147,6 +1155,7 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 是时候将基准工具添加到我们的`src/deps.ts`文件中，并运行`deno cache`命令（我们在[第2章](B16380_02_Final_JM_ePub.xhtml#_idTextAnchor056)中了解到）*工具链*）并在此处导入它。我们将把它作为`benchmark`导出到`src/deps.ts`中，以避免命名冲突：
 - en: '[PRE37]'
   id: totrans-169
   prefs:
@@ -1159,6 +1168,7 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 将基准工具导入我们的基准测试文件中，并为`generateSalt`函数编写第一个基准测试。我们希望它运行1000次：
 - en: '[PRE38]'
   id: totrans-171
   prefs:
@@ -1171,6 +1181,7 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 我们所缺少的只是定义了基准测试后调用`runBenchmarks`：
 - en: '[PRE39]'
   id: totrans-173
   prefs:
@@ -1182,6 +1193,7 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 是时候运行这个文件并查看结果了。
 - en: 'Remember that we''re dealing with high resolution time as we want our benchmarks
     to be precise. To let this code have access to this system feature, we need to
     run this script with the `--allow-hrtime` permission (as explained in [*Chapter
@@ -1190,6 +1202,7 @@
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: 记住，由于我们希望我们的基准测试具有高精度，所以我们正在处理高分辨率时间。为了让这段代码能够访问这个系统特性，我们需要以`--allow-hrtime`权限运行这个脚本（如[第2章](B16380_02_Final_JM_ePub.xhtml#_idTextAnchor056)中所解释的，*工具链*）：
 - en: '[PRE40]'
   id: totrans-176
   prefs:
@@ -1201,6 +1214,7 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 让我们为第二个函数编写基准测试，即`hashWithSalt`：
 - en: '[PRE41]'
   id: totrans-178
   prefs:
@@ -1212,6 +1226,7 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 现在，让我们运行它，以便得到最终结果：
 - en: '[PRE42]'
   id: totrans-180
   prefs:
