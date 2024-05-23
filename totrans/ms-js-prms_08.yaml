@@ -1,4 +1,5 @@
 - en: Chapter 8. Promises in jQuery
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
@@ -6,6 +7,7 @@
     and how they provided benefit in the fast growing real-time web app industry.
     In this chapter, we will explore another very famous and useful JavaScript library
     for frontend web/mobile apps development.
+  id: totrans-1
   prefs: []
   type: TYPE_NORMAL
 - en: jQuery is one the most used JavaScript libraries and it is recognized as one
@@ -15,9 +17,11 @@
     this chapter, we will be looking at the history of jQuery, how it evolved, what
     is the basic way to use it, and how promises are playing a part in the maturity
     of jQuery. Let's start with the history of jQuery in brief.
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
 - en: From where it started?
+  id: totrans-3
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
@@ -28,6 +32,7 @@
     in another project of a similar nature. Also, the fact was that JavaScript was
     considered as a second rated language in the computing world due to which not
     many people were using it seriously.
+  id: totrans-4
   prefs: []
   type: TYPE_NORMAL
 - en: In August 2006 the birth of jQuery, enlightened the JavaScript world. John Resig,
@@ -37,9 +42,11 @@
     the early 90s (as described in the first chapter), it has seen many ups and downs.
     Finally, with the release of Firefox browser and jQuery, JavaScript managed to
     gain some credibility.
+  id: totrans-5
   prefs: []
   type: TYPE_NORMAL
 - en: Behind the scenes – how does jQuery work?
+  id: totrans-6
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
@@ -47,41 +54,54 @@
     of jQuery code, you will be able to achieve more tasks than conventional ways
     of writing code. jQuery has made many tasks easy to conclude in a short time span.
     It also brings neatness and readability in code, which earlier, was rare in JavaScript.
+  id: totrans-7
   prefs: []
   type: TYPE_NORMAL
 - en: After the arrival of jQuery, things started to change dramatically for JavaScript.
     Many new implementations started to come on the screen with much more mature approaches,
     but the place jQuery has gained was unmatched then and still is.
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
 - en: 'Having said this, let''s come back to our topic: how does jQuery work behind
     the scenes?'
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
 - en: 'It all rotates around the $ sign. The jQuery library provides the jQuery ();
     function, which allows you select elements just like CSS selectors. For example:'
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE0]'
+  id: totrans-11
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: 'Or:'
+  id: totrans-12
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE1]'
+  id: totrans-13
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: 'In the preceding line, the `$` sign is the representation of jQuery. In JavaScript,
     the variable name can be anything, but must not start with a numeric value and
     must not include a hyphen. In this way, using `$` is more convenient for the rules
     and easy to remember. You may also find functions like this:'
+  id: totrans-14
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE2]'
+  id: totrans-15
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: Here the `$` sign comes at the very end of the function, and this is the same
     sight you will notice in the jQuery source code.
+  id: totrans-16
   prefs: []
   type: TYPE_NORMAL
 - en: The mechanism is when you call `$()` and supply a selector to it, you are actually
@@ -90,9 +110,11 @@
     variables, and multiple objects. So, you might use `$.support` for information
     on the current environment or you may also use `$.ajax` for an AJAX call to make
     an AJAX request.
+  id: totrans-17
   prefs: []
   type: TYPE_NORMAL
 - en: Is your document ready to submit?
+  id: totrans-18
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
@@ -100,23 +122,29 @@
     without knowing that it still needs to be processed further. Such an event triggers
     a chain of events that will eventually make your page or app go into the service-fail
     mode.
+  id: totrans-19
   prefs: []
   type: TYPE_NORMAL
 - en: 'Using jQuery, this is something that happens rarely as it provides the `$(document).ready()`
     method, which will help to complete of the processing the document. A simple example
     can be seen here:'
+  id: totrans-20
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE3]'
+  id: totrans-21
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: The function will execute and will be passed to `.ready()` once the document
     is ready. We are using `$(document)` to create a jQuery object from the page's
     document. We will then call the `.ready()` function on that object, passing it
     the function we want to execute.
+  id: totrans-22
   prefs: []
   type: TYPE_NORMAL
 - en: How to use jQuery
+  id: totrans-23
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
@@ -124,38 +152,49 @@
     in Angular.js*, the documents related to Angular.js was the JavaScript file that
     was linked in HTML pages to call the functions; the same structure is used in
     jQuery.
+  id: totrans-24
   prefs: []
   type: TYPE_NORMAL
 - en: 'jQuery is a JavaScript file that was linked in at the very beginning of our
     HTML file. This can be done in two ways: either call the file from its location
     on the Web or download the JavaScript file on your local hard drive and then embed
     the code. Either way it will work, but we prefer to use it from our hard drive.'
+  id: totrans-25
   prefs: []
   type: TYPE_NORMAL
 - en: 'The following lines of code show when we want to link a file from its remote
     location:'
+  id: totrans-26
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE4]'
+  id: totrans-27
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: 'Or, we can download the file on our local hard drive and change the syntax
     like this:'
+  id: totrans-28
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE5]'
+  id: totrans-29
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: Here, `src="js` is indicating the local folder where JavaScript file exists.
+  id: totrans-30
   prefs: []
   type: TYPE_NORMAL
 - en: In a nutshell, you can either use the already written jQuery by embedding it
     at the head of the HTML file using the URL or you can download it and make your
     own modifications. In both ways, your output will be generated on the screen of
     the browser.
+  id: totrans-31
   prefs: []
   type: TYPE_NORMAL
 - en: The syntax
+  id: totrans-32
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
@@ -163,57 +202,71 @@
     selecting HTML elements and perform some action. Its syntax is quite straightforward
     and easy to remember, plus it''s very neatly written. Here is a sample of jQuery
     syntax:'
+  id: totrans-33
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE6]'
+  id: totrans-34
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: The dollar sign (`$`) defines whether you will use jQuery, whereas the `selector`
     query is to find the HTML element and `action` defines what kind of action will
     be performed on selected elements.
+  id: totrans-35
   prefs: []
   type: TYPE_NORMAL
 - en: 'Here are some examples that will explain how jQuery works using its syntax:'
+  id: totrans-36
   prefs: []
   type: TYPE_NORMAL
 - en: '`$(this).hide()`: This hides the current element'
+  id: totrans-37
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '`$("p").hide()`: The hides all `<p>` elements'
+  id: totrans-38
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '`$(".test").hide()`: This hides all elements with `class="test"`'
+  id: totrans-39
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '`$("#test").hide()`: This hides the element with `id="test"`'
+  id: totrans-40
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: 'These are a few examples of hundreds of other methods provided by jQuery. For
     the complete reference on methods and APIs, here''s the link for all your jQuery
     needs: [https://api.jquery.com/](https://api.jquery.com/).'
+  id: totrans-41
   prefs: []
   type: TYPE_NORMAL
 - en: Caching in jQuery
+  id: totrans-42
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: Let's discuss caching in brief specifically relating to jQuery and as a concept
     in general.
+  id: totrans-43
   prefs: []
   type: TYPE_NORMAL
 - en: The concept of caching is as old as the Internet itself, at least with the modern
     day Internet. Developers are using it to store repetitive data and to reduce cost
     to server calls or to remember the connection between the user and server.
+  id: totrans-44
   prefs: []
   type: TYPE_NORMAL
 - en: Caching helps in many ways to boost the performance of web apps by writing images
     and sending the session's information to the user's hard drive at a special location
     called the temporary storage. Mostly, this location is specifically created on
     the local hard drive and is there to deal with such type of data.
+  id: totrans-45
   prefs: []
   type: TYPE_NORMAL
 - en: Say you are surfing an online shopping cart over your browser. At the very first
@@ -225,10 +278,12 @@
     are and remembers the web server you are talking to. This is a flow of caching
     your information over the temporary location to reduce server calls, optimize
     navigation, and let the server remember your identity.
+  id: totrans-46
   prefs: []
   type: TYPE_NORMAL
 - en: What does jQuery have to offer when it comes to caching and handing elements
     that need to cache? Let's take a look.
+  id: totrans-47
   prefs: []
   type: TYPE_NORMAL
 - en: Caching in jQuery is offered by data function, and it's the same as any other
@@ -238,6 +293,7 @@
     to bind to multiple references at a given time slot as the function takes care
     of it automatically; it's as simple and easy as this. However, how do the elements
     and their handlers stay in the memory?
+  id: totrans-48
   prefs: []
   type: TYPE_NORMAL
 - en: jQuery follows the "name corresponds value" method to write and handle the elements
@@ -245,54 +301,68 @@
     entries, but they must have to point to different DOM elements. In this way, reference
     by value comes into play and referring to a particular element will be faster
     and easy to traverse by the program using it.
+  id: totrans-49
   prefs: []
   type: TYPE_NORMAL
 - en: 'Now, to add elements to the data function, we will follow a syntax similar
     to the one shown here:'
+  id: totrans-50
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE7]'
+  id: totrans-51
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: From here, you can see that we bind the selector with the `data()` function,
     and within the function, we supplied two parameters as the name and its corresponding
     value. In this way, we can bind as many selectors as we want to cache them up.
+  id: totrans-52
   prefs: []
   type: TYPE_NORMAL
 - en: 'However, the story has a twist. You can write in cache using `data()`, but
     it won''t remove data on its own. You have to remove it manually from the temporary
     memory. You can do it by calling out the `removeData()` method like this:'
+  id: totrans-53
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE8]'
+  id: totrans-54
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: Of course, you can automate the function call of `removeData()` by writing some
     kind of cron/timer job function. However, this requires smart engineering and
     loads of dry run to that particular job as this can wipe out any important data
     from the temporary storage permanently, so it's advised to use such timer jobs
     in a very careful manner.
+  id: totrans-55
   prefs: []
   type: TYPE_NORMAL
 - en: Overall, caching in jQuery is an essential component, and without this, you
     cannot optimize your application's flow and data traversing. Using jQuery cache
     will also optimize the number of server calls and will boost the performance of
     your piece of code.
+  id: totrans-56
   prefs: []
   type: TYPE_NORMAL
 - en: A sample example
+  id: totrans-57
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: Before we start the prime topic of this chapter, we need to understand how we
     draft files that can use jQuery query. This will give us a better understanding
     of the code level working and will make us skilled to use promises in jQuery.
+  id: totrans-58
   prefs: []
   type: TYPE_NORMAL
 - en: Let's start with selectors.
+  id: totrans-59
   prefs: []
   type: TYPE_NORMAL
 - en: Selectors
+  id: totrans-60
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -301,11 +371,14 @@
     and much more stuff. These selectors are just like selectors in CSS, but with
     the jQuery touch. Here touch is all the selectors start with the dollar sign,
     `$`, followed by round brackets and dot, as shown in the following code:'
+  id: totrans-61
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE9]'
+  id: totrans-62
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: Have a look at the preceding code. The script tag right after the `</script>`
     tag is the place where the selector defines itself and then processes the requests.
     Once the page is loaded, it will say "I am a paragraph" with a button, and when
@@ -315,9 +388,11 @@
     is one helpful feature of jQuery out of the many that developers are using on
     a daily basis. Such binding, instantaneous computing is the reason why jQuery
     is the choice of many groups of developers.
+  id: totrans-63
   prefs: []
   type: TYPE_NORMAL
 - en: Event methods
+  id: totrans-64
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -326,22 +401,28 @@
     by mouse, keystroke, mouse hover, and touch. They are made simple by jQuery; all
     you need to do is write a few lines of code and the rest of the processing will
     be taken over by the jQuery library. Have a look at the following example:'
+  id: totrans-65
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE10]'
+  id: totrans-66
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE10]'
 - en: Okay, what will happen to the page when I click on the text that appears on
     the screen? Any guesses? Yes, it will disappear as I passed the value of the `h1`
     tag into the jQuery function, which will then hide it when it senses the mouse
     has been clicked on it. This is how we normally used to play around with placeholders
     in the forms or text areas, but nowadays, forms have this ability built in.
+  id: totrans-67
   prefs: []
   type: TYPE_NORMAL
 - en: Having said this, it's time to move on to the core of our chapter.
+  id: totrans-68
   prefs: []
   type: TYPE_NORMAL
 - en: JavaScript before and after jQuery
+  id: totrans-69
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
@@ -350,56 +431,72 @@
     came about that wanted to listen to the same click. This was solved by adding
     the `addListenerEvent` function from the DOM function. This had added as many
     possible listener functions, and we used to adopt this approach.
+  id: totrans-70
   prefs: []
   type: TYPE_NORMAL
 - en: However, such happenings are meant to reoccur as we are now facing the same
     problem with AJAX calls. AJAX uses a single callback function and not only the
     jQuery `$ajax()`, but also the `XMLHttpRequest` object which has similar problems.
+  id: totrans-71
   prefs: []
   type: TYPE_NORMAL
 - en: The solution – introducing promises in jQuery
+  id: totrans-72
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 'The solution to the preceding problem was finally delivered in jQuery 1.5 as
     the deferred object. Before the deferred concept was introduced in jQuery, the
     typical AJAX call was something like this:'
+  id: totrans-73
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE11]'
+  id: totrans-74
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE11]'
 - en: Can you guess what could be the output of this function? Yes, a single `XMLHttpRequest`
     object, which is quite expected for those who are still maintaining the apps built
     before jQuery 1.5.
+  id: totrans-75
   prefs: []
   type: TYPE_NORMAL
 - en: Now, what dramatical change was introduced in jQuery 1.5\. First of all, it's
     based on a specification of common JavaScript that defines common interfaces and
     can be extended as per the needs, and secondly, they are quite global and you
     can use these in similar services, such as Node.js.
+  id: totrans-76
   prefs: []
   type: TYPE_NORMAL
 - en: 'After the addition of deferred objects in jQuery 1.5, the preceding code was
     rewritten like this:'
+  id: totrans-77
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE12]'
+  id: totrans-78
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE12]'
 - en: 'If you want to write a more concise version of the preceding code, it can be
     achieved as follows:'
+  id: totrans-79
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE13]'
+  id: totrans-80
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE13]'
 - en: Likewise, there are a number of other advancements that were brought in by introducing
     promise in jQuery. In the following sections, we will take a closer look into
     how jQuery is getting its promises fulfilled.
+  id: totrans-81
   prefs: []
   type: TYPE_NORMAL
 - en: Deferred in jQuery
+  id: totrans-82
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
@@ -410,26 +507,34 @@
     linked to a callback. The methods are `resolve` and `reject`, and the events that
     can be attached with a callback are `done()`, `fail()`, and `always()`. Let''s
     see it with an example:'
+  id: totrans-83
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE14]'
+  id: totrans-84
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE14]'
 - en: 'The thing to remember here is that callback will always be executed no matter
     whether `deferred` is resolved or not, but when you call the `reject` method,
     the failed callback will be executed. Having said that, our preceding example
     can look like this:'
+  id: totrans-85
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE15]'
+  id: totrans-86
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE15]'
 - en: If we are to summarize what the `$.Deferred` object is; we can say it's just
     a promise that has methods, which will allow its owner to either resolve or reject
     it.
+  id: totrans-87
   prefs: []
   type: TYPE_NORMAL
 - en: $.Deferred().promise() in jQuery
+  id: totrans-88
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
@@ -437,23 +542,30 @@
     Well, it returns an object, and with nearly the same interface as `Deferred`.
     However, there is a catch. It's there just to attach the callbacks and not to
     resolve or reject.
+  id: totrans-89
   prefs: []
   type: TYPE_NORMAL
 - en: This is quite useful in some other conditions, say you want to call out an API.
     This will not have the ability to resolve or reject the deferred. Such code will
     eventually fail as the promise here does not have a method.
+  id: totrans-90
   prefs: []
   type: TYPE_NORMAL
 - en: 'Try executing this code, save it as `test.html` and run the file:'
+  id: totrans-91
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE16]'
+  id: totrans-92
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE16]'
 - en: 'You will get an error like this:'
+  id: totrans-93
   prefs: []
   type: TYPE_NORMAL
 - en: '![$.Deferred().promise() in jQuery](img/5500OS_08_01.jpg)'
+  id: totrans-94
   prefs: []
   type: TYPE_IMG
 - en: 'So, as mentioned earlier, it returns an object and with nearly the same interface
@@ -461,27 +573,34 @@
     resolve or reject; this is the catch that we talked about earlier. Now, how can
     we resolve it? Simple. You can use promise as a return value for another function;
     let''s try the following code:'
+  id: totrans-95
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE17]'
+  id: totrans-96
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE17]'
 - en: 'When you run the preceding code, it will give you an error in the alert dialog
     box on the page, which it shouldn''t when the URL passed in the URL variable is
     real. For the sake of understanding, let''s assume the URL was proper and that
     it saved the value, the result will be like this:'
+  id: totrans-97
   prefs: []
   type: TYPE_NORMAL
 - en: '![$.Deferred().promise() in jQuery](img/5500OS_08_02.jpg)'
+  id: totrans-98
   prefs: []
   type: TYPE_IMG
 - en: The preceding code and the one before that has only one difference—you can add
     as many callbacks as you want, the grammar of the code is clean as it shows that
     we don't want an extra parameter in the method. Thus, you can ask promise in jQuery
     to perform some operations.
+  id: totrans-99
   prefs: []
   type: TYPE_NORMAL
 - en: Projecting a promise in jQuery
+  id: totrans-100
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
@@ -489,72 +608,92 @@
     needed when you only want to see what the element can be or what operations you
     want to perform on an object. Using jQuery, we can easily achieve it by using
     the `pipe()` function.
+  id: totrans-101
   prefs: []
   type: TYPE_NORMAL
 - en: 'Consider this code where we are projecting the result, which is an actor:'
+  id: totrans-102
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE18]'
+  id: totrans-103
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE18]'
 - en: 'The result of the code will be the full name, Arnold Schwarzenegger, displayed
     on an alert dialog box at the browser:'
+  id: totrans-104
   prefs: []
   type: TYPE_NORMAL
 - en: '![Projecting a promise in jQuery](img/5500OS_08_03.jpg)'
+  id: totrans-105
   prefs: []
   type: TYPE_IMG
 - en: As you can see, the projection of the result is an actor name used as an object.
     So, instead of deferred of a person, we have a deferred of `Name Saved >> Arnold
     Schwarzenegger`.
+  id: totrans-106
   prefs: []
   type: TYPE_NORMAL
 - en: 'The `pipe` function can also be used to return the object from deep inside
     a method call. We can dig out an actor name and his IMDB rating, as explained
     in the following code:'
+  id: totrans-107
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE19]'
+  id: totrans-108
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE19]'
 - en: 'When you run this code, it will give you an alert output on the browser, which
     will look like this:'
+  id: totrans-109
   prefs: []
   type: TYPE_NORMAL
 - en: '![Projecting a promise in jQuery](img/5500OS_08_04.jpg)'
+  id: totrans-110
   prefs: []
   type: TYPE_IMG
 - en: By the virtue of `pipe()`, we will dig into callback and on passing the correct
     parameters to the function `getActorById()`; we able to get our desired results
     displayed. In a similar manner, you can use `pipe()` to reject `deferred` inside
     the callback.
+  id: totrans-111
   prefs: []
   type: TYPE_NORMAL
 - en: One more thing that you can do with `pipe` is recursive deferred. Say, you have
     an asynchronous operation at the backend of API calls, and you need to poll all
     the response sets before you can put them to use. You can ask `pipe()` to help
     you out.
+  id: totrans-112
   prefs: []
   type: TYPE_NORMAL
 - en: 'Consider the following code that will help collect API responses and let you
     know whether all the responses are collected or not:'
+  id: totrans-113
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE20]'
+  id: totrans-114
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE20]'
 - en: Please note that we didn't give any hardcoded value for computing the results,
     rather we used `math.random()` to calculate the results every time we hit refresh.
     This is just a mechanism using which you can pool data, validate it, and then
     use it as required.
+  id: totrans-115
   prefs: []
   type: TYPE_NORMAL
 - en: So, we saw how the `pipe()` method can be beneficial in writing neat and maintainable
     code. This also gave us a view of how we can use `deferred` in the longer run
     while remaining under the umbrella of jQuery.
+  id: totrans-116
   prefs: []
   type: TYPE_NORMAL
 - en: Joining promises with $.when
+  id: totrans-117
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
@@ -563,56 +702,73 @@
     or it would be rejected if any of the promises were rejected. You may have sequence
     like `when().then().done()` or you can add multiple `when()` methods followed
     by `then()` and `done()`.'
+  id: totrans-118
   prefs: []
   type: TYPE_NORMAL
 - en: 'Let''s take a look at an example of how the code will look like with `$when()`:'
+  id: totrans-119
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE21]'
+  id: totrans-120
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE21]'
 - en: 'When you execute the preceding code, it will generate an output like this:'
+  id: totrans-121
   prefs: []
   type: TYPE_NORMAL
 - en: '![Joining promises with $.when](img/5500OS_08_05.jpg)'
+  id: totrans-122
   prefs: []
   type: TYPE_IMG
 - en: Notice that at the end of the code, the `$.when` function returns a new master
     deferred object, and we used two results in one `done()` callback.
+  id: totrans-123
   prefs: []
   type: TYPE_NORMAL
 - en: We also changed the `getActorByRating()` method due to the fact that the promise
     of an AJAX call, which has the content payload, has the first element in the result
     along with status code included.
+  id: totrans-124
   prefs: []
   type: TYPE_NORMAL
 - en: 'However, this is not the end; you can also use `$.when` with pipes. Let''s
     see how:'
+  id: totrans-125
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE22]'
+  id: totrans-126
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE22]'
 - en: From the preceding code, you can easily see how `when()` and `pipe()` can work
     in combination and produce results. By summarizing the preceding code, we can
     say the sequence of our code was like `when()`, `pipe()`, and `done()`. The `done()`
     method is the last milestone that has compiled and presented the result on our
     screen.
+  id: totrans-127
   prefs: []
   type: TYPE_NORMAL
 - en: 'We can also use `when()` as an operator. Remember in JavaScript, every method
     can be a variable. Let''s see how to do it using this code:'
+  id: totrans-128
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE23]'
+  id: totrans-129
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE23]'
 - en: So from the preceding code, you can clearly see how we can use `when()` in many
     different ways. We can add more variety to it as it has many implementations and
     best case scenarios for solving complex problems.
+  id: totrans-130
   prefs: []
   type: TYPE_NORMAL
 - en: Your own $.Deferred process
+  id: totrans-131
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
@@ -624,31 +780,41 @@
     object has to be locally or globally processed. If the deferred object is assigned
     to a local variable, we can call deferred object's `resolve()`, `promise()`, and
     `notify()` events.
+  id: totrans-132
   prefs: []
   type: TYPE_NORMAL
 - en: 'Let''s have a look at this example:'
+  id: totrans-133
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE24]'
+  id: totrans-134
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE24]'
 - en: So, from the preceding code, we are able to achieve a skeleton of the processes.
     This can be simplified by making it more concise or by adding some combining methods
     such as `then()`, `when()`, and so on.
+  id: totrans-135
   prefs: []
   type: TYPE_NORMAL
 - en: 'Let''s have a look at this compact code:'
+  id: totrans-136
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE25]'
+  id: totrans-137
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE25]'
 - en: This is more concise and easy to scale. The learning element from this section
     is one thing; you can also go for the custom-made deferred in jQuery. It's easy,
     maintainable, and you can scale it as per your need.
+  id: totrans-138
   prefs: []
   type: TYPE_NORMAL
 - en: The advent of promises in jQuery
+  id: totrans-139
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
@@ -657,42 +823,55 @@
     The answer is simple, it has many capabilities to maximize our output and build
     applications in a lesser time. However, what can it actually do for us? Let's
     have a look.
+  id: totrans-140
   prefs: []
   type: TYPE_NORMAL
 - en: 'We can call the `done()` and `fail()` functions as many times as we want, with
     different callbacks. Maybe we have a callback function that can halt our animation,
     or one that does a new AJAX call, and so on:'
+  id: totrans-141
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE26]'
+  id: totrans-142
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE26]'
 - en: No matter whether the AJAX call has finished, we can still call the `done()`
     and `fail()` functions and the callbacks are executed immediately. So, variables
     stated are not a big deal. When the call has finished, it will end up in either
     the success state or the failed state, and this state will not change.
+  id: totrans-143
   prefs: []
   type: TYPE_NORMAL
 - en: 'We can combine promises. Say we have to do two simultaneous AJAX calls and
     we need to execute a function when both are successfully finished, as shown in
     the following code:'
+  id: totrans-144
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE27]'
+  id: totrans-145
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE27]'
 - en: 'From jQuery 1.8, we can chain the `then()` function consecutively:'
+  id: totrans-146
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE28]'
+  id: totrans-147
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE28]'
 - en: Summary
+  id: totrans-148
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: So, with this chapter coming to an end, let's revise the topics we have covered
     so far.
+  id: totrans-149
   prefs: []
   type: TYPE_NORMAL
 - en: We have seen the how jQuery has started taking shape and how it became a fundamental
@@ -704,10 +883,14 @@
     any doubts. The topic of promises in jQuery is huge, but we tried to summarize
     as much as we can to lay out solid foundations for those who hadn't used this
     property before and to help those who are already using it.
+  id: totrans-150
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们已经看到了jQuery是如何开始成形的，以及它是如何成为现代网页开发的一个基本元素。我们已经学会了如何构建基本的jQuery文档以及如何调用嵌入HTML文件中的函数。我们已经了解了为什么我们开始在jQuery中使用延迟和承诺，以及它是如何帮助我们实现基于网络平台和便携设备的尖端应用程序的。我们已经看到了许多工作示例，以更好地理解并澄清任何疑问。jQuery中的承诺主题非常庞大，但我们试图尽可能地总结，为那些之前没有使用过这个属性的人打下坚实的基础，并帮助那些已经开始使用它的人。
 - en: In the next chapter, we will see how all the combined JavaScript and their properties
     are shaping up to bring the world closer and making our life easier in the days
     to come.
+  id: totrans-151
   prefs: []
   type: TYPE_NORMAL
+  zh: 在下一章中，我们将了解如何将所有结合的JavaScript及其属性整合在一起，以使世界变得更紧密，并在未来使我们的生活变得更容易。
