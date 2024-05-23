@@ -1,75 +1,108 @@
 - en: Chapter 3. Understanding JavaScript Build Systems
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 第3章：理解JavaScript构建系统
 - en: In this chapter, we will learn about JavaScript build systems and their advantages
     for JavaScript performance testing and deployment. We will also incorporate JavaScript
     code testing into our build system using the knowledge we gained about JSLint
     in the last chapter.
+  id: totrans-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本章中，我们将学习JavaScript构建系统及其对JavaScript性能测试和部署的优势。我们还将利用上一章中关于JSLint的知识，将JavaScript代码测试整合到我们的构建系统中。
 - en: 'In short, we are going to cover the following topics in this chapter:'
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 总之，本章将涵盖以下内容：
 - en: What is a build system?
+  id: totrans-3
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 什么是构建系统？
 - en: Setting up our build system
+  id: totrans-4
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 搭建我们的构建系统
 - en: Creating a distribution
+  id: totrans-5
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 创建分发
 - en: What is a build system?
+  id: totrans-6
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 什么是构建系统？
 - en: Typically, a **build system** is an automated process that assists developers
     writing clean optimized code. We may think that such a thing would be standard
     across all programming languages. Now, compiled languages usually have a compiler;
     a **compiler** takes a program written by following a language specification,
     and creates output code compatible with the target machine.
+  id: totrans-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 通常，**构建系统**是一个自动化过程，它帮助开发者编写干净优化的代码。我们可能会认为这样的事情会在所有编程语言中都是标准的。现在，编译语言通常有一个编译器；**编译器**根据语言规范编写的一个程序，创建与目标机器兼容的输出代码。
 - en: Compiling code by example
+  id: totrans-8
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 通过示例编译代码
 - en: 'Compilers typically work through a spec when a code file is sent for processing.
     To keep a compiler from crashing from bad code, a compiler is set up with many
     error checkers that stop the compiler beforehand and display an alert, thus blocking
     the compiling process. Now some IDEs allow you to see some of your mistakes before
     attempting to run your code. The following screenshot shows a simple Xcode Swift
     file being checked while editing:'
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 编译器通常在处理代码文件时通过一个规格。为了防止编译器因坏代码而崩溃，编译器设置了许多错误检查器，在编译器崩溃之前发出警报，从而阻止编译过程。现在一些IDE允许你在尝试运行代码之前发现一些错误。下面的屏幕截图显示了一个简单的Xcode
+    Swift文件在编辑时进行检查的情况：
 - en: '![Compiling code by example](img/7296OS_03_01.jpg)'
+  id: totrans-10
   prefs: []
   type: TYPE_IMG
+  zh: '![通过示例编译代码](img/7296OS_03_01.jpg)'
 - en: Without getting too technical in iOS development, we can see that, on assigning
     a constant variable in Swift, if I attempt to change the variable as in the preceding
     screenshot, my code flags an error.
+  id: totrans-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 在不深入iOS开发的技术细节的情况下，我们可以看到，在Swift中分配常量变量时，如果尝试像前一张截图那样更改变量，我的代码会标志一个错误。
 - en: 'Now if I change the `let authors_name` constant to a dynamic `var` variable
     (just like in JavaScript), the error itself corrects, as shown in the following
     screenshot, and removes the error displayed in the IDE:'
+  id: totrans-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在，如果我将`let authors_name`常量更改为动态的`var`变量（就像在JavaScript中一样），错误本身会纠正，如下面的屏幕截图所示，并在IDE中删除显示的错误：
 - en: '![Compiling code by example](img/7296OS_03_02.jpg)'
+  id: totrans-13
   prefs: []
   type: TYPE_IMG
+  zh: '![通过示例编译代码](img/7296OS_03_02.jpg)'
 - en: Error-checking in a JavaScript build system
+  id: totrans-14
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 在JavaScript构建系统中进行错误检查
 - en: In the past, HTML editors for JavaScript and HTML content, such as Dreamweaver,
     have done this since the creation of early web code editors.
+  id: totrans-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 在过去，像Dreamweaver这样的JavaScript和HTML内容的HTML编辑器，自早期网页代码编辑器创建以来就这样做了。
 - en: The difference between what's done in Xcode for a compiled language and what's
     done in a JavaScript IDE is slightly different. With a compiled language, an error
     must be fixed before a code file can run; this is usually considered as static
@@ -78,77 +111,103 @@
     Code Performance with JSLint"), *Increasing Code Performance with JSLint*, JavaScript
     is an interpreted language, and the *only* language that is really tested for
     errors at run time.
+  id: totrans-16
   prefs: []
   type: TYPE_NORMAL
+  zh: 在Xcode中为编译语言所做的与在JavaScript IDE中所做的略有不同。对于编译语言，必须修复错误才能运行代码文件；这通常被认为是静态类型检查。然而，JavaScript即使出错，也可以运行，甚至可以用`try-catch`块覆盖。简单地说，正如[第2章](ch02.html
+    "第2章：使用JSLint提高代码性能")《使用JSLint提高代码性能》中所述，JavaScript是一种解释型语言，是唯一真正在运行时测试错误的语言。
 - en: With that in mind, how do editors such as Dreamweaver, WebStorm, or Visual Studio
     check for errors then? Well, if you remember in [Chapter 2](ch02.html "Chapter 2. Increasing
     Code Performance with JSLint"), *Increasing Code Performance with JSLint*, we
     saw how linting tools provide feedback on potential or verifiable bugs in JavaScript
     code; this returns a list of errors.
+  id: totrans-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 考虑到这一点，像Dreamweaver、WebStorm或Visual Studio这样的编辑器是如何检查错误的呢？嗯，如果你记得在[第2章](ch02.html
+    "第2章：使用JSLint提高代码性能")，*使用JSLint提高代码性能*，我们看到了如何通过linting工具提供有关JavaScript代码中潜在或可验证错误的反馈；这返回了一个错误列表。
 - en: With an IDE, the editor is coded keeping this in mind and takes each error to
     display it with the associated line and column in the JavaScript file.
+  id: totrans-18
   prefs: []
   type: TYPE_NORMAL
+  zh: 在集成开发环境（IDE）中，编辑器是按照这个思路编写的，它取每个错误并显示与JavaScript文件中的相关行和列关联的错误。
 - en: So, to make a build system, we will need to incorporate this sort of error checking
     just like using [http://jslint.com/](http://jslint.com/) but in a more automated
     fashion. This allows lightweight editors to use the same checking tools that are
     used in more expensive and heavier IDEs.
+  id: totrans-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 因此，要建立一个构建系统，我们需要像使用[http://jslint.com/](http://jslint.com/)一样加入这种错误检查，但要以更自动化的方式。这使得轻量级编辑器能够使用在更昂贵、更重的集成开发环境（IDE）中使用的相同检查工具。
 - en: Adding optimization beyond coding standards
+  id: totrans-20
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 超出编码标准的优化
 - en: Like our Xcode example earlier in the chapter, we want our final output to be
     optimized for our project; to do this, we will add minification to our build system,
     allowing us to keep a developer version or source project to be saved in a directory
     with a distribution in another directory. Simply put, minification allows us to
     compress our JavaScript code causing our web applications to download faster,
     and run more efficiently.
+  id: totrans-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 就像我们章节开头提到的Xcode示例一样，我们希望我们的最终输出为我们的项目进行了优化；为此，我们将把最小化添加到我们的构建系统中，允许我们保留一个开发者版本或源项目，保存在一个带有发行版目录的另一个目录中。简单地说，最小化允许我们对JavaScript代码进行压缩，使我们的网络应用程序下载更快，运行更高效。
 - en: This can be helpful if we are using source control to maintain our project,
     allowing us to quickly grab a stable distribution that's optimized, but not easily
     debuggable, and debug it with our source directory's files.
+  id: totrans-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 这在我们使用源代码控制来维护项目时会有帮助，它允许我们快速获取一个优化过的、但不易调试的稳定发行版，并使用我们源代码目录中的文件进行调试。
 - en: Now as JavaScript developers, we can even add other minification build options
     that we may need for the project, such as an image optimizer for our project's
     image directory, or minify our CSS file and add information comment blocks on
     top of our JavaScript files. By compressing our JavaScript, the JavaScript interpreter
     doesn't have to guess the distance in whitespace in our code, which creates more
     efficient and better-performing code.
+  id: totrans-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在作为JavaScript开发者，我们甚至可以添加其他可能需要的项目的最小化构建选项，例如为我们的项目图像目录添加一个图像优化器，或者压缩我们的CSS文件，并在我们的JavaScript文件顶部添加信息注释块。通过压缩我们的JavaScript，JavaScript解释器不必猜测我们代码中的空白距离，这产生了更高效、性能更好的代码。
 - en: Creating a build system from scratch using Gulp.js
+  id: totrans-24
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 使用Gulp.js从头开始创建构建系统
 - en: Now that we've introduced build systems and the reason for their use, let's
     go ahead and create a simple build system. Our goal is to create a distribution
     build from our source directory, a copy that's optimized and ready for production.
     We will also integrate JSLint, as we learned from the last chapter, to check our
     code as we create builds for any potential issues that might have been missed
     during development.
+  id: totrans-25
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在我们已经介绍了构建系统及其使用原因，让我们创建一个简单的构建系统。我们的目标是创建一个从源目录生成的发行版构建，一个优化后且适用于生产的副本。我们还将整合JSLint，正如我们从上一章学到的，以便在我们创建构建时检查我们的代码，以发现开发过程中可能遗漏的任何潜在问题。
 - en: In this chapter, we are going create a build system to test our JavaScript project.
     We will also incorporate minification into our build system, and copy files to
     our build directory. So when we are ready to deploy, our code base is already
     set to be deployed.
+  id: totrans-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本章中，我们将创建一个用于测试我们的JavaScript项目的构建系统。我们还将把最小化整合到我们的构建系统中，并将文件复制到我们的构建目录。所以当我们准备部署时，我们的代码库已经准备好部署了。
 - en: Before setting off on this project, we will need to understand a few technologies
     specific to JavaScript, particularly the build system that we will want to take
     into account; we will especially deal with technologies such as Node.js, NPM,
     Grunt, and Gulp. If you have only heard about these before, or maybe have tinkered
     with some of these and never really got further than that, don't worry; we will
     go over each of these one-by-one and understand their advantages and disadvantages.
+  id: totrans-27
   prefs: []
   type: TYPE_NORMAL
 - en: Node.js
+  id: totrans-28
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
@@ -157,6 +216,7 @@
     Java or C# may seem odd, but has been shown to work in new creative ways. For
     example, the community of Node.js developers has created plugins to create custom-built,
     JavaScript-based applications for the desktop.'
+  id: totrans-29
   prefs: []
   type: TYPE_NORMAL
 - en: This puts JavaScript in a very new place. When traditional application developers
@@ -165,65 +225,80 @@
     a programming language. Node.js allows custom objects to interact with the operating
     system. These include objects such as `FS` or `FileSystem` that allow for reading
     and writing files and work pretty much like a console in a web browser.
+  id: totrans-30
   prefs: []
   type: TYPE_NORMAL
 - en: 'For this project, we won''t discuss Node.js in depth (that''s another book),
     but we will be installing Node.js into our OS so that we can run and test our
     build system. So let''s download Node.js and get started. First, navigate to [http://nodejs.org/](http://nodejs.org/)
     and click the green **INSTALL** button, as shown in the following screenshot:'
+  id: totrans-31
   prefs: []
   type: TYPE_NORMAL
 - en: '![Node.js](img/7296OS_03_03.jpg)'
+  id: totrans-32
   prefs: []
   type: TYPE_IMG
 - en: 'Node.js is cross-platform, and so most of these instructions should work for
     you. I''ll be using a Mac with OS X for this installation''s introduction. For
     most platforms, Node.js will come with either a `.pkg` or `.exe` install wizard,
     as shown in the following screenshot:'
+  id: totrans-33
   prefs: []
   type: TYPE_NORMAL
 - en: '![Node.js](img/7296OS_03_04.jpg)'
+  id: totrans-34
   prefs: []
   type: TYPE_IMG
 - en: From here, follow the wizard, accept the user licenses and install for all users.
     By installing for all users, we allow Node.js to have full system access which
     we do want, since some plugins for Node.js may require certain features that are
     not accessible by a single user or non-administrator.
+  id: totrans-35
   prefs: []
   type: TYPE_NORMAL
 - en: 'When you''ve finished installing Node.js, keep in mind the paths set by the
     installer; if you want to remove Node.js in future, check out the following screenshot
     to see where the installer has added Node.js:'
+  id: totrans-36
   prefs: []
   type: TYPE_NORMAL
 - en: '![Node.js](img/7296OS_03_05.jpg)'
+  id: totrans-37
   prefs: []
   type: TYPE_IMG
 - en: Testing a Node.js installation
+  id: totrans-38
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
 - en: To ensure that Node.js is properly installed, we want to check two things. The
     first thing is to check whether Node.js works in the Terminal. To validate the
     installation, we will check the current version of Node.js that's installed.
+  id: totrans-39
   prefs: []
   type: TYPE_NORMAL
 - en: 'First, let''s open Terminal (or Command Prompt, if using Windows), and insert
     the `node --version` command as shown in the following screenshot, and press *Enter*:'
+  id: totrans-40
   prefs: []
   type: TYPE_NORMAL
 - en: '![Testing a Node.js installation](img/7296OS_03_06.jpg)'
+  id: totrans-41
   prefs: []
   type: TYPE_IMG
 - en: 'If successful, we should see the version number (in my case, it''s `v0.10.32`;
     your version may be greater than my version number when attempting this) as shown
     on the next line in the Terminal in the following screenshot:'
+  id: totrans-42
   prefs: []
   type: TYPE_NORMAL
 - en: '![Testing a Node.js installation](img/7296OS_03_07.jpg)'
+  id: totrans-43
   prefs: []
   type: TYPE_IMG
 - en: Testing Node Package Manager's installation
+  id: totrans-44
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
@@ -231,9 +306,11 @@
     Node Package Manager is installed as well. Before testing, let me explain what
     Node Package Manager is, especially to those who might not know what it is and
     why we need it.
+  id: totrans-45
   prefs: []
   type: TYPE_NORMAL
 - en: About Node Package Manager
+  id: totrans-46
   prefs:
   - PREF_H5
   type: TYPE_NORMAL
@@ -242,17 +319,21 @@
     up a JavaScript build system and install libraries for our HTML-based JavaScript
     projects automatically, which allows us to ensure that our JavaScript libraries
     are up-to-date with the latest version of each library.
+  id: totrans-47
   prefs: []
   type: TYPE_NORMAL
 - en: 'NPM also has a website you can use to research various JavaScript libraries
     at [https://www.npmjs.org](https://www.npmjs.org). This is also shown in the following
     screenshot:'
+  id: totrans-48
   prefs: []
   type: TYPE_NORMAL
 - en: '![About Node Package Manager](img/7296OS_03_08.jpg)'
+  id: totrans-49
   prefs: []
   type: TYPE_IMG
 - en: Checking NPM installation in the Terminal
+  id: totrans-50
   prefs:
   - PREF_H5
   type: TYPE_NORMAL
@@ -261,12 +342,15 @@
     open the Terminal and insert the `npm` command. Now, we should see our Terminal
     window populating with a bunch of NPM help documentation and sample terminal commands,
     as shown in the following screenshot:'
+  id: totrans-51
   prefs: []
   type: TYPE_NORMAL
 - en: '![Checking NPM installation in the Terminal](img/7296OS_03_09.jpg)'
+  id: totrans-52
   prefs: []
   type: TYPE_IMG
 - en: The basics of using NPM
+  id: totrans-53
   prefs:
   - PREF_H5
   type: TYPE_NORMAL
@@ -275,89 +359,110 @@
     I'm going to mark this as `npm_01` for the first project, but you can name your
     root as whatever you would like. Now, we are going to open Terminal and change
     our `bash` directory to match the path to the directory I created.
+  id: totrans-54
   prefs: []
   type: TYPE_NORMAL
 - en: 'To change your working directory in the Terminal, the command is `Change Directory`
     or `cd`. Using `cd` is pretty easy; simply type the following command:'
+  id: totrans-55
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE0]'
+  id: totrans-56
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: A few things to note here are that the Terminal always points to your user home
     directory on Mac and Linux, and the tilda key (or *~*) is a shortcut to point
     to your path. For example, if your folder is in your documents directory under
     your username, an example path using cd would be `cd ~/Documents/[your_project_path]`.
+  id: totrans-57
   prefs: []
   type: TYPE_NORMAL
 - en: Tip
+  id: totrans-58
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: If the Terminal is getting cluttered with information, you can use the "clear"
     command to clean your terminal's contents, without changing your directory.
+  id: totrans-59
   prefs: []
   type: TYPE_NORMAL
 - en: Installing jQuery with NPM
+  id: totrans-60
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
 - en: A common JavaScript library is jQuery, a very popular library on NPM. We can
     even check out its repository information on [npmjs.org](http://npmjs.org), found
     at [https://www.npmjs.org/package/jquery](https://www.npmjs.org/package/jquery).
+  id: totrans-61
   prefs: []
   type: TYPE_NORMAL
 - en: '![Installing jQuery with NPM](img/7296OS_03_10.jpg)'
+  id: totrans-62
   prefs: []
   type: TYPE_IMG
 - en: If we look at this page, we can see a command for our terminal, `npm install
     jQuery`. So, let's type that into our terminal and press *Enter* to see what happens.
+  id: totrans-63
   prefs: []
   type: TYPE_NORMAL
 - en: Tip
+  id: totrans-64
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: If you're a Mac or Linux user, you can drag-and-drop a folder into the Terminal,
     and it will auto-write the path of your folder for you after you type the `cd`
     command.
+  id: totrans-65
   prefs: []
   type: TYPE_NORMAL
 - en: 'In the Terminal, it looks like some files were downloaded, as indicated in
     the following screenshot:'
+  id: totrans-66
   prefs: []
   type: TYPE_NORMAL
 - en: '![Installing jQuery with NPM](img/7296OS_03_11.jpg)'
+  id: totrans-67
   prefs: []
   type: TYPE_IMG
 - en: 'Now, if we open our project directory, we can see that a new folder named `node_modules`
     has been created. Inside this folder, another folder is created named `jquery`.
     The contents of the `jquery` folder are shown in the following screenshot:'
+  id: totrans-68
   prefs: []
   type: TYPE_NORMAL
 - en: '![Installing jQuery with NPM](img/7296OS_03_12.jpg)'
+  id: totrans-69
   prefs: []
   type: TYPE_IMG
 - en: Inside the `jquery` folder, there are some interesting files. We have a `README.md`
     (`.md` is short for markdown, a type of text format) file explaining jQuery.
+  id: totrans-70
   prefs: []
   type: TYPE_NORMAL
 - en: The folder has two JSON files, one called `bower.json` and another called `package.json`.
     The `package.json` file handles the NPM package information while the `bower.json`
     file handles any dependent packages and notifies NPM to include those as well
     on installation request.
+  id: totrans-71
   prefs: []
   type: TYPE_NORMAL
 - en: If you're wondering what the `bower.json` file does, it's essentially another
     way to update source code from a repository. Like the NPM registry, the `bower.json`
     file uses its own; the difference is that it can use a JSON file in a project
     and update based on the setting stored in the JSON file.
+  id: totrans-72
   prefs: []
   type: TYPE_NORMAL
 - en: Lastly, the most important two folders are the `src` folder (or source folder)
     and the `dist` folder (or distribution folder). This file structure is a common
     convention for NPM, where the source of a project with debug information is saved
     in the `src` folder, while the final tested output lives in the `dist` folder.
+  id: totrans-73
   prefs: []
   type: TYPE_NORMAL
 - en: Since we aren't debugging the source for jQuery, all we really need to worry
@@ -365,38 +470,47 @@
     file—the same library files typically used in jQuery projects. It's important
     to know this for our build systems as we will want to copy those into the distribution
     folder for our build system.
+  id: totrans-74
   prefs: []
   type: TYPE_NORMAL
 - en: Setting up our build system
+  id: totrans-75
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: Now that we have learned the basics of Node.js and NPM, let's actually build
     a build system. We will want to point our Terminal to our project's root directory,
     and then we will want to install our build system (also called Task Runner).
+  id: totrans-76
   prefs: []
   type: TYPE_NORMAL
 - en: About Grunt.js and Gulp.js
+  id: totrans-77
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: 'Node.js build systems fall within two major build system libraries: Grunt and
     Gulp. Grunt is, in many cases, the default build system for Node.js projects.'
+  id: totrans-78
   prefs: []
   type: TYPE_NORMAL
 - en: Grunt Task Runner
+  id: totrans-79
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: 'Grunt was designed originally for automating tasks in JavaScript and, web development
     and due to its availability, many developers have created plugins; you can view
     them in Grunt''s plugin repository shown in the following screenshot:'
+  id: totrans-80
   prefs: []
   type: TYPE_NORMAL
 - en: '![Grunt Task Runner](img/7296OS_03_13.jpg)'
+  id: totrans-81
   prefs: []
   type: TYPE_IMG
 - en: About Gulp
+  id: totrans-82
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
@@ -405,34 +519,43 @@
     Since this book is all about performance, we will use Gulp for our build system
     as an example. That doesn't mean that Grunt is bad; it can create built systems
     as well as Gulp.js, but it may not be as fast as Gulp.
+  id: totrans-83
   prefs: []
   type: TYPE_NORMAL
 - en: 'Like Grunt, Gulp also has a plugin reference page found at [http://gulpjs.com/plugins/](http://gulpjs.com/plugins/),
     and shown in the following screenshot:'
+  id: totrans-84
   prefs: []
   type: TYPE_NORMAL
 - en: '![About Gulp](img/7296OS_03_14.jpg)'
+  id: totrans-85
   prefs: []
   type: TYPE_IMG
 - en: Installing Gulp
+  id: totrans-86
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
 - en: 'To install Gulp, we will open our terminal and type the following into our
     prompt:'
+  id: totrans-87
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE1]'
+  id: totrans-88
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: 'This will install Gulp globally to our Node.js and NPM resource path. If we
     are running a Windows system, `sudo` isn''t in Window''s Shell, so we will need
     to run the Command Prompt as Administrator. Now, if everything is successful,
     we should see a bunch of URL requests for files, and our Terminal should return
     to the prompt shown in the following screenshot:'
+  id: totrans-89
   prefs: []
   type: TYPE_NORMAL
 - en: '![Installing Gulp](img/7296OS_03_15.jpg)'
+  id: totrans-90
   prefs: []
   type: TYPE_IMG
 - en: With our global ("global" meaning installed for all folders in our system) dependencies
@@ -440,24 +563,31 @@
     build system to be more portable when uploading to a source control. Essentially,
     these dependencies need to be in our root project file to enable our build system
     to run in our project directory.
+  id: totrans-91
   prefs: []
   type: TYPE_NORMAL
 - en: 'We can do it by typing the following code into our Terminal (again, `sudo`
     for Mac/Linux users and **Run as Administrator** for Windows users):'
+  id: totrans-92
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE2]'
+  id: totrans-93
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: 'If successful, your `bash` prompt should show again, pulling many URL sources
     and installing them to your project''s `node_modules` directory under `gulp` as
     shown in the following screenshot:'
+  id: totrans-94
   prefs: []
   type: TYPE_NORMAL
 - en: '![Installing Gulp](img/7296OS_03_16.jpg)'
+  id: totrans-95
   prefs: []
   type: TYPE_IMG
 - en: Creating a gulpfile
+  id: totrans-96
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
@@ -465,31 +595,38 @@
     of our project directory. To create one, we will create a simple JavaScript file
     called `gulpfile.js` (note the case of the filename). Inside the file we are going
     to reference Gulp as a variable and create a default task, called `Default`.
+  id: totrans-97
   prefs: []
   type: TYPE_NORMAL
 - en: 'This is the main task we need to run for every `gulpfile.js`; inside it, we
     can include other tasks or output log message, just like in a web browser. As
     a simple code example for a Gulp task is shown in the following screenshot:'
+  id: totrans-98
   prefs: []
   type: TYPE_NORMAL
 - en: '![Creating a gulpfile](img/7296OS_03_17.jpg)'
+  id: totrans-99
   prefs: []
   type: TYPE_IMG
 - en: Running a Gulp project
+  id: totrans-100
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
 - en: 'Running a Gulp project is easy. In your project''s root directory, type `gulp`
     in the Terminal and press *Enter*. You should see the output in your terminal
     as shown in the following screenshot:'
+  id: totrans-101
   prefs: []
   type: TYPE_NORMAL
 - en: '![Running a Gulp project](img/7296OS_03_18.jpg)'
+  id: totrans-102
   prefs: []
   type: TYPE_IMG
 - en: That's nice. If we look at the fourth line of our Terminal's output, we should
     see our output message as **Default task ran**. Good job! This is the same `console.log`
     message we created for our `Default` task in our `gulpfile.js`.
+  id: totrans-103
   prefs: []
   type: TYPE_NORMAL
 - en: So you may ask, How did all this help optimize the JavaScript code? Well, if
@@ -498,13 +635,16 @@
     JavaScript code, make improvements, and optimize files. What if we could run that
     test tool, while copying files and minifying (or even testing minified code) through
     JSLint? Well, we can, and that's the point of using build systems.
+  id: totrans-104
   prefs: []
   type: TYPE_NORMAL
 - en: With a build system, we are improving it and optimizing our code before modifying
     it, even before it is deployed out as a web application.
+  id: totrans-105
   prefs: []
   type: TYPE_NORMAL
 - en: Integrating JSLint into Gulp
+  id: totrans-106
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -512,44 +652,57 @@
     a JSLint plugin, and the installation process is pretty easy. First, check out
     the JSLint plugin page found at [https://www.npmjs.org/package/gulp-jslint/](https://www.npmjs.org/package/gulp-jslint/),
     and as shown in the following figure:'
+  id: totrans-107
   prefs: []
   type: TYPE_NORMAL
 - en: '![Integrating JSLint into Gulp](img/7296OS_03_19.jpg)'
+  id: totrans-108
   prefs: []
   type: TYPE_IMG
 - en: 'So, in the same way we installed Gulp, we will run the `npm` command shown
     on the page, but will include `sudo` for administrator permissions and the `-g`
     command. This is a global flag to install JSLint to the full system, as follows:'
+  id: totrans-109
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE3]'
+  id: totrans-110
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: 'Next, we will install the developer dependencies for our project, so again
     we will point to our root project directory in the Terminal and then type our
     `npm` command but with the `-save-dev` flag this time, as follows:'
+  id: totrans-111
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE4]'
+  id: totrans-112
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: 'To verify the installation, we can check the `node_modules` folder in our project
     directory, and see the `gulp-jslint` folder, as shown in the following screenshot:'
+  id: totrans-113
   prefs: []
   type: TYPE_NORMAL
 - en: '![Integrating JSLint into Gulp](img/7296OS_03_20.jpg)'
+  id: totrans-114
   prefs: []
   type: TYPE_IMG
 - en: Testing our example file
+  id: totrans-115
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: 'Now, our build system needs a source file, and I''ve written an example while
     adding it to a new `src` project directory created in Finder. I haven''t tested
     this yet, and it''s shown in the following screenshot:'
+  id: totrans-116
   prefs: []
   type: TYPE_NORMAL
 - en: '![Testing our example file](img/7296OS_03_21.jpg)'
+  id: totrans-117
   prefs: []
   type: TYPE_IMG
 - en: 'So we have a simple Toddler JavaScript class, and it displays messages based
@@ -559,9 +712,11 @@
     in [Chapter 2](ch02.html "Chapter 2. Increasing Code Performance with JSLint"),
     *Increasing Code Performance with JSLint*. Take a look at the updated `gulpfile.js`
     file, shown in the next screenshot:'
+  id: totrans-118
   prefs: []
   type: TYPE_NORMAL
 - en: '![Testing our example file](img/7296OS_03_22.jpg)'
+  id: totrans-119
   prefs: []
   type: TYPE_IMG
 - en: On lines 6 and 7, we can see conventions such as, `gulp.src()` and `pipe()`.
@@ -572,14 +727,17 @@
     called JSLint. If we look at lines 9 to 12, we can see the same options used from
     [JSLint.com](http://JSLint.com); the option names can be found under JSLint Directives
     at the bottom of the page when we select different options on the page.
+  id: totrans-120
   prefs: []
   type: TYPE_NORMAL
 - en: On line 22, we added an array after our *default* task, adding our *JSLint*
     task name into an array. We can add multiple tasks here, but for now we just need
     the lint task. Now let's run the script and check our terminal.
+  id: totrans-121
   prefs: []
   type: TYPE_NORMAL
 - en: '![Testing our example file](img/7296OS_03_23.jpg)'
+  id: totrans-122
   prefs: []
   type: TYPE_IMG
 - en: Excellent! The red lines shown in the terminal report errors with the script
@@ -587,9 +745,11 @@
     some common things such as using *use strict*, missing semicolons, and so on.
     So we can see how we can automate the process of testing our code during a build
     using Node.js and Gulp.
+  id: totrans-123
   prefs: []
   type: TYPE_NORMAL
 - en: Creating a distribution
+  id: totrans-124
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -597,6 +757,7 @@
     source code, copying the output to the `dist` folder, and then linting the output
     for testing. I've modified the `ExampleScript.js` file to fix most of the issues
     found earlier.
+  id: totrans-125
   prefs: []
   type: TYPE_NORMAL
 - en: 'Now we need to download a minification tool for Gulp called **Uglify**, available
@@ -604,42 +765,54 @@
     It''s a common minifier for JavaScript for Gulp-based projects; its installation
     is easy and follows the same procedure used for installing Gulp itself and JSlint
     for Gulp. The following command is used for installing the tool:'
+  id: totrans-126
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE5]'
+  id: totrans-127
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: 'Now I''ve updated our `gulpfile.js` with a new minify task and added it to
     the array as shown in the following screenshot:'
+  id: totrans-128
   prefs: []
   type: TYPE_NORMAL
 - en: '![Creating a distribution](img/7296OS_03_24.jpg)'
+  id: totrans-129
   prefs: []
   type: TYPE_IMG
 - en: Now, run Gulp in the Terminal window and notice the output (shown in the next
     screenshot); in the finder folder, you'll see a brand-new minified file in the
     `dist` directory of your root project folder, while retaining your developer source
     and getting performance linting at the same time!
+  id: totrans-130
   prefs: []
   type: TYPE_NORMAL
 - en: '![Creating a distribution](img/7296OS_03_25.jpg)'
+  id: totrans-131
   prefs: []
   type: TYPE_IMG
 - en: Summary
+  id: totrans-132
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: In this chapter, we learned how to create a simple JavaScript build system using
     Node.js with Gulp. We also explored other plugins and checked out Grunt Task Runner,
     which works similar to Gulp but contains many more plugins for your work.
+  id: totrans-133
   prefs: []
   type: TYPE_NORMAL
 - en: Build systems help your performance greatly without much effort; keep in mind
     that gulp files can be reused for other projects, and so experiment and find out
     what works best for your projects.
+  id: totrans-134
   prefs: []
   type: TYPE_NORMAL
 - en: In the next chapter, we will learn tips and tricks on how to use Chrome's **Developer
     tools** option to better optimize our web application code.
+  id: totrans-135
   prefs: []
   type: TYPE_NORMAL
+  zh: 在下一章，我们将学习如何使用Chrome的**开发者工具**选项来更好地优化我们的Web应用程序代码的技巧和窍门。
