@@ -1,0 +1,540 @@
+- en: Chapter 6. Putting It All Together – Promises in Action
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'In [Chapter 5](part0026_split_000.html#OPEK1-fe4c0b71cd2847c897e147ea131725a8
+    "Chapter 5. Promises in WinJS"), *Promises in WinJS*, we were introduced to the
+    WinJS library and learned about the WinJS promise object in detail. We also had
+    a quick glance at how to use WinJS promises in windows app development in a basic
+    example. Finally, we are here in the last chapter, in which we will put into action
+    the learning we have gathered throughout this book about promises. We will try
+    to get a deeper understanding of how promises work by creating a simple implementation.
+    After we create the implementation library, we will use it in a basic example
+    that leverages that library for an asynchronous operation. In this chapter, we
+    will cover the following topics:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary of what we have covered and learned so far
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Creating a promise implementation in a simple JavaScript library
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Implementing a promise library
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Promises have grown to be very popular as expressed by the numerous standalone
+    implementations of them. Moreover, Promises/A+ have more than 35 compliant implementations
+    so far as we approach the launch of ECMAScript 6\. One thing to note is that the
+    growing adoption of Promise/A+ in JavaScript is reflected in other languages,
+    with a number of implementations in ActionScript, Python, and Objective C. Although,
+    in terms of semantics, these implementations might not necessarily match the ones
+    we have in the JavaScript specifications due to different language capabilities,
+    it ultimately cannot be verified for compliance by directly testing them against
+    the JavaScript test suite of Promise/A+. Nevertheless, it's worth mentioning the
+    implementations and showcasing the efforts taken.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let us go through a code example for a basic implementation of promises; this
+    will give us a better understanding of how promises work. A deep understanding
+    of how things work improves our ability to take advantage of code and debug it
+    more easily and quickly when it goes wrong. We will create a minimal JavaScript
+    library that implements promises, and we shall start coding that library with
+    the states of the promises. We learned, when exploring the Promise API in [Chapter
+    2](part0018_split_000.html#H5A42-fe4c0b71cd2847c897e147ea131725a8 "Chapter 2. The
+    Promise API and Its Compatibility"), *The Promise API and Its Compatibility*,
+    that promises have three different states: pending, fulfilled, and rejected.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The specification of promises does not specify a value for these states, so
+    let us declare them and assign the values to an enumerator, as the following code
+    shows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: This enumeration will allow us to call the state by name, for example, `promState.fulfilled`.
+    Next, we will create an object that holds all the promise logic from transition
+    between states to the `then` method and resolves the promise. Let us call this
+    object `PromiseMe`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'First, we will need to define the change in the promise''s states and its transition
+    from one state to the other. The specification dictates some rules and considerations
+    for the transitions between the states, which we have dived into detail in [Chapter
+    2](part0018_split_000.html#H5A42-fe4c0b71cd2847c897e147ea131725a8 "Chapter 2. The
+    Promise API and Its Compatibility"), *The Promise API and Its Compatibility*.
+    These rules can be summarized as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: A promise can only be in one state at a certain point of time
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: When a promise transitions from pending to any other state, either fulfilled
+    or rejected, it cannot go back
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: When a promise fulfills, it must have a value (it can even be undefined) and,
+    when it fails, it must have a reason (any value that specifies why the promise
+    was rejected)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Inside the `PromiseMe` object, we will first define a function titled `changeMyState`
+    that handles and manages the transition between states for this promise governed
+    by the preceding rules, as the following code shows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The code inside the object will first set a property named `myState` to the
+    pending value of the enumeration `promState` with `myState`: `promState.pending`.
+    Afterwards, we set a property named `changeMyState` to an anonymous function that
+    takes two arguments: `newState` and `value`. Within that function, we handle the
+    transitions of states and check if it adheres to the rules. We have four checkpoints
+    before we can proceed with the code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: First, we check whether we are transitioning to the same state and throw an
+    error.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: In the second check, we make sure that the promise is not trying to transition
+    from rejected or fulfilled and throws an error accordingly.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: The third check is for the value passed with rejected. If it is null, an error
+    will be thrown and this makes sure that the promise gets rejected with a value
+    other than one with null. We are writing this checkpoint because the promise,
+    as per the specification, only accepts non-null values.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: The final check would be for the fulfilled state and its value; we check with
+    `arguments.length < 2` to determine if there was a value passed in the second
+    argument; if not, we throw an error.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_IND
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: I gave the error messages a meaningful wording to better understand what we
+    are checking for in these conditions. After we pass all the condition statements,
+    we close the `changeMyState` method by setting the `myState` property of the promise
+    object to `newState`, passed in with the arguments. We also assign the value to
+    the `newValue` argument, and we finish by returning `this.myState`, which, in
+    turn, returns the state of the promise.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Implementing the then method
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Up next in our implementation is the `then` method. This is the main pillar
+    of promises, and it is what actually makes the promise useful. This method allows
+    for and brings about the chaining of promises and handling errors. We will implement
+    a basic `then` method that will first check the rules for the validity of the
+    promise.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let us define the `then` method as the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'What the previous code does basically is define a `then` method for this promise.
+    `Then` is defined as an anonymous function that takes two arguments: `onFulfilled`
+    and `onRejected`. We define an array for this promise and initialize it to either
+    the current array `this.handlers`, if it exists, or a new array, if it doesn''t.
+    We instantiate a new promise and store it in the `returnedPromise` variable. We
+    store `onFulfilled`, `onRejected`, and `returnedPromise` in the array so that
+    we can invoke these handlers later after we return the promise. This function
+    closes with the returning of the promise.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'The rules of the `then` method, as per the Promise/A+ specification, state
+    that the function arguments: `onFulfilled` and `onRejected`, must be called only
+    after the promise is fulfilled or rejected accordingly. That is why, in the implementation,
+    we stored those two functions in an array so that we can call them later.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'You might have noticed that the handlers array contains two properties: `fulfillPromise`
+    and `rejectPromise`. These are two functions that are set to the handlers that
+    are passed in the arguments of the `then` method. Let us define these two functions
+    so that we can use them later in the `resolve` method. These functions are helper
+    methods and simply allow us to manually change the state of a promise. Moreover,
+    these functions will call the `changeMyState` method to change the state of the
+    promise which in turn returns a state.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: Defining a resolve method
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Moving forward, we need to address resolving that promise. We need to define
+    a resolve method that will deal with the promise and will either fulfill it or
+    reject it, depending on the state of the promise. You can think of the `resolve`
+    method as an internal method that the promise calls and is aimed at executing
+    the `then` calls only when the promise is fulfilled; in literary terms, it resolves
+    a fulfilled promise. Actually, the function that you will need to call in order
+    to fulfill a promise or reject it would be `changeMyState` in our case here. Let''s
+    start by creating a basic logic for the `resolve` method as per the following
+    code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The previous code assigns the property `resolve` to a function. Inside that
+    function, we first check for the state of this promise. If it is pending, we return
+    `false`. Next in code, we will loop through the array that contains the handlers
+    we defined in the `then` method:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: Inside that loop, we apply the `shift()` function on the array. The `shift()`
+    function allows us retrieve the first item from that array and remove it directly
+    after. Thus, the `handler` variable will contain the first item in the `handlers`
+    array, and in return, the `handlers` array will contain all the items minus that
+    first one which is now stored in the `var` handler.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Next in the `resolve` function, we will define a variable named `doResolve`,
+    which is set to the value of either the `fulfillPromise` function or the `rejectPromise`
+    handler depending on the state as per the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'The preceding syntax uses the ternary operator. It is called the ternary operator,
+    because unlike all other operators that take two values, this operator actually
+    requires a third value to be placed in the middle of the operator. It is like
+    a single-statement shorthand alternative for an `if` statement, where both the
+    `if` and `else` clauses will assign different values to the same variable as per
+    the following example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The ternary operator will transform the `if` statement to the following single-line
+    condition statement:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We need to add some sanity check for the `doResolve` function. If it is not
+    of the type function or the function doesn''t exist, then we invoke the `changeMyState`
+    method on the promise so that we pass along the state and the value:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: Implementing the doResolve function
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The other route for this code would be that the `doResolve` function exists,
+    and we need to return the promise with a value or reject it with an error. So,
+    we follow up the `if` condition with an `else` statement to implement this case
+    as per the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'As per the code logic so far, we would now have `doResolve` containing the
+    `handler.fulfillPromise` or `handler.rejectPromise` functions. These two functions
+    can manually change the state of the promise and take one argument, which is the
+    current value or current reason. Both values are contained in the `this.value`
+    variable. Hence, we will pass the current value to `doResolve` and assign the
+    result to a variable named `promiseValue` as per the following line of code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Next, we need to manage the promise returned with `promiseValue`. First, we
+    check if the promise exists and has a valid `then` function as per the following
+    code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Assuming that we pass this condition, inside it we can call the `then` method
+    on `promiseValue` since it now contains a promise that is the result of the `doResolve`
+    function. We will pass two arguments to its `then` method: a function parameter
+    for `onFullfilled`, and another one for `onRejected`, as the following code shows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'On the other hand, if the value returned by `promiseValue` was not a promise,
+    we will not need to invoke the `then` method. Instead, we simply change the state
+    to fulfilled and pass it the value. We will deal with this in an `else` statement
+    as the following code shows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Finally, since we are in a `try` statement, we will need to provide a `catch`
+    statement accordingly, where we will deal with any error that is thrown if the
+    operation fails. In that `catch` statement, we will change the state of the promise
+    to rejected and pass it the error that arises. We will also close all the trailing
+    braces:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: Resolving the promise includes some tedious checks, but these are necessary
+    to guarantee the fidelity of the promise implementation against the specification.
+    As you have seen, we added the logic as we proceeded, which starts off with a
+    simple check to see if we are running the `onFulfilled` or `onRejected` functions
+    based on the promise state. Following this, we change the state of their corresponding
+    promise based on the return values.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Bear in mind that the implementation needs to adhere to the considerations and
+    rules that exist in the specification. At any point of time, you can double-check
+    the code with the details of the Promise API explained in [Chapter 2](part0018_split_000.html#H5A42-fe4c0b71cd2847c897e147ea131725a8
+    "Chapter 2. The Promise API and Its Compatibility"), *The Promise API and Its
+    Compatibility*, of this book.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We are almost finished, and what remain are two scenarios we haven''t addressed
+    yet. The first scenario is that the `onFulfilled` and `onRejected` handlers must
+    not be called in the same round of the event loop `while` (`this.handlers && this.handlers.length`).
+    We do this check because `while` is looping through each `then` call. In a `then`
+    call, the promise is either fulfilled or rejected. Hence, in our case here, we
+    have the `onFulfilled` and `onRejected` handlers. To fix this issue, we will need
+    to add the `then` methods to the array only after the event loop. We can achieve
+    this with the use of the `setTimeout` function, which, in turn, ensures we are
+    always running asynchronously. Let us add the `setTimeout` function in the `then`
+    method and wrap the function that stores the promise handlers in the array, as
+    the following code shows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: Wrapping the code
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The final step in this implementation would be to indicate where and when we
+    actually resolve the promise. There are two conditions that we need to check.
+    The first one is when we are adding the `then` method, because the state of the
+    promise might already be set there. And the second case is when the state of the
+    promise changes in the `changeMyState` function. Hence, we will need to add a
+    `this.resolve()` call to the end of the `changeMyState` function. All we need
+    to do now before we finalize the implementation is wrap all the code in an anonymous
+    function named `PromiseMe`. It will use `Object.create` to give us a promise.
+    And with that, the final code of this promise implementation will look as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: The previous code represents a basic promises implementation in a small JavaScript
+    library. It implements a promise object with its `t0068en` method, taking into
+    consideration the specification requirements of how to fulfill and reject a promise
+    while addressing the necessary checks to avoid anomalies in the implementation.
+    We can take this library and start calling its `PromiseMe` object and its corresponding
+    functions, `then`, `fulfillPromise`, and `rejectPromise`, to achieve some asynchronous
+    operations.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'This implementation is a basic one; we can extend it to include many features
+    and helper methods that can be built on top of the Promises API. Furthermore,
+    we can build this implementation and test it against the Promises/A+ Compliance
+    Test Suite, which can be found via this link: [https://github.com/promises-aplus/promises-tests](https://github.com/promises-aplus/promises-tests).'
+  prefs: []
+  type: TYPE_NORMAL
+- en: On the link provided in the preceding information box, we can find the steps
+    needed to complete the tests, which will need to run in a Node.js environment,
+    and we need to make sure that Node.js is installed already.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Putting the promise into action
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'We can take this basic implementation of promise that we just authored and
+    use it in our code to handle our asynchronous operations. Let us have a look at
+    an example of how to use this `PromiseMe` library. The following code can be added
+    after this code for the `PromiseMe` object:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: What we are doing in the previous code is simply creating a function named `multiplyMeAsync`,
+    which in turn instantiates `PromiseMe` to a variable named `promise` and then
+    calls the `fulfillPromise` method on the `promise` variable we created, which
+    is an instance of the `PromiseMe` object. What the `fulfillPromise` method does
+    is simply multiply the `val` argument by the number 2\. Following that, we call
+    `multiplyAsync` and pass it the number 2 as a value for its parameter; since it
+    returns a promise, we can call the `then` method on it. The `then` method has
+    a single handler, which handles the success and simply pops up an alert with the
+    value that should now be 4.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Run the script in an HTML page, and we should have an alert displaying the number
+    4.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: You can find the complete code and test it out at jsFiddle via [http://jsfiddle.net/RamiSarieddine/g8oj4guo/](http://jsfiddle.net/RamiSarieddine/g8oj4guo/).
+    Make sure the browser supports promises.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let us try to add some error handling to this code. First, for the sake of simplicity
+    and readability, I will create a function named `alertResult` to replace `alert(value);`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Hence, we will have a function as the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We will add another function called `onError`, which basically displays an
+    alert with the error message passed to it. The function will have the following
+    syntax:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Now, let us add a function that will include error handling by detecting an
+    anomaly and rejecting the promise. The following code shows this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE21]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'What the previous function does is simply check for the value; if it is zero,
+    the function rejects the promise; otherwise, it fulfills the promise by dividing
+    the number 1 by `val`. To test this, we will pass the value 0 to `multiplyAsync`
+    , invoke `divideAsync` in its `then` call, and finish by calling an error function
+    in the `then` method of `divideAsync`. The code will look as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE22]'
+  prefs: []
+  type: TYPE_PRE
+- en: The end result will be an error message that displays the text **cannot divide
+    by zero**. That is because zero got passed to `divideAsync`, which in turn rejected
+    the promise, and an error message was passed to the `onError` handler.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'You can find the updated code with this error handler scenario on the following
+    jsFiddle URL:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[http://jsfiddle.net/RamiSarieddine/g8oj4guo/15/](http://jsfiddle.net/RamiSarieddine/g8oj4guo/15/)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To wrap it up, promises do offer a very good solution to address the complexities
+    of asynchronous operations. The abstraction that promises provide allows us to
+    do several things more easily, especially common asynchronous patterns using callbacks,
+    with the support of the following major properties:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: A single promise can be attached to and cater to more than one callback
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Values and errors get passed along in the promise
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Throughout the previous five chapters of this book, we have learned a great
+    deal about promises. We started with asynchronous programming in JavaScript and
+    took stock of where promises stand amidst that world, during which we discussed
+    in detail why you should care about promises as of now. Next, we dived deep into
+    the Promises API and a thorough description of its `then` method. Following this,
+    we learned about the browsers that currently support promises and the libraries
+    that implement promise-like features. Next, we covered the chaining of promises
+    and gave a detailed explanation of how we can achieve this as well as queue the
+    asynchronous operations using promise chains. Our third stop was error handling,
+    one of the most important aspects of the concept of promises. We stepped back
+    and took a look at exceptions in JavaScript and how they are addressed in promises.
+    We also learned about the `catch` method as part of handling errors with promises.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Promises now have native support in JavaScript, and this is a focal time in
+    the world of web and client-side development to start leveraging this technology.
+    As we move forward, more browsers will start adopting promises as a standard and
+    have it become native in the browser.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If people around you have been making noise about JavaScript promises, well
+    now you know why. This book represents a single point of reference—a comprehensive
+    one—just when you want to learn about promises and saving you from all these bits
+    and pieces scattered out there on the Web. You can take this learning and implement
+    it right away. You can always come back to this book for reference and details
+    on the API. From here, you can start implementing your own promise libraries and
+    make use of other libraries available as well as delve into other implementations,
+    such as Node.js. You can also start using promises for the asynchronous requests
+    to databases, the Web, or file servers.
+  prefs: []
+  type: TYPE_NORMAL
+- en: I hope you enjoyed reading this book and that it left you equipped with the
+    right knowledge, tools, and tips to put that learning into practice and make some
+    killer applications that leverage the power of JavaScript promises.
+  prefs: []
+  type: TYPE_NORMAL

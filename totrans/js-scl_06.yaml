@@ -1,0 +1,865 @@
+- en: Chapter 6. User Preferences and Defaults
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Any sufficiently large JavaScript application needs to configure its components.
+    The scope and nature of our component configuration varies on an application-by-application
+    basis. There are a number of scaling factors that need to be considered when configuring
+    our components, and we'll address these throughout the chapter.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We'll start of by identifying the types of preferences we'll have to deal with,
+    and the remainder of the chapter will walk through specific scaling issues concerning
+    these preferences and how to work around them.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Preference types
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: There're three main types of preferences we're concerned with when designing
+    large-scale JavaScript architectures. These are locales, behavior, and appearance.
+    In this section we'll provide a definition for each of the preference categories.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Locales
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Applications today can't support just a single locale, if they're going to succeed
+    on a global scale. Because of globalization and the internet, demand for applications
+    created in another part of the world is the new norm. Therefore, we have to design
+    our JavaScript architectures in a way that accommodates many locales, seamlessly.
+    Users in one locale should be able to use our application with the same ease and
+    confidence as users in any other locale.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The process of enabling components to use any locale is called **internationalization**.
+    Then, the process of creating locale-specific data for our application is called
+    **localization**.
+  prefs: []
+  type: TYPE_NORMAL
+- en: What makes internationalization/localization so difficult is that it touches
+    every visual aspect of the user interface. This can amount to quite a lot, despite
+    the fact that there are many components that don't care about locales—like controllers
+    or collections. For example, any string labels that would otherwise be hard-coded
+    in a template somewhere, now need to pass through a locale-aware translation mechanism.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The language translations are hard enough on their own. But locale data consists
+    of anything and everything that's pertinent to a given culture that's using our
+    software. For example, the formats used for date/time or currency values. These
+    are just the most common and straightforward elements. Things can vary right down
+    to how quantities are measured, or right up to the layout of the entire page.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Behavior
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Most behavioral aspects of our components reside in the code, and are unchanging.
+    Behavioral changes that happen in response to different preferences are subtle,
+    yet important. When there're many interacting components, there's bound to be
+    an incompatible combination that causes issues.
+  prefs: []
+  type: TYPE_NORMAL
+- en: For example, a function found within the implementation of our component might
+    get a value it uses to compute something from a configuration value. This could
+    be a user preference, or it could be something we've put in place for the sake
+    of maintainability.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Throughout the remainder of the chapter, we'll refer to individual configuration
+    values as preferences. We'll refer to the aggregate effect of all preferences
+    within a given component as configuration.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Behavioral preferences can have varied effects on what the user sees. A simple
+    example would be turning the component off, or, disabling it. This preference
+    would result in the component no longer rendering in the UI. Another preference
+    would determine how many elements are displayed. A common example here would be
+    a user telling the application how many search results they want to see per page.
+  prefs: []
+  type: TYPE_NORMAL
+- en: These types of preferences don't always map directly to the end user. That is,
+    a component may have certain preferences that aren't directly exposed to the user.
+    It could be there for the sole purpose of developer flexibility, to reduce the
+    amount of code we write. Configurable components take many forms, and it's from
+    this perspective that we need to make sure we address them accordingly, to help
+    scale our software.
+  prefs: []
+  type: TYPE_NORMAL
+- en: It's not just the frontend components we need to think about either, as a given
+    preference may change backend behavior. This could be as simple as a query parameter
+    preference, or another preference that results in a different API endpoint being
+    used. All these seemingly innocuous preferences add up to far-reaching consequences,
+    across the application, possibly impacting other users of the system.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Appearance
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: If a modern JavaScript application is going to scale across audience demographics,
+    its appearance needs to be configurable. This requirement can range anywhere from
+    a configurable logo, to interchangeable themes that have the potential to drastically
+    alter the look and feel of the UI.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Generally speaking, changes in appearance are centered around CSS properties
+    like fonts, colors, widths, border radiuses, and so on. While it's true that the
+    majority of the CSS implementation isn't touched by the majority of JavaScript
+    developers, we still need to be conscious of theme boundaries.
+  prefs: []
+  type: TYPE_NORMAL
+- en: For instance, if we're flexible with our appearance and how it's configured,
+    we may let our users select their own theme at runtime. So we'll need to implement
+    a theme-switching mechanism with which the user interacts. Further, themed UIs
+    mean that the preference will need to be stored and loaded somewhere.
+  prefs: []
+  type: TYPE_NORMAL
+- en: So that's coarse-grained themes—what about fine-grained appearance configuration?
+    The former is more prevalent however, configuring specific styles of individual
+    components isn't out of the question. The appearance granularity level coincides
+    with other scaling influencers, like where our software is deployed, and the capabilities
+    of our configuration APIs.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Supporting locales
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Having internationalization support throughout all our components is a good
+    idea. In fact, there're a lot of JavaScript tools out there to aid with this task.
+    Some are more stand-alone, and some are more tailored for specific frameworks.
+    Using these tools is easy, but there's a lot more to localization that needs to
+    be taken into consideration, especially in a scaling context.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Deciding on locales to support
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Once we have software with internationalization support that's in production
+    use, the next step is to decide which locales to support. When we go through the
+    first step of ensuring that all our components are internationalized, we do so
+    with just one locale—the default locale. And that's fine at first, it may be years
+    before our first secondary locale support requirement.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This is generally what happens with newer software projects. We know that internationalization
+    should be up there on our list of priorities, but it's easy to get sidetracked
+    with everything else going on. The leading argument in favor of not spending effort
+    on locale support is that it's not needed right away. The argument against this
+    mindset is that internationalization is exceedingly difficult to implement after-the-fact,
+    as our components grow. So it's yet another scale-related trade off to make. Do
+    we want our application to scale across cultures, or is immediate time-to-market
+    more important?
+  prefs: []
+  type: TYPE_NORMAL
+- en: Exceptional cases aside, we'll assume that internationalization is a must-have—we
+    need to prioritize which locales we'll support, versus those that can wait. For
+    example, it's a bad idea to aim for mass locale support before it's actually required.
+    Locales occupy physical space, and someone needs to maintain these locales. So
+    without a customer to pay the cost of this added scaling complexity, it's not
+    worthwhile.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Instead, the chosen locales should be based solely on customer demand. If we
+    have hundreds of people looking for support in one locale, with less than a dozen
+    people asking about another, the priority should be obvious. It can be helpful
+    if we prioritize locale support the same as we would feature support.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Maintaining locales
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: First and foremost, if we support a given locale, we'll need to translate the
+    string messages that are displayed throughout the UI. Some of these are statically
+    coded in template files while other strings are found in our JavaScript modules.
+    If only it were a matter of locating these strings, and translating them once.
+    But rarely do strings stay the same forever—there are often subtle tweaks to be
+    had. Also, as our software grows and more components are added, so too are strings
+    to be translated.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The scaling factor for just string translations alone is the number of locales
+    we support—which is why we need to be conscientiously supporting only a limited
+    number of locales while we can get away with it. The complexity doesn't end there.
+    For example, some message strings are straightforward to map from source language
+    to target language. Things like grammar inflection—how words take on different
+    meanings based modifications—aren't so straightforward. In fact, these usages
+    sometimes require specialized use of the internationalization library.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Other localizable data, like date/time formats, don't require much maintenance.
+    There're one or two formats used throughout the application for a given locale.
+    For formats like these, customers will likely be happy with the standard format
+    used for their culture. Luckily, there's **Common Locale Data Repository** (**CLDR**)
+    data we can use in our projects—a downloadable repository of common locale data.
+    This is a good starting point, because this data is good enough most of the time,
+    and is easy to override upon request.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Setting the locale
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Once we have our internationalization library in place, and a couple of locales,
+    we can start testing how our application behaves from the perspective of different
+    cultures. There are a number of items to consider for this behavior. For example,
+    we need to facilitate the locale selection for the user and we need to keep track
+    of that selection.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Choosing locales
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: There are two common approaches to locale selection in JavaScript applications.
+    The first approach is using the `accept-language` request header. The second approach
+    is a selector widget on a user settings page.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The nice thing about the `accept-language` approach is that there's no user
+    input involved. Our application is sent to the user's browser preference for language,
+    and from there, we can set the locale. The challenge is that this approach can
+    be too restrictive from a usability perspective, and from an implementation perspective.
+    For example, users may not have control over their browser language preferences,
+    or the browser may not have preferences for locales our application supports.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Another technical challenge with the `accept-language` request header approach
+    is that there's no easy means to pass request headers from the browser to the
+    JavaScript code—which is kind of insane since there're both in the browser! For
+    example, if our JavaScript code needs to know the locale preference so it can
+    load the appropriate locale data, it'll need access to the `accept-language` header.
+    To do this, we need backend hacks.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The more flexible approach is to present the user with a locale selector widget,
+    and from there, it's made explicit which locale the user would like activated.
+    However, we'll need to figure out a way to store this locale selection so that
+    the user doesn't have to repeatedly select their locale.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Storing locale preferences
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The locale preference, once selected by the user, can be stored as a cookie
+    value. The next time the application loads in the browser, we'll have the locale
+    preference ready to go. Then we can mark the selector with the appropriate selection,
+    as well as load the relevant locale data.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The problem with storing the locale preference in a cookie is that if the user
+    moves to another browser, the same selection process will need to be repeated.
+    This can be a real problem these days as users are more mobile than ever—changes
+    made on one device should be reflected anywhere the application is used. And that's
+    just not possible with cookies.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If we use a backend API to store the locale preference, it'll be available everywhere
+    for the user. The next challenge is loading the relevant locale data so that it's
+    available for the rest of our components to use. Generally, we want this data
+    ready before we start rendering data, so it's one of the first requests we'll
+    make to the backend. Sometimes, all locales are served together, as one resource.
+    This can be a problem if we support lots of locales, because of the up-front cost
+    to load it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: On the other hand, once we load the locale preference, we can load only the
+    immediately required locale. This will boost the initial load-time, but the trade-off
+    is that it's slower to switch to a new locale. This is unlikely to happen often,
+    so it's probably best to not load locale data that's never used.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Storing locale preferences](img/4639_06_01.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: The JavaScript application first loads the locale preference, then uses that
+    to load the local data
+  prefs: []
+  type: TYPE_NORMAL
+- en: Locales in URIs
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In addition to storing the local preference in the backend or as a cookie value,
+    locales can be encoded as part of the URI. Often, they're expressed as a two character
+    code—such as `en` or `fr`—and found at the beginning of the URI. The advantage
+    of using this approach is that there's no storage required for the preference.
+    We'd still likely want a selector for the user to choose their preferred locale,
+    but this would result in a new URI instead of a preference value being stored
+    somewhere.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Encoding the preferred locale in URIs like this has the same drawbacks as the
+    cookie-based approach. While we can bookmark a URI, or pass a URI along to someone
+    else—they'll see the same locale we do—the problem is that this isn't a permanent
+    preference. Mind you, we could always store the preference and update the URI
+    when the application is loaded. But this won't scale well due to the added complexities
+    around routing and URI generation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Generic component configuration
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: As we saw in the preceding section on locale preferences, we need to load a
+    preference value, which can then be used by each of our components. Or maybe just
+    one component in the case of locales, but this preference value indirectly impacts
+    all components. Looking beyond locales, there're a lot of other things we'll want
+    to configure in our components. This section looks at the problem from a generic
+    perspective. First we need to decide on which aspects of a given component are
+    configurable, and then there are the mechanics of getting those preferences into
+    the components at runtime.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Deciding on configuration values
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The first step with component configuration is deciding on preferences—which
+    aspects of the component need to be configurable, and which aspects can stay static?
+    It's far from an exact science, as more often than not, we realize later on that
+    something static should have been configurable. Trial and error is the best process
+    for finding configurable preferences, especially as our software is just getting
+    off the ground. Too much initial configurability deliberation is a scaling bottleneck.
+  prefs: []
+  type: TYPE_NORMAL
+- en: When something isn't configurable, it has the advantage of simplicity. It's
+    more structural, and less of a moving part. This removes potential edge cases
+    and performance issues. Up-front justification for making the value configurable
+    doesn't happen all that often. As our software matures though, we'll have a better
+    perspective, having put some preferences in place, and we'll have a better idea
+    of what to expect.
+  prefs: []
+  type: TYPE_NORMAL
+- en: For instance, we'll start seeing duplication across several of our components.
+    They'll be largely the same, with only subtle variations. If we keep adding new
+    types of components that differ minutely from one another, we're in for scaling
+    trouble. Our code base will grow to an unmanageable size, and we'll confuse developers
+    because the responsibilities of a given component will be blurred.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This is where we leverage configurability to achieve scale. This is done by
+    introducing preferences in favor of new component types. For example, say we need
+    a new view that is identical to another view that's used in several places already,
+    aside from the way it handles a DOM event. Rather than implement a new view type,
+    we would enhance the existing view, to accept a new function value that overrides
+    the default for this event.
+  prefs: []
+  type: TYPE_NORMAL
+- en: On the flipside, we can't just go introducing component preferences willy-nilly.
+    When we do that, we replace old scaling bottlenecks with new ones. There's performance
+    to take into consideration, because it takes a hit with every new configurable
+    preference we add. There's the code complexity—it's not as straightforward to
+    use preferences as it is static values. There's the possibility of introducing
+    preferences that are inconsistent with other preferences introduced during the
+    same development cycle by other developers. Finally, there's the matter of keeping
+    track and documenting all the various preferences available to a given component.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Stored and hard-coded default values
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: As far as components are concerned, preferences should be treated as closely
+    to regular JavaScript variables as possible. This keeps our code flexible—replacing
+    a preference with a static value shouldn't have a big impact. Regular variables
+    are usually declared with an initial value, and preferences should be declared
+    with a default value as well. That way, if we can't get at the preference that's
+    stored in the backend for some reason, the software will continue to function
+    using a sane default value.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There should always be a fallback default value for any preference, and these
+    values should be documented somewhere. Ideally the default values used serve the
+    common case, so not every preference needs to be tinkered with just in order to
+    use the software. If for some reason we can't access the stored configuration
+    values from the backend, the hard-coded default values keep the software running,
+    albeit, using a less than ideal configuration.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Sometimes, not having access to the configuration values is a non-starter and
+    the software should fail-fast instead of using the hard-coded default values.
+    While the software is fully-functional using the defaults, depending on our customers
+    and their deployment, this mode may be worse than the software being unavailable.
+    Something to consider when deploying large-scale JavaScript applications.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Default preference values make it safe to delete modified preference values
+    in the backend. Think of it as a reset to the factory settings action. In other
+    words, if we introduce problems into the software by adjusting preference values,
+    we can just remove our stored values. If there's no need to store default values
+    in the backend, then there's no risk of overriding the defaults.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Stored and hard-coded default values](img/4639_06_02.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Defaults are always there, but can easily be overridden by preference values
+    from the backend
+  prefs: []
+  type: TYPE_NORMAL
+- en: Backend implications
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: If we're storing our preference values in the backend to provide portability
+    for our users, then we need some mechanism that allows us to put new value preferences
+    in the configuration store, as well as retrieve our preferences. Ideally, this
+    would be an API that lets us define arbitrary key-value preferences, and lets
+    us retrieve all our configuration with one request.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The reason this is so valuable to frontend development is that we can define
+    new preferences for our components as we develop them, without being disruptive
+    to the backend team. As far as the backend API is concerned, frontend configuration
+    is arbitrary—the API works the same with or without a UI.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Sometimes, this can actually be more of a headache than it's worth. What if
+    there's very little variation—only a handful of configuration values required
+    throughout the application? If that's the case, we might consider maintaining
+    a static JSON file that serves as our frontend configuration. It's arbitrary enough
+    that we can define preferences ad-hoc, and it works the same as an API, as far
+    as fetching the preference values goes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Where this doesn't work so well is when there are user-defined preferences.
+    For example, the user's preferred locale. Our application might have a default
+    locale specified, until the user changes it. They're changing the preference for
+    themselves, not every user in the system. This is where we need the aforementioned
+    configuration API. The way it stores these values, in a database most likely,
+    needs to be user-sensitive. This isn't true of every preference value though;
+    some are set by the deployment operators and users can't touch these.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Backend implications](img/4639_06_03.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: The current user session can be used to load preferences specific to that user;
+    these are different from system settings, which don't vary by user
+  prefs: []
+  type: TYPE_NORMAL
+- en: Loading configuration values
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: There're two approaches to loading configuration required by the frontend. The
+    first approach is to load all configuration because anything is rendered in the
+    UI. This means that before the router starts to process anything, we would wait
+    for the configuration to be available. This generally means waiting on a promise
+    that loads the configuration data. The obvious downside here is that the initial
+    load time suffers. The upside is that we have everything we need going forward—no
+    more configuration requests.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We can use local storage in the browser to cache preference values. They seldom
+    change, and this tactic has the potential to boost initial-load performance. On
+    the other hand, it adds complexity—so only consider this if there're a lot of
+    configuration values and the time taken to load them is noticeable.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Instead of loading all our configuration up-front, preference values can be
+    loaded on demand. That is, when a component is about to be instantiated, a request
+    is made for its configuration. This has the appeal of being efficient, but again,
+    how much configuration could there possibly be to warrant such complexity? Strive
+    toward loading all application configuration up-front where possible.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Loading configuration values](img/4639_06_04.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: A configuration component that communicates with the backend provides an abstraction
+    for any components that get or set preference values
+  prefs: []
+  type: TYPE_NORMAL
+- en: Configuring behavior
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The behavior of our components is largely self-contained, if implemented well.
+    What they expose to the outside world are preferences that make subtle adjustments
+    to their behavior. This could be something that's internally-focused—such as the
+    type of model that's used, or the preferred algorithm. It could be something that's
+    user-facing, such as enabling components, or setting display modes. It's these
+    preferences that help us scale our components to work in a variety of contexts.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Enabling and disabling components
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Once our software reaches a certain critical mass, not all features will be
+    relevant to all users. The simple ability to toggle components between an enabled/disabled
+    state is a powerful tool. Both for us, as a software vendor, and for our customers.
+    For example, we know that some features are required by certain user roles in
+    our software, but they're not the common case. To better optimize for the common
+    user, we may choose to disable certain advanced features that aren't used as often.
+    This can clean up the layout, improve performance, and so on.
+  prefs: []
+  type: TYPE_NORMAL
+- en: On the other hand, we may have all our features turned on by default, but if
+    components have the ability to be turned off, then that lets the user decide what's
+    relevant to them. If they can arrange the UI to their liking, removing elements
+    that are of no particular use to them, then it makes for a better user experience.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In either case, there're implications as far as the layout as a whole is concerned.
+    If we don't take the time to design our layouts in a scalable way, then toggling
+    components really doesn't add any value. During the design of our layout, we need
+    to walk through the various configuration scenarios that the user might use, or
+    that we ourselves might use.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Enabling and disabling components](img/4639_06_05.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Disabling components on a page has the potential to update the layout; our styles
+    need to by able to handle this
+  prefs: []
+  type: TYPE_NORMAL
+- en: Changing quantities
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The quantity of something displayed in the UI is something that's at best a
+    guess made at design time. We hope that the number of items displayed in a list
+    is the optimal number, and the user doesn't have to fuss with changing these types
+    of preferences. The problem is that quantities are very subjective. It's more
+    about the individual that's using our application to perform a task, and depending
+    on what they're used to, what they're doing in conjunction with using our software,
+    and a host of other factors, the quantity preference default may not be optimal.
+  prefs: []
+  type: TYPE_NORMAL
+- en: A common quantity question is how many entities do I want displayed on my screen?
+    The entities can be common grid widgets that're used throughout the application,
+    a search results page, or anything else that renders a collection of things. We
+    can opt for the efficient default of a smaller quantity to display, while allowing
+    for larger quantities that suit the user's needs.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: It's always a good idea to sanity-check the user provided preferences. One safeguard
+    is to put a selection of allowable values in place, rather than accepting arbitrary
+    user input. We shouldn't allow for 1,000 entities to be rendered in a grid, for
+    instance. Although, the API that returns this data should sanity-check and cap
+    quantity arguments as well.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Another quantity consideration is which entity properties do we need displayed?
+    In the case of grids, we may want to see certain columns while hiding others.
+    Something like this is a preference that ought to be persistent, because if we
+    go through the effort of setting up the data we want to see, we won't want to
+    repeat that effort.
+  prefs: []
+  type: TYPE_NORMAL
+- en: When we change quantity preferences, there're backend implications. In the case
+    of how many entities to render, we probably want to pass this constraint along
+    to the API when we're fetching the data—there's no point in fetching something
+    we're not going to display. There may be model or collection implications as well.
+    In the case of figuring out which data we want displayed in a particular UI region,
+    we might ask the model or collection for only a subset of what they have.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Changing order
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The order in which a collection is rendered in the UI is another common behavioral
+    preference, one that we'll most likely want to support. The biggest impact here
+    is configuring the default order of something. For example, ordering every collection
+    by the modified date, so that the most recent entities appear first, is a good
+    default.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Many grid components will let the user toggle the ordering of a given column
+    between ascending and descending. These are actions, not necessarily preferences.
+    However, they can grow to be annoying actions if the default order is never what
+    we want. So we may want to introduce a means for the user to provide a default
+    ordering preference for any given grid, while retaining the ability click column
+    headers to sort ad-hoc.
+  prefs: []
+  type: TYPE_NORMAL
+- en: More complex ordering preferences are possible, and clickable column headers
+    don't always help here. For instance, what if we want to order by something that's
+    not actually rendered in the UI, like relevance or best selling? There's probably
+    a control we can use for this, but it's another potential preference—since it
+    could help provide a better experience.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: Configuring notifications
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: When users perform some action in our application, like turning something on
+    or off, we need to provide feedback on the state of that action. Did it succeed?
+    Did it fail? Is it running? These are generally done through notifications, rendered
+    as transient popups in the corner of the screen, or in a panel somewhere.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The user may want to control certain aspects about how they're notified—there's
+    nothing more irritating than getting spammed with information we don't care about.
+    So one preference related to notifications might be a selection of notification
+    topics. For example, we might want to opt out of notifications for irrelevant
+    entity types.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Another potential preference might be the duration that a given notification
+    stays active on the screen. For example, should it stay where it is till we acknowledge
+    it, or should it go away after three seconds? In the extreme case, the user may
+    want to turn off notifications altogether if there's no other way to make them
+    less annoying. There are always the action logs for convenient browsing later
+    on if need be.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Inline options
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: How do we collect user preference input? For the less active, global application
+    preferences, a settings page divided into categories probably makes sense. However,
+    having to configure things specific to individual widgets on a settings page is
+    kind of annoying. It's sometimes better to have inline options.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Inline means that the user can set their preference using elements that are
+    part of the UI in question. For example, choosing specific columns to display
+    in a grid. It wouldn't make much sense to bury such a preference in a settings
+    page somewhere. When preference controls are positioned relative to the thing
+    they control, it requires less explanation. The user can generally figure out
+    the meaning a lot easier when the control is contextual.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The downside to contextual preference controls is that they have potential to
+    clutter the UI. If there're a lot of components on the page, each of which has
+    preferences controls on it, then we're most likely creating confusion instead
+    of convenience.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Changing the look and feel
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Today, it's less common for the look and feel of an application to be a static,
+    unchanging aspect. Instead, they ship with a handful of themes the user can choose
+    from. Or, the support to easily create themes is built into the software. This
+    allows our customers to decide how our software should look for their users. In
+    addition to packaged themes that update the look and feel of our application,
+    individual style preferences may be set.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Theme tools
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: If we want our application to have the ability to change themes upon request,
+    we have to put a lot of design and architecture into our CSS and the markup that
+    uses it. While this topic goes way beyond the scope of this book, it's worth looking
+    at the tools available for assisting in generating themes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The first tool at our disposal in this area is a CSS framework. Like JavaScript
+    frameworks, CSS frameworks define consistent patterns and conventions. It's then
+    up to us, the component authors, to figure out how to apply these CSS patterns
+    to our components, and the markup they generate. Think of a theme as a bunch of
+    style preferences. When the configuration is changed, the appearance is changed
+    because of new preference values. What makes a CSS module a theme, is having the
+    same properties defined as all the other themes used by the application—it's only
+    the values of these properties that change.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Another tool we can use is part of the backend build process—CSS compilers.
+    These tools take in files that use a dialect of CSS, and preprocess them. What's
+    nice about these types of preprocessor languages is that we have much greater
+    control of how style preferences are specified. For example, there's no such thing
+    as variables in CSS, but preprocessors have them, and this is a really handy configurability
+    feature to have.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Selecting a theme
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Once we have a theme-able user interface, we need a way to load a specific theme
+    instance. Even if we don't allow users to select a theme of their choice, it's
+    still nice to be able to change the design by changing a preference value. When
+    we decide to implement a new design, this certainly makes deployment into a production
+    environment that much simpler.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Down the road, we may decide that we do want to let users select their own theme.
+    For example, we might have acquired lots of users and there's now a demand for
+    this ability. We can create the theme selector like any other preference value
+    that's used in the system. We'd need to have some kind of theme selection widget
+    in place, and the selection made by the user can map to a path, since this is
+    likely all that's needed to swap one theme for another.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Another possibility is to have different themes set as the default, based on
+    the role of the user. For example, if an administrator logs in, it's helpful to
+    have a different visual cue that you are in fact logged in as a specific type
+    of user. This type of thing can help in scenarios where there're screenshots,
+    and so on.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Individual style preferences
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The look and feel of an application can change at an individual element level.
+    That is, if we want to change the width of something, we can change it on the
+    screen. Or maybe we don't like the font face that's in use and we want to change
+    that as well, but nothing else.
+  prefs: []
+  type: TYPE_NORMAL
+- en: These types of fine-grained style preferences should be avoided because they
+    do not scale well. Our components have to be aware of specific style considerations,
+    and that degrades the true purpose of the component in most cases. In some cases,
+    picking a different layout for a screen doesn't hurt, because that usually means
+    swapping one CSS class for another.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Another possibility is using drag and drop interactions to set the size of something.
+    But, it's best if these are kept as transient interactions, and not as persistent
+    preferences. We want to optimize for the common configuration values, and there's
+    nothing common about the resizing of elements to individual tastes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Performance implications
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: We'll close the chapter out with an overview of the performance implications
+    introduced by the various configuration areas discussed thus far. If we really
+    need configuration values in one area because they add value, they may hurt performance
+    overall—so we need to offset this cost somehow.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Configurable locale performance
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: By far the most noticeable performance bottleneck concerning locales is the
+    initial load. That's because we have to load all the locale data before anything
+    is actually rendered for the user. This includes string message translations,
+    as well as all the other data necessary for localization. The performance during
+    initialization is constrained further when there's more than one locale loaded
+    up-front.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The best way to improve the load performance is to only load the locale that
+    the user actually wants. Once they've set this preference, they're unlikely to
+    change it frequently, so there's no real benefit to having other locale data nearby
+    and ready.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There's an unavoidable slow-down in rendering views, because much data needs
+    to pass through the localization mechanism we're using. This alone isn't likely
+    to cause performance issues because most operations are small and efficient—simple
+    lookups, and string formatting. The additional overhead is there though, and needs
+    to be accounted for.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Configurable behavior performance
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Configuration that alters the behavior of a component also has minimal performance
+    impact. In fact, the performance characteristics of configurable behavior are
+    similar to those of configurable locales. The biggest challenge is the initial
+    configuration load. After that, it's just a matter of performing lookups, which
+    are fast.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The thing to look out for, is when we have lots of components we need to configure.
+    While individual lookups are fast, performance takes a hit when there're lots
+    of lookups. It'll take quite a while to reach this point, but the risk is there
+    nonetheless.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The following is an example that shows how we can configure when a collection
+    is sorted, impacting the performance of other operations that are order-dependent
+    and are called frequently:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: Behavioral preferences may be used to completely swap one function for another.
+    They may have the same interface, but with different implementations. Deciding
+    which function to use at runtime isn't expensive, but there's also the memory
+    consumption to consider. For example, if there're many preferences throughout
+    our application that support different functions, we'll have to store the default
+    implementation, in addition to the function stored as a preference value.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Configurable theme performance
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The only real latency we can expect from configurable themes is the initial
+    cost of figuring out which theme to use. Then there's the process of downloading
+    it, and applying the styles to the markup—which isn't any different from an application
+    with a single set of static styles. If we allow the user to switch themes, there's
+    the additional latency of waiting for the new CSS and related static resources
+    to download and render.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: This chapter introduced the concept of configurability in large-scale JavaScript
+    applications. The major configuration categories are locales, behavior, and appearance.
+    Locales are a big part of web applications today because there's nothing stopping
+    people, anywhere in the world, from using our application. There are scaling challenges
+    associated with internationalization though. It adds complexity to our development
+    lifecycle and there's the cost of maintaining locales.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Preferences need to be stored somewhere. Storing them in the browser works,
+    but there's no portability with this approach. It's much more appropriate to store
+    preferences in the backend and load them when the application initializes. There're
+    many challenges to scaling lots of preferences, including differentiating between
+    user-defined and system preferences. It shouldn't matter if we've included sane
+    hard-coded default values.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The styles of our application are another configurable dimension. There're frameworks
+    and build-tools that help us build themes for the look and feel. Configurable
+    components have minor performance considerations—the next chapter will look at
+    performance challenges that crop up as we scale our software.
+  prefs: []
+  type: TYPE_NORMAL

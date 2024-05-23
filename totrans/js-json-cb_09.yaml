@@ -1,0 +1,766 @@
+- en: Chapter 9. Querying JSON with JSONPath and LINQ
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Sometimes, all you may want to do is extract a field or two from some JSON-formatted
+    data, rather than parse a JSON blob into a class and work with all of its fields.
+    With JSONPath or LINQ (using Json.NET), you can do just that. Here, you''ll find
+    the following recipes:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using the JSONPath dot-notation to query JSON documents
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using JSONPath bracket-notation to query JSON documents
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using JSONPath scripting to construct more complicated queries
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using JSONPath in your web application
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using JSONPath in your Node.js application
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using JSONPath in your PHP application
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using JSONPath in your Python application
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using JSONPath in your Java application
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using JSONPath with SelectToken to query for JSONPath expressions in your C#
+    application
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using LINQ with Json.NET to query JSON in your C# application
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Introduction
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: One of the biggest strengths of XML is XPath, the query-oriented language to
+    query subsections of an XML document. Stefan Goessner proposed the JSONPath query
+    language, a language with features similar to XPath that lets you extract just
+    the bits of a JSON document your application needs.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Note that something''s still doing the parsing: you don''t get something for
+    nothing, and JSONPath implementations require JSON parsing with at least similar
+    memory and runtime characteristics. However, if there''s a JSONPath library for
+    the platform you''re developing, JSONPath can lead to more readable code, as you
+    don''t need to mock entire classes only to extract a field or two or summarize
+    a field across a collection of JSON values.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: If you're used to developing for Microsoft platforms, you're certainly aware
+    of Microsoft's **Language Independent Query** (**LINQ**) language that lets you
+    use write declarative queries on enumerable data structures. While the .NET implementations
+    of JSON parsing provide only rudimentary LINQ support, the indomitable Json.NET
+    library's implementation supports LINQ as well as JSONPath, letting you make declarative
+    queries of JSON documents using either fluent or statement syntax.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To use either JSONPath or LINQ, you''ll need a library that supports it. As
+    I write this, there are libraries that support JSONPath for JavaScript, the flavour
+    of JavaScript of Node.js, PHP, C#, Python, and Java. Of course, if you want to
+    use LINQ, you''ll need to be running your application on the .NET platform using
+    a language such as C#, F#, or Visual Basic. Consequently, most of the recipes
+    that follow have two steps: what to do to download a library that supports JSONPath
+    and then the actual steps to call the JSONPath code in your application.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Most JSONPath examples use Goessner''s example document, consisting of records
+    from a hypothetical bookstore, and in this chapter, we''ll stick with that example
+    as well. Our JSON document looks like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: As you can see, we have a store object, which has a collection of books and
+    a single bicycle. Each book has a category, an author, a title, and a price. Representing
+    a JSON document like this as a class would be difficult because of the very different
+    structures of the book records as opposed to the bicycle record; you could use
+    the type-unsafe query methods that we discussed in [Chapter 1](ch01.html "Chapter 1. Reading
+    and Writing JSON on the Client"), *Reading and Writing JSON on the Client*, and
+    [Chapter 2](ch02.html "Chapter 2. Reading and Writing JSON on the Server"), *Reading
+    and Writing JSON on the Server*, to parse a document like this and traverse its
+    document, although a better choice for most applications is JSONPath, as you'll
+    soon see. Let's begin with how to query the document for individual fields.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using the JSONPath dot-notation to query JSON documents
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: JSONPath uses *expressions* written in either the dot-notation or bracket-notation
+    to denote a traversal of fields in the JSON document. Dots separate field names,
+    as if they were object attributes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Here are a few examples of dot-notation:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: How it works…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In the first line, we reference the first (counting from zero) book in the store,
+    returning the title field. The second line is similar, except that it returns
+    a collection of all titles of all the books. The third example returns a collection
+    of all price fields in all records in the store collection. The fourth example
+    finds the fourth book item in the store.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The notation is fairly intuitive, except for the use of `..` and `*`. These
+    are examples of some of the special characters used by JSONPath to denote slices
+    across the document.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There's more…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'JSONPath defines the following special characters you can use when writing
+    queries:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `$` symbol refers to the root object or element.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The `@` symbol refers to the current object or element.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The `.`operator is the dot-child operator, which you use to denote a child element
+    of the current element.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The `[]` operator is the subscript operator, which you use to denote a child
+    element of the current element (by name or index).
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The `*` operator is a wildcard, returning all objects or elements regardless
+    of their names.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The`,` operator is the union operator, which returns the union of the children
+    or indexes indicated.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The `:` operator is the array slice operator, so you can slice collections using
+    the syntax `[start:end:step]` to return a subcollection of a collection.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The `()` operator lets you pass a script expression in the underlying implementation's
+    script language. It's not supported by every implementation of JSONPath, however.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: See also
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The definitive JSONPath documentation is available at Goessner's website at
+    [http://goessner.net/articles/JsonPath/](http://goessner.net/articles/JsonPath/).
+    Of course, you should check the documentation for the implementation of JSONPath
+    that you choose for specific implementation details.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'One handy thing on the Web is a JSONPath expression tester; [http://jsonpath.curiousconcept.com/](http://jsonpath.curiousconcept.com/)
+    is one such site. By pasting JSON and a JSONPath expression in the tester, you
+    can evaluate the JSONPath and see what the result is. This is a very easy way
+    to dynamically debug your JSONPath expressions as you first start. Here''s an
+    example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![See also](img/B04206_09_01.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Using JSONPath bracket-notation to query JSON documents
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: JSONPath provides an alternate notation, bracket-notation, which works just
+    like dot-notation to query fields. The syntax is reminiscent of how you access
+    fields in associative arrays, where you pass the field name as the selector to
+    `operator[]` to obtain the value in the named field.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'In bracket notation, we will write the previous recipe''s example as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: How it works…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: As seen earlier, the first example extracts the title of the first book in the
+    object in the field named store. The second example extracts all titles of all
+    books in the store. The third example returns a collection of all price fields
+    for every item in the store, and the fourth example returns the fourth book in
+    the store.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using JSONPath scripting to construct more complicated queries
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Sometimes, what you really want to do is query all items that meet a certain
+    criteria, such as those exceed a particular threshold. JSONPath provides the `?()`
+    predicate, which lets you execute simple comparison scripts of individual fields
+    in your JSONPath.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Here''s an example that queries all books costing less than `10` currency units:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: How it works…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The query begins by specifying all book items in the store; the `?()` predicate
+    then selects each item in that category using the `@` selector to obtain the value
+    of the current item, and then selects prices less than `10`. The resulting items
+    have their title field extracted. This query yields the following results:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: Queries like this don't work with all implementations of JSONPath. Checking
+    the JSONPath Expression tester at [http://jsonpath.curiousconcept.com/](http://jsonpath.curiousconcept.com/),
+    I found that it worked using the flow communications JSONPath 0.1.1 but not Goessner's
+    implementation of JSONPath in version 0.8.3.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Any expression that returns a Boolean can be used in the `?()` predicate. Here''s
+    another example that queries all books in the fiction category in our collection:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: The beginning is the same, that is, selecting for all books; instead of filtering
+    by price and returning books costing less than `10`, this returns all items in
+    the collection where a specific item in the book collection has a category field
+    equal to fiction.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using JSONPath in your web application
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Using JSONPathwith JavaScript in your web application is easy. You only need
+    to include the `jsonpath.js` implementation in your application, and then use
+    its `jsonPath` function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting ready
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Before you begin, you need to download the JavaScript `jsonpath` library from
+    [https://code.google.com/p/jsonpath/](https://code.google.com/p/jsonpath/) and
+    include it in the scripts your HTML page uses with a script tag, like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: The `jsonPath` function takes a JSON object (not as a string, but as a JavaScript
+    object) and applies the path operation to the contents, returning either the matched
+    values or a normalized path. Let's see an example.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Here''s an example that returns a list of titles from the JSON object I showed
+    in the introduction:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Note that if you have the object as a string, you''ll have to parse it first
+    using `JSON.parse`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: How it works…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The preceding code uses the `jsonPath` function to extract all titles from the
+    currently passed object. The `jsonPath` function takes a JavaScript object, path,
+    and an optional result type that indicates whether the return value should be
+    the value or the path to the value. The incoming object can either be a structured
+    object or an array, of course.
+  prefs: []
+  type: TYPE_NORMAL
+- en: See also
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Goessner's original documentation for the original implementation of JSONPath
+    is at [http://goessner.net/articles/JsonPath/](http://goessner.net/articles/JsonPath/).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using JSONPath in your Node.js application
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: There's an npm package available that contains an implementation of the JavaScript
+    JSONPath implementation, so if you want to use JSONPath from Node.js, you only
+    need to install the JSONPath module and call it directly.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting ready
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'To install the JSONPath module, run the following command to include the module
+    in your current application:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Alternatively, you can run the following command to include it for all projects
+    on your system:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Next, you''ll have to require the module in your source code, like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: This loads the `JSONPath` module into your environment, storing a reference
+    in the `jsonPath` variable.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The JSONPath module for Node.js defines a single method, `eval`, which takes
+    a JavaScript object and a path to evaluate. For example, to obtain a list of the
+    titles in our example document, we would need to execute the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'If you''re going to be applying a path to JSON in string form, be sure to parse
+    it first:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: How it works…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The `eval` method of the `JSONPath` module takes a JavaScript object (not a
+    string containing JSON) and applies the path you pass to return the corresponding
+    values from the object.
+  prefs: []
+  type: TYPE_NORMAL
+- en: See also
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: For documentation about the JSONPath module for Node.js, see [https://www.npmjs.com/package/JSONPath](https://www.npmjs.com/package/JSONPath).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using JSONPath in your PHP application
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Using JSONPath in your PHP application requires you to include the JSONPath
+    PHP implementation available at [https://code.google.com/p/jsonpath/](https://code.google.com/p/jsonpath/),
+    and parsing the JSON string to a PHP mixed object before applying the JSONPath
+    path you want to extract data from with the `jsonPath` function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting ready
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: You'll need to download `jsonpath.php` from [code.google.com](http://code.google.com)
+    at [https://code.google.com/p/jsonpath/](https://code.google.com/p/jsonpath/)
+    and include it in your application with the `require_once` instruction. You'll
+    also need to ensure that your PHP implementation includes `json_decode`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Here''s a simple example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: How it works…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The preceding code begins by requiring the PHP JSONPath implementation, which
+    defines the `jsonPath` function. It then decodes the JSON string using `json_decode`,
+    before extracting the titles in the mixed PHP object that `json_decode` returns.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Like the JavaScript version of `jsonPath`, the PHP version takes three arguments:
+    the object from which to perform the extraction, the path to extract, and an optional
+    third argument that specifies whether to return the data or return the path to
+    the data in the structure.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: See also
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: For more information about the PHP implementation of JSONPath, see Stefan Goessner's
+    web site at [http://goessner.net/articles/JsonPath/](http://goessner.net/articles/JsonPath/).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using JSONPath in your Python application
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: There are several implementations of JSONPath for Python, too. The best is `jsonpath-rw`
+    library, which provides language extensions so that paths are first-class language
+    objects.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting ready
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'You''ll need to install the `jsonpath-rw` library using pip:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Also, of course, you will need to include the necessary bits of the library
+    when using them:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: How to do it…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Here''s a simple example using our store contents in the introduction stored
+    in the variable `object`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: How it works…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Processing a path expression using this library is a little like matching a
+    regular expression; you parse out the JSONPath expression and then apply it to
+    the Python object you want to slice using path's `find` method. This code defines
+    the object and then creates a path expression storing it in path, parsing the
+    JSONPath that fetches all titles. Finally, creates an array of values found by
+    the path in the object you pass to the path.
+  prefs: []
+  type: TYPE_NORMAL
+- en: See also
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The documentation for the Python JSONPath library is at [https://pypi.python.org/pypi/jsonpath-rw](https://pypi.python.org/pypi/jsonpath-rw).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using JSONPath in your Java application
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: There's an implementation of JSONPath for Java, too, written by **Jayway**.
+    It's available from GitHub, or you can obtain it through the **Central Maven Repository**
+    if your project uses the Maven build system. It matches the original JSONPath
+    API, returning Java objects and collections for fields in JSON objects.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting ready
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'You''ll need to either download the code from GitHub at [https://github.com/jayway/JsonPath](https://github.com/jayway/JsonPath),
+    or, if you''re using Maven as your build system, include the following dependency:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: How to do it…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The Java implementation parses your JSON and exports a J`sonPath` class with
+    a method read that reads JSON, parses it, and then extracts the contents at the
+    path you pass:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs: []
+  type: TYPE_PRE
+- en: How it works…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The read method parses the JSON you pass, and then applies the path you pass
+    to extract the values from the JSON. If you have to extract more than one path
+    from the same document, it''s best to parse the document only once, and then call
+    read on the parsed document, like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs: []
+  type: TYPE_PRE
+- en: There's more…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The Java JSONPath library also provides a fluent syntax, where the implementation
+    of read and other methods returns a context on which you can continue to invoke
+    other JSONPath library methods. For example, to obtain a list of books with a
+    price more than `10`, I can also execute the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE21]'
+  prefs: []
+  type: TYPE_PRE
+- en: This configures `JsonPath` using the configuration, parses the JSON you pass,
+    and then invokes read with a path selector that selects all book objects with
+    a price greater than the value `10`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The JsonPath library in Java attempts to cast its result objects to the primitive
+    classes you expect: lists, strings, and so forth. Some path operations—`..`, `?()`,
+    and `[number:number:number]`—always return a list, even if the resulting value
+    is a single object.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: See also
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: For the documentation on the Java JSONPath implementation, see [https://github.com/jayway/JsonPath](https://github.com/jayway/JsonPath).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using JSONPath with SelectToken to query for JSONPath expressions in your C#
+    application
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: If you use Newonsoft's Json.NET for the .NET environment, you can use its `SelectToken`
+    implementation to make JSONPath queries of JSON documents. First, you'll parse
+    the JSON into `JObject` and then make a query.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting ready
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: You'll need to include the Json.NET assembly in your application. To do this,
+    follow the steps in [Chapter 7](ch07.html "Chapter 7. Using JSON in a Type-safe
+    Manner"), *Using JSON in a Type-safe Manner*, in the *Getting ready* section of
+    the *How to Deserialize an object with Json.NET* recipe.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Here''s how to extract all titles of all books from the example in the introduction
+    and get the first result:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE22]'
+  prefs: []
+  type: TYPE_PRE
+- en: How it works…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The `SelectTokens` method of `JObject` takes a JSONPath expression and applies
+    it to the object. Here, we extract a list of `JObject` instances, one for each
+    item matching the top-level `$.store.book` path, and then invoke the `Values`
+    method to obtain coerced string values for each of the title fields in each of
+    the returned `JObject` instances. Of course, the original JSON needs to be parsed,
+    which we do with `JObject.parse`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note that `SelectTokens` returns an enumerable collection, which you can further
+    process using LINQ expressions, as we do here by invoking `First`. Strictly speaking,
+    `SelectTokens` returns `IEnumberable<JToken>`, where each `JToken` is a single
+    JSON collection. JObject also provides the `SelectToken` method, which returns
+    a single instance.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Be careful not to confuse `SelectToken` and `SelectTokens`, however. The former
+    can *only* return a single `JToken`, while the latter is required anytime you
+    want to return a collection of items in your JSONPath query.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Filtering is supported, too. For example, to obtain `JObject` containing the
+    data about the book *Moby Dick*, I might write:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE23]'
+  prefs: []
+  type: TYPE_PRE
+- en: This selects the document with `title` matching "`Moby Dick`" from the `book`
+    collection in the `store` field.
+  prefs: []
+  type: TYPE_NORMAL
+- en: See also
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: See the documentation and more examples for `SelectToken` and `SelectTokens`
+    at Jason Newton-King's website at [http://james.newtonking.com/archive/2014/02/01/json-net-6-0-release-1-%E2%80%93-jsonpath-and-f-support](http://james.newtonking.com/archive/2014/02/01/json-net-6-0-release-1-%E2%80%93-jsonpath-and-f-support),
+    or the Json.NET documentation at [http://www.newtonsoft.com/json/help/html/QueryJsonSelectToken.htm](http://www.newtonsoft.com/json/help/html/QueryJsonSelectToken.htm).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using LINQ with Json.NET to query JSON in your C# application
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: If you're developing for .NET, you might just want to skip JSONPath entirely
+    and use Json.NET's support to subscribe based on field name and support for LINQ.
+    Json.NET supports LINQ out of the box, letting you craft any query you want against
+    your JSON in either fluent or statement syntax.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting ready
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: As with the previous recipe, your .NET project needs to use Json.NET. To include
+    Json.NET in your project, follow the steps I show you in [Chapter 7](ch07.html
+    "Chapter 7. Using JSON in a Type-safe Manner"), *Using JSON in a Type-safe Manner*,
+    in the *Getting Started* section of the *How to Deserialize an Object with Json.NET*
+    recipe.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'You''ll parse the JSON to `JObject`, and then you can just evaluate LINQ expressions
+    against the resulting `JObject`, like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE24]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Of course, because it''s LINQ, fluent syntax is supported, too:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE25]'
+  prefs: []
+  type: TYPE_PRE
+- en: How it works…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The first example selects all `title` objects, one from each `book` field, casting
+    each to a string before returning the result. The second example performs a selection
+    on all `price` fields of `book`, casting the resulting value to a double and invoking
+    `Sum` method on the list to obtain the total price of all of the books.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Something to look out for is that the usual return type of a sub-field in a
+    Json.NET LINQ query is `JObject`, so you have to use the `Value` and `Values`
+    methods of the `JObject` template to obtain the values of those objects when you''re
+    writing an expression in fluent syntax. Your first attempt at calculating the
+    sum might have read something like the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE26]'
+  prefs: []
+  type: TYPE_PRE
+- en: However, this won't work because the return value of the selection is a list
+    of `JObject`s, which can't be summed directly.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: When writing LINQ expressions, LINQPad ([http://www.linqpad.net](http://www.linqpad.net))
+    is especially helpful. If you're doing a lot of LINQ and JSON, investing in the
+    Developer or Premium versions may be wise, as these versions support integration
+    with NuGet that let you include Json.NET right in your test queries.
+  prefs: []
+  type: TYPE_NORMAL
+- en: See also
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: For more information about LINQ and Json.NET, see the Json.NET documentation
+    at [http://www.newtonsoft.com/json/help/html/LINQtoJSON.htm](http://www.newtonsoft.com/json/help/html/LINQtoJSON.htm).
+  prefs: []
+  type: TYPE_NORMAL

@@ -1,0 +1,332 @@
+- en: Preface
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'JavaScript Object Notation (JSON) has rapidly become the lingua franca for
+    structured document exchange on the Web, outpacing XML in many domains. Three
+    of the reasons for this are obvious: it plays well with JavaScript, it''s simple,
+    and it just works. However, there are other reasons for its success as well. As
+    you''ll see in the pages of this book, it''s supported by a wide variety of languages
+    and libraries, making it easy to use in all kinds of scenarios.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this book, I provide recipes for common uses of JSON. You're welcome to read
+    the book from cover to cover, seeing all the ways JSON can be used in building
+    web and standalone applications. However, it's organized as a cookbook, so that
+    you can quickly go to the chapter or recipe that addresses a particular problem
+    you might want to solve with JSON now. I recommend skimming this preface to see
+    what's where, taking a quick look at [Chapter 1](ch01.html "Chapter 1. Reading
+    and Writing JSON on the Client"), *Reading and Writing JSON on the Client*, or
+    [Chapter 2](ch02.html "Chapter 2. Reading and Writing JSON on the Server"), *Reading
+    and Writing JSON on the Server*, depending on your interest, and then jumping
+    right to the recipes that interest you the most.
+  prefs: []
+  type: TYPE_NORMAL
+- en: What this book covers
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: '[Chapter 1](ch01.html "Chapter 1. Reading and Writing JSON on the Client"),
+    *Reading and Writing JSON on the Client*, gives you recipes to read and write
+    JSON in a number of client environments, including JavaScript, C#, C++, Java,
+    Perl, and Python.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[Chapter 2](ch02.html "Chapter 2. Reading and Writing JSON on the Server"),
+    *Reading and Writing JSON on the Server*, goes the other way, looking at JSON
+    on typical server-side languages such as Clojure, C#, Node.js, PHP, and Ruby.
+    Of course, you can write client-side applications with these languages, as well,
+    just as you can write a server in C# or Java. So the division of recipes between
+    these chapters is somewhat arbitrary; pick a language and dive in!'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[Chapter 3](ch03.html "Chapter 3. Using JSON in Simple AJAX Applications"),
+    *Using JSON in Simple AJAX Applications*, shows you how to apply JSON for data
+    exchange with today''s browsers.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[Chapter 4](ch04.html "Chapter 4. Using JSON in AJAX Applications with jQuery
+    and AngularJS"), *Using JSON in AJAX Applications with jQuery and AngularJS*,
+    discusses how to use JSON with two popular web frameworks, jQuery and Angular.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[Chapter 5](ch05.html "Chapter 5. Using JSON with MongoDB"), *Using JSON with
+    MongoDB*, shows you how MongoDB, a popular NoSQL database, uses JSON for its stored
+    document format and gives you recipes to use MongoDB as a REST service in your
+    web applications.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[Chapter 6](ch06.html "Chapter 6. Using JSON with CouchDB"), *Using JSON with
+    CouchDB*, shows you how CouchDB, another popular NoSQL database, uses JSON and
+    how you can use CouchDB as a standalone REST service in your web applications.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[Chapter 7](ch07.html "Chapter 7. Using JSON in a Type-safe Manner"), *Using
+    JSON in a Type-safe Manner*, looks at how you can adapt the type-free nature of
+    JSON with the type safety provided by languages such as C#, Java, and TypeScript
+    to reduce programming errors in your application.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[Chapter 8](ch08.html "Chapter 8. Using JSON for Binary Data Transfer"), *Using
+    JSON for Binary Data Transfer*, shows you how, even though JSON is a text-based
+    document format, you can still use it to move binary data around if you have to
+    do so.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[Chapter 9](ch09.html "Chapter 9. Querying JSON with JSONPath and LINQ"), *Querying
+    JSON with JSONPath and LINQ*, has recipes on how you can write queries against
+    JSON documents to obtain just the slice of data you''re looking for. This is especially
+    powerful when combined with the recipes from [Chapters 5](ch05.html "Chapter 5. Using
+    JSON with MongoDB"), *Using JSON with MongoDB*, and [Chapter 6](ch06.html "Chapter 6. Using
+    JSON with CouchDB"), *Using JSON with CouchDB*.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[Chapter 10](ch10.html "Chapter 10. JSON on Mobile Platforms"), *JSON on Mobile
+    Platforms*, shows you recipes for using JSON in mobile applications that use Android,
+    iOS, and Qt.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: What you need for this book
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Unlike many other technical books, this one focuses on a wide variety of supporting
+    technologies in its examples. I don't expect that you'll have experience or the
+    tools to try every example in this book, especially right away. However, it's
+    helpful to have a few things set out.
+  prefs: []
+  type: TYPE_NORMAL
+- en: You should have some programming experience, preferably in JavaScript. Unless
+    a recipe is targeted at a specific programming language such as C#, the recipes
+    in this book are written in JavaScript. I do this for two reasons. Firstly because
+    the "J" in JSON stands for JavaScript (even though it's widely applicable to other
+    languages), and, in this day and age, every programmer should have at least a
+    nodding familiarity of JavaScript.
+  prefs: []
+  type: TYPE_NORMAL
+- en: As far as software environments go, to begin with, you should have access to
+    a good web browser such as Chrome or a recent version of Safari, Firefox, or Internet
+    Explorer. You can use the JavaScript runtime in any of these browsers to experiment
+    with JSON and get started.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Secondly, a lot of the client-server examples feature Node.js. I picked Node.js
+    for server-side example programming because it's also JavaScript, meaning that
+    you don't have to jump through different language syntaxes as you move between
+    the client and server. Node.js runs well on Windows, Mac OS X, and Linux, too,
+    so you shouldn't have a problem setting it up.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If you're interested in using JSON with databases, CouchDB or MongoDB are your
+    best choices and I discuss both of them in this book. Which one you choose is
+    really a matter of your domain and personal preference. I've been using MongoDB
+    for 5 years on various projects but have recently taken a liking to some of CouchDB's
+    features and its integrated support for RESTful services.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Finally, if you're a Microsoft developer, you may want to take special note
+    of the C# examples that use Newtonsoft's Json.NET throughout this book. Json.NET
+    is what JSON in C# ought to be, and it's definitely worth your attention.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Who this book is for
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: If you're writing applications that move structured data from one place to another,
+    this book is for you. This is especially true if you've been using XML to do the
+    job because it's entirely possible that you could do much of the same work with
+    less code and less data overhead in JSON.
+  prefs: []
+  type: TYPE_NORMAL
+- en: While the book's chapters make some distinction between the client and server
+    sides of an application, it doesn't matter if you're a frontend, backend, or full-stack
+    developer. The principles behind using JSON apply to both the client and the server,
+    and in fact, developers who understand both sides of the equation generally craft
+    the best applications.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Sections
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this book, you will find several headings that appear frequently (Getting
+    ready, How to do it, How it works, There's more, and See also).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To give clear instructions on how to complete a recipe, we use these sections
+    as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting ready
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This section tells you what to expect in the recipe, and describes how to set
+    up any software or any preliminary settings required for the recipe.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This section contains the steps required to follow the recipe.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How it works…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This section usually consists of a detailed explanation of what happened in
+    the previous section.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There's more…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This section consists of additional information about the recipe in order to
+    make the reader more knowledgeable about the recipe.
+  prefs: []
+  type: TYPE_NORMAL
+- en: See also
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This section provides helpful links to other useful information for the recipe.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Conventions
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this book, you will find a number of text styles that distinguish between
+    different kinds of information. Here are some examples of these styles and an
+    explanation of their meaning.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Code words in text, database table names, folder names, filenames, file extensions,
+    pathnames, dummy URLs, user input, and Twitter handles are shown as follows: "Let''s
+    look at `loads` and `dumps` further."'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'A block of code is set as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'When we wish to draw your attention to a particular part of a code block, the
+    relevant lines or items are set in bold:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Any command-line input or output is written as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: '**New terms** and **important words** are shown in bold. Words that you see
+    on the screen, for example, in menus or dialog boxes, appear in the text like
+    this: " Then, you''ll want to go to **More Tools** | **JavaScript console**."'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Warnings or important notes appear in a box like this.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Tips and tricks appear like this.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Reader feedback
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Feedback from our readers is always welcome. Let us know what you think about
+    this book—what you liked or disliked. Reader feedback is important for us as it
+    helps us develop titles that you will really get the most out of.
+  prefs: []
+  type: TYPE_NORMAL
+- en: To send us general feedback, simply e-mail `<[feedback@packtpub.com](mailto:feedback@packtpub.com)>`,
+    and mention the book's title in the subject of your message.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If there is a topic that you have expertise in and you are interested in either
+    writing or contributing to a book, see our author guide at [www.packtpub.com/authors](http://www.packtpub.com/authors).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Customer support
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Now that you are the proud owner of a Packt book, we have a number of things
+    to help you to get the most from your purchase.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Downloading the example code
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: You can download the example code files from your account at [http://www.packtpub.com](http://www.packtpub.com)
+    for all the Packt Publishing books you have purchased. If you purchased this book
+    elsewhere, you can visit [http://www.packtpub.com/support](http://www.packtpub.com/support)
+    and register to have the files e-mailed directly to you.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Errata
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Although we have taken every care to ensure the accuracy of our content, mistakes
+    do happen. If you find a mistake in one of our books—maybe a mistake in the text
+    or the code—we would be grateful if you could report this to us. By doing so,
+    you can save other readers from frustration and help us improve subsequent versions
+    of this book. If you find any errata, please report them by visiting [http://www.packtpub.com/submit-errata](http://www.packtpub.com/submit-errata),
+    selecting your book, clicking on the **Errata** **Submission** **Form** link,
+    and entering the details of your errata. Once your errata are verified, your submission
+    will be accepted and the errata will be uploaded to our website or added to any
+    list of existing errata under the Errata section of that title.
+  prefs: []
+  type: TYPE_NORMAL
+- en: To view the previously submitted errata, go to [https://www.packtpub.com/books/content/support](https://www.packtpub.com/books/content/support)
+    and enter the name of the book in the search field. The required information will
+    appear under the **Errata** section.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Piracy
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Piracy of copyrighted material on the Internet is an ongoing problem across
+    all media. At Packt, we take the protection of our copyright and licenses very
+    seriously. If you come across any illegal copies of our works in any form on the
+    Internet, please provide us with the location address or website name immediately
+    so that we can pursue a remedy.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Please contact us at `<[copyright@packtpub.com](mailto:copyright@packtpub.com)>`
+    with a link to the suspected pirated material.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We appreciate your help in protecting our authors and our ability to bring you
+    valuable content.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Questions
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: If you have a problem with any aspect of this book, you can contact us at `<[questions@packtpub.com](mailto:questions@packtpub.com)>`,
+    and we will do our best to address the problem.
+  prefs: []
+  type: TYPE_NORMAL

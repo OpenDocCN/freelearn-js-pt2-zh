@@ -1,0 +1,777 @@
+- en: Chapter 9. Scaling Down
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: We tend to think of scaling as a unidirectional problem—we can only scale up
+    from where we are currently. Unfortunately, that doesn't quite work. We can only
+    scale in one direction for so long before the foundation crumbles under our feet.
+    The key is in identifying the scaling limitations, and designing around them.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this chapter, we'll look at the fundamental scaling constraints faced by
+    JavaScript architects in nearly every browser environment. We'll also look at
+    the customer as a scaling influencer, and how new features conflict with existing
+    features. Scaling down from bloated design is an essential activity as well.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The composition of our application as a whole determines how easy or how difficult
+    it'll be to scale down by turning features off. It all has to do with coupling,
+    and if we look closely, we'll often discover that we need to refactor our components
+    so they can be easily removed later on.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Scaling constraints
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Our applications are constrained by the environments in which they run. This
+    means the hardware on which the client is running, and the browser itself. What's
+    interesting about web applications is that there's also the transmission of the
+    code itself to consider. For example, if we're writing backend code, we can throw
+    more code at any problem we face, and that's not a problem because that code doesn't
+    move around—it runs in one place.
+  prefs: []
+  type: TYPE_NORMAL
+- en: With JavaScript, size matters. There's simply no way around this fact. As a
+    corollary, network bandwidth matters—both for the delivery of our JavaScript artifacts,
+    and our application data from the API.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this section, we'll address the hard scaling constraints imposed on us in
+    the browser computing environment. As our application grows, we feel the pressure
+    of these constraints more and more. Each of these needs to be considered when
+    planning new features for our application.
+  prefs: []
+  type: TYPE_NORMAL
+- en: JavaScript artifact size
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The cumulative size of our JavaScript artifacts can only grow so much. Eventually,
+    the load time of our application will suffer to the point that nobody will want
+    to use our application. Huge JavaScript artifacts are typically indicative of
+    bloat in other areas. For example, if we're delivering huge files to the browser,
+    we probably have too much of something. Maybe we don't need the features nobody
+    uses, or maybe there's repetitious code spread throughout our components.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Whatever the cause, the effects aren't good. Smaller is always better. How do
+    we know when the file size of our JavaScript artifacts are small enough? That
+    depends—there's no universal *ideal* size. Where is our application deployed,
+    on the public internet? Behind a VPN for corporate users? There may be different
+    acceptance criteria for the users of these types of systems. Broadly speaking,
+    the public internet users are going to be less forgiving of poor load time performance
+    and feature bloat. The corporate users on the other hand, generally appreciate
+    more features and are more tolerant of lackluster load times.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The biggest contributor to growing JavaScript artifact sizes are the new features
+    we constantly add to our product. These result in new components which add weight.
+    Any given feature is going to have a minimum set of files, each for the components
+    that follow the pattern of our existing features. If our patterns are half decent,
+    then we should be able to keep the size of our components reasonable. However,
+    repetitive code always finds its way into the application when deadlines are involved.
+    Even if our code is as lean as it could possibly be, we still have to implement
+    features when they're asked for.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Compiled artifacts help us with the size problem. We can concatenate and uglify
+    files, saving on the number of network requests, and the overall bandwidth. But,
+    any given feature will keep these compiled artifacts growing. We can keep growing
+    for some time before encountering any problems. As stated, the problems are relative,
+    depending on the environment, and the users of our software. In all cases, the
+    size of our JavaScript artifacts cannot grow infinitely.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![JavaScript artifact size](img/4639_09_01.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: The size of JavaScript artifacts are the aggregate result of all modules that
+    make up the component
+  prefs: []
+  type: TYPE_NORMAL
+- en: Network bandwidth
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The size of our JavaScript artifacts contributes to the overall network bandwidth
+    consumption of our application. Especially as there's more user uptake—users are
+    the multipliers for all our architectural woes. Coupled with our JavaScript code,
+    is our application data. These API calls also contribute to the overall network
+    bandwidth consumption, and user-perceived latency.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: As our application scales geographical boundaries, we'll notice a diverse range
+    of connectivity issues. In many parts of the world, high-speed networks simply
+    aren't an option. If reaching these markets is important to us, and it should
+    be, then our architecture needs to cope with slow internet connections. Using
+    CDNs to deliver the libraries our application use can help here because they take
+    into consideration the geographical location of the requests.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The challenge is that any new feature is going to add new network bandwidth
+    consumption. There's the size of the code, and the new API calls introduced by
+    the new component. Mind you, these effects aren't felt immediately. For example,
+    the new component doesn't make API calls on page load, only when the user navigates
+    to a specific URI.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Nonetheless, new API endpoints mean more aggregate network bandwidth usage over
+    time. Further, it's not just a matter of making one API call when a user navigates
+    to a feature page. It sometimes takes a tangle of three or more API calls, in
+    order to construct the data to be presented. We need to keep this in mind when
+    we're thinking that a new API call isn't a big deal, as it usually ends up being
+    more than one call, and that means more bandwidth consumption.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Is there a fundamental network bandwidth limit? Not theoretically, but it's
+    like the size of our JavaScript artifacts—we can grow them to 10MB each if we
+    please. All we can say with confidence is that it's not going to improve the user
+    experience, and the side effects could cause a much worse experience. The same
+    goes with network bandwidth consumption.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Network bandwidth](img/4639_09_02.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Components consume network bandwidth by requesting JavaScript modules and API
+    data
+  prefs: []
+  type: TYPE_NORMAL
+- en: '''Following is an example that shows how the aggregate latency of our application
+    suffers as more requests are made:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: Memory consumption
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: With every feature we implement, the memory consumed by the browser grows. This
+    may seem like an obvious statement, but it's important. Memory issues not only
+    hurt application performance, they can crash the entire browser tab. Therefore,
+    we need to pay close attention to the memory allocation characteristics of our
+    code. The profiler built into the browser can record the allocations of objects
+    in memory over time. This is a useful tool for diagnosing issues, or for general
+    observations about how our code behaves.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Frequently creating and destroying objects can cause performance lags. This
+    is because the objects that are no longer referenced, are garbage collected. When
+    the garbage collector is running, none of our JavaScript code runs. So we have
+    a conflicting requirement—we want our code to run fast, and we don't want to waste
+    memory.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The idea is to not cause the garbage collector to run unnecessarily. For example,
+    there are times where we can hoist the variable up to a higher scope. This means
+    that the reference isn't created and destroyed several times throughout the lifetime
+    of the application.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Another scenario is with frequent allocations in a short timeframe, such as
+    within a loop. While JavaScript engines are smart about dealing with these types
+    of scenarios, they're still worth keeping an eye out for. The best resources are
+    the source code of low-level libraries that take into account the garbage collector,
+    and avoid unnecessary allocations.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The responses returned from the API also consume memory, and depending on the
+    data returned, a substantial amount of memory. Something we'll want to do is ensure
+    that there's a cap on how much data a given API endpoint can respond with. Many
+    backend APIs do this automatically, not returning more than a 1000 entities at
+    a time. If we need to make our way through the collection, then we need to provide
+    an offset argument. However, we may want to further constrain the size of the
+    API response, because the size of individual entities in the collection could
+    occupy a lot of memory as a model in the browser.
+  prefs: []
+  type: TYPE_NORMAL
+- en: While these collections are typically garbage collected as the user moves around
+    from page to page, each new feature we implement presents the opportunity for
+    subtle memory leak bugs. It's the subtle bugs that are difficult to deal with
+    because the leaks are slow and manifest themselves differently across environments.
+    When the memory leak is large and obvious, it's easier to reproduce, and thus,
+    easier to locate and fix.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Next is an example that shows how quickly memory consumption can get out of
+    hand:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: CPU consumption
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: One of the big factors in how responsive our user interface feels, is the CPU
+    on the client. If it's available to run our code whenever there's code to be run,
+    in response to a click for instance, then the UI will feel responsive. If the
+    CPU is busy handling other things, our code will have to sit there and wait. And
+    so will the user. Obviously there's a lot of software asking for the CPU's attention
+    in a given operating environment—much of which is completely out of our control.
+    We can't scale down the use of other applications outside of the browser, but
+    we can scale down the use of the CPU from within our JavaScript application. But
+    first, we have to understand where these JavaScript CPU cycles come from.
+  prefs: []
+  type: TYPE_NORMAL
+- en: At the architectural level, we don't think about micro optimizations that make
+    little sections of a single component more efficient. We care about scaling down,
+    which translates to a noticeable effect on the CPU consumption while our application
+    is running. We saw, in [Chapter 7](ch07.html "Chapter 7. Load Time and Responsiveness"),
+    *Load Time and Responsiveness*, how to profile our code. This tells us where the
+    CPU is spending it's time in our code. With profiles as our measuring stick, we
+    can proceed to make changes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The two factors that influence the use of the CPU at an architecturally significant
+    level are the number of active features, and the amount of data that's used by
+    these features. For example, as we add more components to our system, there's
+    naturally more CPU consumption, because when things happen in the UI, the component
+    code for that feature needs to respond in some way. But this isn't likely to have
+    a big impact on its own. It's the API data that comes with implementing a new
+    feature that makes that CPU cost dangerously expensive.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![CPU consumption](img/4639_09_03.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Combining forces that eat CPU cycles—more data, processed by more components
+  prefs: []
+  type: TYPE_NORMAL
+- en: For example, if we were to keep implementing new features and the data set never
+    changed, we would start to feel the CPU cost. This is because there's more indirection,
+    meaning more code to run for any given event that takes place. This slow down
+    would happen at glacial speeds however—we could just keep adding hundreds and
+    hundreds of features, without breaking a sweat, CPU-wise. It's the changing data
+    that makes this a scaling impossibility. Because if you multiply the number of
+    features by the growing data sets, the CPU cost grows exponentially.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Well, maybe not *all* our features are consuming *all* of our data. And maybe
+    there's very little indirection in our design. It's still the biggest factor to
+    consider when it comes to scaling down. So if we need to cut CPU costs, we need
+    to remove features and the data they process—it's the only way to get a measurable
+    impact.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Following is an example that shows how the number of components, combined with
+    the number of data items, progressively consumes more CPU time:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: Backend capabilities
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The final scaling constraint we'll address is the backend that serves our static
+    resources and our API data. This is a limiting factor because our code can't run
+    until it reaches the browser, and we can't display information for the user until
+    the raw data has arrived. These two things are up to the backend to deliver on,
+    but there are a few things to keep in mind about the backend when doing frontend
+    development.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The first concern is the usage of our application. Just as the browser running
+    our JavaScript code can't scale infinitely up, neither can our backend APIs. While
+    they have some characteristics that enable them to scale up that browsers don't,
+    they still feel the impact of more request volume. The second concern is the way
+    that our code interacts with the API. We have to look at the how a single user
+    uses our application, and look at the API requests generated from those interactions.
+    If we can optimize the requests made for one user, adding more users will have
+    less of an impact on the backend.
+  prefs: []
+  type: TYPE_NORMAL
+- en: For example, we don't want to make requests that we don't need to. This means,
+    *don't load data until it's actually needed*. And, *don't load the same data over
+    and then over again*. If a user doesn't start interacting with a feature till
+    five minutes into their session, that frees up the backend to service other requests
+    during that interval. Sometimes our components use the same API endpoints. What
+    if they're both created at the same time, and both send the same API request in
+    succession? The backend has to service both requests, unnecessarily, because they're
+    going to have the same content.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We need to structure component communication to account for scaling influencers
+    such as the load generated in the backend. In this particular instance, the second
+    component could look up in a *pending requests* map and return that promise instead
+    of generating a completely new request.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Backend capabilities](img/4639_09_04.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Newer components should aim to consume less bandwidth; one approach is to accomplish
+    the same functionality using fewer API requests
+  prefs: []
+  type: TYPE_NORMAL
+- en: Conflicting features
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The lines between our features become blurred as our software grows. There's
+    bound to be at least some overlap, and that can be a good thing. If there wasn't
+    at least a little overlap, users would have a tough time transitioning from one
+    area of our UI to another. This becomes a problem when we reach a feature threshold
+    where there're multiple overlapping layers that just keep overlapping. It's a
+    self-propagating problem that get's worse with every new feature added, till it
+    is addressed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Two potential causes of this problem include parts of our application that grow
+    irrelevant over time, and instead of being retired, they sit around and get in
+    the way. Customer demand plays a big part in this scaling influence because it
+    determines the future direction of the product. This should also give us an indication
+    of what's in place now, that either needs to change in order to meet demand, or
+    needs to go away in the near future.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Overlapping functionality
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Over the course of our application's life, there's going to be new functionality
+    that overlaps with existing functionality. That's just the nature of software
+    development— building on what you already have, not starting something way out
+    left-field that has nothing to do with our existing features. What's nice is when
+    that overlap is unobtrusive, and serves as a bridge from existing features to
+    new features and enhancements.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Where this overlap doesn't work so well is when it conflicts with existing features.
+    It's like trying to build a house in the woods, without removing any trees first.
+    One of two things needs to happen if the overlap is going to be seamless and scalable.
+    Either we need to adjust what's already in place in order to accommodate what's
+    coming down the line, or we need to rethink the new functionality so that it better
+    fits in the available space. It's interesting, because given what we have, we
+    sometimes have to scale down features before they're even implemented—this is
+    often easier than after they've been implemented.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The end result of nonsensical feature overlap is something that the user finds
+    clunky and difficult to use, so we can expect some complaints down the road. It
+    is something else that we'll likely have to fix or remove later on. We actually
+    tell ourselves this quite often—it's not a great addition, but it's good enough
+    for the deadline. But at what cost is it *good enough*? In addition to the forecasted
+    user frustration, there's also the code to worry about. Rarely do we say things
+    like—*well, the users may not like it, but the code is fantastic*. The poor user
+    experience is often the result of poor feature planning, followed by poor implementation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The solution is quite simple, as we've already seen. It's a matter of making
+    room for the changes, or altering the new feature. Something we often neglect
+    is documenting the potential problems. For example, if we see a problem with a
+    planned feature fitting in with our current code, we need to speak up and generate
+    an outline of what doesn't fit where and why. It's always better to have this
+    information archived and searchable than to ignore it. This is how we scale our
+    architectural ideas, by being inclusive with the team.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Overlapping functionality](img/4639_09_05.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Overlap between old features and new features is a good starting point for scaling
+    down unnecessary code
+  prefs: []
+  type: TYPE_NORMAL
+- en: Irrelevant features
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Over time some features prove their worth. Our users love them, and use them
+    often. What's more—we hardly have to maintain them. They just work. On the other
+    hand, some of the other features we've implemented start to rust sooner than we
+    would have liked. There could be any number of signs that this is taking place.
+    Maybe a handful of users love the feature, but it's buggy and difficult to maintain.
+    Maybe the majority of our users love the feature but it's preventing a number
+    of initiatives from taking place in the project. But the most common case is that
+    nobody is really using it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Whatever the reason, features do become irrelevant. Our problem, as an industry,
+    is that we like to hoard code. Sometimes we keep around irrelevant functionality
+    out of necessity—we would simply break too many things, or introduce backward
+    incompatibility where we need it. Other times, and this really is a frontend problem
+    more than anywhere else, we keep the feature around because we don't have an explicit
+    mandate to rid ourselves of it. Well that needs to happen if we want to scale
+    our application I'm afraid.
+  prefs: []
+  type: TYPE_NORMAL
+- en: It's a matter of being proactive rather than reactive. As we know, every component
+    contributes to our scaling constraints—be it network, memory, CPU, or otherwise.
+    Who knows, maybe we could get by just fine with the feature sitting around in
+    our product. It's better to get it out of the way, because there's less chance
+    of it actually constraining our ability to scale. We may think it's a harmless
+    piece of code, but isn't it better to rule it out completely? Further, it's simply
+    a good attitude to instill in everyone around us—scale down the things we don't
+    need, then think about where to go from there. If we set the precedent with all
+    our stakeholders that we're ready and willing to trim the fat, we're more likely
+    to convince them to ship a leaner product.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Irrelevant features](img/4639_09_06.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: There's only so much room for our application to scale; removing irrelevant
+    features frees up scaling space
+  prefs: []
+  type: TYPE_NORMAL
+- en: Customer demand
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Depending on the type of product we're building, and the type of users it's
+    servicing, customer demand will translate to either disciplined planning and implementation,
+    or to knee-jerk reactions. We all want to make our customers happy—that's why
+    we're building the software. But it's these quick decisions to implement stuff
+    people are screaming for that detracts from our architecture. It's like we're
+    implementing the features as though they were bugs. With bugs, we implement quick
+    fixes as quickly as possible because we need to get them out the door.
+  prefs: []
+  type: TYPE_NORMAL
+- en: New features aren't bugs. Despite what users and management say—they'll live
+    another day without the functionality they're asking for. We need to find a way
+    to buy ourselves the time necessary to fit the new features customers want into
+    our architecture. That's not to say that we can keep putting it off—we have to
+    do so in a timely manor. Perhaps excising existing features that users care less
+    about is the fastest way forward.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Customer demand](img/4639_09_07.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Figuring out which features make it into the next version; they're either features
+    we already have, or new features that customers want
+  prefs: []
+  type: TYPE_NORMAL
+- en: Design failures
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: It's one thing to scale down by fixing our code as it stands today. For example,
+    by taking features out, or by modifying existing components to accommodate newly
+    planned features. But that'll only get us so far into the future. Design ideas
+    that seemed like a good idea two years ago were for the features we were thinking
+    about two years ago, some of which may no longer be around today.
+  prefs: []
+  type: TYPE_NORMAL
+- en: To make a lasting impact on our architecture, we have to repair broken patterns.
+    They still work in our product because we make them work, even though they may
+    not be the best tools for the job. Figuring out the right design isn't a one time
+    event, it happens as our software changes, and as our scaling influences command.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this section we'll look at a few ways we might address some flaws in our
+    design. Perhaps there're a lot of moving parts we don't need. Perhaps we're processing
+    our API data inefficiently, due to the complexity of our component communication
+    model. Or maybe the structure of our DOM elements is leading to obtuse selector
+    strings and slowing down development. These are just a handful of possibilities—defective
+    patterns vary project by project.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Unnecessary components
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: When we'll first set out to design our architecture and build our software,
+    we'll leverage patterns that make sense at the time. We design our components
+    to be loosely coupled with one another. To get this loose coupling, we often make
+    a trade-off—more moving parts. For example, to keep the responsibilities of each
+    component focused, we have to split larger components into smaller ones. These
+    patterns determine the composition of our feature components. If we're following
+    this pattern, and it has unnecessary parts, anything new we develop will also
+    contain unnecessary parts.
+  prefs: []
+  type: TYPE_NORMAL
+- en: It's difficult to get patterns right, because when we need to decide on which
+    patterns to use, we don't have enough information. Frameworks, for example, have
+    very generic patterns in place because they serve a much broader audience than
+    our application does. So while we want to utilize the same patterns exposed by
+    the framework, we need to adapt them to our specific features. These are the patterns
+    that change, gradually, as customer demand shifts the nature of our product. We
+    can embrace this natural phenomenon, and invest the time in fixing our patterns.
+    Or, we can go about fixing the issues as they arise, keeping our original patterns
+    intact. Being amenable to changing what we once assumed was foundational is the
+    best way to scale our architecture.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The most common pattern flaw is unnecessary indirection. That is, components
+    that are abstract, and don't really have any value. While they decouple a component
+    from something else, that's about all they do. We'll notice that over time, our
+    code accumulates these modules that are relatively small, and tend to all look
+    the same. They're small because they don't do much, and they look the same because
+    they're part of the pattern we promised to be consistent with throughout our code.
+    At the time that the pattern was conceived, this component made perfect sense.
+    After having implemented several components, it makes less sense. Losing the component
+    doesn't detract from the design, and in fact, the whole project feels a little
+    lighter now. It's funny, the disconnect between what patterns look like on paper,
+    and what they look like in a real application.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Next is an example that shows a component that uses a controller, and another
+    version of the component that doesn''t require a controller and has one less moving
+    part:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: Inefficient data processing
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Micro-optimizations don't really buy us much in efficiency. Duplicate processing
+    on the other hand can lead to massive scaling problems. The challenge is that
+    we might not even notice that there's duplicate processing going on until we look
+    for it. It often happens when data is passed from one component to another. The
+    first component performs transformations on the API data. Then, the raw data is
+    passed to the second component, which then proceeds to perform the exact same
+    transformations. As more components are added, these inefficiencies start to add
+    up.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The reason we seldom catch these types of problems is that we're blinded by
+    our beautiful design patterns. Sometimes the inefficiencies that hurt the user
+    experience are masked by our code because we're doing things consistently. That
+    is, we're keeping the relationships between our components loosely coupled, and
+    because of this, our architecture scales in a number of respects.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The majority of the time, a little bit of repetitive data processing is a perfectly
+    acceptable trade-off. It depends on what it gains us in terms of flexibility for
+    dealing with other scaling influences. For example, if we're able to easily handle
+    a number of different configurations, and enable/disable features where we need
+    to, because of the number of disparate deployments we have, then this trade off
+    might make sense. However, scaling in one regard often means *not* scaling in
+    another. For example, the amount of data is likely to increase, meaning the data
+    that's passed around from component to component will increase. So the duplicitous
+    data transformations that weren't a problem, are now a big problem. When this
+    happens, we have to scale down our data processing.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Again, this doesn't mean we need to start introducing micro-optimizations—it
+    means we have to start hunting for the big efficiency wins. The starting point
+    should always be with the network calls themselves, because not getting the data
+    in the first place is the biggest efficiency win for the frontend. The second
+    place to look at is the data that's getting passed around from component to component.
+    This is where we need to make sure that a component isn't doing the exact same
+    thing as the previous component in the chain.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Following is an example that shows a component that will fetch model data each
+    time `fetch()` is called. It also shows an alternative implementation that doesn''t
+    fetch the model when there''s already a pending request:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Making duplicate API calls is tough to avoid when our components are decoupled
+    from one another. For example, let's say that one feature creates a new model,
+    and fetches it. Another feature that's on the same page needs the same model,
+    but knows nothing about the first component—it too creates it and fetches data.
+  prefs: []
+  type: TYPE_NORMAL
+- en: These result in the exact same API call being made, which is obviously unnecessary.
+    Not only is it inefficient for the frontend because it has two separate callbacks
+    for the exact same data, it's also hurting the system as a whole. When we make
+    requests that aren't needed, we're clogging up the request queue in the backend,
+    affecting other users. We have to keep an eye out for these types of duplicate
+    calls and adjust our architecture accordingly.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Excessively creative markup
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The markup used to render our UI components can grow a little out of control.
+    Because we're aiming for a specific look and feel, we have to hack the markup
+    a little in order to do that. Then we hack it some more, because it doesn't look
+    quite right on this browser or that browser. The result is elements deeply nested
+    in other elements, to the point where they've lost any semantic meaning. We should
+    strive for semantic use of tags—a test goes in `p` elements, a clickable button
+    is a `button` element, the page sections are split by `section` elements and so
+    on.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The challenge here is that the design we're going for is usually expressed as
+    a wireframe, and we need to implement it in such a way that it can be sliced up
+    into pieces that our framework and components can use. So the simplicity gets
+    lost as trying to keep things semantic, and at the same time dividing into standalone
+    views isn't always feasible.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We have to try to simplify the DOM structure where we can though, because it
+    has a direct impact on the simplicity and the performance of our JavaScript code.
+    For example, our components often need to find elements on the page, either to
+    change their state or to read values from them. We can write selector strings
+    that query the DOM and return the elements we need. The strings are found all
+    throughout our view code, and they reflect the complexity of our markup.
+  prefs: []
+  type: TYPE_NORMAL
+- en: When we stumble across convoluted selector strings in our code, even the ones
+    we wrote ourselves, we have no idea what it's actually querying for—because the
+    DOM structure and the tags used are of no help. So it turns out that using semantic
+    markup can actually be of great help to our JavaScript code. There're also the
+    performance implications of complex DOM structures—if we're frequently traversing
+    deep DOM structures, we're pay a performance penalty.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Excessively creative markup](img/4639_09_08.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Excessively deep element nesting can usually be scaled down, to not use so many
+    elements
+  prefs: []
+  type: TYPE_NORMAL
+- en: Application composition
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: We'll close out the chapter with a section on application composition. This
+    is the 10,000 foot view of our application, where we can see how individual features
+    fit. In [Chapter 3](ch03.html "Chapter 3. Component Composition"), *Component
+    Composition* we looked at component composition, and the same principles apply
+    here. The idea being that we're operating at a slightly higher level.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In [Chapter 6](ch06.html "Chapter 6. User Preferences and Defaults"), *User
+    Preferences and Defaults* we looked at configurability, and this is also relevant
+    to the idea of application composition. For example, turning features off, or
+    turning on features that are disabled by default. The composition of our application
+    as a whole has a huge impact on our ability to scale down certain aspects.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Feature enablement
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The expedient approach to scaling down is turning features off. The difficult
+    part is getting stakeholders to agree that this is a good idea. Then we can just
+    remove the feature, and we're all set, right? Not necessarily. We may have to
+    spend some time taking the feature out. For example, what if it touches several
+    entry points into the system and there's no configuration that can switch these
+    off? It's no big deal, it just means we need more time spent on writing code that
+    takes these out.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The only problem is with testing the effects of taking the feature out of the
+    system. For the scenario where there's no configuration that'll do the job, we
+    have to spend time writing code that will do it, before we even get to test it.
+    For instance, we could spend five minutes turning off configuration values, and
+    then we'll get immediate results. Maybe we learn early on that there's a lot of
+    work that needs to be done before we can safely remove the feature from the system.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In addition to testing the runtime behavior of our application once a feature
+    has been removed, we'll probably want some build-time options as well. If our
+    production code is compiled into a handful of JavaScript artifacts, then we need
+    a way to completely remove these features from the build. It's one thing to disable
+    components through configuration. That means when our code runs, certain things
+    won't load, and so on. If we take the feature out of our source code repository,
+    then 'it's obviously less of a concern—our tools can't build what isn't there.
+    However, if we have hundreds of potential components that can be included in our
+    build artifacts, we need a way to exclude them.
+  prefs: []
+  type: TYPE_NORMAL
+- en: New feature impact
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The next major impact on our application is the addition of new features. Yes,
+    this discussion is about scaling down, but we can't ignore the addition of new
+    features into our application. This is, after all, why we're scaling down in the
+    first place. Not to build a smaller application that does less. It's to make room
+    for features our customers want, and to improve the overall quality of our product
+    over time.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The processes of adding features and removing features often happen in parallel.
+    For example, during a development sprint, while one team implements a new feature,
+    another team is responsible for the removal of a feature that's causing problems.
+    Since both of these activities affect the application in major ways, we have to
+    be considerate, and minimize these effects.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Essentially, that means making sure that the removal of the old feature isn't
+    too disruptive to the new feature that's being added. For example, what if the
+    new feature depended on something from the old feature. If our design is sound,
+    then there won't be any direct dependencies. However, complexity is not well understood
+    by humans—especially cause and effect through indirection. So scaling this operation
+    might mean that we don't perform the two activities in parallel after all.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![New feature impact](img/4639_09_09.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Depending on our inter-component communication model, the effects of adding
+    new components into the system should be fairly subdued
+  prefs: []
+  type: TYPE_NORMAL
+- en: Essential libraries
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The last pieces that impact the composition of our application are the frameworks
+    and libraries we're using. It goes without saying that we only want to use what
+    we need—use it or lose it, so to speak. This is mainly an issue when we're pulling
+    in smaller libraries as dependencies. Frameworks, by contrast, are all inclusive
+    for the most part. This means that everything you need is likely in the framework
+    already. While this isn't necessarily true, it still helps us reduce the number
+    of dependencies on third-party libraries.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Even frameworks are modular nowadays, meaning we can cherry-pick the goodness
+    we want and leave the rest alone. Even still, it's easy to bring in components,
+    from a framework or otherwise, that we won't really use. This happens quite a
+    lot in web site development. We need this one piece of functionality, and we don't
+    want to write it ourselves because that library over there already does it. Then
+    it gets lost in the mix of pages. We should learn the lesson that web sites didn't—our
+    applications need a focused set of dependencies, essential to getting the job
+    done.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: This chapter introduced the notion that not everything in our application is
+    infinitely scalable. In fact, nothing about our application is infinitely scalable,
+    as each aspect is constrained by different factors. These factors all blend together
+    in unique ways, and it's up to us to make the necessary trade-offs. If we want
+    to keep scaling up, we have to scale down in other areas.
+  prefs: []
+  type: TYPE_NORMAL
+- en: New features come from customer demand, and they often overlap with other features
+    we've already implemented. This could be because we haven't defined the new feature
+    very well, or because the existing entry points into the system aren't very well
+    defined. Either way, this can make for a challenging exercise; the removal of
+    existing features, in place of a new feature. We often need to remove the areas
+    of overlap, as they cause confusion both at the code level and the usability level.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Scaling down isn't just a piece by piece activity—there are the design patterns
+    to think about as well. After we've removed a feature, we need to look at the
+    patterns we're using and ask, *do we want to keep having to do this in the future?*
+    The better, more scalable path forward, is to fix the pattern. Even after we've
+    scaled down, there's always the potential for error. In the following chapter,
+    we'll take a closer look at failing components, and how to deal with them.
+  prefs: []
+  type: TYPE_NORMAL

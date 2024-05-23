@@ -1,0 +1,597 @@
+- en: Chapter 2. Reading and Writing JSON on the Server
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'In the previous chapter, we looked at JSON handling in some of the most common
+    client-side environments. In this chapter, we will turn our attention to server-side
+    JSON encoding and decoding. We''ll look at recipes on how to do this in the following
+    environments:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Reading and writing JSON in Clojure
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Reading and writing JSON in F#
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Reading and writing JSON in Node.js
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Reading and writing JSON in PHP
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Reading and writing JSON in Ruby
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Some languages, such as C++ and Java, are used on both client-side and server-side;
+    for these, refer to [Chapter 1](ch01.html "Chapter 1. Reading and Writing JSON
+    on the Client"), *Reading and Writing JSON on the Client* (one exception is the
+    discussion of JSON in Node.js because Node.js plays a big role in subsequent chapters
+    of this book).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Reading and writing JSON in Clojure
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Clojure is a modern Lisp variant running on top of the Java and Microsoft **Common**
+    **Language Runtime** (**CLR**) platforms. As such, you can use the facilities
+    we discussed in [Chapter 1](ch01.html "Chapter 1. Reading and Writing JSON on
+    the Client"), *Reading and Writing JSON on the Client*, to convert between JSON
+    and objects in the native runtime, but there's a better way, and that is the Clojure's
+    `data.json` module, available at [https://github.com/clojure/data.json](https://github.com/clojure/data.json).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting ready
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'To begin, you need to specify your dependency in the `data.json` module. You
+    can do this with the following dependency in your Leiningen file:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'If you''re using Maven, you''ll want this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Of course, the version of `data.json` may change between the time I write this
+    and the time you include it in your project as a dependency. Check with the data.json
+    project for the current version.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Finally, you need to include the `data.json` module in your code in a namespace
+    such as `json`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: This makes the implementation of the `data.json` module available through the
+    namespace `json`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Encoding a Clojure map as JSON is easy, just call `json/write-str`. For example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'If you''ve got a stream implementing `java.io.Writer` that you want to write
+    the JSON to, you can also use `json/write`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Reading is the opposite of writing and reads JSON into associative arrays that
+    you can process further:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: Also, there's `json/read`, the counterpart of `json/write` that takes a stream
+    from which you can read and return a map of the parsed JSON.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There's more...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'These methods all take two optional arguments, a `:key-fn` argument that the
+    module applies to each JSON attribute name, and a `:value-fn` argument that the
+    module applies to attribute values. For example, you can convert JSON to the more
+    traditional Clojure keyword maps using the `:key-fn keyword`, like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Alternatively, you can provide a lambda, such as the following one, that converts
+    keys to uppercase:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Here''s a nice example from the `data.json` documentation that uses :`value-fn`
+    to convert ISO dates as strings to Java `Date` objects as you parse the JSON:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The preceding code does the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Defines a helper function `my-value-reader` that uses the keyword of the JSON
+    key-value pair to determine its type.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Given a JSON key value of `:date`, it treats the value as a string to be passed
+    to the `java.sql.Date` method `valueOf`, which returns a `Date` instance with
+    the value from the string it parses.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Calls `json/read-str` to parse some simple JSON consisting of two fields: a
+    `result` field and a `date` field.'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: The JSON parser parses the JSON, converts JSON attribute names to keywords,
+    and uses the value converter we previously defined to convert date values to their
+    `java.sql.Date` representation.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Reading and writing JSON in F#
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'F# is a language running on the CLR and .NET that excels in functional and
+    object-oriented programming tasks. Because it''s on top of .NET, you can use third-party
+    libraries such as `Json.NET` (mentioned in [Chapter 1](ch01.html "Chapter 1. Reading
+    and Writing JSON on the Client"), *Reading and Writing JSON on the Client*) to
+    convert between JSON and CLR objects. However, there''s a better way: the open
+    source library F# Data, which creates native data type providers to process data
+    in a number of different structured formats, including JSON.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting ready
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Begin by getting a copy of the library, available at [https://github.com/fsharp/FSharp.Data](https://github.com/fsharp/FSharp.Data).
+    Once you download it, you'll need to build it; you can do this by running the
+    `build.cmd` build batch file that comes with the distribution (for details, see
+    the F# Data website). Alternatively, you can find the same package on NuGet, by
+    choosing **Manage NuGet Packages** from the **Projects** menu and searching for
+    F# Data. Once you find it, click on **Install**. I prefer using NuGet because
+    it automatically adds the `FSharp.Data` assembly to your project, and saves you
+    the hassle of building the sources on your own. On the other hand, the source
+    distribution makes documentation you can read offline, which can be handy, too.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Once you have the F# Data, you simply need to open it in the source files where
+    you''re going to use it with the open directive, like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Here''s a bit of sample code that converts between some JSON and an F# object,
+    and then makes a new bit of JSON from another F# object:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: Let's see how it works.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How it works...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: First, it's important to remember that F# is strongly typed and infers types
+    from data. Understanding this is crucial to understand how the F# Data library
+    works. Unlike the examples we've seen in past sections, where converters map JSON
+    to key-value pairs, the F# Data library infers a whole data type from the JSON
+    you present it with. In many ways, this is the best of both the dynamic collection-oriented
+    approach, that other converters take to converting JSON, and the type-safe approaches
+    that I'll show you in [Chapter 7](ch07.html "Chapter 7. Using JSON in a Type-safe
+    Manner"), *Using JSON in a Type-safe Manner*. This is because you don't have to
+    laboriously craft class representations for the JSON you're parsing, and you get
+    all the advantages of compile-time type safety in the code you write. Even better,
+    the classes F# Data construct are all Intellisense-aware, so you get tooltip hints
+    and name completion right in the editor!
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s look at the previous example piece by piece and see what it does:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The first line makes the F# Data classes available to your program. Among other
+    things, this defines the `JsonProvider` class, which creates F# types from sources
+    of JSON:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This line defines a new F# type, `Json`, with fields and field types inferred
+    from the JSON you provide. Under the hood, this does a lot: it infers member names,
+    the types of members, and even handles things such as mixed numeric values (say
+    that you have an array with both integers and floating-point numbers, it correctly
+    infers the type as numeric so you can represent either), as well as complex records
+    and optional fields.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'You can pass one of the following three things to `JsonProvider`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: A string containing JSON. This is the simplest case.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: A path to a file containing JSON. The library will open the file and read the
+    contents and perform the type inference on the contents, and then return a type
+    capable of representing the JSON in the file.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: A URL. The library will fetch the document at the URL, parse the JSON, and then
+    do the same type inference on the contents, returning a type that represents the
+    JSON at the URL.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'The next line parses a single JSON document, as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This at first may seem a little weird: why are we passing JSON to both the
+    `JsonProvider` and `Parse` methods? Recall that `JsonProvider` makes a type from
+    the JSON you provide. In other words, it doesn''t parse the JSON for its values,
+    but for the types of data it represents in order to make a class that can model
+    the JSON document itself. This is very important; to the `JsonProvider`, you''ll
+    want to pass a representative JSON document that has the fields and values common
+    across all the JSON documents of a particular type that your application is likely
+    to encounter. You''ll pass a specific JSON document (say, a web service result)
+    to the `Parse` method of the class that `JsonProvider` creates. In turn, `Parse`
+    returns an instance of the class on which you invoked `Parse`.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: You can now access the fields in the instance of the class `Parse` returns;
+    for example, later, I will print the value of `result.Result` in my application's
+    `main` function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To create JSON, you need an instance of the type modeling the data you want
+    to serialize. In the next line, we use the `Json` type we just created to create
+    a new JSON string:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: This creates an instance of the `Json` type with the result field set to the
+    string `FAIL`, and then serializes that instance into a new string.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Finally, the remainder of the program is our program's entry point, and just
+    prints the parsed object and the created JSON.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There's more...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The F# Data library supports a lot more than just JSON; it also supports **Comma
+    Separated Values** (**CSV**), HTML, and XML. It's an excellent library for doing
+    all kinds of structured data access, and if you're working in F#, it's definitely
+    something to become more familiar with.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Reading and writing JSON with Node.js
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Node.js is a JavaScript environment for server-side programming based on the
+    same high-performance JavaScript runtime Google built for Chrome, backed by Joyent.
+    Its high performing and asynchronous programming model makes it an excellent environment
+    for custom web servers and it's used by major companies, including Walmart, in
+    production settings.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting ready
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Because we'll use Node.js in the next two chapters as well, it's worth pointing
+    out to you how to download and install it, even if your daily server environment
+    is something more like Apache or Microsoft IIS. You'll need to go to [http://www.nodejs.org/](http://www.nodejs.org/)
+    and download the installer from the front page. This will install all you need
+    to run Node.js and npm, the package manager used by Node.js.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: After installing on Windows, I had to reboot to get the Windows shell to correctly
+    find the node and npm commands that the Node.js installer installed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Once you get Node.js installed, we can test the installation by bringing up
+    a simple HTTP server in Node.js. To do this, put the following code in a file
+    called `example.js`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This code loads Node.js''s `http` module, and then creates a Web server bound
+    to the port `1337` running on your local machine. You can run it by entering the
+    following command at a command prompt in the same directory as the file you created:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: Once you do so, point your browser to the URL `http://localhost:1337/`. If everything's
+    successful, you should see the message "Hello world" in your web browser.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: You may need to tell your system firewall to enable access to ports being served
+    by the `node` command.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Since Node.js uses Chrome's V8 JavaScript engine, working with JSON is the same
+    with Node.js as it is in Chrome. The JavaScript runtime defines the `JSON` object,
+    which provides a JSON parser and serializer for you.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To parse JSON, all you need to do is invoke the `JSON.parse` method, like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: This parses the JSON, returning the JavaScript object containing the data, which
+    we assigned here to the variable object.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Of course, you can do the opposite, using `JSON.stringify`, like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: See also
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: For more on parsing and creating JSON in JavaScript, see *Reading and Writing
+    JSON in JavaScript* in [Chapter 1](ch01.html "Chapter 1. Reading and Writing JSON
+    on the Client"), *Reading and Writing JSON on the Client*.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Reading and writing JSON in PHP
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: PHP is a popular server-side scripting environment easily integrated with the
+    Apache and Microsoft IIS web servers. It has native support for simple JSON encoding
+    and decoding.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: PHP provides two functions, `json_encode` and `json_decode`, to encode and decode
+    JSON respectively.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'You can pass primitive types or user-defined classes to `json_encode` and it
+    returns a string containing the JSON representing the object. For example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs: []
+  type: TYPE_PRE
+- en: This creates a string `$json` containing the JSON representation of our associative
+    array.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The `json_encode` function takes an optional second argument, which lets you
+    specify arguments to the encoder. The arguments are flags, so you combine them
+    with the binary or `|` operator. You can pass a combination of the following flags:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`JSON_FORCE_OBJECT`: This flag forces the encoder to encode the JSON as an
+    object.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`JSON_NUMERIC_CHECK`: This flag checks the contents of each string in the incoming
+    structure and if it contains a number, converts the string to a number before
+    encoding it.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`JSON_PRETTY_PRINT`: This flag formats the JSON for easier reading by humans
+    (don''t do this in production, as it makes the JSON bigger)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`JSON_UNESCAPED_SLASHES`: This flag instructs the encoder to not escape slash
+    characters.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Finally, you can pass a third argument, which specifies the depth to which the
+    encoder should walk the expression when encoding the value you pass.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The complement of `json_encode` is `json_decode`, which takes the JSON to decode,
+    and a set of optional arguments. Its simplest use might be something like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The `json_decode` function takes up to three optional arguments:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The first argument, when true, specifies that the result should be returned
+    in an associative array rather than an object of type `stdClass`.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The second argument specifies an optional recursion depth to determine how deep
+    into the JSON the parser should parse.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The third argument may be the option `JSON_BIGINT_AS_STRING`, which when set
+    indicates that integers that overflow the integer values should be returned as
+    strings, not cast to floating-point numbers (which may lose precision).
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: These functions return `true` on success or `false` on error; you can determine
+    the cause of the last error using JSON by examining the return value of `json_last_error`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Reading and writing JSON in Ruby
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Ruby provides the `json` gem for JSON handling. In earlier versions of Ruby,
+    you have to install this gem yourself; it's part of the base installation from
+    Ruby 1.9.2 and onwards.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting ready
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'If you''re running an earlier version of Ruby than Ruby 1.9.2, first install
+    the gem with the following command:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE21]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Note that Ruby''s implementation is in C, so installing the gem may require
+    a C compiler. If you don''t have one installed on your system, you can install
+    the pure Ruby implementation of the gem using the following command:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE22]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Regardless of whether you need to install the gem or not, you''ll need to include
+    it in your code. To do this, include both `rubygems` and `json` or **json/pure**,
+    depending on which gem you installed; do this using `require`, like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE23]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The preceding code handles the former case, while the following code handles
+    the latter:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE24]'
+  prefs: []
+  type: TYPE_PRE
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The gem defines the JSON object, which includes the methods `parse` and `generate`,
+    which serialize and deserialize JSON respectively. Using them is what you''d expect
+    by now. Create an object or some JSON, invoke the appropriate function, and look
+    at the results. For example, to create some JSON using JSON.generate, you can
+    execute the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE25]'
+  prefs: []
+  type: TYPE_PRE
+- en: This includes the necessary modules, creates an associative array with a single
+    field, and then serializes it to JSON.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Deserializing works the same way:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE26]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The parse function can take an optional second argument, a hash with the following
+    keys, indicating options to the parser:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`max_nesting` indicates the maximum depth of nesting allowed in the parsed
+    data structures. It defaults to 19 or you can disable the nesting depth checking
+    by passing `:max_nesting => false`.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`allow_nan`, which if set to true, allows NaN, Infinity, and -Infinity in defiance
+    of RFC 4627 to be parsed.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`symbolize_names`, which when true, returns symbols for the attribute names
+    in a JSON object; otherwise, strings are returned (strings are the default).'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: See also
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Documentation for the JSON Ruby gem is available on the Web at [http://flori.github.io/json/doc/index.html](http://flori.github.io/json/doc/index.html).
+  prefs: []
+  type: TYPE_NORMAL

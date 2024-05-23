@@ -1,0 +1,610 @@
+- en: Chapter 2. The Promise API and Its Compatibility
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Promises are fairly new to the JavaScript world, but workarounds have been around
+    for some time now. As we have seen in the previous chapter, there are ways to
+    address asynchronous programming in JavaScript, be it through events or callbacks.
+    You also learned why promises differ from the traditional techniques for that
+    purpose.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Next, we will go into more details of the Promise API. You will also learn
+    about the current browser support for the promises standard and take a look at
+    the JavaScript libraries out there that implement promises and promise-like features.
+    In this chapter, we will cover the following topics:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The Promise API and its details
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Browser compatibility
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Promise implementations
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Libraries with promise-like features
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Getting to know the API
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Throughout this book, we will be mostly addressing and using promises as defined
+    in the specification of Promises/A+ ([http://promisesaplus.com/](http://promisesaplus.com/)).
+    The Promises/A+ organization produced the Promises/A+ specification with the aim
+    of expounding the initial Promises/A specification into one that is clearer and
+    better tested. The following is a quote from their website:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '|   | *Promises/A+ is based on the concepts and `then` API presented in the
+    CommonJS Promises/A proposal.* |   |'
+  prefs: []
+  type: TYPE_TB
+- en: '|   | --*[http://promisesaplus.com/differences-from-promises-a](http://promisesaplus.com/differences-from-promises-a)*
+    |'
+  prefs: []
+  type: TYPE_TB
+- en: 'These differences are seen at three levels: omissions, additions, and clarifications.
+    At the level of omissions, Promises/A+ has removed the following features from
+    the original one:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Progress handling**: This feature includes a callback function that handles
+    the operation/promise while still in progress, as in not fulfilled nor rejected.
+    It was removed because implementers have concluded that, in practice, these functionalities
+    have proven to be underspecified and currently there is no total agreement on
+    their behaviors within the promise implementer community.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Interactive promises**: This feature was an extended promise in the previous
+    Promises/A proposal and it basically supported two additional functions for the
+    promise methods; `get(propertyName)`, which requests the given property from the
+    target of this promise, and `call(functionName, arg1, arg2, ...)`, which calls
+    the given method/function in its parameter on the target of the promise. In the
+    new A+ specification, this feature, along with the two functions, `call` and `get`,
+    is considered out of scope when implementing a basic API required for interoperable
+    promises.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`promise!== resultPromise`: This feature was a requirement in the old proposal,
+    which states that the result of a promise should not equal the promise, for example,
+    `var resultPromise = promise.then(onFulfilled, onRejected)`. In fact, any implementation
+    may allow for `resultPromise === promise`, provided that the implementation meets
+    all the requirements.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'At the level of additions, the Promises/A+ specification adds the following
+    features and requirements to the existing Promises/A proposal:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The behavior specifications in the scenario where `onFulfilled` or `onRejected`
+    returns a thenable, including the details of the resolution procedure.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The reason passed to the `onRejected` handler, which must be the exception that
+    is thrown back in that case.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Both handlers `onFulfilled` and `onRejected` that must be called asynchronously.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Both handlers `onFulfilled` and `onRejected` that must be called functions.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Implementations must abide by the exact ordering of calls to the handlers `onFulfilled`
+    and `onRejected` in case of consequent calls to the `then` method on the same
+    promise. In a more spoken language, this means that, if the `then` method is called
+    more than once on the same promise as in `promise.then().then()`, all the `onFulfilled`
+    handlers used in these `then` calls must execute in the order of the originating
+    calls to `then`. Hence, the `onFulfilled` callback in the first `then` function
+    will execute first, followed by the `onFulfilled` callback in the second `then`,
+    and so on. The same thing applies to the execution of the `onRejected` callbacks
+    in such a scenario. Was it very complex? Maybe the following example can explain
+    it better:'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'The preceding code is not the same as the following line of code:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: The difference is that `promise.then()` might return a different promise.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Lastly, at the level of clarifications, the Promises/A+ proposal applies different
+    naming from Promises/A, because the authors of the new specifications wanted to
+    reflect the vocabulary that has spread among promise implementations. These changes
+    include the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The promise states are referred to as pending, fulfilled, and rejected, replacing
+    unfulfilled, fulfilled, and failed
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: When a promise is fulfilled, the promise has a *value*; similarly, when a promise
+    is rejected, it has a *reason*
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'The `then` method is the main player in the API. An object is not considered
+    a promise if it does not have the `then` method specified to retrieve and access
+    its current or eventual value or reason, as we saw in the previous chapter. This
+    method takes two arguments that need to be a function, as the following example
+    shows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Let''s dive deep into the details of `then` and the specs of its arguments,
+    taking into consideration the previous code sample of a simple `then` method:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Both the arguments, `onFulfilled` and `onRejected`, are optional.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Both the arguments must be a function; otherwise, it must be ignored.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Both the arguments must not be called more than once within the same `then`
+    call.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The `onFulfilled` argument must be called only after a promise is fulfilled,
+    with the value of the promise as its first argument.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The `onRejected` argument must be called after the promise is rejected, with
+    the reason of promise rejection as its first argument.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The `onFulfilled` and `onRejected` arguments must not be passed as a `this`
+    value because, if we apply the strict mode to the JavaScript code, this will be
+    treated as undefined inside the handlers; in the quirks mode, it will be treated
+    as the global object in that JavaScript code.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The `then` method can be called more than once on the same promise.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: When a promise is fulfilled, all the respective `onFulfilled` handlers must
+    be executed in the same order as their originating calls to `then`. The same rule
+    applies for the `onRejected` callbacks.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'The `then` method must return a promise as follows:'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'If either `onFulfilled` or `onRejected` returns a value *x*, the promise resolution
+    procedure must be called to resolve the value *x*, as the following code shows:'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: If either the `onFulfilled` or `onRejected` handler throws an exception `e`,
+    `promiseReturned` must be rejected with `e` as the reason of rejection or failure.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: If `onFulfilled` is not a function and the promise is fulfilled, `promiseReturned`
+    must be fulfilled with the same value.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: If `onRejected` is not a function and `promise1` is rejected, `promiseReturned`
+    must be rejected with the same reason.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'The previous list was a detailed specification of the promise and `then` method
+    as defined and specified in the Promises/A+ open standard. We talked about the
+    promise resolution procedure in the previous list, but we don''t know what it
+    is yet. Well, the promise resolution procedure is basically an abstract operation
+    that takes a promise and a value as arguments, and is indicated as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: If *x* is a thenable, meaning that it is an object or a function that defines
+    a `then` method, the `resolve` method will try to force a promise to assume the
+    state of *x*, under the assumption that *x* behaves at least somewhat like a promise.
+    Otherwise, it will fulfill the promise with the value *x*.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The technique that promise resolution procedure uses to handle thenables allows
+    promise implementations to work reliably with one another, as long as that promise
+    exposes a `then` method that is Promises/A+-compliant. Additionally, it also allows
+    implementations to *integrate* non-standard implementations with reasonable `then`
+    methods.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '|   | *The Promise Resolution Procedure (PRP) is not a public API. It is intended
+    to describe an important, yet abstract and internal/private procedure, where "procedure"
+    here simply means "algorithm" rather than a concrete JavaScript function. A particular
+    promise implementation may implement it however they feel is best.* |   |'
+  prefs: []
+  type: TYPE_TB
+- en: '|   | --*Brian Cavalier, co-editor at Promises/A+ explains* |'
+  prefs: []
+  type: TYPE_TB
+- en: The promise resolution procedure allows us to have a correct implementation
+    of `promise.resolve`. It is also necessary to guarantee a correct implementation
+    of `then`. You might notice that there is no return value for the promise resolution
+    procedure because it is an abstract procedure that may be implemented in any way
+    the author of that particular promise implementation sees fit. Hence, the return
+    value is left up to the implementer as long as it achieves the end goal, which
+    is to put the promise into the same state as *x*. So, conceptually, it affects
+    a state transition on the promise.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Although the implementation of the promise resolution procedure algorithm is
+    left to the implementers, it has some rules of its own that we should abide by
+    if we want to be compliant to the proposal when we need to run it. These rules
+    are as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: If a promise and *x* refer to the same object, the promise should be rejected
+    with a `TypeError` as the reason for the `onRejected` handler.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'If *x* is a promise, we should take on its current state. This rule allows
+    the use of implementation-specific behaviors to actually adopt the state of known-conformant
+    promises. The following are the conditions:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: If *x* is in the pending state, the promise must remain in the pending state
+    until *x* is fulfilled or rejected
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: If/when *x* is fulfilled, the promise should be fulfilled with the same value
+    that *x* has
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: If/when *x* is rejected, the promise should be rejected with the same reason
+    that *x* was rejected with
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'If *x* is an object or a function, and not a promise, then the following is
+    done:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: When we want to call `then`, the method should be `x.then`. This is a defensive
+    measure that is imperative to ensure consistency in the face of an `accessor`
+    property. This has a value that could change whenever we retrieve it.
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: If retrieving the `x.then` property ends up with throwing an exception `e`,
+    the promise should be rejected with `e` as the reason.
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: If `then` is a function, call it with *x* taking the value of `this`. The first
+    argument should be `resolvePromise` and the second argument should be `rejectPromise`.
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: If `then` does not qualify as a function, directly fulfill the promise with
+    *x*.
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: If *x* is neither an object nor a function, the promise should be fulfilled
+    with *x*.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Let''s have a look at the third rule. We saw that, if `then` is the function,
+    the first argument should be `resolvePromise` and the second argument should be
+    `rejectPromise` where the following rules apply:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: If/when `resolvePromise` is called with a value *z*, the implementation must
+    run `[[Resolve]](promise, z)`.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: If/when `rejectPromise` is called with a reason *j*, the implementation must
+    reject the promise with reason j.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: If both the handlers `resolvePromise` and `rejectPromise` are called, or in
+    the case of multiple calls to the same argument, the first call should take precedence,
+    and any other subsequent calls are ignored.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'If calling then results in throwing an exception e, we have two conditions:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: If the `resolvePromise` or `rejectPromise` handlers have already been called,
+    we should ignore `then`
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: If not, the implementation should reject the promise with `e` as the reason
+    returned
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'The previous long list of rules acts as guidance for implementers. So, if you
+    are implementing `then` in your Public API, these rules should apply to your algorithm
+    to be complaint with the Promises/A+ standard specifications. I have asked Brian
+    Cavalier about the need of PRP and he added the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*One of the most important aspects of the PRP is that it has been carefully
+    designed to allow different promise implementations to interoperate in a reliable
+    way.*'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: 'Furthermore, the promise resolution procedure even allows correctness in the
+    face of a non-compliant (and slightly dangerous) thenables. An example would be
+    the use of a `resolve` function to convert jQuery''s version of a promise, which
+    doesn''t comply with the A+ standard, to a really simple standard-conforming promise.
+    The following code illustrates that implementation:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: At the end of the day, the core goal of Promises/A+ is to provide the minimum,
+    most simple specification possible that will allow a reliable interoperation of
+    different promise implementations, even in the face of hazards.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Just to erase any confusion that might come out, the promise resolution procedure
+    is not exactly the same as the `promise.resolve` method that some implementations
+    provide in their public API.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In alignment with the core goal of the Promises/A+ standard, the Promises/A+
+    organization created a compliance test suite to test the compliance of a promise
+    library or API implementation against the Promises/A+ specification. The compliance
+    tests, which can be found at [https://github.com/promises-aplus/promises-tests](https://github.com/promises-aplus/promises-tests),
+    check the correctness of the promise resolution procedure by testing `then`. These
+    tests are also intended to provide more concrete guidance and evidence for whether
+    the implementations meet the requirements and conform to standards.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Browser support and compatibility
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: JavaScript is tightly coupled with browsers and the same applies to promises
+    because promises are not a standard in the previous version of ECMAScript and
+    will be part of the new ECMAScript 6 release; they won't be supported across all
+    the browsers. Moreover, promises can be implemented and we will witness several
+    libraries offering promise-like features or exposing promise capabilities. In
+    the remaining portion of this chapter, we will cover these two points that are
+    essential when it comes to working with promises.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Checking the browser compatibility
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: As with any client-side technology, JavaScript has expressly been developed
+    for use in a web browser in conjunction with HTML pages. It uses the browser to
+    do the job, which is why it is a scripting language. Once the script is sent to
+    the browser, it is then up to the latter to do something with it. There is a heavy
+    dependency there; thus, browser compatibility is vital.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'There are already implementations of promises in some browsers; at the time
+    of writing this book, there is a small selection of browsers that support promises,
+    as the following ECMAScript 6 compatibility table by Kangax shows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Checking the browser compatibility](img/00002.jpeg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'Source: [http://kangax.github.io/compat-table/es6/#Promise](http://kangax.github.io/compat-table/es6/#Promise)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '**The abbreviations used in the compatibility table**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: IE stands for Internet Explorer, FF for Firefox, CH for Chrome, SF for Safari,
+    WK for Webkit, and OP for Opera.
+  prefs: []
+  type: TYPE_NORMAL
+- en: As we can see in the previous table, only the latest three versions of Firefox,
+    as of version 29, and Chrome, as of 32, enable promises by default. Worry not,
+    for there is a polyfill to add the promises functionalities to browsers that do
+    not support it yet.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: A polyfill is a fairly new term coined by Remy Sharp and grew popular in the
+    community of web developers. It represents a piece of code that delivers the technology
+    and the behavior that we expect the browser to provide natively. We can think
+    of it as a patch in terms of computing.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This polyfill that does the magic and provides us with the support for promises
+    can be downloaded from this link: [https://www.promisejs.org/polyfills/promise-4.0.0.js](https://www.promisejs.org/polyfills/promise-4.0.0.js).
+    It basically adds support for promises to browsers that don''t yet implement it
+    natively. It can also be used to provide support for promises in Node.js. The
+    following code sample shows how to include it in our code files:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: We are showing the ECMAScript 6 compatibility table because promises are part
+    of the ECMAScript 6 specification, which provides promises as a first-class language
+    feature, and the implementation is based on the Promises/A+ proposal.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Libraries with promise-like features
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The notion of promises is not very new to the world of web development and JavaScript.
+    Developers may have met or used promises in JavaScript in a non-standardized manner
+    through libraries. These libraries are implementations of the promise concept;
+    some of them are spec-adhering implementations and are starting to take on the
+    promise pattern, while many are not. Moreover, some of these libraries do not
+    conform to the Promises/A+ standard, which is a very important requirement when
+    choosing what JavaScript libraries to use in our projects.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Developers can test whether their libraries and APIs implementing promises are
+    conforming to the Promises/A+ standard by using the Compliance Test Suite.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The following is a list of some libraries that are fully compliant with Promises/A+
+    specs, and that I can thus unreservedly recommend:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Q.js**: Developed by Kris Kowal and Domenic Denicola, it encompasses a full-featured
+    promise library that includes adapters for Node.js and support for progress handlers.
+    It can be downloaded from [https://github.com/kriskowal/q](https://github.com/kriskowal/q).'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**RSVP.js**: Developed by Yehuda Katz, it features a very small and lightweight
+    promise library. It can be downloaded from [https://github.com/tildeio/rsvp.js](https://github.com/tildeio/rsvp.js).'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**when.js**: Developed by Brian Cavalier, it offers an intermediary library
+    and includes functions to manage collections of eventual operations. It also features
+    functions that expose the progress and cancellation handlers of a promise. It
+    can be downloaded from [https://github.com/cujojs/when](https://github.com/cujojs/when).'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: In addition, we have `then` ([https://github.com/then](https://github.com/then))
+    that is a collection of libraries that are simple Promises/A+ implementations
+    that meet the specification and extend it with some functionalities such as progress
+    while a promise is fulfilled or rejected.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Also, the famous jQuery has an API they called Deferred— available at [http://api.jquery.com/jquery.deferred/](http://api.jquery.com/jquery.deferred/),
+    which claims to be similar to a promise. jQuery''s deferred didn''t return a new
+    promise from `then` as the specification necessitates until version 1.8; hence,
+    developers relying on jQuery were not getting the full capability and power of
+    the promises pattern. Furthermore, a lot of code written using this implementation
+    doesn''t piece perfectly with other promise implementations that did actually
+    adhere to the specification. Deferreds are not Promise/A+-compliant, at least
+    with the second part of the specification, which states that `then` doesn''t return
+    a new promise object when executing one of the handlers. Hence, we cannot have
+    function composition and chaining of the `then` function and ultimately, error
+    bubbling due to a broken chain, which are the two most important points in the
+    specification. This makes jQuery different and somewhat less useful. Nevertheless,
+    if we need to use the `promise` object exposed by jQuery or any other library
+    that does not conform to the specification for that matter, we can use one of
+    the libraries listed earlier to convert that non-conforming promise to a real
+    promise that is complaint with the A+ proposal. For example, using Q, we can have
+    the following code that converts a jQuery promise to a standard one:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Another example would be using the Promise polyfill library ([https://www.promisejs.org/polyfills/promise-4.0.0.js](https://www.promisejs.org/polyfills/promise-4.0.0.js))
+    as the following code shows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: Although these promise implementations follow a standardized behavior, their
+    overall APIs differ.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: As we have seen, the concept of promises is not very new and has been around
+    in JavaScript with different implementations through libraries, be it standard-complaint
+    or others. However, now, all these efforts have concluded in the Promises/A+ community
+    specification that most libraries conform to. Thus, we now have native support
+    for promises in JavaScript via a standard `Promise` class that is included in
+    the next version of ECMAScript ECMAScript 6, allowing web platform APIs to return
+    promises for their asynchronous operations. Also, we covered the promise API and
+    the `then` method in depth and learned about the current browser compatibility
+    for the new standard. Finally, we briefly went over some of the libraries that
+    implement promises and are compliant with the Promises/A+ specification
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the next chapter, we will go over chaining of promises and how to achieve
+    it using the `then` method to enable multiple asynchronous actions.
+  prefs: []
+  type: TYPE_NORMAL

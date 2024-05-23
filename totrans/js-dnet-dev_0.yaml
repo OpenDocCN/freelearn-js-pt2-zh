@@ -1,0 +1,919 @@
+- en: Chapter 10. Testing and Debugging JavaScript
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In every software life cycle, testing and debugging play an important role.
+    Thorough testing makes software flawless and good debugging techniques makes it
+    easy to not only troubleshoot problems, but also helps to identify and fix any
+    problems by reaching out to the exact point.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Testing is the core essence of creating any robust application. However, there
+    are different practices and frameworks used by the application to serve particular
+    objective, and the architecture varies as per the nature of the application. Therefore,
+    sometimes it becomes difficult for a developer to test client-side code, for example,
+    if an application contains some JavaScript code on a page itself, such as inline
+    event handlers, make it tightly coupled with the page. On the other hand, even
+    when modularizing the JavaScript code into different modules bring some test suite
+    limitations and become harder to execute the testing process of an application.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Debugging is the process of finding and fixing errors in an application. It
+    is one of the most important and core skillset in software development. If developers
+    have a solid grasp on the debugging tools and know the ins and outs of debugging,
+    they can quickly identify the root cause and start fixing the errors. Debugging
+    is a basic process in any software development life cycle. Whether application
+    is a complex one or a simple one, to trace and rectify errors debugging plays
+    an important role. It helps the developer to break the program execution through
+    breakpoints and identify the program flow by stepping into the chain of program
+    execution. Moreover, there is other useful information almost all debugging tools
+    provide, such as watching the current state of the variables or objects being
+    used within the program and watching them on every stage of the debugging life
+    cycle.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Testing the JavaScript code
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Normally, web applications go through different types of testing, such as **user
+    interface** (**UI**) testing, which checks the functionality of the UI by making
+    certain inputs to the form and verifies the behavior of an application. This type
+    of testing is mostly done manually or through automated testing tools. The other
+    type of testing is **load testing**, which is used mostly to check the performance
+    of an application and by putting up some load on the application. In simple terms,
+    it can be an example of signing in to an application with many number of users
+    or doing some operations through automated routines to test how the application
+    behaves. There are a few more testing types, but the most essential type of testing
+    that ensures the functionality of the application and certifies whether the application
+    complies with the requirements is unit testing. In this section, we will discuss
+    about unit testing JavaScript code using Jasmine (a popular JavaScript unit test
+    framework) and use it with Karma and Grunt to execute test cases in an ASP.NET
+    application using Visual Studio 2015 IDE.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Unit testing
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Unit testing is a method to test individual units of modules together with associated
+    data and procedures to verify the application's functionality compliance to the
+    requirements. Unit testing is done by developers, and it allows developers to
+    test each use case of the application to guarantee that it meets the requirement
+    and works as expected.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The basic advantage of unit testing is that it separates each part of the application
+    into a smaller unit and helps developers to focus and identify the bug initially
+    during the development cycle. Unit testing is the first testing any application
+    endures and allow testers and developers to release the application for **user
+    acceptance testing** (**UAT**).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Writing unit tests
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: To test JavaScript code, there are many testing suites available. The most popular
+    ones are Jasmine, Mocha, and QUnit. In this chapter, we will use Jasmine with
+    Karma and Grunt.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Jasmine
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: Jasmine is a behavior-driven development framework for testing JavaScript code.
+    This provides certain functions such as `it()`, `describe()`, `expect()`, and
+    so on to write test scripts for the JavaScript code. The basic advantage of this
+    framework is that it is very easy to understand and helps to write the test JavaScript
+    code with very simple lines of code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'For example, consider the following JavaScript code that sums up two numbers
+    passed as parameters:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The test case for the preceding function will look similar to the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: Karma
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: Karma is a test runner for JavaScript that can be integrated with other testing
+    frameworks such as Jasmine, Mocha, and so on. It executes test cases defined through
+    Jasmine or other test frameworks by providing a mock test environment and load
+    browsers that executes the test JavaScript code according to the configuration.
+    The Karma configuration file is known as `Karma.config.js`. Once the tests are
+    executed, the results are displayed in the console window.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Grunt
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: Grunt is equivalent to Gulp. It is used to execute tasks such as minification
+    of CSS file or JavaScript files, concatenation and merging of multiple JavaScript
+    file, and so on. Grunt has hundreds of plugins that can be used to automate specific
+    tasks. Unlike the previous chapters, where we used Gulp, we will use Grunt and
+    see what it provides with Karma (test runner) and Jasmine (testing suite). Grunt
+    and Gulp are both renowned task runners for development. The reason for using
+    Grunt here is to get an understanding of another task runner of JavaScript that
+    is equally renowned and supported by Visual Studio 2015 and discuss the packages
+    that it provides to perform testing using Karma and Jasmine.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Developing unit test using Jasmine, Karma, and Grunt
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: In this section, we will develop a simple unit test to show how unit testing
+    can be done in an ASP.NET Core application using Jasmine, Karma, and Grunt frameworks.
+    To start with, create an ASP.NET Core application from Visual Studio 2015.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Adding packages
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: 'Open the `package.json` file in your ASP.NET Core application and add packages
+    such as `grunt`, `grunt-karma`, `karma`, `karma-phantomjs-launcher`, `karma-jasmine`,
+    `karma-spec-reporter`, and `karma-cli`, as shown in the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Adding packages](img/00119.jpeg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'The following table shows the description of each package:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '| Package Name | Description |'
+  prefs: []
+  type: TYPE_TB
+- en: '| --- | --- |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `grunt` | This configures and runs tasks |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `grunt-karma` | This is the Grunt plugin for the Karma test runner |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `karma` | This is the test runner for JavaScript |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `karma-phantomjs-launcher` | This is the Karma plugin to launch the PhantomJS
+    browser |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `karma-jasmine` | This is the Karma plugin for the Jasmine test suite |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `karma-spec-reporter` | This is the Karma plugin to report test results to
+    the console |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `karma-cli` | This is the Karma command-line interface |'
+  prefs: []
+  type: TYPE_TB
+- en: Adding the Grunt file
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: Add `Gruntfile.js` in your ASP.NET application to define Grunt tasks. `Gruntfile.js`
+    is the main file where all the tasks are configured. Configured tasks can be seen
+    in Visual Studio from the **Task Runner Explorer** window.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Adding Karma specifications
+  prefs:
+  - PREF_H5
+  type: TYPE_NORMAL
+- en: The `Gruntfile.js` file provides the main `initConfig()` method that is called
+    when the Grunt is loaded. This is the starting point where we define the Karma
+    specifications.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The following is the Karma specifications defined within the `initConfig()`
+    method:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'In the preceding script, we first started by specifying the target platform
+    for Karma. Inside `karma`, we will specify the unit that is used to run unit tests.
+    Inside `unit`, we can define certain configuration attributes such as `frameworks`,
+    `singleRun`, `browsers`, and `files`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`frameworks`: This is an array of test frameworks that we want to use. In this
+    exercise, we used Jasmine. However, other frameworks such as Mocha and QUnit can
+    also be used.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_IND
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Please note that when using any framework in Karma, an additional plugin/library
+    of that framework has to be separately installed using **Node Package Manager**
+    (**NPM**).
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '`singleRun`: If this is set to `true`, Karma start capturing the configured
+    browser(s) and executes tests on them. Once the tests are completed, it exits
+    smoothly.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`browsers`: This is an array to define multiple browsers in a comma-separated
+    value. We have used PhantomJS in our example, which is a headless browser and
+    runs the test in background. Karma supports other browsers such as Chrome, Firefox,
+    IE, and Safari, and these can be configured through this property.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`files`: This contains all the test files, source files, and dependencies.
+    For example, if we are using jQuery in our test scripts, or original source code,
+    we can add the path to this library as well. In the preceding configuration, we
+    used wildcard characters to load all the source files defined under the `js` folder,
+    and tests files under the `tests` folder with a `test.js` suffix.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'There are many more attributes that can be used in the Karma configuration
+    and it can be referred here:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[http://karma-runner.github.io/0.13/config/configuration-file.html](http://karma-runner.github.io/0.13/config/configuration-file.html)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Load npm task
+  prefs:
+  - PREF_H5
+  type: TYPE_NORMAL
+- en: 'To load the Karma test runner tool, we need to specify it in `Gruntfile.js`
+    after the Karma configuration, as shown in the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: Register task
+  prefs:
+  - PREF_H5
+  type: TYPE_NORMAL
+- en: 'Finally, we will add the Grunt task to register tasks. The first parameter
+    is the task name, which will be available in the **Task Runner Explorer** in Visual
+    Studio, and the second parameter takes an array to execute multiple tasks:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: Source JavaScript file
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: In this example, we have a `product.js` file that contains a `saveProduct()`
+    method, which will be invoked on the **Save** button's click event.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Add this file to the `wwwroot/js` folder path:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: It is a recommended approach to keep your JavaScript code separate from your
+    HTML markup.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Adding unit test script file
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Here, we will add another JavaScript file under the `wwwroot/tests` folder and
+    named it `product.test.js`. When writing tests, you can add the `*.test.js` suffix
+    to make it uniquely identified, and separates it from the source JavaScript files.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Here is the code for `product.test.js`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The Jasmine framework provides certain keywords to define specific blocks that
+    run on specific conditions, which are as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`describe()`: This is a global Jasmine function that contains two parameters:
+    a string and a function. The string is the name of the functionality that is going
+    to be tested. The function contains the code that actually implements the Jasmine
+    suite and contains logic of unit tests.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`it()`: Here, specs are defined by calling the global Jasmine function `it()`.
+    This also takes the string and function, where it contains the actual unit test
+    name and the function block contains the actual logic of the code to be executed
+    followed with the expected results.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`expect()`: The expected results can be specified by using the `expect()` function
+    that takes some value defined within the `it()` function. This is also chained
+    with a matcher function, such as `toBe()` or `not.toBe()`, to match or unmatch
+    the expected value.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: In .NET, it is equivalent to the **Arrange**, **Act**, and **Assert** pattern.
+    Here, Arrange is used to initialize objects and set values of the data that is
+    passed to the method under test. The Act pattern actually invokes the method under
+    test, and Assert verifies that the method under test behaves as expected.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Running test task
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Running these tasks is straightforward, it can simply be run through the **Task
+    Runner Explorer** window in Visual Studio 2015\. Here is the screenshot of the
+    **Task Runner Explorer** window that shows the tasks defined in `Gruntfile.js`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Running test task](img/00120.jpeg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'When we run the test task, it will show something similar to the following
+    output:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Running test task](img/00121.jpeg)'
+  prefs: []
+  type: TYPE_IMG
+- en: In our `product.test.js` test script, we have two tasks. One is to check whether
+    passing the string values to one of the two elements such as `txtProdUnitPrice`
+    and `txtProdQuantity` will return `0`. As our `product.js` file does not handle
+    this condition, it will give an error.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To fix this, we will modify our `product.js` and add these two lines to handle
+    this logic to check whether the value is a number or not:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Now, when we run our test again, we will get the following output:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Running test task](img/00122.jpeg)'
+  prefs: []
+  type: TYPE_IMG
+- en: In the preceding example, we defined the HTML markup within the `beforeEach()`
+    function in the `product.test.js` file. With simple applications, this may not
+    be a cumbersome process to redefine the HTML markup as fixtures and use them to
+    execute tests. However, most web applications are using some client-side frameworks
+    such as Knockout, AngularJS, and so on, that separates the binding of controls
+    specified in an HTML view to a ViewModel, and this ViewModel is responsible to
+    read or write control values.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the following example, we will use the Knockout JavaScript library that implements
+    an Model-View-ViewModel pattern and see how unit tests can be written in this
+    way.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Implementing Model-View-ViewModel using Knockout and Run test
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '**Model-View-ViewModel** (**MVVM**) is a design pattern for building user interfaces.
+    It is divided into three parts, as show in the following diagram:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Implementing Model-View-ViewModel using Knockout and Run test](img/00123.jpeg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'These three parts are described as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Model**: This contains the backend logic to invoke backend services and save
+    or retireve data by communicating with the persistant storage.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**ViewModel**: This contains the view-specific operations and data. It represents
+    the model of the view to which the view elements binds to. For example, a form
+    that contains some HTML elements will have a ViewModel, which is an object containing
+    some properties to bind these controls with the data.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**View**: This is the user interface to which the user interacts. It displays
+    information from the ViewModel, raises events at the ViewModel, and updates it
+    when the ViewModel changes.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Let's implement the MVVM pattern using the **Knockout** JavaScript library using
+    the following steps.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Adding the Knockout package
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: To start with, let's add Knockout.js in your ASP.NET Core application through
+    `bower.json`. It can be added by making an entry in the dependencies section of
+    the `bower.json` file, and Visual Studio automatically downloads the package and
+    places it in the `wwwroot/lib/knockout` folder.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The following statement can be added in the `bower.json` file:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: Adding ProductViewModel
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: '`ProductViewModel` contains properties such as the product code, unit price,
+    quantity, expiry, and total amount. Here is the code snippet of `ProductViewModel.js`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: '`ko` is basically the Knockout object that provides a complimentary way of
+    linking an object model to the View, where `ko.observable()` is a Knockout function
+    that makes the Model properties observable and sync with the View data. This means
+    that when the ViewModel property''s value changes, View is updated; and when the
+    control value is modified, the ViewModel property is updated.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: '`ko.applyBindings()` actually activates Knockout to perform the binding of
+    the Model properties with the View elements.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Add the Product view
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: Knockout provides a very decent way of binding ViewModel properties to the control
+    elements. Binding consist of two items, name and value, separated by a colon.
+    To bind the ViewModel with the input elements, we can use the data-bind attribute
+    and specify the value name followed with `:` and ViewModel's property name. Each
+    control has a specific set of properties and it can be used to bind elements accordingly.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'For example, the `span` element can bind to the view model property using the
+    text name as shown in the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Here is the modified version of the Product view:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: This is all what we need to configure Knockout in the Product view. When the
+    `btnSaveProduct` button is clicked, it will calculate the total amount and call
+    the product service to save the record.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Modifying test configuration
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: 'Here is the modified version of `Gruntfile.js` created earlier. We added the
+    `ProductViewModel.js` and the Knockout dependency in the `files` array:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: Modifying the product-testing script
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: 'As we are not dependent on the HTML view directly, we can test our unit test
+    cases through the Product view model. Here is the modified version of `product.test.js`
+    that does not have any of the fixtures defined:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The following output will be generated when the test is run:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Modifying the product-testing script](img/00124.jpeg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Debugging JavaScript
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: JavaScript runs on client browsers, and almost all browsers, such as Internet
+    Explorer, Microsoft Edge, Chrome, and Firefox, provide the integrated JavaScript
+    debugger and **Developer Tools** window. With Visual Studio, we can also debug
+    the JavaScript code by setting Internet Explorer as the default browser. Chrome
+    is not supported out of the box, but with certain steps, its can be achieved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Debugging options in Visual Studio 2015
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Visual Studio provides certain decent features to debug JavaScript and troubleshoot
+    errors. JavaScript debugging in Visual Studio only works with Internet Explorer.
+    Debugging can be started by starting the application in a debug mode and then
+    placing some breakpoints in the JavaScript code. When the breakpoint is hit, we
+    can use all sorts of debugging options in Visual Studio that we already know of
+    and used in debugging the C# and VB.NET code. Options such as Step into (*F11*),
+    Step over (*F10*), Step out (*Shift* + *F11*), conditional breakpoints, and watches,
+    all work with the JavaScript code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Debugging from Visual Studio with Internet Explorer
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'The default browser in Visual Studio for a particular web application project
+    can be set from the **Web Browser (Internet Explorer)** | **Internet Explorer**
+    option, as shown in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Debugging from Visual Studio with Internet Explorer](img/00125.jpeg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Debugging from Visual Studio with Google Chrome
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Visual Studio 2015 does not provide out-of-the-box support to debug JavaScript
+    applications, except with Internet Explorer. Alternatively, with Node.js, debugging
+    works perfectly fine in Visual Studio, and as technically, both Node.js and Google
+    Chrome are based on the V8 engine, there is no drawback.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To start debugging with Chrome in Visual Studio, we have to run the Google
+    `chrome.exe` file with a remote-debugger argument. The following command runs
+    Google Chrome with remote debugging, and from Visual Studio, it can be attached
+    by pointing to the same Chrome instance:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: '`9222` is the default port where Visual Studio connects on attaching to its
+    process.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: From the Visual Studio, you can attach the process by hitting *Ctrl* + *Alt*
+    + *P*, or by going to **Debug** | **Attach to Process** in menu bar and selecting
+    the Chrome instance.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Developer Tools
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The **Breakpoints** tab shows the list of all the breakpoints being used in
+    the script, and the users can manage these breakpoints by enabling or disabling
+    and deleting or adding new events:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Debugging options in Microsoft Edge](img/00127.jpeg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Debugging can only start if the **F12 Developers Tools** window is opened and
+    this can be opened through the **…** | **F12 Developer Tools** window option from
+    menu bar or by hitting the *F12* key. Once the window is opened, you can set breakpoints
+    on the JavaScript code and take specific actions on the page.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The following table shows some important options available in the debugger
+    toolbar:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '| Icon | Option | Shortcut Key | Description |'
+  prefs: []
+  type: TYPE_TB
+- en: '| --- | --- | --- | --- |'
+  prefs: []
+  type: TYPE_TB
+- en: '| ![Debugging options in Microsoft Edge](img/00128.jpeg) | Continue | *F5*
+    or *F8* | This releases the break mode and continues till the next breakpoint.
+    |'
+  prefs: []
+  type: TYPE_TB
+- en: '| ![Debugging options in Microsoft Edge](img/00129.jpeg) | Break | *Ctrl* +
+    *Shift* + *B* | This breaks on the next statement. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| ![Debugging options in Microsoft Edge](img/00130.jpeg) | Step Into | *F11*
+    | This steps into the function being called or the next statement. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| ![Debugging options in Microsoft Edge](img/00131.jpeg) | Step Over | *F10*
+    | This steps over the function being called or the next statement. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| ![Debugging options in Microsoft Edge](img/00132.jpeg) | Step Out | *Shift*
+    + *F11* | This steps out of the current function and into the calling function.
+    |'
+  prefs: []
+  type: TYPE_TB
+- en: '| ![Debugging options in Microsoft Edge](img/00133.jpeg) | Break on new worker
+    | *Ctrl* + *Shift* + *W* | This breaks on the creation of a new web worker. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| ![Debugging options in Microsoft Edge](img/00134.jpeg) | Exception Control
+    | *Ctrl* + *Shift* + *E* | This can be used to break on all exceptions or unhandled
+    exceptions. By default, it is set to ignore exceptions. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| ![Debugging options in Microsoft Edge](img/00135.jpeg) | Disconnect Debugger
+    |   | This disconnects the debugger and no breakpoints run. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| ![Debugging options in Microsoft Edge](img/00136.jpeg) | Debug just my code
+    | *Ctrl* + *J* | This ignores the third-party libraries from debugging. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| ![Debugging options in Microsoft Edge](img/00137.jpeg) | Pretty print | *Ctrl*
+    + *Shift* + *P* | This searches the minified version of the JavaScript block and
+    makes it readible. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| ![Debugging options in Microsoft Edge](img/00138.jpeg) | Word wrap | *Alt*
+    + *W* | This wraps the sentence to adjust it as per the content pane size. |'
+  prefs: []
+  type: TYPE_TB
+- en: 'Microsoft Edge provides the following five types of breakpoints:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Standard
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Conditional
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Tracepoints
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: XHR
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Events
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Standard breakpoints
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'These breakpoints can be set by simply selecting the statement from the script
+    code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Standard breakpoints](img/00139.jpeg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Conditional breakpoints
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: These type of breakpoints are hit when specific conditions are met or when the
+    value of the variable reaches a specific state. For example, we can use this with
+    a statement inside a loop and break the execution when the counter reaches a value
+    of 10.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'It can be set by clicking on the existing breakpoint and selecting **Condition...**
+    from the **context** menu:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Conditional breakpoints](img/00140.jpeg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'This option opens up the **Conditional breakpoint** window and the condition
+    can be set as shown in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Conditional breakpoints](img/00141.jpeg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Once the condition is set, the icon changes to ![Conditional breakpoints](img/00142.jpeg)
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tracepoints
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Tracepoints are used to write the message on the console when it passed through
+    the statement where the tracepoint is configured. It can be set by clicking on
+    the **Insert tracepoint** option from the **context** menu shown in the gutter
+    by right-clicking:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Tracepoints](img/00143.jpeg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'Once the tracepoint is set, the icon changes, as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Tracepoints](img/00144.jpeg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'When the statement is executed, it will print the message on a console window
+    as shown in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Tracepoints](img/00145.jpeg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Event
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Microsoft Edge provides the option of registering event tracepoints and breakpoints
+    from the **Breakpoints** pane. An event could be a mouse event, keyboard event,
+    or timer event. This feature is heavily used in large or complex web applications
+    where the exact location of specifying the breakpoint is not known. It is also
+    more useful in cases where the event handlers are specified at multiple places.
+    For example, if a page contains five button controls, and we need to break the
+    execution whenever any button raises the click event, we can simply specify the
+    mouse-click event through the breakpoint event; and whenever any button event
+    is raised, the breakpoint will be executed and will focus on the statement.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Add event tracepoint
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: 'A user can add event tracepoints with the help of the following option:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Add event tracepoint](img/00146.jpeg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'The following window shows the registration of an event tracepoint when the
+    mouse is clicked:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Add event tracepoint](img/00147.jpeg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Add event breakpoints
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: 'User can add event breakpoints with the help of the following option:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Add event breakpoints](img/00148.jpeg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'The following window shows the registration of an event breakpoint when the
+    mouse is clicked:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Add event breakpoints](img/00149.jpeg)'
+  prefs: []
+  type: TYPE_IMG
+- en: XHR
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Just like events, XHR events can also be registered from the **Breakpoint**
+    pane of browser. These events are invoked when any of the Ajax request is being
+    made from the JavaScript code. A user can register the XHR event from the icon
+    shown in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![XHR](img/00150.jpeg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'Once we click on this event, it will be added in the **Breakpoints** window,
+    as shown in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![XHR](img/00151.jpeg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Debugging TypeScript
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In [Chapter 5](part0028_split_000.html#QMFO2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Chapter 5. Developing an ASP.NET Application Using Angular 2 and Web API"), *Developing
+    an ASP.NET Application Using Angular 2 and Web API*, we already discussed TypeScript
+    and how it transpiles into the JavaScript code that eventually runs on the browser.
+    The developers write code in TypeScript, but on the browser, a generated JavaScript
+    file is run. When the TypeScript file is transpiled to a JavaScript file, a mapping
+    file is generated with a `*.map.js` extension. This file contains the information
+    about the actual TypeScript file and the generated JavaScript file. Not only this,
+    but the generated JavaScript file also contains one entry about the mapping file
+    that actually tells the browsers to load the corresponding source TypeScript file
+    by reading the mapping file.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Here is the entry that every generated JavaScript file contains when it is
+    transpiled from TypeScript:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs: []
+  type: TYPE_PRE
+- en: This can be configured from the `TSConfig.json` file through the `sourceMap`
+    property. If the `sourceMap` property is `true`, it generates the mapping file
+    and makes an entry in the generated JavaScript file. Also, when working in an
+    ASP.NET Core application, all the static files have to be in the `wwwroot` folder.
+    So, to debug the typescripts, all the corresponding typescript (`.ts`) files have
+    to be moved to any folder under the `wwwroot` folder so that it can be accessible
+    from the browser.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Here is the debugger window, showing the list of TypeScript files on the left-hand
+    side and the icon in the upper-right corner to toggle between the source file
+    and compiled JavaScript version:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Debugging TypeScript](img/00152.jpeg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Debugger keyword supported by all browsers
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'We can also explicitly force to break the control at some point through the
+    `debugger` keyword. If the breakpoint is not set, but the `debugger` keyword is
+    specified, the debugging will be enabled and break the execution. It can be set
+    from code as shown in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Debugger keyword supported by all browsers](img/00153.jpeg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this chapter, we discussed how JavaScript applications can be tested and
+    debugged. For testing JavaScript applications, we discussed the Jasmine testing
+    suite that can be easily plugged in with Karma, which is a test runner and can
+    be used with Grunt to be executed from Visual Studio **Task Runner Explorer**
+    window. We also discussed the basics of the MVVM pattern and how to implement
+    it using the Knockout JavaScript library. We then modified the test case to work
+    with the View model. For debugging, we discussed some tips and techniques of debugging
+    JavaScript with Visual Studio and what Microsoft Edge offers through the **Developer
+    Tools** window to make debugging easy. In the end, we also learned about the basic
+    topics such as how Microsoft Edge enables debugging for TypeScript files and what
+    configurations are required to achieve it.
+  prefs: []
+  type: TYPE_NORMAL

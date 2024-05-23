@@ -1,0 +1,983 @@
+- en: Chapter 5. Using JSON with MongoDB
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'In this chapter, we will cover the following recipes:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Setting up MongoDB
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Installing the MongoDB database driver for Node.js
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Installing the express module for Node.js
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Connecting to a MongoDB database using Node.js
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Creating a document in MongoDB using Node.js
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Searching for a document in MongoDB with Node.js
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Updating a document in MongoDB with Node.js
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Deleting a document in MongoDB using Node.js
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using REST to search MongoDB
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using REST to create a document in MongoDB
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using REST to update a document in MongoDB
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using REST to delete a document in MongoDB
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Introduction
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this chapter, we look at how you can use MongoDB as the backend storage for
+    your web application. While not completely focused on JSON, as you'll see, this
+    chapter's recipes give you a leg up in managing document creation, reading, updating,
+    and deleting with MongoDB, first directly in Node.js, and then, using a REST server
+    built for Node.js and MongoDB so that you can manage documents from a network
+    client, such as a web application.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Setting up MongoDB
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Installing MongoDB varies by platform; on Linux, you may be able to use a package
+    installer such as apt, while on Windows and Mac OS X (as well as on Linux, if
+    you have a distribution that doesn't have a package manager with the MongoDB package),
+    there are web downloads.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: On Mac OS X and Windows, it's as easy as going to [http://www.mongodb.org/](http://www.mongodb.org/)
+    and follow the download link. At the time of writing, MongoDB is at version 2.6.7;
+    there's a release candidate for version 3.0, which we won't discuss further here.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Mongo also provides packages for several common Linux distributions, including
+    Debian and Fedora. There's also a package available for FreeBSD.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Once you download and install Mongo, you need to make a place for MongoDB to
+    store its database.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: This varies by platform; on Windows, it's `c:\data\db.`
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Once you do this, you can start the database server by running `mongod`. You
+    may also want to add the path to the MongoDB client and server binaries in your
+    path so that you can access them easily from the command line.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'When you run MongoDB''s server, you should see a bunch of log messages that
+    read something like this:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: You'll want to note the hostname (in this example, `KF6GPE-SURFACE`) on which
+    the server is running, and the port number, which by default should be `27017`.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'To connect to the MongoDB server directly, you can run `mongo` on the command
+    line, like this:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: To exit the `mongo` binary, hit *Ctrl* + *C* or type `exit`.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: How it works…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The double-clickable installer and Linux packages install the mongod binary,
+    which is the database, as well as the Mongo command-line client.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Installing the MongoDB database driver for Node.js
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: You'll need to install database drivers for Node.js, so that Node.js can talk
+    directly to the MongoDB server.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'To get the database drivers, simply go to the project directory where you''ve
+    got your Node.js files and run the following command:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: This command will download the database drivers and install them for Node.js.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Installing the express module for Node.js
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The express module for Node.js makes it easy to build Representational State
+    Transfer (REST) server applications using Node.js. REST is a powerful paradigm
+    in web programming that uses the HTTP methods `GET`, `POST`, `PUT`, and `DELETE`
+    to manage the create, read, update, and delete (often abbreviated as CRUD) actions
+    for document management in web services.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using REST, the URLs are nouns representing what you want to manipulate, and
+    the HTTP methods are verbs that perform the actions on those nouns.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the recipes that follow, we'll use node's express module to build a RESTful
+    server that returns documents from Mongo, as well as supports the basic CRUD operations.
+    Before you begin, you need to install three more modules.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'You''ll use `npm`, the Node.js package manager, to install the cross-object
+    resource module to support cross-domain scripting, express module, and the body-parser
+    module used by express. To do this, run in your project directory the following
+    commands:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: You also need a basic application, or skeleton, for your REST server, which
+    consists of routes between URLs on the REST server, the HTTP methods, and the
+    functions that perform the necessary database operations. This skeleton consists
+    of two Node.js scripts that use the express module and an HTML document.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The first Node.js script is the REST server itself, in `rest-server.js`, and
+    it looks like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: How it works…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The package manager installs each of the modules, building them from source
+    if needed. You''ll need all three modules: the CORS module to support cross-domain
+    scripting requests, the express module for the REST server framework, and finally,
+    the body-parser module to translate client object bodies from JSON to JavaScript
+    objects.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The skeleton script includes the express module, our *routes* file, which will
+    define functions to handle each of the REST use cases, the CORS module, and the
+    body-parser module needed by express to interpret object bodies sent by the client.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Once these are included, it defines an express module instance, named `app`,
+    and configures it with CORS. This is necessary because by default, browsers won't
+    make AJAX requests of servers at different domains than where their page content
+    has come from, in order to prevent cross-side scripting attacks where servers
+    are compromised and injected with malicious JavaScript. The CORS module sets up
+    the necessary headers for the server to permit us to use our old Node.js server
+    from the previous chapter on port `1337` to serve our content, and have our content
+    access this REST server running on a different port.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Next, we get a reference to body-parser''s JSON parser, which we''ll use to
+    parse the object bodies sent by the client for the insert and update requests.
+    After this, we configure the Express app server instance with handlers for the
+    top-level documents URL, which is used to access our MongoDB documents via REST.
+    There are five possible operations at this URL:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: An HTTP GET of the URL `/documents` simply returns a list of all the documents
+    in the database
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: An HTTP GET of the URL `/documents/<id>` returns the document with the given
+    ID in the database
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: An HTTP POST to `/documents` with a document in the JSON format saves that document
+    to the database
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: An HTTP PUT to `/documents/<id>` with a document in the JSON format updates
+    the document with the given ID to have the contents that the client passes
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: An HTTP DELETE to `/documents/<id>` deletes the document with the given ID
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Finally, the script starts the server listening on port `3000`, and logs the
+    fact that the server has started.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Of course, we need to define the functions in the documents object; we do this
+    in the file `routes/documents.js`, which to begin with should look like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: The preceding code begins by importing the native MongoDB driver, setting variables
+    to hold the server instance, database instance, and a converter interface that
+    converts strings to MongoDB object IDs. Next, it creates an instance of the server
+    connecting to our server instance (which must be running in order to succeed),
+    and gets a reference to our database. Finally, it opens a connection to the database
+    and inserts some sample data into the database if it's empty. (This code will
+    be clearer after the first two recipes in this chapter, so if it seems a little
+    confusing right now, just read along and you'll do fine!)
+  prefs: []
+  type: TYPE_NORMAL
+- en: The remainder of the `routes/documents.js` file defines functions to handle
+    each of the REST use cases we wired up in the `rest-server.js` script. We'll flesh
+    out each of the functions as we go along in our recipes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Finally, we need an HTML document that will access the REST server. Our document
+    looks like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: We use a bit of jQuery to make the field access easier in the scripts (you'll
+    see the scripts in the upcoming recipes for REST insertion, updating, removal,
+    and querying). The HTML itself consists of three `div`, tags, one each for debugging,
+    showing the raw JSON, and the result of each REST operation, and a form that lets
+    you enter the fields you need to create, update, or delete records.
+  prefs: []
+  type: TYPE_NORMAL
+- en: See also
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: For more information about the excellent Node.js express module, see [http://expressjs.com/](http://expressjs.com/).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'MongoDB is a powerful document database, and there''s far more than we can
+    cover here. For more information, check the Web, or look at the following resources
+    from the PacktPub website:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*Instant MongoDB* by *Amol Nayak*.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '*MongoDB Cookbook* by *Amol Nayak*.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Connecting to a MongoDB database using Node.js
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Before your Node.js application can do anything with a MongoDB instance, it
+    must connect to it over the network.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The Node.js drivers for MongoDB contain all of the necessary network code to
+    establish and break connections with MongoDB running on your local or remote machine.
+  prefs: []
+  type: TYPE_NORMAL
+- en: You need to include a reference to the native driver in your code and specify
+    the URL of the database to connect to.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Here''s a simple example that connects to the database and promptly disconnects:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: Let's break this down line by line.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How it works…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The first line includes the native driver implementation for Mongo in your Node.js
+    application, and extracts a reference to the `MongoClient` object it defines.
+    This object contains the basic interface you need to interact with the database
+    over the network, defining the `connect` and `close` methods.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The next line defines a string, `url`, that contains the URL of the database
+    to connect to. The format of this URL is simple: it begins with the `mongodb`
+    scheme to indicate that it''s a URL for the MongoDB server. Next is the hostname
+    and port (in this case, we connect to the localhost on mongo''s default port,
+    `27017`). Finally, we come to the name of the database to which you want to connect:
+    in our case, `test`.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'If you''re using MongoDB''s user access control to control access to your database,
+    you''ll need to specify a username and password, too. You do this just as you
+    would for any other URL, like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: Whether to secure your database or not, of course, depends on your network topology
+    and deployment; it's probably a good idea to do so in general.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We pass this URL to the mongo object''s `connect` method, along with a function
+    that the MongoDB native driver will call back once a connection has been successfully
+    established, or if the connection failed. The driver invokes the callback function
+    with two arguments: the first is an error code in the case of an error (or `null`
+    on success), and a reference to a database object encapsulating the connection
+    to the database you specified (which may be `null` if an error occurred establishing
+    the connection).'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Our callback function is very straightforward; it prints a message containing
+    the value of the error code passed and then we disconnect from the database using
+    `close`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Always call `close` on your database object when you're done using it to ensure
+    that the native driver can successfully clean up after itself and disconnect from
+    the database. If you don't, you run leaking connections to the database.
+  prefs: []
+  type: TYPE_NORMAL
+- en: See also
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: For more information about the native MongoDB driver for Node.js, see [http://docs.mongodb.org/ecosystem/drivers/node-js/](http://docs.mongodb.org/ecosystem/drivers/node-js/).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Creating a document in MongoDB using Node.js
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The MongoDB database organizes its documents in *collections*, which are typically
+    groups of documents that are related in some way (such as representing the same
+    kinds of information). Because of this, your primary interface to documents is
+    through a collection. Let's see how to get a collection and add a document to
+    it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: A collection is a little like a table in relational databases, but there's no
+    imposition that all documents in a collection have the same fields or the same
+    types for each field. Think of it as an abstraction you can use to group similar
+    kinds of documents.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Here''s a function that inserts two static items into the collection named
+    `documents` in our test database, which we put in its own file and run using Node.js:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'I''ve broken the code up into two pieces to make the callback structure clear:
+    the insert function, which actually performs the insertions, and the connection
+    callback, which calls the insertion function.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let's take a closer look.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How it works…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The code begins in the same way, by getting a reference to the `MongoClient`
+    object it uses to talk to the database. The connection code is essentially the
+    same, too; the URL is the same, and the only change is the call to the database's
+    `collection` method, passing the name of the collection we're interested in. The
+    collection method returns a `collection` object, which offers methods for the
+    CRUD operations we'll use on the collection of documents.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `insert` function does a few things. It takes a collection on which you
+    want to operate and a callback it will invoke when the insertion operation finishes
+    or fails.
+  prefs: []
+  type: TYPE_NORMAL
+- en: First, it defines a couple of static items to insert in the database. Note that
+    these are plain old JavaScript objects; pretty much anything you can express as
+    a JavaScript object, you can store in MongoDB. Next, it calls the collection's
+    insert method, passing the objects to store and a callback the driver invokes
+    after attempting the insertion.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The driver calls the callback again, passing an error value (which is `null`
+    on success) and the JavaScript objects *as they were inserted* into the collection.
+    Our callback function logs the results to the console, and calls back the insertion
+    function's callback, which closes the database.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'What does an inserted record look like? Here''s an example from my console,
+    once I ensure that we are running MongoDB as well:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: Note that the objects have the same fields, but they also have an additional
+    `_id` field, which is the unique id of the object in the database. In the next
+    section, you will learn how to query on that.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There's more
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: What happens if you insert the same object multiple times into the database?
+    Try it! You'll see that you get multiple copies of the object in the database;
+    the fields aren't used to specify uniqueness (the exception is the _`id` field,
+    which is unique across the database). Note that you can't specify an `_id` field
+    yourself, unless you're assured that it's unique. To update an existing element,
+    use the update method, which I described in the recipe *Updating a document in
+    MongoDB with Node.js* in this chapter.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'By default, MongoDB insertions operate quickly and might fail (say, if there''s
+    a transitory network problem, or if the server is temporarily overloaded). At
+    the cost of performance, you can pass `{ safe: true }` as the second argument
+    to insert or to force the operation to wait for a successful operation or return
+    an error if the operation fails.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: See also
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Refer to [http://docs.mongodb.org/manual/reference/method/db.collection.insert/](http://docs.mongodb.org/manual/reference/method/db.collection.insert/)
+    for documentation about how to insert documents into MongoDB collections.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Searching for a document in MongoDB with Node.js
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Being able to insert documents wouldn't do you much good if you didn't have
+    a way to search for documents. MongoDB lets you specify a template on which to
+    match, and returns objects matching that template.
+  prefs: []
+  type: TYPE_NORMAL
+- en: As with insertions and updates, you'll work with a collection of documents,
+    invoking the collection's `find` method.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Here''s an example that finds all documents in the test collection with a call
+    of `kf6gpe-7` and prints them to the console:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: How it works…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: After connecting to the database, we invoke `find` in the collection, which
+    returns a cursor you can use to iterate through the found values. The `find` method
+    takes a JavaScript object that acts as a template indicating the fields that you
+    want to match; our example matches records with a slot named `call` equal to `kf6gpe-7`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We don't iterate over the cursor but instead turn the entire collection of found
+    values into a single array by using the cursor's `toArray` method. This is fine
+    for our example because there aren't very many results, but be careful doing this
+    with a database that has a lot of items! Fetching more than you really need from
+    the database at once uses RAM and CPU resources better allocated to other parts
+    of your application. It's better to iterate across the collection, or use paging,
+    which we will discuss next.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There's more
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The cursor has several methods you can use to iterate across your search results:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `hasNext` method returns `true` if the cursor has another item that can
+    be returned
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The `next` method returns the next matching item from the cursor
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The `forEach` iterator takes a function and calls the function on each item
+    of the cursor's results sequentially
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: When iterating over a cursor, it's best to use a while loop with `hasNext` and
+    call next, or use `forEach`; don't just convert the results to an array and loop
+    across the list! Doing so requires the database to fetch all of the records at
+    once, which can be very memory-intensive.
+  prefs: []
+  type: TYPE_NORMAL
+- en: At times, there may be still too many items to deal with; you can limit the
+    number of returned items using the cursor methods `limit` and `skip`. The `limit`
+    method limits the search to the number of items you pass as an argument; the `skip`
+    method skips the number of items you specify.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In practice, the find method actually takes two arguments: a JavaScript object
+    that is the criteria of the request and an optional JavaScript object defining
+    the projection of the result set to new JavaScript objects.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The criteria can be an exact match criteria, as you''ve seen in the previous
+    example. You can also perform matching using the special operations `$gt` and
+    `$lt`, which let you filter the given fields by cardinal order as well. For example,
+    you might write:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: This will return all records with a `lng` field with a scalar value greater
+    than 122.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The projection is a list of fields that you''re interested in receiving from
+    the database, each set to `true` or `1`. For example, the following code returns
+    JavaScript objects containing only the `call` and `_id` fields:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: See also
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: See [http://docs.mongodb.org/manual/reference/method/db.collection.find/](http://docs.mongodb.org/manual/reference/method/db.collection.find/)
+    for documentation on the MongoDB find method, which the native driver makes available
+    to your Node.js application.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Updating a document in MongoDB with Node.js
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Updating a document in a collection is easy; simply use the collection's `update`
+    method and pass the data you want to update.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Here''s a simple example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: The pattern of this is identical to the `insert` method; `update` is an asynchronous
+    method that invokes a callback with an error code and a result.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How it works…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The `update` method takes a template to match a document on and updates the
+    first matching document with the field values you pass in the `$set` frame of
+    the replacing JavaScript object. Note that you can add new fields to the document,
+    too, as we did here; we add a new field `another` with a value of `true`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: You can specify a precise match to a specific document by passing an ID of the
+    document in the `_id` field of the template you pass to update. The template you
+    pass to `update` is a standard search query template, just like you'd pass to
+    `find`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There's more…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'By default, `update` updates the first matching document. If you want it to
+    update all the documents matching your template, pass the JavaScript object `{
+    multi: true }` as the (optional) third argument to update. You can also have `update`
+    perform an *upsert*, that is, an update on a match, and an insertion if the match
+    doesn''t succeed. To do this, pass the JavaScript object `{ upsert: true }` as
+    the third argument to update. These can be combined to match more than one document
+    and upsert; if none are found, pass.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Like insert, you can also pass `safe: true` in this option''s argument to ensure
+    that the update attempts to succeed before returning at the cost of performance.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `update` method passes the number of updated documents as its result to
+    your callback.
+  prefs: []
+  type: TYPE_NORMAL
+- en: See also
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: See the MongoDB native driver documentation for update at [https://github.com/mongodb/node-mongodb-native](https://github.com/mongodb/node-mongodb-native)
+    or the MongoDB update method documentation at [http://docs.mongodb.org/manual/reference/method/db.collection.update/](http://docs.mongodb.org/manual/reference/method/db.collection.update/).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Deleting a document in MongoDB using Node.js
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: At some point, you may want to delete a document in a collection using Node.js.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'You do this using the `remove` method, which removes matching documents from
+    the collection you specify. Here''s an example of how to call `remove`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: How it works…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This code removes documents that have a call field with the value `kf6gpe-7`.
+    As you may have guessed, the search criteria used for `remove` can be anything
+    you'd pass to find. The `remove` method removes *all* documents matching your
+    search criteria, so be careful! Calling `remove({})` removes all of the documents
+    in the current collection.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `remove` method returns a count of the number of items removed from the
+    collection.
+  prefs: []
+  type: TYPE_NORMAL
+- en: See also
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: For more information about MongoDB's remove method, see its documentation at
+    [http://docs.mongodb.org/manual/reference/method/db.collection.remove/](http://docs.mongodb.org/manual/reference/method/db.collection.remove/).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using REST to search MongoDB
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: By now, that you might be wondering where JSON comes into play when using MongoDB.
+    When you access a MongoDB database instance using a RESTful interface such as
+    mongo-rest, the documents are transferred to the client using JSON. Let's see
+    how to get a list of documents from MongoDB.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Using REST with Node.js and MongoDB takes several steps.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Be sure you've set up the REST server as we discussed in the introduction. You'll
+    need to have created the files `rest-server.js`, `routes/documents.js`, and `mongo-rest-example.html`
+    with the UI for our RESTful application, and run both the REST server and the
+    document server with Node.js.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Second, be sure that you're running MongoDB.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Next, to process the REST `GET` request, we need to define the function `exports.findAll`
+    in `documents.js`, which should look like this:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'After this, we need the `doGet` script in the `mongo-rest-example.html` file,
+    which makes an AJAX `GET` request to the REST server for the documents in the
+    database. This code performs an AJAX `GET` request to the server''s `/documents/
+    URL`, placing the resulting JSON in the `div` with the `id` json, and constructs
+    an HTML table with one row for each resulting document in the result, providing
+    columns for each document''s ID, call sign, latitude, and longitude:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: How it works…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The `findAll` method is a straightforward query of the database, matching all
+    documents in the database using `find` in our collection. You can extend it to
+    take a query template as a URL argument and then pass that as a URL-encoded argument
+    to the GET URL.
+  prefs: []
+  type: TYPE_NORMAL
+- en: You can also add additional arguments, such as arguments to limit and skip,
+    which you should consider doing if you're processing a lot of data. Note that
+    the Express module knows that it needs to JSON encode the JavaScript object to
+    JSON before sending it to the client.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `doGet` JavaScript is even simpler; it's a pure AJAX call, followed by a
+    loop to unwrap the resulting returned JSON array into objects and present each
+    object as a row in a table.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There's more
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'A good REST interface also provides an interface to query a specific item by
+    ID because typically you''ll want to query the collection, find something interesting
+    in it, and then maybe do something with that specific ID. We define the method
+    `findById` to take an ID in the incoming URL, convert the ID to a MongoDB object
+    `id`, and then perform a `find` on just that ID, like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs: []
+  type: TYPE_PRE
+- en: Using REST to create a document in MongoDB
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'In principle, using REST to create a document is simple: create the JavaScript
+    object on the client, encode it as JSON, and `POST` it to the server. Let''s see
+    how this works in practice.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'There are two pieces to this: the client piece and the server piece.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'On the client side, we need some way to get the data for our new MongoDB document.
+    In our example, it''s the fields of the form on the HTML page, which we wrap up
+    and `POST` to the server using the client-side (in the HTML) method `doUpsert`:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'The server accepts the posted document, automatically converts it from JSON
+    using the body-parser module, and performs an insertion in the database, in the
+    file documents.js:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE21]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: How it works…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The client code is used by both the insert and update buttons in the UI, which
+    is why it's a little more complicated than you might first think. However, the
+    only difference between an insert and an update in REST is the URL and the HTTP
+    method (`POST` versus `PUT`), so it makes sense to use one method for both.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The client code begins by fetching the field values from the form using jQuery,
+    and then sets the type of the request to `POST` for an update. Next, it constructs
+    the REST URL, which should just be the base document''s URL because there''s no
+    ID for a new document. Finally, it uses `POST` to send the JSON of the document
+    to the server. The server code is straightforward: take the object body passed
+    as a part of the request and insert it into the documents collection of the database,
+    returning the result of the insertion to the client (this is a good pattern to
+    follow, in case the client was the id of the newly created document for anything).'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'On the server side, JSON decoding is handled automatically because we registered
+    our handler for the `POST` request using the `jsonParser` instance from the body-parser
+    module like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE22]'
+  prefs: []
+  type: TYPE_PRE
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: If you forget to pass a JSON parser to the routes registration, the request
+    body field won't even be defined! So if you're inserting null documents in your
+    database using Express, be sure to check that.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using REST to update a document in MongoDB
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Updating is identical to insertion, except that it needs a document ID and the
+    client signals an update request with a HTTP `POST` request, rather than a `PUT`
+    request.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The client code is exactly the same as the previous recipe; only the server
+    code changes because it needs to extract the ID from the URL and perform an update
+    instead of an insert:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE23]'
+  prefs: []
+  type: TYPE_PRE
+- en: Let's look at that in more detail.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How it works…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Returning to the client implementation for a moment in the previous recipe,
+    you see that for an update, we included the ID in the URL. The `updateDocuments`
+    method gets the ID from the request parameters and converts it to a MongoDB object
+    `id` object, and then calls `update` with the document that the client passes
+    with the `POST` request.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using REST to delete a document in MongoDB
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Like updating, deletion takes an object `id`, which we pass in the URL to the
+    HTTP `DELETE` request.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The `doRemove` method gets the object `id` from the `id` field in the form,
+    and posts a `DELETE` message to the server at a URL consisting of the base URL
+    plus the object `id`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE24]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The deletion message handler on the server extracts the ID from the URL and
+    then performs a `remove` operation:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE25]'
+  prefs: []
+  type: TYPE_PRE
+- en: How it works…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: On the client side, the flow is similar to the update flow; we get the ID from
+    the `id` form element, and if it's null, it pops up an error dialog instead of
+    doing the AJAX post. We make an AJAX post using the HTTP `DELETE` method, passing
+    the `id` as the document name in the URL to the server.
+  prefs: []
+  type: TYPE_NORMAL
+- en: On the server side, we get the ID from the request parameters, convert it to
+    a MongoDB native object ID, and then pass it to the collection's remove method
+    to remove the document. We then return either success or an error to the client.
+  prefs: []
+  type: TYPE_NORMAL

@@ -1,0 +1,645 @@
+- en: Chapter 3. Using JSON in Simple AJAX Applications
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this chapter, we'll look at the part that JSON plays in asynchronous JavaScript
+    and XML (AJAX) applications that provide better responsiveness than older web
+    pages by dynamically loading bits of a web page on demand.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In this chapter, you''ll find the following recipes:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Creating an `XMLHttpRequest` object
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Making an asynchronous request for data
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Sending JSON to your web server
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Accepting JSON using Node.js
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Getting the progress of an asynchronous request
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Parsing the returned JSON
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Issuing a web service request using Node.js
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Introduction
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: AJAX is a set of web development techniques used on the client side of web development
+    to create asynchronous web applications—web pages that can fetch their content
+    from different servers, once the base content has been loaded. The "X" in AJAX
+    stands for XML, but today's AJAX applications typically use JSON to encapsulate
+    data between the client and server.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The underpinning components of AJAX are actually quite old, dating back to an
+    ActiveX component in Internet Explorer introduced by Microsoft back in 1998.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'However, the technique really gained widespread traction by 2005, when *Jesse
+    Garrett* wrote his article titled *Ajax: A New Approach to Web Applications*.
+    In April of 2006, the World Wide Web Consortium released the first draft standard
+    for the `XMLHttpRequest` object, which is the underlying object powering all of
+    today''s AJAX applications in modern browsers.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this chapter, we'll build a simple AJAX application that returns the latitude
+    and longitude of an amateur radio station reported through the **Automated Packet
+    Reporting System** (**APRS**) network as cached by [http://www.aprs.fi/](http://www.aprs.fi/),
+    a popular website in the amateur radio community. We'll build the client side
+    using HTML and JavaScript for Google Chrome and Internet Explorer, and build the
+    server side using Node.js.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: To begin, be sure you installed Node.js as instructed in [Chapter 2](ch02.html
+    "Chapter 2. Reading and Writing JSON on the Server"), *Reading and Writing JSON
+    on the Server*, in the section *Reading and writing JSON with Node.js*. You'll
+    also need to install the request module of Node.js. Do this by running `npm install
+    request` at a command prompt once you've installed Node.js.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Setting up the server
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'We''ll start with a bare-bones server. Make a directory for your node applications
+    and save the following to `json-encoder.js`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This code handles two kinds of HTTP requests: `POST` requests and `GET` requests.
+    It begins by allocating `http`, `filesystem`, and `url` manipulation objects,
+    and then registers an HTTP server on port `1337` of the localhost. Its server
+    switches on the request type. For `POST` requests, it presently returns an empty
+    JSON body, ignoring its incoming content. For `GET` requests, it attempts to load
+    the file indicated in the URL out of the `public` subdirectory below the current
+    working directory and return it to the client as an HTML document. If the incoming
+    request is for a favicon, it ignores the request.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This server is crude but adequate for our purposes. If you''re interested in
+    learning more about Node.js, you might want to extend it for the following purposes:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Correctly determine the MIME type of the documents it returns, and send the
+    appropriate Content-Type header based on the document MIME type.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Not throw an exception and kill the server if a given document isn't found,
+    returning a 404 page not found error instead.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: We'll extend the server-side JavaScript throughout this chapter.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Setting up the client page
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Make a subdirectory inside `json-encoder.js` and call it `public`. In this
+    directory, create an HTML file containing the following HTML and name it `json-example.html`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This is a simple HTML document with three `div` tags we''ll populate with data
+    from the asynchronous requests: `debug` to show debug messages; `json` to show
+    the raw JSON; and `result` to show the actual result, which will show some formatted
+    data from the JavaScript object obtained by parsing the JSON. There''s one script
+    at the bottom of the page, `doAjax`, which the browser invokes after loading all
+    the HTML through the `onload` attribute of the body tag.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Loading the web page in Chrome with the developer''s tools active, you should
+    see something like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Setting up the client page](img/6902OS_03_01.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: We'll extend the HTML throughout this chapter.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Creating an XMLHttpRequest object
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: All modern web browsers provide an `XMLHttpRequest` class you can instantiate
+    in your code, which you can use to issue asynchronous calls to obtain content
+    over HTTP. You'll create one or more of these in your client-side JavaScript using
+    the `new` operator.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'You''ll want to create an instance of this class early on in your JavaScript
+    after the page loads, as shown in the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: How it works…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The preceding code tests the root-level JavaScript `window` object for the `XMLHttpRequest`
+    class, and if the browser defines the class, creates an instance of the class
+    for us to use in the making of asynchronous requests.
+  prefs: []
+  type: TYPE_NORMAL
+- en: See also
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: If you're working with a very old version of Internet Explorer, you may need
+    to use a `Microsoft.XMLHTTP` ActiveX object. In which case, the test for `window.XMLHttpRequest`
+    will fail.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Making an asynchronous request for data
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: You use the instance of the `XMLHttpRequest` class you created to request data.
+    You can request data using any HTTP method; typically you'll use GET or POST.
+    GET is good if you don't need to pass any arguments, or if the arguments are encoded
+    in the service URL; POST is necessary if you're going to post JSON to the server
+    as arguments for your server-side script.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Continuing to enhance our client page script''s `doAjax` function, here''s
+    how to issue an asynchronous request, modifying the previous example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: How it works…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The `XMLHttpRequest` class has two methods you use to make a request: `open`
+    and `send`. You use the `open` method to start the process of issuing the request,
+    and the `send` method if you need to send data (say, with a `POST` request) for
+    the server to process.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The `open` method takes three arguments: the HTTP method, the URL (relative
+    to the page containing the script), and a Boolean indicating whether the request
+    should be synchronous (indicated by the value `false`) or asynchronous (indicated
+    by the value `true`). In the preceding code, we submit a `POST` request to the
+    web server''s root and request the browser to handle the request asynchronously,
+    so the page will be rendered and the user can interact with the page.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `send` method takes a single argument, a string containing the data you'd
+    like to send to the server. In this example, we're not sending anything; we'll
+    use this method to send the JSON for our argument.
+  prefs: []
+  type: TYPE_NORMAL
+- en: See also
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This recipe is closely related to the next, *Sending JSON to your web server*,
+    in which we actually create a JavaScript object, stringify it, and send it using
+    the `send` method.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Sending JSON to your web server
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Some AJAX requests just need to get data at a URL. This is the case when the
+    server updates an object for all clients, or when the URL for an object uniquely
+    identifies the object (common when you design a service using **Representational
+    State Transfer** (**REST**)). Other times, you may want to pass JavaScript data
+    to the server, such as when you have a complex query you'd like the server to
+    process. To do this, create your JavaScript object, then stringify it and pass
+    the string containing the JSON to the `XMLHttpRequest` object's `send` method.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Omitting the code that creates an `XMLHttpRequest` object, you send JSON to
+    a server with the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: Note that we're using an HTTP `POST` request here, which submits the JSON document
+    to the server as an HTTP object body.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How it works…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'This code creates a JavaScript object request that has a single field: call.
+    The call field''s value is set to the station we''re looking for and the server
+    will use it when it processes the request.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'When you pass data to the server, you should correctly set the Content-Type
+    header, which HTTP uses to indicate to the server the type of the data being carried.
+    The MIME type for JSON is application/json; however, some web application developers
+    have chosen alternate representations, such as `text/x-json`, `text/x-javascript`,
+    `text/javascript`, or `application/x-javascript`. You should use `application/json`
+    unless you have a compelling reason (think legacy code you can''t fix on a server).
+    You specify the content type by setting a request header using the `setRequestHeader`
+    method. This method takes two arguments: the name of the header to set and its
+    value. Note that header names are case sensitive!'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Once you set the request header, the final thing to do is call `send` and pass
+    the stringified JavaScript object. We do this in the last line of the preceding
+    example.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Accepting JSON using Node.js
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Different web server systems accept data posted by a client in different ways.
+    That being said, in most cases, you read the data piecewise as it comes in from
+    the client and once the POST request finishes, process it as a batch. Here's how
+    to do it with Node.js.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'In our case, we accept JSON submitted from the client via HTTP `POST` requests.
+    To do this, we need to read the data from the client, aggregate it in a string,
+    and when all of the data arrives at the server, convert the data from a JSON string
+    to a JavaScript object. In json-encoder, js, we modify it to read as the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: How it works…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The preceding code extends the server-side Node.js script we saw in this chapter's
+    introduction. The code begins by testing for the `POST` request method. If we
+    get a `POST` request, we create an empty string `body` to contain the body of
+    the request. Node.js is event-driven; to read data from the `POST` request, we
+    add a `'data'` event handler to the request, which concatenates newly-read data
+    to the value referred to by the variable `body`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: At some point, the `POST` request concludes, which causes the request to raise
+    the `'end'` event. We register an event handler for this event, which uses `JSON.parse`
+    to parse the incoming JSON. Then, we set an additional field in the resulting
+    object, the result field, giving it a value of **'** `OK`**'**. Finally, we write
+    the Content-Type header and then the JSON representing the object to the client
+    using the `writeHead` and `end` methods respectively.
+  prefs: []
+  type: TYPE_NORMAL
+- en: See also
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: As suggested in the introduction, how you read posted data on your server depends
+    a lot on the server environment and server-side scripting language. If you haven't
+    done this before, a quick trip to a search engine such as Bing or Google is in
+    order. Once you do so, be prepared to take the resulting string data and convert
+    it to an object in your server-side scripting language using one of the recipes
+    from [Chapter 2](ch02.html "Chapter 2. Reading and Writing JSON on the Server"),
+    *Reading and Writing JSON on the Server*.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting the progress of an asynchronous request
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Our request is pretty lightweight but that's not always going to be the case
+    in your application. Moreover, progressing is especially important in mobile web
+    applications, where the mobile device may move in and out of network coverage
+    and suffer temporary network outages. A robust application will test progress
+    status and errors and retry important requests.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The `XMLHttpRequest` object provides events for it to notify you about the
+    progress of a pending request. These events are as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`load`: This event executes immediately after you open a connection.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`loadstart`: This event executes as a load first starts.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`progress`: This event executes periodically as the load takes place.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`error`: This event executes in the event of a network error.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`abort`: This event executes in the event that the network transaction is aborted
+    (such as the user navigating away from the page issuing the request).'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: For each of these events, you'll want to register a function that handles the
+    event in some way. For example, the `error` handler should notify the user that
+    an error occurs, while the `abort` handler should clean up any client-side data
+    that is left lingering in the event of an abandoned request.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Here''s an example of how to do this, which reports debugging information for
+    each of these events; this would go in the `<script>` tag at the bottom of our
+    example HTML:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: How it works…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The `XMLHttpRequest` object offers the `addEventListener` method, which you
+    use to register functions the object should invoke when particular events occur.
+    To this method, you pass the name of the event, the function (or a closure) to
+    invoke on the event, and whether the registered function should capture the event
+    or not (usually not). In the preceding example, we invoke that method for each
+    of the events, passing the function that we wrote to handle the event. Each of
+    our functions just logs the fact that the event was received in the debug div
+    in our HTML content.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There's more...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The `XMLHttpResult` object defines an attribute, `onreadystatechange`, to which
+    you can assign a function that the object will invoke periodically as the request
+    runs. The next recipe, *Parsing the returned JSON*, describes how to use this
+    to monitor the status of a request.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The behavior of these events varies from browser to browser, and worse, from
+    browser version to browser version. For example, early versions of Microsoft Internet
+    Explorer (prior to Version 9) don't support these events at all. You should take
+    a lowest-common-denominator approach to handle these events if your web application
+    is to run on multiple browsers, especially if they're different versions.
+  prefs: []
+  type: TYPE_NORMAL
+- en: See also
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Because the support for these events varies by browser and browser version,
+    this is another area where using a JavaScript framework such as jQuery or AngularJS
+    can really help. These frameworks abstract away specific browser differences.
+    [Chapter 4](ch04.html "Chapter 4. Using JSON in AJAX Applications with jQuery
+    and AngularJS"), *Using JSON in AJAX Applications with jQuery and AngularJS,*
+    discusses using these frameworks for AJAX.
+  prefs: []
+  type: TYPE_NORMAL
+- en: See *Getting the progress of an asynchronous request using jQuery* and *Getting
+    the progress of an asynchronous request using AngularJS* in [Chapter 4](ch04.html
+    "Chapter 4. Using JSON in AJAX Applications with jQuery and AngularJS"), *Using
+    JSON in AJAX Applications with jQuery and AngularJS*, for browser-independent
+    ways to respond to these events.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Parsing the returned JSON
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Once the server returns the result, you need a way to get that result from the
+    `XMLHttpRequest` object and convert the result from a string to a JavaScript object.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The `XMLHttpRequest` object defines the `onreadystatechange` attribute to which
+    you assign a function that is called periodically throughout the lifespan of a
+    request. Here''s our `doAjax` function in its entirety, including a function assigned
+    to this attribute to monitor the request for completion:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: How it works…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: After adding the various event listeners, we assign a function to the `onreadystatechange`
+    attribute. This function is called as the state of the request object changes;
+    at each invocation, we test the `readyState` field of the request object and its
+    status. The `readyState` field indicates the state of the request; we're interested
+    in state 4, which indicates that the request is complete. Once complete, we can
+    find the HTTP status of the request in the status field of the request; the HTTP
+    status code 200 indicates a normal successful status in reading content from the
+    server.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Once we get `readyState` of 4 and a HTTP status of 200, we define a new variable
+    `result` as the object returned by parsing the JSON returned by the server, available
+    from the request's `responseText` field. You can do whatever you want with the
+    resulting object; we copy the JSON to `jsondiv` so you can see the JSON and read
+    a few fields of the JavaScript object when we create the contents of `resultdiv`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There's more...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The `XMLHttpRequest` class defines the following ready states:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 0 indicates that the request has not been initialized
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 1 indicates that the request has been set up
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 2 indicates that the request has been sent
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 3 indicates that the request is in progress
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 4 indicates that the request is complete
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: In practice, you should usually use only the last value and use events for other
+    progress reporting.
+  prefs: []
+  type: TYPE_NORMAL
+- en: HTTP result codes are defined in the HTTP request for comment, Internet RFC
+    2616; the section you'd be interested in for this purpose is at [http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html](http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html).
+    The 200 series of results indicate a successful transaction; how you handle the
+    other notifications will depend on the business logic for your web application.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The final Node.js server looks like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: Issuing a web service request using Node.js
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: So far, our server doesn't do much in response to a `POST` request; all it does
+    is say "OK" and return the client's JSON back to the client. Typically, your server
+    will need to do something with the JSON you provide, that is, make a web or database
+    query, for example, or perform a computation. Our example queries the web service
+    JSON endpoint at [http://www.aprs.fi/](http://www.aprs.fi/), which lets you see
+    how you can make a server-to-server web service request using Node.js.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting ready
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: If you want to run the example for yourself, you'll first need to go to [http://www.aprs.fi](http://www.aprs.fi),
+    register for an account, and obtain an API key. Follow the links on the page to
+    do this, and substitute your API key for the text `"—key-"`in the example that
+    follows.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Our Node.js code will construct a URL with the identifier of the station we''re
+    interested in and our API key, and issue an additional HTTP request on behalf
+    of the client. It looks like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: How it works…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: After converting the client JSON to a JavaScript object, the code creates a
+    URL for our web request consisting of the request station identifier, API key,
+    and the fact that we'd like JSON for the result. We then use the `request` method
+    to issue a simple `GET` request to that URL, passing a function that Node.js will
+    invoke when the request succeeds.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Node.js invokes our callback function with an indicator of an error, a response
+    object with fields containing the details of the HTTP response, and the body returned
+    by the request. In this example, we assume success for brevity, and convert the
+    resulting body from JSON to a JavaScript object using `JSON.parse`. The resulting
+    object is a JavaScript object similar to what you saw in [Chapter 1](ch01.html
+    "Chapter 1. Reading and Writing JSON on the Client"), *Reading and Writing JSON
+    on the Client*, in the *Introduction* section. It has an entries array which has
+    zero or more records indicating the location of each station in the record's `lat`
+    and `lng` fields. We extract the first returned result and copy the relevant data
+    to the JavaScript object we'll return to the original client.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There's more...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Most server-side frameworks provide various ways to modify the semantics of
+    a web service request, including specifying headers and the HTTP method to use
+    when issuing the request. Node.js's request module is no different.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'First, the request method can take a JavaScript object instead of a URL with
+    a number of fields that let you customize the request. If you pass an object,
+    you should put the URL to which the request should be made in the URI or URL attributes.
+    You can also specify the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The HTTP method to use, which is passed in the method parameter
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The HTTP headers to send, which are passed as a JavaScript object with attribute-value
+    pairs for each header in the attribute headers
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: A body to pass to the client for `PATCH`, `POST`, and `PUT` method requests,
+    in the body attribute
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: A timeout indicating how long to wait in milliseconds in the timeout attribute
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Whether or not to gzip the response, indicated by setting the gzip attribute
+    to `true`
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Other options are available as well. See the Node.js documentation for details
+    at [https://nodejs.org/api/index.html](https://nodejs.org/api/index.html).
+  prefs: []
+  type: TYPE_NORMAL
+- en: See also
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The Node.js request module has its documentation on GitHub at [https://github.com/request/request](https://github.com/request/request)
+  prefs: []
+  type: TYPE_NORMAL

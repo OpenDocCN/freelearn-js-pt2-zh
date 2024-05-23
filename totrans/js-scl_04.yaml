@@ -1,0 +1,864 @@
+- en: Chapter 4. Component Communication and Responsibilities
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The preceding chapter focused on the *what* of components—what are they composed
+    of and *why*. This chapter focuses on the glue in between our JavaScript components—the
+    *how*. If our components are designed with a particular purpose in mind, then
+    they need to communicate with other components to realize larger behavior. For
+    example, a router component is unlikely to update the DOM or talk to the API.
+    We have components that are good at those tasks, so other components can ask them
+    to perform them, by communicating with them.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We'll start the chapter off with a look at communication models prevalent in
+    frontend development. It's highly unlikely that we'll develop our own framework
+    for inter-component communication since there are lots of robust libraries that
+    already do this. What we're more interested in, from a JavaScript scaling perspective,
+    is how the chosen communication model in our application prevents us from scaling,
+    and what can be done about it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The responsibilities of a given component influence how it communicates with
+    our own components, as well as services beyond our control, like backend APIs
+    and DOM APIs. Once we start implementing the components of our application, layers
+    start to reveal themselves, and if stated explicitly, these are useful for visualizing
+    communication flows. This allows us to anticipate future component communication
+    scaling issues.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Communication models
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: There are various communication models we can use to enable inter-component
+    communication. The simplest would be method invocations, or function calls. This
+    approach is the most direct and the easiest to implement. However, there's also
+    a deep coupling between one component that directly invokes method of another.
+    This can't scale beyond a couple components.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Instead, we need a level of indirection between our components; something that
+    mediates the communication from one component to another. This helps us to scale
+    our inter-component communication because we're no longer communicating directly
+    with other components. Instead, we're relying on our communication mechanism to
+    fulfill message delivery. The two prevalent models for such a communication mechanism
+    are message passing and event triggering. Let's compare the two approaches.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Message-passing models
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Message-passing communication models are commonplace in JavaScript applications.
+    For example, messages can be passed from one process to another on a local machine;
+    they can be passed from one host to another, or they can be passed around in the
+    same process. Although message-passing is somewhat abstract, it's still a fairly
+    low-level idea—there's much room for interpretation. It's the mechanism that sits
+    in between two communicating components that provide high-level abstractions.
+  prefs: []
+  type: TYPE_NORMAL
+- en: For example, **publish-subscribe** is a more specific type of message-passing
+    communication model. The mechanism that fulfills these messages is usually called
+    a broker. A component will subscribe to messages of a particular topic, while
+    other components will publish messages on that topic. The key design feature is
+    that the components are unaware of one another. This promotes loose coupling between
+    components, and helps us scale when there are lots of components.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Message-passing models](img/4369_04_01.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: This shows a publish-subscribe model, using a broker to deliver published messages
+    to subscribers
+  prefs: []
+  type: TYPE_NORMAL
+- en: Another type of message passing abstraction is **command-response**. Here, one
+    component issues a command to another component and gets a response. The coupling
+    in this scenario is a little tighter, because the caller is targeting a specific
+    component to fulfill the command.
+  prefs: []
+  type: TYPE_NORMAL
+- en: However, this is still preferred over direct command invocation because we can
+    still substitute both the caller and the receiver easily.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Event models
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We often hear that user interface code is event-driven, that is, some event
+    takes place, causing the UI to re-render a section. Or, the user performs some
+    action in the UI, triggering an event that our code must interpret and act upon.
+    From a communication perspective, UIs are just a bunch of declarative visual elements;
+    events that are triggered, and the callback functions that respond to those events.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This is why the publish-subscribe model fits well with UI development. Most
+    components we develop will trigger one or more event types, while other components
+    will subscribe to this type of event and run code in response to it's triggering.
+    This, at a high level, is how most of our components will communicate with one
+    another—through events, which is really just publish-subscribe.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Speaking in terms of events and triggering, instead of messages and publish-subscribe,
+    makes sense because it's the more familiar terminology with JavaScript developers.
+    For example, there's the DOM and it's whole event system found there. They are
+    the asynchronous events associated with Ajax calls and `Promise` objects, then
+    there's the homegrown event system used by the framework our application leverages.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Event models](img/4369_04_02.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Events are triggered by one component while another component listening for
+    that event executes a callback; this process is orchestrated by an event-broker
+    mechanism
+  prefs: []
+  type: TYPE_NORMAL
+- en: Needless to say, separate event systems that all trigger events through our
+    application components make it difficult to mentally grasp what's actually happening
+    in response to a given action. This is indeed a scaling problem, and the various
+    sections throughout this chapter will dig into solutions that enable us to scale
+    our component communication.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Communication data schema
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Event data isn't opaque—it has meaning that our callback functions use to make
+    decisions on how to react. Sometimes, this data is unneeded and can be safely
+    ignored by the callback function. However, we don't want to decide, early on,
+    that some callback added later on isn't going to need this data. And that's something
+    that helps our communication mechanism scale—providing the right data in the right
+    place.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Not only does the data need to be there, readily available for consumption by
+    each callback function, but it also needs to have a predictable structure. We'll
+    look at approaches to establish naming conventions for the event names themselves,
+    as well as the data that's passed along to the handler functions. We can make
+    inter-component communication a little more transparent, and thus more scalable,
+    by making sure that the required event data is present and unlikely to be misinterpreted.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Naming conventions
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Coming up with meaningful names is hard, especially when there are a lot of
+    things to name, as is the case with events. On the one hand, we want the event
+    name to carry meaning. This helps us scale because by just looking at the event
+    name and nothing else, there's meaning to be found. On the other hand, if try
+    to overload the event name with too much meaning, the benefit of quickly deciphering
+    event names is lost.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The primary focus of having good, short, and meaningful event names is on the
+    developers who work with these events. The idea is that as their code is reacting
+    to events, they can quickly put together a mental map of event flow. Mind you,
+    this is just one small practice that contributes to the overall scalable event
+    architecture, but nonetheless it is an important one.
+  prefs: []
+  type: TYPE_NORMAL
+- en: For example, we might have a base event type, and a more specific version of
+    that event. We could have several of these base event types, and several more
+    specific instances of them to cover the more direct scenarios. If we have too
+    much specificity with our event-names and types, it means we can't really reuse
+    them. It also means there are more events for developers to reason with.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Data format
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Apart from the event name itself, there's the event payload. This should always
+    contain data about the event that's triggered, and possibly data about the components
+    that trigger them. The most important thing to keep in mind about event data is
+    that it should always have data that's pertinent to the handlers that subscribe
+    to these types of events. Often, a callback function may decide to do nothing
+    and ignore the event, based on the state of a property in the event data.
+  prefs: []
+  type: TYPE_NORMAL
+- en: For example, it's not really scalable if in every callback function we have
+    to perform lookups on components, just to get the data we need to make a decision
+    or perform further actions. It's not easy, of course, to guess what data is going
+    to be required. If we knew this, we would just call the function directly, and
+    save the hassle of having an event triggering mechanism to begin with. The idea
+    is to loosen coupling, but at the same time, provide data that's predictable.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Here''s a simplified example of what event data might look like:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: A useful exercise for trying to figure out which data is relevant for a given
+    event when it's triggered, is to think about what can be derived from within the
+    handler, and what the handler almost never needs. For example, it's not advised
+    to compute event data, and then pass it around. If the handler can compute it,
+    it should probably bear that responsibility. If we start seeing repetitive code,
+    then that's a different story and it's time to start thinking about common event
+    data.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Common data
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Event data will always contain data from the component that triggered the event—possibly
+    a reference to the component itself. That's always a good bet, since all we know
+    today is that the event was triggered—we have no idea what callbacks are going
+    to want to do in response to this event later on. So it's good to give our callback
+    functions lots of data, so long as it's not confusing or misleading.
+  prefs: []
+  type: TYPE_NORMAL
+- en: So if we know that the same type of component will always trigger the same types
+    of events, we can design our callbacks accordingly with the expectation that the
+    same data will always be there. We can get even more generic with our event data,
+    and supply the callbacks with data about the event itself. For example, there
+    are things like time stamps, event-state, and so on—these have nothing to do with
+    the component, and more to do with the event.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Here''s an example that shows a base event that defines the common data for
+    all events that extend it with additional properties:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: Again, don't try to be clever about data reuse upfront. Let the repetitiveness
+    happen, and then deal with it. The better approach would be to create a base event
+    structure, so that it's easy to move repetitive properties into the common structure
+    once they've been 'found.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Traceable component communication
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Perhaps the biggest challenge with large-scale JavaScript applications is keeping
+    a mental-model of where events start and where they end, in other words, tracing
+    the event as it flows through our components. Untraceable code puts the scalability
+    of our software at risk because we cannot predict what will happen in response
+    to a given event.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There are a number of tactics we can use during development to ease the pain
+    of figuring out our event flow, perhaps even modifying the design to simplify
+    things. Simplicity scales, and we can't simplify what we don't understand.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Subscribing to events
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: One nice aspect of the publish-subscribe messaging model is that we can jump
+    in and add a new subscription. This means that if we're not sure about how something
+    works, we can throw event callback functions at the problem from various angles,
+    until we have a better idea of what's actually happening. This is a hacker tool,
+    and tools that support hacking our software help us scale because we're empowering
+    developers to take matters into their own hands. If something isn't clear, they're
+    more likely to figure it out on their own when the code is easy to hack.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Subscribing to events](img/4369_04_03.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Subscribing to events at specific points, or in a specific order, can alter
+    the lifecycle of the event. It's important to have this ability, but if it is
+    overused, it can lead to unnecessary complexity
+  prefs: []
+  type: TYPE_NORMAL
+- en: In drastic cases, we might even need to use this subscriber approach to fix
+    something that's broken in a production system. For example, say that a callback
+    function is able to stop an event from executing, canceling any further handlers
+    from running. It's good to have these types of entry points in the events that
+    trigger throughout our code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Globally-logging events
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The callback functions that execute in response to triggered events can log
+    messages from within. There are times, however, when we need logging from the
+    perspective of the event mechanism itself. For example, if we're dealing with
+    some tricky code, and we need to know when our callback function is being called,
+    relative to other callback functions. The event triggering mechanism should have
+    an option to handle lifecycle logging.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This means that for any given event that's triggered, we can see information
+    logged about the event, independent of the code that runs in response to the event.
+    We'll call these meta-events—events about events. For example, the trigger time
+    before the callback runs, after the callback runs, and when there are no more
+    callbacks. This gives the logging we implement in our callbacks some much-needed
+    context for tracing our code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Following is an example that shows an event broker with logging enabled:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: Event lifecycle
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Different event triggering mechanisms have different lifecycles for their events,
+    and it's worthwhile trying to understand how each works, and how they can be controlled.
+    We'll start by looking at DOM events. The DOM nodes in our UI form a tree structure,
+    and any one of those nodes can trigger a DOM event. If there are handler functions
+    for this event attached directly to the triggering node, they'll be executed.
+    Then, the event will propagate upward, repeating the process of looking for handler
+    functions, and then continuing up the tree until the document node is reached.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Our handler functions can actually change the default propagation behavior of
+    DOM events.
+  prefs: []
+  type: TYPE_NORMAL
+- en: For example, if we don't want handlers further up in the DOM tree to run, handlers
+    in lower tree nodes can stop the event from propagating.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Event lifecycle](img/4369_04_04.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Contrasting the event processing approaches of the component event systems from
+    various frameworks, and the DOM events as handled by the browser
+  prefs: []
+  type: TYPE_NORMAL
+- en: The other major event triggering mechanism we'll want to pay attention to is
+    that of the framework we're using. JavaScript, as a language, has no general purpose
+    event triggering system, only specialized ones for DOM trees, Ajax calls, and
+    Promise objects. Internally, these are all using the same task queues; they're
+    just exposed in ways that make them seem as though they're separate systems. This
+    is where the framework we're using steps in and provides the necessary abstraction.
+    These types of event dispatchers are quite simple; subscribers for a given event
+    are executed in FIFO order. Some of these event systems support more advanced
+    lifecycle options discussed in this section, such as global event logging and
+    early event termination.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Communication overhead
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: One advantage of directly invoking a method on a component is that there's very
+    little overhead involved. When all inter-component communication is brokered through
+    an event triggering mechanism, there's no way to escape at least a little overhead.
+    In fact, overhead associated with this indirection is hardly noticeable; it's
+    other overhead factors that can cause scalability issues.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this section we'll look at event triggering frequency, callback execution,
+    and callback complexity. Each of these has the potential to degrade the performance
+    of our software to the point where it is unusable.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Event frequency
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: When our software has only a handful of components, there's a fundamental limit
+    on the frequency of events. Where event frequency can quickly turn into a problem
+    is when there are lots of components, some of which trigger events in response
+    to events. This means that if the user is doing something quickly and efficiently,
+    or if there are several Ajax responses arriving all at once, we need a way to
+    prevent these events from blocking the DOM.
+  prefs: []
+  type: TYPE_NORMAL
+- en: One challenge with JavaScript is that it's single-threaded. There are web workers,
+    but those go way beyond the scope of this book because they introduce a whole
+    new category of architectural issues. Let's say that the user has clicked something
+    four times in under one second. Under normal circumstances, this is no big deal
+    for our event system to process. But let's say they're doing this while there's
+    an expensive Ajax response handler running. Eventually, the UI will become unresponsive.
+  prefs: []
+  type: TYPE_NORMAL
+- en: To avoid unresponsive UIs, we can throttle our events. This means putting a
+    cap on the callback execution frequency. So, instead of *done, onto the next one*,
+    it's *done, rest for a few milliseconds, then onto the next one*. The advantage
+    of throttling our callback functions like this is it gives pending DOM updates
+    or pending DOM event callback functions a chance to run. The disadvantage is that
+    our event lifecycle could be negatively impacted due to long-running updates,
+    or other code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Following is an example that shows an event broker that throttles triggered
+    events to a specific time frequency:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: Callback execution time
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: While the event triggering mechanism has some level of control over when callback
+    functions are executed, we don't necessarily control how long the callbacks will
+    take to finish. From the event system's perspective, each callback function is
+    a little black box that runs to completion, due to the single-threaded nature
+    of JavaScript. If a disruptive callback function is thrown at the event mechanism,
+    how do we know which callback is at fault, so that we can diagnose and fix it?
+  prefs: []
+  type: TYPE_NORMAL
+- en: There are two techniques that can be used to address this problem. As mentioned
+    earlier in the chapter, the event triggering mechanism should probably have an
+    easy means to turn on global event logging. From there, we can deduce the duration
+    of any given callback that's running, assuming we have the start and complete
+    timestamps. But this isn't exactly the most efficient way to enforce callback
+    duration times.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Another technique is to set a timeout function, once a given callback function
+    starts running. When the timeout function runs, say after `1` second, it checks
+    if the same callback is still running. If so, it can explicitly raise an exception.
+    That way, the system explicitly fails when a callback takes too long.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There's still a problem with this approach—what if the callback is stuck in
+    a tight loop? Our monitoring callback will never get an opportunity to run.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Callback execution time](img/4369_04_05.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Comparing short callbacks that don't take long to execute with longer callbacks,
+    which don't provide much flexibility for updating the DOM, or processing queued
+    DOM events
+  prefs: []
+  type: TYPE_NORMAL
+- en: Callback complexity
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: When all else fails, it's up to us, the architects of the large-scale JavaScript
+    application, to make sure that the complexity of event handlers is at an appropriate
+    level. Too much complexity means the potential for performance bottlenecks and
+    the freezing of the UI—a bad user experience. If the callback functions are too
+    fine-grained, or the events themselves for that matter, we still face a performance
+    problem because of the added overhead of the event triggering mechanism itself—more
+    callbacks to process mean more overhead.
+  prefs: []
+  type: TYPE_NORMAL
+- en: What's nice about the event systems that are found in most JavaScript frameworks
+    that support inter-component communications is that they're flexible. The frameworks
+    will, by default, trigger events that it feels are important. These can be ignored
+    at no observable performance cost to us. However, they also allow us to trigger
+    our own events as need be. So if we find that after a while, we've gotten carried
+    away with the granularity of our events, we can scale them back a little.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Once we have a grasp of what the right level of event granularity is for our
+    application, we can adjust our callback functions to reflect it. We can even start
+    writing our smaller callback functions in such a way that they can be used to
+    compose higher-level functions that provide more course-grained functionality.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Here''s an example that shows callback functions that trigger other events,
+    and other more focused functions listening to these events:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: Areas of communication responsibility
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: When thinking about JavaScript component communication, it's helpful to look
+    at the outside world, and the edges from which our application touches it. We've
+    mostly been focused on inter-component communication thus far—how do our components
+    talk to other components within the same JavaScript application? This inter-component
+    communication doesn't initiate itself, nor does it end here. Scalable JavaScript
+    code needs to consider the events that flow into and out of the application.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Backend API
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The obvious starting point is the backend API, since it defines the domain of
+    our application. The frontend is really just a facade for the ultimate truth of
+    the API. Of course, it's more than that, but the API data does ultimately constrain
+    what we can and cannot do with our application.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In terms of components and responsibilities, it's helpful to think about which
+    ones are responsible for communicating directly with the backend. When the application
+    needs data, it's these components that will initiate the API conversation, fetch
+    this data, and let me know when it has arrived so that I can hand it off to another
+    component. So there's actually quite a bit of inter-component communication that's
+    indirectly related to components that talk to the API.
+  prefs: []
+  type: TYPE_NORMAL
+- en: For example, let's say we have a collection component, and to populate it, we
+    have to call a method. Does the collection know that it needs to populate itself,
+    or create itself for that matter? It's more likely that some other component kicked-off
+    the creation of the collection, then asked it to fetch some data from the API.
+    While we know that this initiating component doesn't directly talk to the API,
+    we also know that it plays an important role in the communication.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This is important to think about when scaling to lots of components because
+    they should all follow a predictable pattern.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Backend API](img/4369_04_06.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: An event broker in the frontend, directly or indirectly, translates API responses
+    and their data into events our components can subscribe to
+  prefs: []
+  type: TYPE_NORMAL
+- en: Web socket updates
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Web socket connections alleviate the need for long-polling in web applications.
+    They're used more frequently now because there's strong browser support for the
+    technology. There are a lot of libraries for backend servers to support web socket
+    connections too. The challenging part is the book-keeping that allows us to detect
+    a change and notify the relevant sessions by sending a message.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Backend complexities aside, web sockets do solve a lot of soft real time update
+    problems in the frontend. Web sockets are a bi-directional communication channel
+    with the backend, but where they really shine is in receiving updates, that some
+    model has changed state.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This allows any of our components that might be displaying data from this model
+    to re-render itself.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The challenging part is that in any given frontend session, we're only allowed
+    one web socket connection. This means that our handler function that responds
+    to these messages needs to figure out what to do with them. You may recall that,
+    earlier in the chapter when we went over event data, and the meaningfulness of
+    event names and the structure of their data. Web socket message events are a good
+    example of why this matters. We need to figure out what to do with it, and there
+    would be a lot of variation in the type of web socket messages we get.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Since web socket connections are stateful, they can be dropped. This means that
+    we will have to face the additional challenge of implementing code that reconnects
+    dropped socket connections.
+  prefs: []
+  type: TYPE_NORMAL
+- en: It would be a bad idea to let a single callback function handle all the processing
+    of these web socket messages, right down to the DOM. One approach might be to
+    have several handlers, one for each specific type of web socket update. This would
+    get out of hand quickly because lots of callback functions would have to run,
+    and in terms of responsibility, lots of components would have to be tightly coupled
+    to the web socket connection.
+  prefs: []
+  type: TYPE_NORMAL
+- en: What if the component doesn't care that the updated data came from a web socket
+    connection? All it cares about is that the data changed. Perhaps we need to introduce
+    a new type of event for the components that care about data changes. Then, our
+    web socket handler will just need to translate the message to those types of events.
+    This is a scalable approach to web socket communication, because we could rip
+    out web sockets entirely and it wouldn't actually touch a lot of the system.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Web socket updates](img/4369_04_07.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: An event translates one type of web socket message into entity-specific events,
+    so only the interested components need to subscribe
+  prefs: []
+  type: TYPE_NORMAL
+- en: DOM updates
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Our components need to interact with the DOM. This goes without saying—it's
+    a web application that runs in the browser. It's definitely worth thinking about
+    components that touch the DOM, and those that don't. These are often the **view**
+    components, since they translate the data of our application into something that
+    is viewable by the user in their browser window.
+  prefs: []
+  type: TYPE_NORMAL
+- en: These types of components are actually more of a challenge to scale, mostly
+    due to the bi-directional nature of their event flows. Adding to this challenge
+    is the fact that when there's any doubt about where some new piece of code should
+    go, it's usually the view. Then, when our views get overloaded, we start putting
+    code in controllers, or utilities, and who knows where else. There has to be a
+    better way.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let's think about view event communication for a minute. First there are the
+    incoming events. These tell the view that something has happened with our data
+    and it should update the DOM. Obligingly, it does just that. This approach is
+    actually really solid, and works well when the view listens to one component for
+    events. As we scale our application to accommodate more features and enhancements,
+    our views have to start figuring things out. Views work better when they're stupid.
+  prefs: []
+  type: TYPE_NORMAL
+- en: For example, the view that initially had the responsibility of rendering one
+    element in response to a data event, now has to do much more. After it's finished
+    with this, it needs to compute some derived value, and update another element.
+    This process of making views "smarter" spirals out of control until we can no
+    longer scale.
+  prefs: []
+  type: TYPE_NORMAL
+- en: From a communication perspective, we want to think of views as a simple one-to-one
+    binding of data to DOM. If that principle is never violated, then it's a lot easier
+    for us to predict what will happen when data changes, because we know which views
+    will be listening to this data, and the DOM elements they're bound to.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now for binding in the other direction—listening for changes in the DOM. The
+    challenge here, again, is that we tend to lean toward making our views smart.
+    When there's an issue with our input data, we overload the view event handler
+    that's triggered in response to a DOM event with responsibilities that should
+    be fulfilled elsewhere. Views work better when they're stupid. They should translate
+    DOM events into application-specific events that any other component can listen
+    to, just like we do with web socket message events. Our "smarter" components that
+    actually initiate some business process don't necessarily care that the cause
+    for action was from the DOM. This helps us scale by creating a smaller number
+    of generic components, that really don't do much.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Loosely-coupled communication
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: When inter-component communication is loosely coupled, we can more easily adapt
+    to scaling influencers when they arise. First and foremost, a good inter-component
+    communication design that's event-driven allows us to move components around.
+    We can take a faulty or under-performing component out, and replace it with another.
+    Not being able to substitute components this way means that we would have to fix
+    the component in-place; a larger risk for delivering software and a scaling bottleneck
+    from a development perspective.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Another beneficial side-effect of loosely coupled inter-component communication
+    is that we can isolate problematic components when something goes wrong. We can
+    prevent exceptions that occur in one component from leaving other components in
+    a bad state, which just leads to further problems when the user tries to do something
+    else. Isolating problems like this helps us scale our responses to fix faulty
+    components.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Substituting components
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Based on the events a given component triggers and responds to, we should have
+    an easy time substituting a component with a different version. We still need
+    to figure out the inner workings of the component, because it's unlikely we want
+    to change it completely. But that's the easier part—the difficult part of implementing
+    components is wiring them together. Scalable component implementation means making
+    this wiring as approachable and coherent as possible.
+  prefs: []
+  type: TYPE_NORMAL
+- en: But why is it so important that components be substitutable? We would think
+    that stable code, consisting of a handful of wired-together components wouldn't
+    have to change all that often, if at all. From this point of view, of course substitutability
+    is devalued—why worry about it if you don't use it? The only problem with this
+    mindset is that if we take scaling our JavaScript code seriously, we can't apply
+    principles to some components while neglecting others.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In fact, the reluctance to re-factor stable code isn't necessarily a good thing.
+    For example, it could actually hold us back if we have some new ideas that would
+    require us to re-factor stable components. What substitutability across all our
+    components buys us is scalability in implementing new ideas. If it's easy to experiment
+    by pulling out stable components and putting in new implementations, then we're
+    more likely to put improved design ideas into the product.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Substituting components isn't just a design-time activity. We can introduce
+    variability, where there will be a number of possible components that could fill
+    a gap, and the right component will be chosen at runtime. This flexibility means
+    that we can easily extend features to account for scaling influencers, such as
+    new user roles.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Some roles get one component, others get a different but compatible component,
+    or no component at all. The key is to support this flexibility.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Substituting components](img/4369_04_08.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: As long as components follow the same communication protocols, usually with
+    event triggering and handling, developing experimental technology is easier
+  prefs: []
+  type: TYPE_NORMAL
+- en: Handling unexpected events
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Loosely coupled components help us scale our ability to address defective components,
+    mainly because when we're able to isolate the problem root to a single component,
+    we can quickly pinpoint the problem and fix it. Additionally, in the case where
+    the defective component is running in a production environment, we can limit the
+    negative impact while we implement and deliver the fix.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Defects happen—we need to accept this and design for it. We want to learn from
+    defects when they happen so that we don't repeat them in the future. Given that
+    we're on a tight schedule, releasing early and often, bugs will slip through the
+    cracks. These are edge cases that we haven't tested for, or unique programming
+    errors that slipped through our unit tests. Regardless, we need to design our
+    component failure modes to account for these circumstances.
+  prefs: []
+  type: TYPE_NORMAL
+- en: One approach to isolating defective components might be to wrap any event callback
+    functions in a try/catch. If any unexpected exception happens, our callback simply
+    notifies the event system about the component being in an error state. This gives
+    the other handlers a chance to restore their states. If there's a faulty component
+    in the event callback pipeline, we can safely display an error to the user about
+    that particular action not working. Since the other components are all in a good
+    state, thanks to the notification from the bad component, the user can safely
+    use other features.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Following is an example that shows an event broker capable of catching callback
+    function errors:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: Component layers
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: There's a threshold within any sufficiently large JavaScript application, where
+    the number of communicating components presents a scaling problem. The main bottleneck
+    is the complexity we create, and our inability to understand it. To fight against
+    this complexity, we can introduce layers. These are abstract categorical notions
+    that help us visually understand what's happening at runtime.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Event flow direction
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: One of the first things designing with layers will reveal about our code, is
+    the complexity of our inter-component communication in terms of event flow direction.
+    For example, let's say our application has three layers. The top layer is concerned
+    with routing, and other entry points into the UI. The middle layer has data and
+    business logic spread throughout. The bottom layer is where our views are found.
+    It's not about how many components are in these layers; while that's a factor,
+    it's a minor one. What's important from this perspective is the types of arrows
+    that cross into other layers.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'For example, given the three-layered architecture described above, we would
+    probably notice that the most straightforward layer connections are between the
+    routers and the data/business logic layer. That''s because the events flow mostly
+    in one direction: top down, from router to the layer directly beneath it. From
+    there, there''s likely some communication that happens between some model and
+    controller components, but then ultimately, the event flow keeps moving downward.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Between the data/logic layer and the view layer, the communication arrows start
+    to look bi-directional and confusing. That's because the event flows in the code
+    are also bi-directional and confusing. This isn't scalable because we can't easily
+    grasp the effects of the events we're triggering. What's helpful for using the
+    layered design approach is figuring out a way to remove bi-directional event flows.
+    This probably means introducing a level of indirection, something that's responsible
+    for brokering the event between a source and a target.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If we do this in a clever way, the additional moving part brings clarity instead
+    of clutter to our layer diagram, and the performance impact is negligible.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Event flow direction](img/4369_04_09.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: A discernible event flow direction between component layers has a huge impact
+    on scalability
+  prefs: []
+  type: TYPE_NORMAL
+- en: Mapping to developer responsibilities
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Layers are an aid, not a formal architecture specification artifact. This means
+    that we can use them for whatever they might be helpful with. Different groups
+    of people might have their own layers that they use for purposes that suit their
+    needs in understanding complexity. However, it's more useful if the development
+    team as a whole follows the same layers, and that they're kept extremely simple.
+    Going beyond four or five layers defeats the purpose of using them.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Developers can use layers as a means of self-organization. They understand the
+    architecture, and they have work to do for the upcoming sprint. Let's say we have
+    two developers working on the same feature. They can use the layers of our component
+    architecture to plan their implementation, and avoid interfering with each other's
+    work. Things just come together seamlessly when there's a point of reference in
+    the bigger picture, such as a layer.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Mentally mapping the code
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Even without diagrams, just knowing that the component code we're looking at
+    belongs in a specific layer, helps us to mentally map what it's doing, and it's
+    effect on the rest of the system. Knowing the layer we're working in gives us
+    a subconscious context while we're coding—we know which components are our neighbors,
+    and when our events cross layer boundaries.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Framed in the context of a layer, new components will have glaringly obvious
+    design problems, relative to existing components, and their communication patterns
+    between layers. The existence of these layers, and the fact that they're frequently
+    used as an informal aid by all developers, might be enough to squash design issues
+    early on. Or maybe there's not really an issue, but the layers are enough to promote
+    discussion on design. Some of the team might learn something, and some might walk
+    away with self-assurance that the design is solid.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The building blocks of our JavaScript applications are components. The glue
+    that holds them together is the communication model used. At a low level, inter-component
+    communication consists of one component passing a message to another, through
+    a broker mechanism of some sort. This is often abstracted and simplified as an
+    event system.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We looked at what actually gets passed around from one component to the next
+    in the form of event data. This data needs to be consistent, predictable, and
+    meaningful. We also looked at traceable events. That is, can we globally log events
+    as they're triggered from the event triggering mechanism?
+  prefs: []
+  type: TYPE_NORMAL
+- en: The boundaries of our JavaScript code are communication endpoints. We looked
+    at the various components with responsibilities of communication with external
+    systems, like the DOM, Ajax calls, or local storage. We need to insulate our smart
+    components from the edges of our system.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Substitutability and layers are crucial concepts for scaling. Replacing components
+    helps us scale by quickly developing new code with little risk. Layers help in
+    a number of areas by keeping the bigger picture within reach. Incorrect design
+    assumptions are exposed earlier on with layers.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now it's time for us to think about scaling the addressability of our application,
+    and we'll see if the lessons from the last two chapters are of any value there.
+  prefs: []
+  type: TYPE_NORMAL

@@ -1,0 +1,907 @@
+- en: Chapter 3. Component Composition
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Large-scale JavaScript applications amount to a series of communicating components.
+    The focus of this chapter is on the composition of these components, while in
+    the next chapter we will look at how these components communicate with one another.
+    Composition is a big topic, and one that's relevant to scalable JavaScript code.
+    When we start thinking about the composition of our components, we start to notice
+    certain flaws in our design; limitations that prevent us from scaling in response
+    to influencers.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The composition of a component isn't random—there's a handful of prevalent patterns
+    for JavaScript components. We'll begin the chapter with a look at some of these
+    generic component types that encapsulate common patterns found in every web application.
+    Understanding that components implement patterns is crucial for extending these
+    generic components in a way that scales.
+  prefs: []
+  type: TYPE_NORMAL
+- en: It's one thing to get our component composition right from a purely technical
+    standpoint, it's another to easily map these components to features. The same
+    challenge holds true for components we've already implemented. The way we compose
+    our code needs to provide a level of transparency, so that it's feasible to decompose
+    our components and understand what they're doing, both at runtime and at design
+    time.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Finally, we'll take a look at the idea of decoupling business logic from our
+    components. This is nothing new—the idea of separation-of-concerns has been around
+    for a long time. The challenge with JavaScript applications is that it touches
+    on so many things—it's difficult to clearly separate business logic from other
+    implementation concerns. The way in which we organize our source code (relative
+    to the components that use them) can have a dramatic effect on our ability to
+    scale.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Generic component types
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: It's exceedingly unlikely that anyone, in this day and age, would set out to
+    build a large scale JavaScript application without the help of libraries, a framework,
+    or both. Let's refer to these collectively as tools, since we're more interested
+    in using the tools that help us scale, and not necessarily which tools are better
+    than other tools. At the end of the day, it's up to the development team to decide
+    which tool is best for the application we're building, personal preferences aside.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Guiding factors in choosing the tools we use are the type of components they
+    provide, and what these are capable of. For example, a larger web framework may
+    have all the generic components we need. On the other hand, a functional programming
+    utility library might provide a lot of the low-level functionality we need. How
+    these things are composed into a cohesive feature that scales, is for us to figure
+    out.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The idea is to find tools that expose generic implementations of the components
+    we need. Often, we'll extend these components, building specific functionality
+    that's unique to our application. This section walks through the most typical
+    components we'd want in a large-scale JavaScript application.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Modules
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Modules exist, in one form or another, in almost every programming language.
+    Except in JavaScript. That's almost untrue though—ECMAScript 6, in its final draft
+    status at the time of this writing, introduces the notion of modules. However,
+    there are tools out there today that allow us to modularize our code, without
+    relying on the `script` tag. Large-scale JavaScript code is still a relatively
+    new thing. Things such as the `script` tag weren't meant to address issues like
+    modular code and dependency management.
+  prefs: []
+  type: TYPE_NORMAL
+- en: RequireJS is probably the most popular module loader and dependency resolver.
+    The fact that we need a library just to load modules into our front-end application
+    speaks of the complexities involved. For example, module dependencies aren't a
+    trivial matter when there's network latency and race conditions to consider.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Another option is to use a transpiler like **Browserify**. This approach is
+    gaining traction because it lets us declare our modules using the CommonJS format.
+    This format is used by NodeJS, and the upcoming ECMAScript module specification
+    is a lot closer to CommonJS than to AMD. The advantage is that the code we write
+    today has better compatibility with back-end JavaScript code, and with the future.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Some frameworks, such as Angular or Marionette, have their own ideas of what
+    modules are- albeit, more abstract ideas.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'These modules are more about organizing our code, than they are about tactfully
+    delivering code from the server to the browser. These types of modules might even
+    map better to other features of the framework. For example, if there''s a centralized
+    application instance that''s used to manage our modules, the framework might provide
+    a mean to manage modules from the application. Take a look at the following diagram:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Modules](img/4639_03_01.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: A global application component using modules as it's building blocks. Modules
+    can be small, containing only one feature, or large, containing several features
+  prefs: []
+  type: TYPE_NORMAL
+- en: This lets us perform higher-level tasks at the module level (things such as
+    disabling modules or configuring them with arguments). Essentially, modules speak
+    for features. They're a packaging mechanism that allow us to encapsulate things
+    about a given feature that the rest of the application doesn't care about. Modules
+    help us scale our application by adding high-level operations to our features,
+    by treating our features as the building blocks. Without modules, we'd have no
+    meaningful way to do this.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The composition of modules look different depending on the mechanism used to
+    declare the module. A module could be straightforward, providing a namespace from
+    which objects can be exported. Or if we're using a specific framework module flavor,
+    there could be much more to it. Like automatic event life cycles, or methods for
+    performing **boilerplate** setup tasks.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'However we slice it, modules in the context of scalable JavaScript are a means
+    to create larger building blocks, and a means to handling complex dependencies:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: While it's easier to build large-scale applications with module-sized building
+    blocks, it's also easier to tear a module out of an application and work with
+    it in isolation. If our application is monolithic or our modules are too plentiful
+    and fine-grained, it's very difficult for us to excise problem-spots from our
+    code, or to test work in progress. Our component may function perfectly well on
+    its own. It could have negative side-effects somewhere else in the system, however.
+    If we can remove pieces of the puzzle, one at a time and without too much effort,
+    we can scale the trouble-shooting process.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Routers
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Any large-scale JavaScript application has a significant number of possible
+    URIs. The URI is the address of the page that the user is looking at. They can
+    navigate to this resource by clicking links, or they may be taken to a new URI
+    automatically by our code, perhaps in response to some user action. The web has
+    always relied on URIs, long before the advent of large-scale JavaScript applications.
+    URIs point to resources, and resources can be just about anything. The larger
+    the application, the more resources, and the more potential URIs.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Router components are tools that we use in the front-end, to listen for these
+    URI change events and respond to them accordingly. There''s less reliance on the
+    back-end web servers parsing the URI, and returning the new content. Most web
+    sites still do this, but there are several disadvantages with this approach when
+    it comes to building applications:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Routers](img/4639_03_02.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: The browser triggers events when the URI changes, and the router component responds
+    to these changes. The URI changes can be triggered from the history API, or from
+    `location.hash`
+  prefs: []
+  type: TYPE_NORMAL
+- en: The main problem is that we want the UI to be portable, as in, we want to be
+    able to deploy it against any back-end and things should work. Since we're not
+    assembling markup for the URI in the back-end, it doesn't make sense to parse
+    the URI in the back-end either.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We declaratively specify all the URI patterns in our router components. We generally
+    refer to these as, **routes**. Think of a route as a blueprint, and a URI as an
+    instance of that blueprint. This means that when the router receives a URI, it
+    can correlate it to a route. That, in essence, is the responsibility of router
+    components. Which is easy with smaller applications, but when we're talking about
+    scale, further deliberation on router design is in order.
+  prefs: []
+  type: TYPE_NORMAL
+- en: As a starting point, we have to consider the URI mechanism we want to use. The
+    two choices are basically listening to hash change events, or utilizing the history
+    API. Using hash-bang URIs is probably the simplest approach. The `history` API
+    available in every modern browser, on the other hand, lets us format URI's without
+    the hash-bang—they look like real URIs. The router component in the framework
+    we're using may support only one or the other, thus simplifying the decision.
+    Some support both URI approaches, in which case we need to decide which one works
+    best for our application.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The next thing to consider about routing in our architecture is how to react
+    to route changes. There are generally two approaches to this. The first is to
+    declaratively bind a route to a callback function. This is ideal when the router
+    doesn't have a lot of routes. The second approach is to trigger events when routes
+    are activated. This means that there's nothing directly bound to the router. Instead,
+    some other component listens for such an event. This approach is beneficial when
+    there are lots of routes, because the router has no knowledge of the components,
+    just the routes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Here''s an example that shows a router component listening to route events:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Some of the code required to run these examples is omitted from the listings.
+    For example, the `events.js` module is included in the code bundle that comes
+    with this book, it's just not that relevant to the example.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Also in the interest of space, the code examples avoid using specific frameworks
+    and libraries. In practice, we're not going to write our own router or events
+    API—our frameworks do that already. We're instead using vanillaES6 JavaScript,
+    to illustrate points pertinent to scaling our applications.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Another architectural consideration we'll want to make when it comes to routing
+    is whether we want a global, monolithic router, a router per module, or some other
+    component. The downside to having a monolithic router is that it becomes difficult
+    to scale when it grows sufficiently large, as we keep adding features and routes.
+    The advantage is that the routes are all declared in one place. Monolithic routers
+    can still trigger events that all our components can listen to.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The per-module approach to routing involves multiple router instances. For
+    example, if our application has five components, each would have their own router.
+    The advantage here is that the module is completely self-contained. Anyone working
+    with this module doesn''t need to look elsewhere to figure out which routes it
+    responds to. Using this approach, we can also have a tighter coupling between
+    the route definitions and the functions that respond to them, which could mean
+    simpler code. The downside to this approach is that we lose the consolidated aspect
+    of having all our routes declared in a central place. Take a look at the following
+    diagram:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Routers](img/4639_03_03.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: The router to the left is global—all modules use the same instance to respond
+    to URI events. The modules to the right have their own routers. These instances
+    contain configuration specific to the module, not the entire application
+  prefs: []
+  type: TYPE_NORMAL
+- en: Depending on the capabilities of the framework we're using, the router components
+    may or may not support multiple router instances. It may only be possible to have
+    one callback function per route. There may be subtle nuances to the router events
+    we're not yet aware of.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Models/Collections
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The API our application interacts with exposes entities. Once these entities
+    have been transferred to the browser, we will store a model of those entities.
+    Collections are a bunch of related entities, usually of the same type.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The tools we're using may or may not provide a generic model and/or collection
+    components, or they may have something similar but named differently. The goal
+    of modeling API data is a rough approximation of the API entity. This could be
+    as simple as storing models as plain JavaScript objects and collections as arrays.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The challenge with simply storing our API entities as plain objects in arrays
+    is that some other component is then responsible for talking to the API, triggering
+    events when the data changes, and for performing data transformations. We want
+    other components to be able to transform collections and models where needed,
+    in order to fulfill their duties. But we don''t want repetitive code, and it''s
+    best if we''re able to encapsulate the common things like transformations, API
+    calls, and event life cycles. Take a look at the next diagram:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Models/Collections](img/4639_03_04.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Models encapsulate interaction with APIs, parsing data, and triggering events
+    when data changes. This leads to simpler code outside of the models
+  prefs: []
+  type: TYPE_NORMAL
+- en: Hiding the details of how the API data is loaded into the browser, or how we
+    issue commands, helps us scale our application as we grow. As we add more entities
+    to the API, the complexity of our code grows too. We can throttle this complexity
+    by constraining the API interactions to our model and collection components.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '**Downloading the example code**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: You can download the example code files from your account at [http://www.packtpub.com](http://www.packtpub.com)
+    for all the Packt Publishing books you have purchased. If you purchased this book
+    elsewhere, you can visit [http://www.packtpub.com/support](http://www.packtpub.com/support)
+    and register to have the files e-mailed directly to you.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Another scalability issue we'll face with our models and collections is where
+    they fit in the big picture. That is, our application is really just one big component,
+    composed of smaller components. Our models and collections map well to our API,
+    but not necessarily to features. API entities are more generic than specific features,
+    and are often used by several features. Which leaves us with an open question—where
+    do our models and collections fit into components?
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Here''s an example that shows specific views extending generic views. The same
+    model can be passed to both:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: On one hand, components can be completely generic with regard to the models
+    and collections they use. On the other hand, some components are specific with
+    their requirements—they can directly instantiate their collections. Configuring
+    generic components with specific models and collections at runtime only benefits
+    us when the component truly is generic, and is used in several places. Otherwise,
+    we might as well encapsulate the models within the components that use them. Choosing
+    the right approach helps us scale. Because, not all our components will be entirely
+    generic or entirely specific.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Controllers/Views
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Depending on the framework we're using, and the design patterns our team is
+    following, controllers and views can represent different things. There's simply
+    too many MV* pattern and style variations to provide a meaningful distinction
+    in terms of scale. The minute differences have trade-offs relative to similar
+    but different MV* approaches. For our purpose of discussing large scale JavaScript
+    code, we'll treat them as the same type of component. If we decide to separate
+    the two concepts in our implementation, the ideas in this section will be relevant
+    to both types.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let's stick with the term views for now, knowing that we're covering both views
+    and controllers, conceptually. These components interact with several other component
+    types, including routers, models or collections, and templates, which are discussed
+    in the next section. When something happens, the user needs to be notified about
+    it. The view's job is to update the DOM.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This could be as simple as changing an attribute on a DOM element, or as involved
+    as rendering a new template:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Controllers/Views](img/4639_03_05.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: A view component updating the DOM in response to router and model events
+  prefs: []
+  type: TYPE_NORMAL
+- en: A view can update the DOM in response to several types of events. A route could
+    have changed. A model could have been updated. Or something more direct, like
+    a method call on the view component. Updating the DOM is not as straightforward
+    as one might think. There's the performance to think about—what happens when our
+    view is flooded with events? There's the latency to think about—how long will
+    this JavaScript call stack run, before stopping and actually allowing the DOM
+    to render?
+  prefs: []
+  type: TYPE_NORMAL
+- en: Another responsibility of our views is responding to DOM events. These are usually
+    triggered by the user interacting with our UI. The interaction may start and end
+    with our view. For example, depending on the state of something like user input
+    or one of our models, we might update the DOM with a message. Or we might do nothing,
+    if the event handler is **debounced**, for instance.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'A debounced function groups multiple calls into one. For example, calling `foo()`
+    20 times in 10 milliseconds may only result in the implementation of `foo()` being
+    called once. For a more detailed explanation, look at: [http://drupalmotion.com/article/debounce-and-throttle-visual-explanation](http://drupalmotion.com/article/debounce-and-throttle-visual-explanation).
+    Most of the time, the DOM events get translated into something else, either a
+    method call or another event. For example, we might call a method on a model,
+    or transform a collection. The end result, most of the time, is that we provide
+    feedback by updating the DOM.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: This can be done either directly, or indirectly. In the case of direct DOM updates,
+    it's simple to scale. In the case of indirect updates, or updates through side-effects,
+    scaling becomes more of a challenge. This is because as the application acquires
+    more moving parts, the more difficult it becomes to form a mental map of cause
+    and effect.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Here's an example that shows a view listening to DOM events and model events.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: On the plus side to all this complexity, we actually get some reusable code.
+    The view is agnostic as to how the model or router it's listening to is updated.
+    All it cares about is specific events on specific components. This is actually
+    helpful to us because it reduces the amount of special-case handling we need to
+    implement.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The DOM structure that's generated at runtime, as a result of rendering all
+    our views, needs to be taken into consideration as well. For example, if we look
+    at some of the top-level DOM nodes, they have nested structure within them. It's
+    these top-level nodes that form the skeleton of our layout. Perhaps this is rendered
+    by the main application view, and each of our views has a child-relationship to
+    it. Or perhaps the hierarchy extends further down than that. The tools we're using
+    most likely have mechanisms for dealing with these parent-child relationships.
+    However, bear in mind that vast view hierarchies are difficult to scale.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Templates
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Template engines used to reside mostly in the back-end framework. That's less
+    true today, thanks largely to the sophisticated template rendering libraries available
+    in the front-end. With large-scale JavaScript applications, we rarely talk to
+    back-end services about UI-specific things. We don't say, "here's a URL, render
+    the HTML for me". The trend is to give our JavaScript components a certain level
+    autonomy—letting them render their own markup.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Having component markup coupled with the components that render them is a good
+    thing. It means that we can easily discern where the markup in the DOM is being
+    generated. We can then diagnose issues and tweak the design of a large scale application.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Templates help establish a separation of concerns with each of our components.
+    The markup that's rendered in the browser mostly comes from the template. This
+    keeps markup-specific code out of our JavaScript. Front-end template engines aren't
+    just tools for string replacement; they often have other tools to help reduce
+    the amount of boilerplate JavaScript code to write. For example, we can embed
+    things like conditionals and for-each loops in our markup, where they're suited.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Application-specific components
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The component types we've discussed so far are very useful for implementing
+    scalable JavaScript code, but they're also very generic. Inevitably, during implementation
+    we're going to hit a road block—the component composition patterns we've been
+    following will not work for certain features. This is when it's time to step back
+    and think about possibly adding a new type of component to our architecture.
+  prefs: []
+  type: TYPE_NORMAL
+- en: For example, consider the idea of widgets. These are generic components that
+    are mainly focused on presentation and user interactions. Let's say that many
+    of our views are using the exact same DOM elements, and the exact same event handlers.
+    There's no point in repeating them in every view throughout our application. Might
+    it not be better if we were to factor it into a common component? A view might
+    be overkill, so perhaps we need a new type of widget component?
+  prefs: []
+  type: TYPE_NORMAL
+- en: Sometimes we'll create components for the sole purpose of composition. For example,
+    we might have a component that glues together router, view, model/collection,
+    and template components together to form a cohesive unit. Modules partially solve
+    this problem but they aren't always enough. Sometimes we're missing that added
+    bit of orchestration that our components need in order to communicate. We'll cover
+    communicating components in the next chapter.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Extending generic components
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: We often discover, late in the development process, that the components we rely
+    on are lacking something we need. If the base component we're using is designed
+    well, then we can extend it, plugging in the new properties or functionality we
+    need. In this section, we'll walk through some scenarios where we might need to
+    extend the common generic components used throughout our application.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If we're going to scale our code, we need to leverage these base components
+    where we can. We'll probably want to start extending our own base components at
+    some point too. Some tools are better than others at facilitating the extension
+    mechanism through which we implement this specialized behavior.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Identifying common data and functionality
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Before we look at extending the specific component types, it's worthwhile to
+    consider the common properties and functionality that's common across all component
+    types. Some of these things will be obvious up-front, while others are less pronounced.
+    Our ability to scale depends, in part, on our ability to identify commonality
+    across our components.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'If we have a global application instance, quite common in large JavaScript
+    applications, global values and functionality can live there. This can grow unruly
+    down the line though, as more common things are discovered. Another approach might
+    be to have several global modules, instead of just a single application instance.
+    Or both. But this doesn''t scale from an understandability perspective:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Identifying common data and functionality](img/4639_03_06.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: The ideal component hierarchy doesn't extend beyond three levels. The top level
+    is usually found in a framework our application depends on
+  prefs: []
+  type: TYPE_NORMAL
+- en: As a rule-of-thumb, we should, for any given component, avoid extending it more
+    than three levels down. For example, a generic view component from the tools we're
+    using could be extended by our generic version of it. This would include properties
+    and functionality that every view instance in our application requires. This is
+    only a two-level hierarchy, and easy to manage. This means that if any given component
+    needs to extend our generic view, it can do so without complicating things. Three-levels
+    should be the maximum extension hierarchy depth for any given type. This is just
+    enough to avoid unnecessary global data, going beyond this presents scaling issues
+    because the hierarchy isn't easily grasped.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Extending router components
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Our application may only require a single router instance. Even in this case,
+    we may still need to override certain extension points of the generic router.
+    In case of multiple router instances, there's bound to be common properties and
+    functionality that we don't want to repeat. For example, if every route in our
+    application follows the same pattern, with only subtle differences, we can implement
+    the tools in our base router to avoid repetitious code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In addition to declaring routes, events take place when a given route is activated.
+    Depending on the architecture of our application, different things need to happen.
+    Maybe certain things always need to happen, no matter which route has been activated.
+    This is where extending the router to provide our own functionality comes in handy.
+    For example, we have to validate permission for a given route. It wouldn't make
+    much sense for us to handle this through individual components, as this would
+    not scale well with complex access control rules and a lot of routes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Extending models/collections
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Our models and collections, no matter what their specific implementation look
+    like, will share some common properties with one another- especially if they're
+    targeting the same API, which is the common case. The specifics of a given model
+    or collection revolve around the API endpoint, the data returned, and the possible
+    actions taken. It's likely that we'll target the same base API path for all entities,
+    and that all entities have a handful of shared properties. Rather than repeat
+    ourselves in every model or collection instance, it's better to abstract the common
+    data.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In addition to sharing properties among our models and collections, we can share
+    common behavior. For instance, it's quite likely that a given model isn't going
+    to have sufficient data for a given feature. Perhaps that data can be derived
+    by transforming the model. These types of transformations can be common, and abstracted
+    in a base model or collection. It really depends on the types of features we're
+    implementing and how consistent they are with one another. If we're growing fast
+    and getting lots of requests for "outside-the-box" features, then we're more likely
+    to implement data transformations inside the views that require these one-off
+    changes to the models or collections they're using.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Most frameworks take care of the nuances for performing XHR requests to fetch
+    our data or perform actions. That's not the whole story unfortunately, because
+    our features will rarely map one-to-one with a single API entity. More likely,
+    we will have a feature that requires several collections that are related to one
+    another somehow, and a transformed collection. This type of operation can grow
+    complex quickly, because we have to work with multiple XHR requests.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We'll likely use promises to synchronize the fetching of these requests, and
+    then perform the data transformation once we have all the necessary sources.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Here''s an example that shows a specific model extending a generic model, to
+    provide new fetching behavior:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: Extending controllers/views
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: When we have a base model or base collection, there are often properties shared
+    between our controllers or views. That's because the job of a controller or a
+    view is to render model or collection data. For example, if the same view is rendering
+    the same model properties over and over, we can probably move that bit to a base
+    view, and extend from that. Perhaps the repetitive parts are in the templates
+    themselves. This means that we might want to consider having a base template inside
+    a base view, as shown in the following diagram. Views that extend this base view,
+    inherit this base template.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Depending on the library or framework at our disposal, extending templates
+    in this way may not be feasible. Or the nature of our features may make this difficult
+    to achieve. For example, there may not be a common base template, but there might
+    be a lot of smaller views and templates that can plug-into larger components:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Extending controllers/views](img/4639_03_07.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: A view that extends a base view can populate the template of the base view,
+    as well as inherit other base view functionalities
+  prefs: []
+  type: TYPE_NORMAL
+- en: Our views also need to respond to user interactions. They may respond directly,
+    or forward the events up the component hierarchy. In either case, if our features
+    are at all consistent, there will be some common DOM event handling that we'll
+    want to abstract into a common base view. This is a huge help in scaling our application,
+    because as we add more features, the DOM event handling code additions is minimized.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Mapping features to components
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Now that we have a handle on the most common JavaScript components, and the
+    ways we'll want to extend them for use in our application, it's time to think
+    about how to glue those components together. A router on it's own isn't very useful.
+    Nor is a standalone model, template, or controller. Instead, we want these things
+    to work together, to form a cohesive unit that realizes a feature in our application.
+  prefs: []
+  type: TYPE_NORMAL
+- en: To do that, we have to map our features to components. We can't do this haphazardly
+    either—we need to think about what's generic about our feature, and about what
+    makes it unique. These feature properties will guide our design decisions on producing
+    something that scales.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Generic features
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Perhaps the most important aspects of component composition are consistency
+    and reusability. While considering the scaling influences our application faces,
+    we''ll come up with a list of traits that all our components must carry: things
+    such as user management, access control, and other traits unique to our application.
+    This is along with the other architectural perspectives (explored in more depth
+    throughout the remainder of the book), which form the core of our generic features:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Generic features](img/4639_03_08.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: A generic component, composed of other generic components from our framework
+  prefs: []
+  type: TYPE_NORMAL
+- en: The generic aspects of every feature in our application serve as a blueprint.
+    They inform us in composing larger building blocks. These generic features account
+    for the architectural factors that help us scale. And if we can encode these factors
+    as parts of an aggregate component, we'll have an easier time scaling our application.
+  prefs: []
+  type: TYPE_NORMAL
+- en: What makes this design task challenging is that we have to look at these generic
+    components not only from a scalable architecture perspective, but also from a
+    feature-complete perspective. If every feature behaved the same way, we'd be all
+    set. If only every feature followed an identical pattern, the sky's the limit
+    when it comes time to scale.
+  prefs: []
+  type: TYPE_NORMAL
+- en: But 100% consistent feature functionality is an illusion, more visible to JavaScript
+    programmers than to users. The pattern breaks out of necessity. It's responding
+    to this breakage in a scalable way that matters. This is why successful JavaScript
+    applications will continuously revisit the generic aspects of our features to
+    ensure they reflect reality.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Specific features
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: When it's time to implement something that doesn't fit the pattern, we're faced
+    with a scaling challenge. We have to pivot, and consider the consequences of introducing
+    such a feature into our architecture. When patterns are broken, our architecture
+    needs to change. This isn't a bad thing—it's a necessity. The limiting factor
+    in our ability to scale in response to these new features, lies with generic aspects
+    of our existing features. This means that we can't be too rigid with our generic
+    feature components. If we're too demanding, we're setting ourselves up for failure.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Before making any brash architectural decisions stemming from offbeat features,
+    think about the specific scaling consequences. For example, does it really matter
+    that the new feature uses a different layout and requires a template that's different
+    from all other feature components? The state of the JavaScript scaling art revolves
+    around finding the handful of essential blueprints to follow for our component
+    composition. Everything else is up for discussion on how to proceed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Decomposing components
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Component composition is an activity that creates order; larger behavior out
+    of smaller parts. We often need to move in the opposite direction during development.
+    Even after development, we can learn how a component works by tearing the code
+    apart and watching it run in different contexts. Component decomposition means
+    that we're able to take the system apart and examine individual parts in a somewhat
+    structured approach.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Maintaining and debugging components
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Over the course of application development, our components accumulate abstractions.
+    We do this to support a feature's requirement better, while simultaneously supporting
+    some architectural property that helps us scale. The problem is that as the abstractions
+    accumulate, we lose transparency into the functioning of our components. This
+    is not only essential for diagnosing and fixing issues, but also in terms of how
+    easy the code is to learn.
+  prefs: []
+  type: TYPE_NORMAL
+- en: For example, if there's a lot of indirection, it takes longer for a programmer
+    to trace cause to effect. Time wasted on tracing code, reduces our ability to
+    scale from a developmental point of view. We're faced with two opposing problems.
+    First, we need abstractions to address real world feature requirements and architectural
+    constraints. Second, is our inability to master our own code due to a lack of
+    transparency.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Following is an example that shows a renderer component and a feature component.
+    Renderers used by the feature are easily substitutable:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: A tactic that can help us cope with these two opposing scaling influencers is
+    substitutability. In particular, the ease with which one of our components, or
+    sub-components, can be replaced with something else. This should be really easy
+    to do. So before we go introducing layers of abstraction, we need to consider
+    how easy it's going to be to replace a complex component with a simple one. This
+    can help programmers learn the code, and also help with debugging.
+  prefs: []
+  type: TYPE_NORMAL
+- en: For example, if we're able to take a complex component out of the system and
+    replace it with a dummy component, we can simplify the debugging process. If the
+    error goes away after the component is replaced, we have found the problematic
+    component. Otherwise, we can rule out a component and keep digging elsewhere.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Re-factoring complex components
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: It's of course easier said than done to implement substitutability with our
+    components, especially in the face of deadlines. Once it becomes impractical to
+    easily replace components with others, it's time to consider re-factoring our
+    code. Or at least the parts that make substitutability infeasible. It's a balancing
+    act, getting the right level of encapsulation, and the right level of transparency.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Substitution can also be helpful at a more granular level. For example, let's
+    say a view method is long and complex. If there are several stages during the
+    execution of that method, where we would like to run something custom, we can't.
+    It's better to re-factor the single method into a handful of methods, each of
+    which can be overridden.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Pluggable business logic
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Not all of our business logic needs to live inside our components, encapsulated
+    from the outside world. Instead, it would be ideal if we could write our business
+    logic as a set of functions. In theory, this provides us with a clear separation
+    of concerns. The components are there to deal with the specific architectural
+    concerns that help us scale, and the business logic can be plugged into any component.
+    In practice, excising business logic from components isn't trivial.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Extending versus configuring
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: There are two approaches we can take when it comes to building our components.
+    As a starting point, we have the tools provided by our libraries and frameworks.
+    From there, we can keep extending these tools, getting more specific as we drill
+    deeper and deeper into our features. Alternatively, we can provide our component
+    instances with configuration values. These instruct the component on how to behave.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The advantage of extending things that would otherwise need to be configured
+    is that the caller doesn't need to worry about them. And if we can get by, using
+    this approach, all the better, because it leads to simpler code- especially the
+    code that's using the component. On the other hand, we could have generic feature
+    components that can be used for a specific purpose, if only they support this
+    configuration or that configuration option. This approach has the advantage of
+    using simpler component hierarchies, and less overall components.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Sometimes it's better to keep components as generic as possible, within the
+    realm of understandability. That way, when we need a generic component for a specific
+    feature, we can use it without having to re-define our hierarchy. Of course, there's
+    more complexity involved for the caller of that component, because they need to
+    supply it with the configuration values.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This is all a trade-off that's up to us, the JavaScript architects of our application.
+    Do we want to encapsulate everything, configure everything, or do we want to strike
+    a balance between the two?
+  prefs: []
+  type: TYPE_NORMAL
+- en: Stateless business logic
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: With functional programming, functions don't have side effects. In some languages,
+    this property is enforced, in JavaScript it isn't. However, we can still implement
+    side-effect-free functions in JavaScript. If a function takes arguments, and always
+    returns the same output based on those arguments, then the function can be said
+    to be stateless. It doesn't depend on the state of a component, and it doesn't
+    change the state of a component. It just computes a value.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If we can establish a library of business logic that's implemented this way,
+    we can design some super flexible components. Rather than implement this logic
+    directly in a component, we pass the behavior into the component. That way, different
+    components can utilize the same stateless business logic functions.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The tricky part is finding the right functions that can be implemented this
+    way as it's not a good idea to implement these up-front. Instead, as the iterations
+    of our application development progress, we can use this strategy to re-factor
+    code into generic stateless functions that are shared by any component capable
+    of using them. This leads to business logic that's implemented in a focused way,
+    and components that are small, generic, and reusable in a variety of contexts.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Organizing component code
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In addition to composing our components in such a way that helps our application
+    scale, we need to consider the structure of our source code modules too. When
+    we first start off with a given project, our source code files tend to map well
+    to what's running in the client's browser. Over time, as we accumulate more features
+    and components, earlier decisions on how to organize our source tree can dilute
+    this strong mapping.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'When tracing runtime behavior to our source code, the less mental effort involved,
+    the better. We can scale to more stable features this way because our efforts
+    are focused more on the design problems of the day—the things that directly provide
+    customer value:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Organizing component code](img/4639_03_09.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: The diagram shows the mapping component parts to their implementation artifacts
+  prefs: []
+  type: TYPE_NORMAL
+- en: There's another dimension to code organization in the context of our architecture,
+    and that's our ability to isolate specific code. We should treat our code just
+    like our runtime components, which are self-sustained units that we can turn on
+    or off. That is, we should be able to find all the source code files required
+    for a given component, without having to hunt them down. If a component requires,
+    say, 10 source code files—JavaScript, HTML, and CSS—then ideally these should
+    all be found in the same directory.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The exception, of course, is generic base functionality that's shared by all
+    components. These should be as close to the surface as possible, then it's easy
+    to trace our component dependencies; they all point to the top of the hierarchy.
+    It's a challenge to scale the dependency graph when our component dependencies
+    are all over the place.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: This chapter introduced us to the concept of component composition. Components
+    are the building blocks of a scalable JavaScript application. The common components
+    we're likely to encounter include things like modules, models/collections, controllers/views,
+    and templates. While these patterns help us achieve a level of consistency, they're
+    not enough on their own to make our code work well under various scaling influencers.
+    This is why we need to extend these components, providing our own generic implementations
+    that specific features of our application can further extend and use.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Depending on the various scaling factors our application encounters, different
+    approaches may be taken in getting generic functionality into our components.
+    One approach is to keep extending the component hierarchy, and keep everything
+    encapsulated and hidden away from the outside world. Another approach is to plug
+    logic and properties into components when they're created. The cost is more complexity
+    for the code that's using the components.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We ended the chapter with a look at how we might go about organizing our source
+    code; so that it's structure better reflects that of our logical component design.
+    This helps us scale our development effort, and helps isolate one component's
+    code from others'. In the next chapter, we'll look in more detail at the space
+    in between our components. It's one thing to have well crafted components that
+    stand by themselves. It's quite another to implement scalable component communication.
+  prefs: []
+  type: TYPE_NORMAL

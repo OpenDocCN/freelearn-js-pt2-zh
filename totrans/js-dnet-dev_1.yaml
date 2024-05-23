@@ -1,0 +1,4899 @@
+- en: Index
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: A
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: abstract factory pattern
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: about / [Abstract factory pattern](part0039_split_000.html#1565U2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Abstract factory pattern")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Abstract Syntax Tree (AST) / [Compilation architecture of TypeScript](part0028_split_000.html#QMFO2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Compilation architecture of TypeScript")
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: access control keys
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Access-Control-Allow-Origin / [Calling WCF services from JavaScript](part0026.html#OPEK2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Calling WCF services from JavaScript")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Access-Control-Allow-Headers / [Calling WCF services from JavaScript](part0026.html#OPEK2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Calling WCF services from JavaScript")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Access-Control-Allow-Method / [Calling WCF services from JavaScript](part0026.html#OPEK2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Calling WCF services from JavaScript")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Access-Control-Max-Age / [Calling WCF services from JavaScript](part0026.html#OPEK2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Calling WCF services from JavaScript")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: adapter pattern
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: about / [Adapter pattern](part0040_split_000.html#164MG2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Adapter pattern")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: AJAX events
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: about / [Ajax events](part0025_split_000.html#NQU22-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Ajax events")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Ajax events
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: local events / [Local events](part0025_split_000.html#NQU22-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Local events")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: global events / [Global events](part0025_split_000.html#NQU22-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Global events")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: AJAX properties
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: accepts / [Ajax properties](part0025_split_000.html#NQU22-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Ajax properties")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: async / [Ajax properties](part0025_split_000.html#NQU22-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Ajax properties")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: cache / [Ajax properties](part0025_split_000.html#NQU22-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Ajax properties")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: contents / [Ajax properties](part0025_split_000.html#NQU22-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Ajax properties")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: contentType / [Ajax properties](part0025_split_000.html#NQU22-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Ajax properties")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: crossDomain / [Ajax properties](part0025_split_000.html#NQU22-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Ajax properties")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: data / [Ajax properties](part0025_split_000.html#NQU22-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Ajax properties")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: dataType / [Ajax properties](part0025_split_000.html#NQU22-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Ajax properties")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: AJAX request
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: options, URL / [Pre-filtering Ajax requests](part0025_split_000.html#NQU22-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Pre-filtering Ajax requests")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: default values, setting / [Setting default values for all future Ajax requests](part0025_split_000.html#NQU22-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Setting default values for all future Ajax requests")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Ajax request
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: XHR object, using / [Ajax requests using the classic XHR object](part0025_split_000.html#NQU22-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Ajax requests using the classic XHR object")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: creating, jQuery used / [Making an Ajax request using jQuery](part0025_split_000.html#NQU22-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Making an Ajax request using jQuery")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: AJAX request, objects
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: options / [Pre-filtering Ajax requests](part0025_split_000.html#NQU22-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Pre-filtering Ajax requests")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: originalOptions / [Pre-filtering Ajax requests](part0025_split_000.html#NQU22-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Pre-filtering Ajax requests")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: jqXHR / [Pre-filtering Ajax requests](part0025_split_000.html#NQU22-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Pre-filtering Ajax requests")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Angular 2
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: about / [Introduction to Angular 2](part0029_split_000.html#RL0A2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Introduction to Angular 2")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: architecture / [Angular 2 architecture](part0029_split_000.html#RL0A2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Angular 2 architecture")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: component life cycle events / [Events of component life cycle](part0029_split_000.html#RL0A2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Events of component life cycle")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: modules / [Modules](part0029_split_000.html#RL0A2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Modules")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: components / [Components](part0029_split_000.html#RL0A2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Components")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: dependency injection / [Dependency injection in Angular](part0029_split_000.html#RL0A2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Dependency injection in Angular")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: routing / [Routing in Angular](part0029_split_000.html#RL0A2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Routing in Angular")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Application Programming Interfaces (APIs) / [Web applications with Node.js](part0045_split_000.html#1AT9A2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Web applications with Node.js")
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: arithmetic operators
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: about / [Arithmetic operators](part0016_split_000.html#F8902-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Arithmetic operators")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: array
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: about / [Array in JavaScript](part0016_split_000.html#F8902-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Array in JavaScript")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: ASP.NET application
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: WinJS library, adding / [Adding the WinJS library in the ASP.NET application](part0033_split_000.html#VF2I1-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Adding the WinJS library in the ASP.NET application")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: WinJS, using / [Using WinJS in the ASP.NET application](part0034_split_000.html#10DJ41-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Using WinJS in the ASP.NET application")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: ASP.NET Core
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: to-do application, developing / [Developing a to-do application in ASP.NET Core](part0030_split_000.html#SJGS2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Developing a to-do application in ASP.NET Core")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: JSDoc3, installing / [Installing JSDoc3 in ASP.NET Core](part0051_split_000.html#1GKCM2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Installing JSDoc3 in ASP.NET Core")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: ASP.NET core application
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: creating / [Creating the ASP.NET core application](part0037_split_000.html#1394Q2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Creating the ASP.NET core application")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: assignment operators
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: about / [Assignment operators](part0016_split_000.html#F8902-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Assignment operators")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Asynchronous JavaScript and XML (Ajax)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: about / [Introducing Ajax](part0025_split_000.html#NQU22-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Introducing Ajax")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: working / [How Ajax works](part0025_split_000.html#NQU22-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "How Ajax works")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: properties / [Ajax properties](part0025_split_000.html#NQU22-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Ajax properties")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: AJAX request, pre-filtering / [Pre-filtering Ajax requests](part0025_split_000.html#NQU22-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Pre-filtering Ajax requests")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: data loading, through get functions / [Loading data through the get functions
+    in jQuery](part0025_split_000.html#NQU22-40dd2de0d2d94f79a49cd7a43c4b76e6 "Loading
+    data through the get functions in jQuery")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: post function, used for data posting / [Posting data to server using the post
+    function](part0025_split_000.html#NQU22-40dd2de0d2d94f79a49cd7a43c4b76e6 "Posting
+    data to server using the post function")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: B
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: behavioral patterns
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: about / [Behavioral pattern](part0041_split_000.html#173722-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Behavioral pattern")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: chain of responsibility / [Chain of responsibility pattern](part0041_split_000.html#173722-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Chain of responsibility pattern")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: observer / [Observer pattern](part0041_split_000.html#173722-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Observer pattern")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: pub/sub / [Pub/sub pattern](part0041_split_000.html#173722-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Pub/sub pattern")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: promises / [Promises](part0041_split_000.html#173722-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Promises")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: bitwise operators
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: about / [Bitwise operators](part0016_split_000.html#F8902-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Bitwise operators")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: bitwise AND / [Bitwise AND](part0016_split_000.html#F8902-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Bitwise AND")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: bitwise OR / [Bitwise OR](part0016_split_000.html#F8902-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Bitwise OR")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: bitwise NOT / [Bitwise NOT](part0016_split_000.html#F8902-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Bitwise NOT")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: bitwise XOR / [Bitwise XOR](part0016_split_000.html#F8902-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Bitwise XOR")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: bitwise shift operators
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: about / [Bitwise shift operators](part0016_split_000.html#F8902-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Bitwise shift operators")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: bitwise left shift / [Bitwise left shift](part0016_split_000.html#F8902-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Bitwise left shift")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: bitwise right shift / [Bitwise right shift](part0016_split_000.html#F8902-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Bitwise right shift")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: blank Node.js applications
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: creating / [Creating blank Node.js applications](part0045_split_000.html#1AT9A2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Creating blank Node.js applications")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: BODMAS rule / [Grouping operator](part0016_split_000.html#F8902-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Grouping operator")
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: bridge pattern
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: about / [Bridge pattern](part0040_split_000.html#164MG2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Bridge pattern")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: browser objects
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: about / [Browser Object Models in JavaScript](part0016_split_000.html#F8902-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Browser Object Models in JavaScript")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: window / [Window](part0016_split_000.html#F8902-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Window")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: document / [Document](part0016_split_000.html#F8902-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Document")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: navigator / [Navigator](part0016_split_000.html#F8902-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Navigator")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: screen / [Screen](part0016_split_000.html#F8902-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Screen")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: history / [History](part0016_split_000.html#F8902-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "History")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: location / [Location](part0016_split_000.html#F8902-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Location")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: built-in display methods, JavaScript
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: about / [Built-in display methods in JavaScript](part0016_split_000.html#F8902-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Built-in display methods in JavaScript")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: messages, displaying / [Displaying messages](part0016_split_000.html#F8902-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Displaying messages")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: window.alert() / [Alert box](part0016_split_000.html#F8902-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Alert box")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: window.confirm() / [Confirm box](part0016_split_000.html#F8902-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Confirm box")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: document.write() method, for writing on page / [Writing on a page](part0016_split_000.html#F8902-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Writing on a page")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: console.log() method, for writing into browser's console window / [Writing into
+    the browser's console window](part0016_split_000.html#F8902-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Writing into the browser's console window")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: C
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: CDN library / [CDN](part0033_split_000.html#VF2I1-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "CDN")
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: chain of responsibility pattern
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: about / [Chain of responsibility pattern](part0041_split_000.html#173722-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Chain of responsibility pattern")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Common Language Runtime (CLR) / [Comparing runtimes](part0014_split_000.html#DB7S1-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Comparing runtimes")
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: comparison operators
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: about / [Comparison operators](part0016_split_000.html#F8902-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Comparison operators")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: strict equal operator / [Strict equal operator](part0016_split_000.html#F8902-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Strict equal operator")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: strict not equal operator / [Strict not equal operator](part0016_split_000.html#F8902-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Strict not equal operator")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: complex types
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: about / [Data types](part0016_split_000.html#F8902-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Data types")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: component life cycle events, Angular 2
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: ngOnInit() / [Events of component life cycle](part0029_split_000.html#RL0A2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Events of component life cycle")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: ngOnDestroy() / [Events of component life cycle](part0029_split_000.html#RL0A2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Events of component life cycle")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: ngDoCheck() / [Events of component life cycle](part0029_split_000.html#RL0A2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Events of component life cycle")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: ngOnChanges(changes) / [Events of component life cycle](part0029_split_000.html#RL0A2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Events of component life cycle")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: ngAfterContentInit() / [Events of component life cycle](part0029_split_000.html#RL0A2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Events of component life cycle")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: ngAfterContentChecked() / [Events of component life cycle](part0029_split_000.html#RL0A2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Events of component life cycle")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: ngAfterViewInit() / [Events of component life cycle](part0029_split_000.html#RL0A2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Events of component life cycle")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: ngAfterViewChecked() / [Events of component life cycle](part0029_split_000.html#RL0A2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Events of component life cycle")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: conditional breakpoints
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: about / [Conditional breakpoints](part0054_split_000.html#1JFUC2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Conditional breakpoints")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: configuration attributes, unit tests
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: frameworks / [Adding Karma specifications](part0053_split_000.html#1IHDQ2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Adding Karma specifications")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: singleRun / [Adding Karma specifications](part0053_split_000.html#1IHDQ2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Adding Karma specifications")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: browsers / [Adding Karma specifications](part0053_split_000.html#1IHDQ2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Adding Karma specifications")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: files / [Adding Karma specifications](part0053_split_000.html#1IHDQ2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Adding Karma specifications")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: contains selector
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: about / [The contains selector in jQuery](part0023_split_000.html#LTSU2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "The contains selector in jQuery")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: content delivery network (CDN)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: using / [Using a content delivery network](part0023_split_000.html#LTSU2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Using a content delivery network"), [The use of CDN](part0023_split_000.html#LTSU2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "The use of CDN")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: about / [Using a content delivery network](part0023_split_000.html#LTSU2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Using a content delivery network")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: core benefits, TypeScript
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: about / [Advantages of TypeScript](part0028_split_000.html#QMFO2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Advantages of TypeScript")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: superset of JavaScript / [Superset of JavaScript](part0028_split_000.html#QMFO2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Superset of JavaScript")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: classes and modules, support for / [Support for classes and modules](part0028_split_000.html#QMFO2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Support for classes and modules")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: static type checking / [Static type checking](part0028_split_000.html#QMFO2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Static type checking")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: ECMAScript 6 feature support / [ECMAScript 6 feature support](part0028_split_000.html#QMFO2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "ECMAScript 6 feature support")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: optional typing / [Optional typing](part0028_split_000.html#QMFO2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Optional typing")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: types, declaring / [Declaring types in TypeScript](part0028_split_000.html#QMFO2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Declaring types in TypeScript")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: core elements, TypeScript
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: about / [Core elements of TypeScript](part0028_split_000.html#QMFO2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Core elements of TypeScript")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: variable declaration / [Declaring variables](part0028_split_000.html#QMFO2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Declaring variables")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: types / [Types](part0028_split_000.html#QMFO2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Types")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: interfaces / [Classes and interfaces](part0028_split_000.html#QMFO2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Classes and interfaces")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: classes / [Classes and interfaces](part0028_split_000.html#QMFO2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Classes and interfaces")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: interfaces, defining / [Defining interfaces](part0028_split_000.html#QMFO2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Defining interfaces")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: classes and interfaces, deriving / [Deriving classes and interfaces](part0028_split_000.html#QMFO2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Deriving classes and interfaces")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: generic classes / [Generic classes](part0028_split_000.html#QMFO2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Generic classes")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: functions / [Functions](part0028_split_000.html#QMFO2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Functions")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: generic functions / [Generic functions](part0028_split_000.html#QMFO2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Generic functions")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: iterators / [Iterators](part0028_split_000.html#QMFO2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Iterators")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: modules / [Modules and namespaces](part0028_split_000.html#QMFO2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Modules and namespaces")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: namespaces / [Modules and namespaces](part0028_split_000.html#QMFO2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Modules and namespaces")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: core fundamentals, of JavaScript
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: about / [Core fundamentals of JavaScript](part0016_split_000.html#F8902-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Core fundamentals of JavaScript")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: JavaScript, adding to HTML page / [Adding JavaScript to an HTML page](part0016_split_000.html#F8902-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Adding JavaScript to an HTML page")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: statements / [Statements in JavaScript](part0016_split_000.html#F8902-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Statements in JavaScript")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: literals / [Literals and variables](part0016_split_000.html#F8902-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Literals and variables")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: variables / [Literals and variables](part0016_split_000.html#F8902-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Literals and variables")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: data types / [Data types](part0016_split_000.html#F8902-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Data types")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: JavaScript Object Notation (JSON) / [What is JSON?](part0016_split_000.html#F8902-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "What is JSON?")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: core properties, Angular2 components
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: about / [Core properties of Angular 2 components](part0029_split_000.html#RL0A2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Core properties of Angular 2 components")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: templates / [Templates and selectors](part0029_split_000.html#RL0A2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Templates and selectors")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: selectors / [Templates and selectors](part0029_split_000.html#RL0A2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Templates and selectors")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: inputs / [Inputs and outputs](part0029_split_000.html#RL0A2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Inputs and outputs")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: outputs / [Inputs and outputs](part0029_split_000.html#RL0A2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Inputs and outputs")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: inputs, using / [Using inputs](part0029_split_000.html#RL0A2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Using inputs")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: outputs, using / [Using outputs](part0029_split_000.html#RL0A2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Using outputs")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: directives / [Directives](part0029_split_000.html#RL0A2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Directives")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: providers / [Providers](part0029_split_000.html#RL0A2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Providers")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: CORS
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: about / [CORS](part0025_split_000.html#NQU22-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "CORS")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: policy, specifying at services level / [Specifying the CORS policy at services
+    level](part0025_split_000.html#NQU22-40dd2de0d2d94f79a49cd7a43c4b76e6 "Specifying
+    the CORS policy at services level")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: enabling, at Configure method / [Enable CORS at the Configure method](part0025_split_000.html#NQU22-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Enable CORS at the Configure method")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Create, Read, Update and Delete (CRUD) operations / [Creating a TodoServiceApp
+    project](part0030_split_000.html#SJGS2-40dd2de0d2d94f79a49cd7a43c4b76e6 "Creating
+    a TodoServiceApp project")
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: creational patterns
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: about / [Creational patterns](part0039_split_000.html#1565U2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Creational patterns")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: singleton / [Singleton design pattern](part0039_split_000.html#1565U2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Singleton design pattern")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: factory / [Factory pattern](part0039_split_000.html#1565U2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Factory pattern")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: abstract factory / [Abstract factory pattern](part0039_split_000.html#1565U2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Abstract factory pattern")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: prototype / [Prototype pattern](part0039_split_000.html#1565U2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Prototype pattern")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: cross-origin requests
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: about / [Cross-origin requests](part0025_split_000.html#NQU22-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Cross-origin requests")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: JavaScript Object Notation Padding (JSON-P) / [JSON-P](part0025_split_000.html#NQU22-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "JSON-P")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: CORS / [CORS](part0025_split_000.html#NQU22-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "CORS")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: CRUD (create, retrieve, update, and delete) operations
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: about / [Modularization](part0051_split_000.html#1GKCM2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Modularization")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: D
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: data
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: posting, post function used / [Posting data to server using the post function](part0025_split_000.html#NQU22-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Posting data to server using the post function")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: databinding
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: about / [Databinding](part0035_split_000.html#11C3M2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Databinding")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: one time databinding / [One time databinding](part0035_split_000.html#11C3M2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "One time databinding")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: one way databinding / [One way databinding](part0035_split_000.html#11C3M2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "One way databinding")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: two way databinding / [Two way databinding](part0035_split_000.html#11C3M2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Two way databinding")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: working model / [A databinding working model](part0035_split_000.html#11C3M2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "A databinding working model")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: data loading
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: through get functions, in jQuery / [Loading data through the get functions in
+    jQuery](part0025_split_000.html#NQU22-40dd2de0d2d94f79a49cd7a43c4b76e6 "Loading
+    data through the get functions in jQuery")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: data types
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: about / [Data types](part0016_split_000.html#F8902-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Data types")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: primitive types / [Data types](part0016_split_000.html#F8902-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Data types")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: complex types / [Data types](part0016_split_000.html#F8902-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Data types")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: conversions / [Conversions in data types](part0016_split_000.html#F8902-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Conversions in data types")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: debugger keyword
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: about / [Debugger keyword supported by all browsers](part0054_split_000.html#1JFUC2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Debugger keyword supported by all browsers")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: debugging
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: JavaScript / [Debugging JavaScript](part0054_split_000.html#1JFUC2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Debugging JavaScript")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: in Visual Studio 2015 / [Debugging options in Visual Studio 2015](part0054_split_000.html#1JFUC2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Debugging options in Visual Studio 2015")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: from Visual Studio, with Internet Explorer / [Debugging from Visual Studio with
+    Internet Explorer](part0054_split_000.html#1JFUC2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Debugging from Visual Studio with Internet Explorer")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: from Visual Studio, with Google Chrome / [Debugging from Visual Studio with
+    Google Chrome](part0054_split_000.html#1JFUC2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Debugging from Visual Studio with Google Chrome")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: with Developers Tools / [Developer Tools](part0054_split_000.html#1JFUC2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Developer Tools")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: in Microsoft Edge / [Debugging options in Microsoft Edge](part0054_split_000.html#1JFUC2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Debugging options in Microsoft Edge")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: with TypeScript / [Debugging TypeScript](part0054_split_000.html#1JFUC2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Debugging TypeScript")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: decorator pattern
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: about / [Decorator pattern](part0040_split_000.html#164MG2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Decorator pattern")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: delete operator
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: about / [The delete operator](part0016_split_000.html#F8902-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "The delete operator")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: dependencies, TodoWebApp project
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: about / [Dependencies](part0030_split_000.html#SJGS2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Dependencies")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: angular2 / [Dependencies](part0030_split_000.html#SJGS2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Dependencies")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: systemjs / [Dependencies](part0030_split_000.html#SJGS2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Dependencies")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: reflect-metadata / [Dependencies](part0030_split_000.html#SJGS2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Dependencies")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: rxjs / [Dependencies](part0030_split_000.html#SJGS2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Dependencies")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: zone.js / [Dependencies](part0030_split_000.html#SJGS2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Dependencies")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: development dependencies / [Development dependencies](part0030_split_000.html#SJGS2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Development dependencies"), [Configuring TypeScript](part0030_split_000.html#SJGS2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Configuring TypeScript")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Gulp, configuring / [Configuring Gulp](part0030_split_000.html#SJGS2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Configuring Gulp")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: dependency injection, in Angular
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: about / [Dependency injection in Angular](part0029_split_000.html#RL0A2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Dependency injection in Angular")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Developers Tools
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: about / [Developer Tools](part0054_split_000.html#1JFUC2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Developer Tools")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: debugging options, in Microsoft Edge / [Debugging options in Microsoft Edge](part0054_split_000.html#1JFUC2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Debugging options in Microsoft Edge")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: directives
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: about / [Directives](part0029_split_000.html#RL0A2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Directives")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: components / [Directives](part0029_split_000.html#RL0A2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Directives")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: structural directive / [Directives](part0029_split_000.html#RL0A2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Directives"), [Structural directives](part0029_split_000.html#RL0A2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Structural directives")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: attribute directive / [Directives](part0029_split_000.html#RL0A2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Directives"), [Attribute directive](part0029_split_000.html#RL0A2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Attribute directive")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: simple Hello World directive, creating / [Creating a simple Hello World directive](part0029_split_000.html#RL0A2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Creating a simple Hello World directive")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: documentation
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: generating / [Generating documentation](part0051_split_000.html#1GKCM2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Generating documentation")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: JSDoc3, installing in ASP.NET Core / [Installing JSDoc3 in ASP.NET Core](part0051_split_000.html#1GKCM2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Installing JSDoc3 in ASP.NET Core")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: document object
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: about / [Document](part0016_split_000.html#F8902-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Document")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Document Object Model (DOM)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: about / [Importance of JavaScript](part0014_split_000.html#DB7S1-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Importance of JavaScript")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: document object model (DOM) / [Using WinJS in the ASP.NET application](part0034_split_000.html#10DJ41-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Using WinJS in the ASP.NET application")
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: document ready event
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: about / [The document ready event](part0023_split_000.html#LTSU2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "The document ready event")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: DOM elements
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: selecting, ID used / [Selecting the DOM elements using the ID](part0023_split_000.html#LTSU2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Selecting the DOM elements using the ID")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: selecting, TagName used / [Selecting the DOM elements using TagName](part0023_split_000.html#LTSU2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Selecting the DOM elements using TagName")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: selecting, by attribute value / [Selecting by the attribute value](part0023_split_000.html#LTSU2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Selecting by the attribute value")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: manipulating / [Manipulating DOM](part0023_split_000.html#LTSU2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Manipulating DOM")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: properties, modifying / [Modifying an element's properties](part0023_split_000.html#LTSU2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Modifying an element's properties")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: URL, for methods / [Modifying an element's properties](part0023_split_000.html#LTSU2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Modifying an element's properties")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: get method / [Modifying an element's properties](part0023_split_000.html#LTSU2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Modifying an element's properties")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: set method / [Modifying an element's properties](part0023_split_000.html#LTSU2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Modifying an element's properties")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: creating / [Creating new elements](part0023_split_000.html#LTSU2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Creating new elements")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: attributes, removing / [Removing elements and attributes](part0023_split_000.html#LTSU2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Removing elements and attributes")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: removing / [Removing elements and attributes](part0023_split_000.html#LTSU2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Removing elements and attributes")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: DOM elements, methods
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: append() / [Creating new elements](part0023_split_000.html#LTSU2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Creating new elements")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: appendTo() / [Creating new elements](part0023_split_000.html#LTSU2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Creating new elements")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: before() / [Creating new elements](part0023_split_000.html#LTSU2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Creating new elements")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: after() / [Creating new elements](part0023_split_000.html#LTSU2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Creating new elements")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: insertAfter() / [Creating new elements](part0023_split_000.html#LTSU2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Creating new elements")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: insertBefore() / [Creating new elements](part0023_split_000.html#LTSU2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Creating new elements")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: prepend() / [Creating new elements](part0023_split_000.html#LTSU2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Creating new elements")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: detach() / [Removing elements and attributes](part0023_split_000.html#LTSU2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Removing elements and attributes")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: remove() / [Removing elements and attributes](part0023_split_000.html#LTSU2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Removing elements and attributes")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: removeAttr() / [Removing elements and attributes](part0023_split_000.html#LTSU2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Removing elements and attributes")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: removeClass() / [Removing elements and attributes](part0023_split_000.html#LTSU2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Removing elements and attributes")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: removeProp() / [Removing elements and attributes](part0023_split_000.html#LTSU2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Removing elements and attributes")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: DOM elements, methods
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: empty() / [Removing elements and attributes](part0023_split_000.html#LTSU2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Removing elements and attributes")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: E
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: EJS view engine
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: about / [EJS view engine](part0045_split_000.html#1AT9A2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "EJS view engine")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: elements, of JavaScript
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: about / [Elements of JavaScript](part0016_split_000.html#F8902-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Elements of JavaScript")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: constants / [Constants in JavaScript](part0016_split_000.html#F8902-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Constants in JavaScript")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: comments / [Comments](part0016_split_000.html#F8902-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Comments")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: case sensitivity / [Case sensitivity](part0016_split_000.html#F8902-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Case sensitivity")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: character set / [Character set](part0016_split_000.html#F8902-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Character set")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: entity-relationship model (ERD)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: about / [Inheritance](part0021_split_000.html#K0RQ2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Inheritance")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: environment
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: setting up / [Setting up your environment](part0015_split_000.html#E9OE1-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Setting up your environment")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: event, Microsoft Edge
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: event tracepoint, adding / [Add event tracepoint](part0054_split_000.html#1JFUC2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Add event tracepoint")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: event breakpoints, adding / [Add event breakpoints](part0054_split_000.html#1JFUC2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Add event breakpoints")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: event-driven messaging
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: about / [Event-driven messaging](part0051_split_000.html#1GKCM2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Event-driven messaging")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: mediator pattern, implementing / [Implementing mediator pattern for communication
+    between modules](part0051_split_000.html#1GKCM2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Implementing mediator pattern for communication between modules")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: complex code, encapsulating / [Encapsulating complex code](part0051_split_000.html#1GKCM2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Encapsulating complex code")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: events
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: about / [Events in JavaScript](part0019.html#I3QM1-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Events in JavaScript")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: handling, in jQuery / [Event handling in jQuery](part0023_split_000.html#LTSU2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Event handling in jQuery")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: registering, in jQuery / [Registering events in jQuery](part0023_split_000.html#LTSU2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Registering events in jQuery")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: click() / [Registering events in jQuery](part0023_split_000.html#LTSU2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Registering events in jQuery")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: dblclick() / [Registering events in jQuery](part0023_split_000.html#LTSU2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Registering events in jQuery")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: mousedown() / [Registering events in jQuery](part0023_split_000.html#LTSU2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Registering events in jQuery")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: mouseup() / [Registering events in jQuery](part0023_split_000.html#LTSU2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Registering events in jQuery")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: mouseenter() / [Registering events in jQuery](part0023_split_000.html#LTSU2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Registering events in jQuery")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: mouseleave() / [Registering events in jQuery](part0023_split_000.html#LTSU2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Registering events in jQuery")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: keydown() / [Registering events in jQuery](part0023_split_000.html#LTSU2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Registering events in jQuery")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: keyup() / [Registering events in jQuery](part0023_split_000.html#LTSU2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Registering events in jQuery")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: focus() / [Registering events in jQuery](part0023_split_000.html#LTSU2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Registering events in jQuery")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: blur() / [Registering events in jQuery](part0023_split_000.html#LTSU2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Registering events in jQuery")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: change() / [Registering events in jQuery](part0023_split_000.html#LTSU2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Registering events in jQuery")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: URL / [Registering events in jQuery](part0023_split_000.html#LTSU2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Registering events in jQuery")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: binding, on and off used / [Binding events using on and off](part0023_split_000.html#LTSU2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Binding events using on and off")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: hover events, using / [Using the hover events](part0023_split_000.html#LTSU2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Using the hover events")/ [Events in WinJS](part0035_split_000.html#11C3M2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Events in WinJS")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: exception handling, OOP
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: about / [Exception handling](part0021_split_000.html#K0RQ2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Exception handling")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Error / [Error](part0021_split_000.html#K0RQ2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Error")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: RangeError / [RangeError](part0021_split_000.html#K0RQ2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "RangeError")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: ReferenceError / [ReferenceError](part0021_split_000.html#K0RQ2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "ReferenceError")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: TypeError / [TypeError](part0021_split_000.html#K0RQ2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "TypeError")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: URIError / [URIError](part0021_split_000.html#K0RQ2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "URIError")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Express framework for web applications, in Node.js
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: using / [Using the Express framework for web applications in Node.js](part0045_split_000.html#1AT9A2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Using the Express framework for web applications in Node.js ")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: simple Node.js, extending / [Extend simple Node.js to use Express](part0045_split_000.html#1AT9A2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Extend simple Node.js to use Express")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Express view engines / [Express view engines](part0045_split_000.html#1AT9A2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Express view engines")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: expressions
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: about / [Expressions](part0016_split_000.html#F8902-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Expressions")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: this keyword / [The this keyword](part0016_split_000.html#F8902-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "The this keyword")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: sequence, of code execution / [Sequence of code execution in JavaScript](part0016_split_000.html#F8902-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Sequence of code execution in JavaScript")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: this keyword, using on calling method / [Using the this keyword on a calling
+    method](part0016_split_000.html#F8902-40dd2de0d2d94f79a49cd7a43c4b76e6 "Using
+    the this keyword on a calling method")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: function statement / [The function statement and expression](part0016_split_000.html#F8902-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "The function statement and expression")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: function expression / [The function statement and expression](part0016_split_000.html#F8902-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "The function statement and expression")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: class statement / [Class statement and expression](part0016_split_000.html#F8902-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Class statement and expression")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: class expression / [Class statement and expression](part0016_split_000.html#F8902-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Class statement and expression")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: grouping operator / [Grouping operator](part0016_split_000.html#F8902-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Grouping operator")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: new keyword / [new](part0016_split_000.html#F8902-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "new")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: super keyword / [super](part0016_split_000.html#F8902-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "super")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Express view engines
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: about / [Express view engines](part0045_split_000.html#1AT9A2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Express view engines")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: EJS view engine / [EJS view engine](part0045_split_000.html#1AT9A2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "EJS view engine")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Jade view engine / [Jade view engine](part0045_split_000.html#1AT9A2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Jade view engine")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: routing, in Express application / [Routing in the Express application](part0045_split_000.html#1AT9A2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Routing in the Express application")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: F
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: factory pattern
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: about / [Factory pattern](part0039_split_000.html#1565U2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Factory pattern")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: façade pattern
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: about / [Facade pattern](part0040_split_000.html#164MG2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Facade pattern")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: function arguments
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: about / [Function arguments](part0020.html#J2B81-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Function arguments")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: G
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: get functions
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: used, for data loading / [Loading data through the get functions in jQuery](part0025_split_000.html#NQU22-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Loading data through the get functions in jQuery")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: jQuery.get(), using / [Using jQuery.get()](part0025_split_000.html#NQU22-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Using jQuery.get()")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: jQuery.getJSON(), using / [Using jQuery.getJSON()](part0025_split_000.html#NQU22-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Using jQuery.getJSON()")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: jQuery.getScript(), using / [Using jQuery.getScript()](part0025_split_000.html#NQU22-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Using jQuery.getScript()")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: global events, AJAX
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: ajaxStart / [Global events](part0025_split_000.html#NQU22-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Global events")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: ajaxSend / [Global events](part0025_split_000.html#NQU22-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Global events")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: ajaxSuccess / [Global events](part0025_split_000.html#NQU22-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Global events")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: ajaxError / [Global events](part0025_split_000.html#NQU22-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Global events")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: ajaxComplete / [Global events](part0025_split_000.html#NQU22-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Global events")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Google Chrome
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: used, for debugging from Visual Studio / [Debugging from Visual Studio with
+    Google Chrome](part0054_split_000.html#1JFUC2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Debugging from Visual Studio with Google Chrome")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Grunt
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: used, for writing unit tests / [Grunt](part0053_split_000.html#1IHDQ2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Grunt")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Grunt file
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: adding / [Adding the Grunt file](part0053_split_000.html#1IHDQ2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Adding the Grunt file")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Karma specifications, adding / [Adding Karma specifications](part0053_split_000.html#1IHDQ2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Adding Karma specifications")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: npm task, loading / [Load npm task](part0053_split_000.html#1IHDQ2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Load npm task")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: task, registering / [Register task](part0053_split_000.html#1IHDQ2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Register task")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Gulp module
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Gulp / [Deployment optimization](part0051_split_000.html#1GKCM2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Deployment optimization")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: gulp-concat / [Deployment optimization](part0051_split_000.html#1GKCM2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Deployment optimization")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: gulp-cssmin / [Deployment optimization](part0051_split_000.html#1GKCM2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Deployment optimization")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: gulp-uglify / [Deployment optimization](part0051_split_000.html#1GKCM2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Deployment optimization")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: H
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: history object
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: about / [History](part0016_split_000.html#F8902-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "History")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: methods / [Methods](part0016_split_000.html#F8902-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Methods")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: hover events
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: using / [Using the hover events](part0023_split_000.html#LTSU2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Using the hover events")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: I
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: ID
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: used, for selecting DOM elements / [Selecting the DOM elements using the ID](part0023_split_000.html#LTSU2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Selecting the DOM elements using the ID")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: IIFE (immediately invoked function expression)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: about / [Implementing the module pattern](part0051_split_000.html#1GKCM2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Implementing the module pattern")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: indexOf() method
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: about / [Array in JavaScript](part0016_split_000.html#F8902-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Array in JavaScript")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: inheritance
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: about / [Inheritance](part0021_split_000.html#K0RQ2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Inheritance")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: constructors, chaining in JavaScript / [Chaining constructors in JavaScript](part0021_split_000.html#K0RQ2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Chaining constructors in JavaScript")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Object.create() used / [Inheritance using Object.create()](part0021_split_000.html#K0RQ2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Inheritance using Object.create()")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: defining, class used / [Defining inheritance using class](part0021_split_000.html#K0RQ2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Defining inheritance using class")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: input elements
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: selecting / [Selecting input elements](part0023_split_000.html#LTSU2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Selecting input elements")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Integrated Development Environment (IDE) / [Using Node.js with Visual Studio
+    2015](part0045_split_000.html#1AT9A2-40dd2de0d2d94f79a49cd7a43c4b76e6 "Using Node.js
+    with Visual Studio 2015")
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Intermediate Language (IL) code / [Comparing runtimes](part0014_split_000.html#DB7S1-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Comparing runtimes")
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Internet Explorer
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: used, for debugging from Visual Studio / [Debugging from Visual Studio with
+    Internet Explorer](part0054_split_000.html#1JFUC2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Debugging from Visual Studio with Internet Explorer")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: J
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Jade language
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: URL / [Jade view engine](part0045_split_000.html#1AT9A2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Jade view engine")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Jade view engine
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: about / [Jade view engine](part0045_split_000.html#1AT9A2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Jade view engine")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Jasmine
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: used, for writing unit tests / [Jasmine](part0053_split_000.html#1IHDQ2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Jasmine")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: describe() function / [Adding unit test script file](part0053_split_000.html#1IHDQ2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Adding unit test script file")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: it() function / [Adding unit test script file](part0053_split_000.html#1IHDQ2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Adding unit test script file")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: expect() function / [Adding unit test script file](part0053_split_000.html#1IHDQ2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Adding unit test script file")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: JavaScript
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: importance / [Importance of JavaScript](part0014_split_000.html#DB7S1-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Importance of JavaScript")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: about / [What is JavaScript?](part0014_split_000.html#DB7S1-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "What is JavaScript?")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: runtimes, comparing / [Comparing runtimes](part0014_split_000.html#DB7S1-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Comparing runtimes")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: programming / [Programming in JavaScript](part0016_split_000.html#F8902-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Programming in JavaScript")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: WCF services, calling / [Calling WCF services from JavaScript](part0026.html#OPEK2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Calling WCF services from JavaScript")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: debugging / [Debugging JavaScript](part0054_split_000.html#1JFUC2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Debugging JavaScript")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: JavaScript code
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: modularizing, through RequireJS / [Modularizing JavaScript code through RequireJS](part0051_split_000.html#1GKCM2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Modularizing JavaScript code through RequireJS")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: testing / [Testing the JavaScript code](part0053_split_000.html#1IHDQ2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Testing the JavaScript code")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: JavaScript design patterns
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: creational / [Creational patterns](part0039_split_000.html#1565U2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Creational patterns")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: structural / [Structural patterns](part0040_split_000.html#164MG2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Structural patterns")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: behavioral / [Behavioral pattern](part0041_split_000.html#173722-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Behavioral pattern")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: JavaScript Object Notation Padding (JSON-P)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: about / [JSON-P](part0025_split_000.html#NQU22-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "JSON-P")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: using / [Using JSON-P](part0025_split_000.html#NQU22-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Using JSON-P")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: JavaScript property descriptors
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: about / [JavaScript property descriptors](part0021_split_000.html#K0RQ2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "JavaScript property descriptors")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: writable / [JavaScript property descriptors](part0021_split_000.html#K0RQ2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "JavaScript property descriptors")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: enumerable / [JavaScript property descriptors](part0021_split_000.html#K0RQ2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "JavaScript property descriptors")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: configurable / [JavaScript property descriptors](part0021_split_000.html#K0RQ2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "JavaScript property descriptors")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: displaying / [Display property descriptors](part0021_split_000.html#K0RQ2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Display property descriptors")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: managing / [Managing property descriptors](part0021_split_000.html#K0RQ2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Managing property descriptors")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: getters and setters, using / [Using getters and setters](part0021_split_000.html#K0RQ2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Using getters and setters")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: JavaScript typed arrays
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: about / [JavaScript typed arrays](part0021_split_000.html#K0RQ2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "JavaScript typed arrays")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: architecture / [Typed array architecture](part0021_split_000.html#K0RQ2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Typed array architecture")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: array buffer / [The array buffer](part0021_split_000.html#K0RQ2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "The array buffer")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: buffer, creating / [Creating a buffer](part0021_split_000.html#K0RQ2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Creating a buffer")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: jQuery
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: URL / [Getting started with jQuery](part0023_split_000.html#LTSU2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Getting started with jQuery")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: about / [Getting started with jQuery](part0023_split_000.html#LTSU2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Getting started with jQuery")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: content delivery network (CDN), using / [Using a content delivery network](part0023_split_000.html#LTSU2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Using a content delivery network")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: document ready event / [The document ready event](part0023_split_000.html#LTSU2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "The document ready event")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: selectors / [The jQuery selectors](part0023_split_000.html#LTSU2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "The jQuery selectors")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: events, handling / [Event handling in jQuery](part0023_split_000.html#LTSU2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Event handling in jQuery")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: events, registering / [Registering events in jQuery](part0023_split_000.html#LTSU2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Registering events in jQuery")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: used, for creating Ajax request / [Making an Ajax request using jQuery](part0025_split_000.html#NQU22-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Making an Ajax request using jQuery")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: .ajax() / [jQuery.ajax()](part0025_split_000.html#NQU22-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "jQuery.ajax()")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: data loading, through get functions / [Loading data through the get functions
+    in jQuery](part0025_split_000.html#NQU22-40dd2de0d2d94f79a49cd7a43c4b76e6 "Loading
+    data through the get functions in jQuery")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: jQuery.get() function
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: using / [Using jQuery.get()](part0025_split_000.html#NQU22-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Using jQuery.get()")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: jQuery.getJSON() function
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: using / [Using jQuery.getJSON()](part0025_split_000.html#NQU22-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Using jQuery.getJSON()")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: jQuery.getScript() function
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: using / [Using jQuery.getScript()](part0025_split_000.html#NQU22-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Using jQuery.getScript()")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: jQuery selectors
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: about / [The jQuery selectors](part0023_split_000.html#LTSU2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "The jQuery selectors")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: DOM elements, selecting ID used / [Selecting the DOM elements using the ID](part0023_split_000.html#LTSU2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Selecting the DOM elements using the ID")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: DOM elements, selecting TagName used / [Selecting the DOM elements using TagName](part0023_split_000.html#LTSU2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Selecting the DOM elements using TagName")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: nodes, selecting by class name / [Selecting nodes by the class name](part0023_split_000.html#LTSU2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Selecting nodes by the class name")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: DOM elements, selecting by attribute value / [Selecting by the attribute value](part0023_split_000.html#LTSU2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Selecting by the attribute value")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: input elements, selecting / [Selecting input elements](part0023_split_000.html#LTSU2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Selecting input elements")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: elements, selecting / [Selecting all the elements](part0023_split_000.html#LTSU2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Selecting all the elements")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: first child elements, selecting / [Selecting the first and last child elements](part0023_split_000.html#LTSU2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Selecting the first and last child elements")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: last child elements, selecting / [Selecting the first and last child elements](part0023_split_000.html#LTSU2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Selecting the first and last child elements")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: contains selector / [The contains selector in jQuery](part0023_split_000.html#LTSU2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "The contains selector in jQuery")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: odd rows selector, selecting / [Selecting the even and odd rows selectors](part0023_split_000.html#LTSU2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Selecting the even and odd rows selectors")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: even rows selector, selecting / [Selecting the even and odd rows selectors](part0023_split_000.html#LTSU2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Selecting the even and odd rows selectors")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: JSDoc3
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: installing, in ASP.NET Core / [Installing JSDoc3 in ASP.NET Core](part0051_split_000.html#1GKCM2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Installing JSDoc3 in ASP.NET Core")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: comments, adding / [Adding comments](part0051_split_000.html#1GKCM2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Adding comments")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: URL / [Adding comments](part0051_split_000.html#1GKCM2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Adding comments")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: JSON
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: about / [What is JSON?](part0016_split_000.html#F8902-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "What is JSON?")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: simple objects / [Simple objects in JSON](part0016_split_000.html#F8902-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Simple objects in JSON")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: arrays, declaring / [Declaring arrays in JSON](part0016_split_000.html#F8902-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Declaring arrays in JSON")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: data, nesting / [Nesting data in JSON](part0016_split_000.html#F8902-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Nesting data in JSON")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: just-in-time (JIT) compilation / [Comparing runtimes](part0014_split_000.html#DB7S1-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Comparing runtimes")
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: K
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Karma
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: used, for writing unit tests / [Karma](part0053_split_000.html#1IHDQ2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Karma")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: URL, for configuration file / [Adding Karma specifications](part0053_split_000.html#1IHDQ2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Adding Karma specifications")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Knockout
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: used, for implementing Model-View-ViewModel (MVVM) / [Implementing Model-View-ViewModel
+    using Knockout and Run test](part0053_split_000.html#1IHDQ2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Implementing Model-View-ViewModel using Knockout and Run test")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: package, adding / [Adding the Knockout package](part0053_split_000.html#1IHDQ2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Adding the Knockout package")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: ProductViewModel, adding / [Adding ProductViewModel](part0053_split_000.html#1IHDQ2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Adding ProductViewModel")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Product view, adding / [Add the Product view](part0053_split_000.html#1IHDQ2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Add the Product view")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: test configuration, modifying / [Modifying test configuration](part0053_split_000.html#1IHDQ2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Modifying test configuration")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: product-testing script, modifying / [Modifying the product-testing script](part0053_split_000.html#1IHDQ2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Modifying the product-testing script")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: L
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: large scale application
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: designing / [Think before proceeding](part0050_split_000.html#1FLS41-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Think before proceeding")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: lastIndexOf() method
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: about / [Array in JavaScript](part0016_split_000.html#F8902-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Array in JavaScript")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: let
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: used, for declaring / [Declaring let](part0018_split_000.html#H5A41-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Declaring let")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: conditions / [Conditions where let is efficient to use](part0018_split_000.html#H5A41-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Conditions where let is efficient to use")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: functions in loops / [Functions in loops](part0018_split_000.html#H5A41-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Functions in loops")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: load testing
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: about / [Testing the JavaScript code](part0053_split_000.html#1IHDQ2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Testing the JavaScript code")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: local events, AJAX
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: beforeSend / [Local events](part0025_split_000.html#NQU22-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Local events")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: success / [Local events](part0025_split_000.html#NQU22-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Local events")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: error / [Local events](part0025_split_000.html#NQU22-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Local events")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: complete / [Local events](part0025_split_000.html#NQU22-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Local events")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: location object
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: about / [Location](part0016_split_000.html#F8902-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Location")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: properties / [Properties](part0016_split_000.html#F8902-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Properties")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: methods / [Methods](part0016_split_000.html#F8902-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Methods")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: logical operators
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: about / [Logical operators](part0016_split_000.html#F8902-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Logical operators")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Logical AND / [Logical AND](part0016_split_000.html#F8902-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Logical AND")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Logical OR / [Logical OR](part0016_split_000.html#F8902-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Logical OR")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Logical NOT / [Logical NOT](part0016_split_000.html#F8902-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Logical NOT")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: M
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: main to-do page, TodoWebApp project
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: creating / [Creating the main to-do page](part0030_split_000.html#SJGS2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Creating the main to-do page")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: custom to-do tag helper, creating / [Creating a custom to-do tag helper](part0030_split_000.html#SJGS2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Creating a custom to-do tag helper")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: -do MVC controller, adding / [Adding a to-do MVC controller](part0030_split_000.html#SJGS2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Adding a to-do MVC controller")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: views, generating for TodoController action methods / [Generating views for
+    the TodoController action methods](part0030_split_000.html#SJGS2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Generating views for the TodoController action methods")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Create Todo component, developing / [Developing the Create Todo component](part0030_split_000.html#SJGS2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Developing the Create Todo component")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: mediator pattern
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: implementing, for communication between modules / [Implementing mediator pattern
+    for communication between modules](part0051_split_000.html#1GKCM2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Implementing mediator pattern for communication between modules")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: messages, displaying
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: alert box / [Alert box](part0016_split_000.html#F8902-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Alert box")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: confirm box / [Confirm box](part0016_split_000.html#F8902-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Confirm box")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: prompt box / [Prompt box](part0016_split_000.html#F8902-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Prompt box")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: methods, OOP
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: about / [Methods](part0021_split_000.html#K0RQ2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Methods")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: defining, object literal notation used / [Defining methods through object literal
+    notation approach](part0021_split_000.html#K0RQ2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Defining methods through object literal notation approach")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: defining, constructor function used / [Defining objects using the constructor
+    function approach](part0021_split_000.html#K0RQ2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Defining objects using the constructor function approach")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: extending / [Extending properties and methods](part0021_split_000.html#K0RQ2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Extending properties and methods")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Microsoft Edge
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: debugging options / [Debugging options in Microsoft Edge](part0054_split_000.html#1JFUC2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Debugging options in Microsoft Edge")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: standard breakpoints / [Standard breakpoints](part0054_split_000.html#1JFUC2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Standard breakpoints")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: conditional breakpoints / [Conditional breakpoints](part0054_split_000.html#1JFUC2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Conditional breakpoints")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: tracepoints / [Tracepoints](part0054_split_000.html#1JFUC2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Tracepoints")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: event / [Event](part0054_split_000.html#1JFUC2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Event")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: XHR / [XHR](part0054_split_000.html#1JFUC2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "XHR")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Microsoft SQL server, accessing in Node.js
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: about / [Accessing the Microsoft SQL server in Node.js](part0048_split_000.html#1DOR01-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Accessing the Microsoft SQL server in Node.js")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: record, reading / [Reading a record from the Microsoft SQL server database](part0048_split_000.html#1DOR01-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Reading a record from the Microsoft SQL server database")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: record, creating / [Creating a record in the Microsoft SQL server database](part0048_split_000.html#1DOR01-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Creating a record in the Microsoft SQL server database")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Middleware
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: about / [Middleware](part0046.html#1BRPS1-40dd2de0d2d94f79a49cd7a43c4b76e6 "Middleware")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: miscellaneous operators
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: conditional operators / [Conditional operators](part0016_split_000.html#F8902-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Conditional operators")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: spread operator / [Spread operator](part0016_split_000.html#F8902-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Spread operator")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: mixin / [Mixin](part0035_split_000.html#11C3M2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Mixin")
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Model-View-ViewModel (MVVM)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: implementing, Knockout used / [Implementing Model-View-ViewModel using Knockout
+    and Run test](part0053_split_000.html#1IHDQ2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Implementing Model-View-ViewModel using Knockout and Run test")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: modularization
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: about / [Modularization](part0051_split_000.html#1GKCM2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Modularization")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: module pattern, implementing / [Implementing the module pattern](part0051_split_000.html#1GKCM2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Implementing the module pattern")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: JavaScript code, modularizing through RequireJS / [Modularizing JavaScript code
+    through RequireJS](part0051_split_000.html#1GKCM2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Modularizing JavaScript code through RequireJS")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: modules
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: creating, RequireJS API used / [Creating modules using the RequireJS API](part0051_split_000.html#1GKCM2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Creating modules using the RequireJS API")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: defining, in CommonJS style / [Creating modules using the RequireJS API](part0051_split_000.html#1GKCM2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Creating modules using the RequireJS API")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: defining, in AMD style / [Creating modules using the RequireJS API](part0051_split_000.html#1GKCM2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Creating modules using the RequireJS API")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: mssql node package
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: reference / [Creating a record in the Microsoft SQL server database](part0048_split_000.html#1DOR01-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Creating a record in the Microsoft SQL server database")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: MVC, with Express framework
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: about / [MVC with the Express framework](part0047_split_000.html#1CQAE1-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "MVC with the Express framework")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: MVC pattern / [MVC pattern](part0047_split_000.html#1CQAE1-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "MVC pattern")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: controller, creating / [Creating a controller](part0047_split_000.html#1CQAE1-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Creating a controller")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: data services, creating / [Creating data services](part0047_split_000.html#1CQAE1-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Creating data services")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: N
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: namespace / [Namespaces in WinJS](part0035_split_000.html#11C3M2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Namespaces in WinJS")
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: navigator object
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: about / [Navigator](part0016_split_000.html#F8902-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Navigator")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: properties / [Properties](part0016_split_000.html#F8902-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Properties")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Node.js
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: about / [Introduction to Node.js](part0043_split_000.html#190861-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Introduction to Node.js")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: versus .NET / [Comparison of Node.js with .NET](part0043_split_000.html#190861-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Comparison of Node.js with .NET")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Node Package Manager (NPM) / [NPM](part0043_split_000.html#190861-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "NPM")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: installing / [Installing Node.js](part0044.html#19UOO1-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Installing Node.js")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: URL / [Installing Node.js](part0044.html#19UOO1-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Installing Node.js")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: using, with Visual Studio 2015 / [Using Node.js with Visual Studio 2015](part0045_split_000.html#1AT9A2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Using Node.js with Visual Studio 2015")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: for simple console application / [Simple console application using Node.js](part0045_split_000.html#1AT9A2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Simple console application using Node.js")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: blank Node.js applications, creating / [Creating blank Node.js applications](part0045_split_000.html#1AT9A2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Creating blank Node.js applications")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Express framework, using for web applications / [Using the Express framework
+    for web applications in Node.js](part0045_split_000.html#1AT9A2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Using the Express framework for web applications in Node.js ")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Microsoft SQL server, accessing / [Accessing the Microsoft SQL server in Node.js](part0048_split_000.html#1DOR01-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Accessing the Microsoft SQL server in Node.js")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Node.js web server
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: request, processing by / [Request processing by the Node.js web server](part0043_split_000.html#190861-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Request processing by the Node.js web server")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: node package manager (npm)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: about / [Adding Karma specifications](part0053_split_000.html#1IHDQ2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Adding Karma specifications")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Node Package Manager (NPM) / [Adding the WinJS library in the ASP.NET application](part0033_split_000.html#VF2I1-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Adding the WinJS library in the ASP.NET application")
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: nodes
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: selecting, by class name / [Selecting nodes by the class name](part0023_split_000.html#LTSU2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Selecting nodes by the class name")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: NPM / [NPM](part0033_split_000.html#VF2I1-40dd2de0d2d94f79a49cd7a43c4b76e6 "NPM")
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: NuGet / [NuGet](part0033_split_000.html#VF2I1-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "NuGet")
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: O
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: object
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: about / [Data types](part0016_split_000.html#F8902-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Data types")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: object-oriented programming (OOP)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: about / [Object-oriented programming in JavaScript](part0021_split_000.html#K0RQ2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Object-oriented programming in JavaScript")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: objects, creating / [Creating objects](part0021_split_000.html#K0RQ2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Creating objects")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: private and public members / [Private and public members](part0021_split_000.html#K0RQ2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Private and public members")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: inheritance / [Inheritance](part0021_split_000.html#K0RQ2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Inheritance")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: encapsulation / [Encapsulation](part0021_split_000.html#K0RQ2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Encapsulation")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: abstraction / [Abstraction](part0021_split_000.html#K0RQ2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Abstraction")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: new.target property / [new.target](part0021_split_000.html#K0RQ2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "new.target")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: namespace / [Namespace](part0021_split_000.html#K0RQ2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Namespace")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: exception handling / [Exception handling](part0021_split_000.html#K0RQ2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Exception handling")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: closures / [Closures](part0021_split_000.html#K0RQ2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Closures")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: closures, practical use / [Practical use](part0021_split_000.html#K0RQ2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Practical use")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: JavaScript typed arrays / [JavaScript typed arrays](part0021_split_000.html#K0RQ2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "JavaScript typed arrays")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: maps / [Maps, sets, weak maps, and weak sets](part0021_split_000.html#K0RQ2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Maps, sets, weak maps, and weak sets")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: maps and weak maps / [Maps and weak maps](part0021_split_000.html#K0RQ2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Maps and weak maps")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: sets and weak sets / [Sets and weak sets](part0021_split_000.html#K0RQ2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Sets and weak sets")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: strict mode / [The strict mode](part0021_split_000.html#K0RQ2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "The strict mode")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Object.create()
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: used, for inheritance / [Inheritance using Object.create()](part0021_split_000.html#K0RQ2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Inheritance using Object.create()")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: predefined properties / [Predefined properties of Object.create()](part0021_split_000.html#K0RQ2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Predefined properties of Object.create()")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: objects, OOP
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: creating / [Creating objects](part0021_split_000.html#K0RQ2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Creating objects")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: defining, object literal notation used / [Defining objects using object literal
+    notation](part0021_split_000.html#K0RQ2-40dd2de0d2d94f79a49cd7a43c4b76e6 "Defining
+    objects using object literal notation")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: defining, constructor pattern used / [Defining objects using a constructor pattern](part0021_split_000.html#K0RQ2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Defining objects using a constructor pattern")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: class keyword, using / [Using the class keyword](part0021_split_000.html#K0RQ2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Using the class keyword")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: observer pattern
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: about / [Observer pattern](part0041_split_000.html#173722-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Observer pattern")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: one time databinding / [One time databinding](part0035_split_000.html#11C3M2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "One time databinding")
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: one way databinding / [One way databinding](part0035_split_000.html#11C3M2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "One way databinding")
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: open authentication (OAuth) / [Maps and weak maps](part0021_split_000.html#K0RQ2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Maps and weak maps")
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: operators
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: about / [Operators](part0016_split_000.html#F8902-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Operators")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: assignment operators / [Assignment operators](part0016_split_000.html#F8902-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Assignment operators")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: arithmetic operators / [Arithmetic operators](part0016_split_000.html#F8902-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Arithmetic operators")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: unary operators / [Unary operators](part0016_split_000.html#F8902-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Unary operators")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: comparison operators / [Comparison operators](part0016_split_000.html#F8902-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Comparison operators")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: logical operators / [Logical operators](part0016_split_000.html#F8902-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Logical operators")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: bitwise operators / [Bitwise operators](part0016_split_000.html#F8902-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Bitwise operators")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: bitwise shift operators / [Bitwise shift operators](part0016_split_000.html#F8902-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Bitwise shift operators")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: typeof operator / [The typeof operator](part0016_split_000.html#F8902-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "The typeof operator")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: void operator / [The void operator](part0016_split_000.html#F8902-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "The void operator")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: delete operator / [The delete operator](part0016_split_000.html#F8902-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "The delete operator")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: miscellaneous operators / [Miscellaneous operators](part0016_split_000.html#F8902-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Miscellaneous operators")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: P
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: pop() method
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: about / [Array in JavaScript](part0016_split_000.html#F8902-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Array in JavaScript")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: post function
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: used, for data posting / [Posting data to server using the post function](part0025_split_000.html#NQU22-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Posting data to server using the post function")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: primitive types
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Boolean / [Data types](part0016_split_000.html#F8902-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Data types")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: null / [Data types](part0016_split_000.html#F8902-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Data types")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: undefined / [Data types](part0016_split_000.html#F8902-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Data types")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: number / [Data types](part0016_split_000.html#F8902-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Data types")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: string / [Data types](part0016_split_000.html#F8902-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Data types")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: programming, in JavaScript
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: about / [Programming in JavaScript](part0016_split_000.html#F8902-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Programming in JavaScript")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: core fundamentals / [Core fundamentals of JavaScript](part0016_split_000.html#F8902-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Core fundamentals of JavaScript")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: elements / [Elements of JavaScript](part0016_split_000.html#F8902-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Elements of JavaScript")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: expressions / [Expressions](part0016_split_000.html#F8902-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Expressions")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: operators / [Operators](part0016_split_000.html#F8902-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Operators")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: built-in display methods / [Built-in display methods in JavaScript](part0016_split_000.html#F8902-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Built-in display methods in JavaScript")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Browser Object Models / [Browser Object Models in JavaScript](part0016_split_000.html#F8902-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Browser Object Models in JavaScript")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: promises
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: about / [Promises](part0035_split_000.html#11C3M2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Promises"), [Promises](part0041_split_000.html#173722-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Promises")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: operations / [Other operations of promises](part0035_split_000.html#11C3M2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Other operations of promises")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: chaining / [Chaining promises and handling errors](part0035_split_000.html#11C3M2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Chaining promises and handling errors")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: errors, handling / [Chaining promises and handling errors](part0035_split_000.html#11C3M2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Chaining promises and handling errors")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: cancelling / [Canceling promises](part0035_split_000.html#11C3M2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Canceling promises")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: joining / [Joining promises](part0035_split_000.html#11C3M2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Joining promises")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: checking / [Checking promise](part0035_split_000.html#11C3M2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Checking promise")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: non-promise, wrapping into promise / [Wrapping non-promise into promise](part0035_split_000.html#11C3M2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Wrapping non-promise into promise")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: properties, OOP
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: about / [Properties](part0021_split_000.html#K0RQ2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Properties")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: defining, object literal notation used / [Defining properties using object literal
+    notation](part0021_split_000.html#K0RQ2-40dd2de0d2d94f79a49cd7a43c4b76e6 "Defining
+    properties using object literal notation")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: defining, constructor pattern used / [Defining properties using a constructor
+    pattern](part0021_split_000.html#K0RQ2-40dd2de0d2d94f79a49cd7a43c4b76e6 "Defining
+    properties using a constructor pattern")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: defining, setters/getters used / [Defining properties using setters/getters
+    in ECMAScript 6](part0021_split_000.html#K0RQ2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Defining properties using setters/getters in ECMAScript 6")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: JavaScript property descriptors / [JavaScript property descriptors](part0021_split_000.html#K0RQ2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "JavaScript property descriptors")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: extending / [Extending properties and methods](part0021_split_000.html#K0RQ2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Extending properties and methods")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: prototype pattern
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: about / [Prototype pattern](part0039_split_000.html#1565U2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Prototype pattern")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: pub/sub pattern
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: about / [Pub/sub pattern](part0041_split_000.html#173722-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Pub/sub pattern")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: push() method
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: about / [Array in JavaScript](part0016_split_000.html#F8902-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Array in JavaScript")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: R
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: RequireJS
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: JavaScript code, modularizing / [Modularizing JavaScript code through RequireJS](part0051_split_000.html#1GKCM2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Modularizing JavaScript code through RequireJS")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: API, used for creating modules / [Creating modules using the RequireJS API](part0051_split_000.html#1GKCM2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Creating modules using the RequireJS API")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: bootstrapping / [Bootstrapping RequireJS](part0051_split_000.html#1GKCM2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Bootstrapping RequireJS")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: reverse() method
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: about / [Array in JavaScript](part0016_split_000.html#F8902-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Array in JavaScript")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: routing, in Angular
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: about / [Routing in Angular](part0029_split_000.html#RL0A2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Routing in Angular")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: S
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: scalable and maintainable applications
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: developing / [Developing highly scalable and maintainable applications](part0051_split_000.html#1GKCM2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Developing highly scalable and maintainable applications")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: modularization / [Modularization](part0051_split_000.html#1GKCM2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Modularization")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: event-driven messaging / [Event-driven messaging](part0051_split_000.html#1GKCM2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Event-driven messaging")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: documentation, generating / [Generating documentation](part0051_split_000.html#1GKCM2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Generating documentation")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: deployment optimization / [Deployment optimization](part0051_split_000.html#1GKCM2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Deployment optimization")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: screen object
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: about / [Screen](part0016_split_000.html#F8902-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Screen")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: properties / [Properties](part0016_split_000.html#F8902-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Properties")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: shift() method
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: about / [Array in JavaScript](part0016_split_000.html#F8902-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Array in JavaScript")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: simple console application
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Node.js used / [Simple console application using Node.js](part0045_split_000.html#1AT9A2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Simple console application using Node.js")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: singleton design pattern
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: about / [Singleton design pattern](part0039_split_000.html#1565U2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Singleton design pattern")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: splice() method
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: about / [Array in JavaScript](part0016_split_000.html#F8902-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Array in JavaScript")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: standard breakpoints
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: about / [Standard breakpoints](part0054_split_000.html#1JFUC2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Standard breakpoints")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: structural patterns
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: about / [Structural patterns](part0040_split_000.html#164MG2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Structural patterns")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: adapter / [Adapter pattern](part0040_split_000.html#164MG2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Adapter pattern")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: decorator / [Decorator pattern](part0040_split_000.html#164MG2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Decorator pattern")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: façade / [Facade pattern](part0040_split_000.html#164MG2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Facade pattern")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: bridge / [Bridge pattern](part0040_split_000.html#164MG2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Bridge pattern")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: T
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: TagName
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: used, for selecting DOM elements / [Selecting the DOM elements using TagName](part0023_split_000.html#LTSU2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Selecting the DOM elements using TagName")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: testing
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: unit testing / [Unit testing](part0053_split_000.html#1IHDQ2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Unit testing")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: to-do application, developing in ASP.NET Core
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: about / [Developing a to-do application in ASP.NET Core](part0030_split_000.html#SJGS2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Developing a to-do application in ASP.NET Core")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Common project, creating / [Creating a Common project](part0030_split_000.html#SJGS2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Creating a Common project")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: TodoServiceApp project, creating / [Creating a TodoServiceApp project](part0030_split_000.html#SJGS2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Creating a TodoServiceApp project")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: TodoWebApp project, creating / [Creating a TodoWebApp project](part0030_split_000.html#SJGS2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Creating a TodoWebApp project")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: TodoServiceApp project
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: creating / [Creating a TodoServiceApp project](part0030_split_000.html#SJGS2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Creating a TodoServiceApp project")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: MVC, enabling / [Enabling MVC in a Web API project](part0030_split_000.html#SJGS2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Enabling MVC in a Web API project")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Entity Framework, installing / [Installing Entity Framework](part0030_split_000.html#SJGS2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Installing Entity Framework")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: AppSettings, adding for storing connection string / [Adding AppSettings to store
+    a connection string](part0030_split_000.html#SJGS2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Adding AppSettings to store a connection string")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: AppSettings, configuring in Startup class / [Configuring AppSettings in the
+    Startup class](part0030_split_000.html#SJGS2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Configuring AppSettings in the Startup class")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: data access, adding in Web API / [Adding data access in Web API](part0030_split_000.html#SJGS2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Adding data access in Web API")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: CORS, enabling in ASP.NET Web API / [Enabling CORS in the ASP.NET Web API](part0030_split_000.html#SJGS2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Enabling CORS in the ASP.NET Web API")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: database migration, running / [Running database migration](part0030_split_000.html#SJGS2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Running database migration")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: controller, creating / [Creating a controller](part0030_split_000.html#SJGS2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Creating a controller")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: TodoWebApp project
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: creating / [Creating a TodoWebApp project](part0030_split_000.html#SJGS2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Creating a TodoWebApp project")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Angular 2, configuring / [Configuring Angular 2 in the TodoWebApp project](part0030_split_000.html#SJGS2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Configuring Angular 2 in the TodoWebApp project")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: dependencies / [Dependencies](part0030_split_000.html#SJGS2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Dependencies")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Angular components, adding / [Adding Angular components](part0030_split_000.html#SJGS2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Adding Angular components")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: -do service component, adding / [Adding the to-do service component](part0030_split_000.html#SJGS2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Adding the to-do service component")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: to-do view component, adding / [Adding a to-do view component](part0030_split_000.html#SJGS2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Adding a to-do view component")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: main to-do page, creating / [Creating the main to-do page](part0030_split_000.html#SJGS2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Creating the main to-do page")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: toString() method
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: about / [Array in JavaScript](part0016_split_000.html#F8902-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Array in JavaScript")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: tracepoints
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: about / [Tracepoints](part0054_split_000.html#1JFUC2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Tracepoints")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: two way databinding / [Two way databinding](part0035_split_000.html#11C3M2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Two way databinding")
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: typeof operator
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: about / [The typeof operator](part0016_split_000.html#F8902-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "The typeof operator")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: values / [The typeof operator](part0016_split_000.html#F8902-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "The typeof operator")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: TypeScript
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: about / [TypeScript](part0028_split_000.html#QMFO2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "TypeScript")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: compilation architecture / [Compilation architecture of TypeScript](part0028_split_000.html#QMFO2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Compilation architecture of TypeScript")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: benefits / [Advantages of TypeScript](part0028_split_000.html#QMFO2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Advantages of TypeScript")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: core elements / [Core elements of TypeScript](part0028_split_000.html#QMFO2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Core elements of TypeScript")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: reference / [Modules and namespaces](part0028_split_000.html#QMFO2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Modules and namespaces")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: debugging / [Debugging TypeScript](part0054_split_000.html#1JFUC2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Debugging TypeScript")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: U
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: unary operators
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: about / [Unary operators](part0016_split_000.html#F8902-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Unary operators")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: decrement / [Unary operators](part0016_split_000.html#F8902-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Unary operators")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: increment / [Unary operators](part0016_split_000.html#F8902-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Unary operators")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: logical complement operator / [Unary operators](part0016_split_000.html#F8902-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Unary operators")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: unit testing
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: about / [Unit testing](part0053_split_000.html#1IHDQ2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Unit testing")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: unit tests
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: writing / [Writing unit tests](part0053_split_000.html#1IHDQ2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Writing unit tests")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: writing, with Jasmine / [Jasmine](part0053_split_000.html#1IHDQ2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Jasmine")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: writing, with Karma / [Karma](part0053_split_000.html#1IHDQ2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Karma")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: writing, with Grunt / [Grunt](part0053_split_000.html#1IHDQ2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Grunt")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: developing / [Developing unit test using Jasmine, Karma, and Grunt](part0053_split_000.html#1IHDQ2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Developing unit test using Jasmine, Karma, and Grunt")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: packages, adding / [Adding packages](part0053_split_000.html#1IHDQ2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Adding packages")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Grunt file, adding / [Adding the Grunt file](part0053_split_000.html#1IHDQ2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Adding the Grunt file")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: source JavaScript file, using / [Source JavaScript file](part0053_split_000.html#1IHDQ2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Source JavaScript file")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: script file, adding / [Adding unit test script file](part0053_split_000.html#1IHDQ2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Adding unit test script file")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: test task, executing / [Running test task](part0053_split_000.html#1IHDQ2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Running test task")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Model-View-ViewModel (MVVM), implementing / [Implementing Model-View-ViewModel
+    using Knockout and Run test](part0053_split_000.html#1IHDQ2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Implementing Model-View-ViewModel using Knockout and Run test")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: executing / [Implementing Model-View-ViewModel using Knockout and Run test](part0053_split_000.html#1IHDQ2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Implementing Model-View-ViewModel using Knockout and Run test")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Universal App Platform (UAP) / [Usage of WinJS](part0032_split_000.html#UGI01-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Usage of WinJS")
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Universal Windows Platform (UWP) / [Usage of WinJS](part0032_split_000.html#UGI01-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Usage of WinJS")
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: unshift() method
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: about / [Array in JavaScript](part0016_split_000.html#F8902-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Array in JavaScript")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: user acceptance testing (UAT)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: about / [Unit testing](part0053_split_000.html#1IHDQ2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Unit testing")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: user interface (UI) / [Importance of JavaScript](part0014_split_000.html#DB7S1-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Importance of JavaScript"), [Introduction to WinJS](part0032_split_000.html#UGI01-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Introduction to WinJS")
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: user interface (UI) testing / [Testing the JavaScript code](part0053_split_000.html#1IHDQ2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Testing the JavaScript code")
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: V
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: variables
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: about / [Variables – scope and hoisting](part0018_split_000.html#H5A41-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Variables – scope and hoisting")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: hoisting / [Variables – scope and hoisting](part0018_split_000.html#H5A41-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Variables – scope and hoisting")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: let, for declaring / [Declaring let](part0018_split_000.html#H5A41-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Declaring let")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: variables scope / [Variables – scope and hoisting](part0018_split_000.html#H5A41-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Variables – scope and hoisting")
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Visual Studio
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: existing Windows app template / [Existing Windows app template in Visual Studio](part0034_split_000.html#10DJ41-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Existing Windows app template in Visual Studio")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: debugging from, with Internet Explorer / [Debugging from Visual Studio with
+    Internet Explorer](part0054_split_000.html#1JFUC2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Debugging from Visual Studio with Internet Explorer")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: debugging, with Google Chrome / [Debugging from Visual Studio with Google Chrome](part0054_split_000.html#1JFUC2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Debugging from Visual Studio with Google Chrome")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Visual Studio 2015
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: debugging options / [Debugging options in Visual Studio 2015](part0054_split_000.html#1JFUC2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Debugging options in Visual Studio 2015")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Visual Studio 2015 community edition
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: URL / [Setting up your environment](part0015_split_000.html#E9OE1-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Setting up your environment")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Visual Studio 2015 IDE
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: new editing experience, of JavaScript / [New editing experience of JavaScript
+    in Visual Studio 2015 IDE](part0015_split_000.html#E9OE1-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "New editing experience of JavaScript in Visual Studio 2015 IDE")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: improvements / [New editing experience of JavaScript in Visual Studio 2015 IDE](part0015_split_000.html#E9OE1-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "New editing experience of JavaScript in Visual Studio 2015 IDE")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: void operator
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: about / [The void operator](part0016_split_000.html#F8902-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "The void operator")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: W
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: WCF services
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: calling, from JavaScript / [Calling WCF services from JavaScript](part0026.html#OPEK2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Calling WCF services from JavaScript")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: window object
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: about / [Window](part0016_split_000.html#F8902-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Window")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Windows runtime features
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: using / [Using Windows runtime features](part0037_split_000.html#1394Q2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Using Windows runtime features")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: hosted apps / [Hosted apps and accessing the camera](part0037_split_000.html#1394Q2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Hosted apps and accessing the camera")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: camera, accessing / [Hosted apps and accessing the camera](part0037_split_000.html#1394Q2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Hosted apps and accessing the camera")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: ASP.NET core application, creating / [Creating the ASP.NET core application](part0037_split_000.html#1394Q2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Creating the ASP.NET core application")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: ASP.NET application converting into windows application, Hosted app concept
+    used / [Converting an ASP.NET application into Windows application using the Hosted
+    app concept](part0037_split_000.html#1394Q2-40dd2de0d2d94f79a49cd7a43c4b76e6 "Converting
+    an ASP.NET application into Windows application using the Hosted app concept")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: WinJS
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: about / [Introduction to WinJS](part0032_split_000.html#UGI01-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Introduction to WinJS")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: uses / [Usage of WinJS](part0032_split_000.html#UGI01-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Usage of WinJS")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: starting / [Getting started with WinJS](part0034_split_000.html#10DJ41-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Getting started with WinJS")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: using, in ASP.NET application / [Using WinJS in the ASP.NET application](part0034_split_000.html#10DJ41-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Using WinJS in the ASP.NET application")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: existing Windows app template, in Visual Studio / [Existing Windows app template
+    in Visual Studio](part0034_split_000.html#10DJ41-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Existing Windows app template in Visual Studio")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: controls, adding / [Adding WinJS controls](part0036_split_000.html#12AK81-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Adding WinJS controls")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: controls, properties setting / [Setting properties of WinJS controls](part0036_split_000.html#12AK81-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Setting properties of WinJS controls")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: WinJS, core fundamentals
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: exploring / [Exploring WinJS core fundamentals](part0035_split_000.html#11C3M2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Exploring WinJS core fundamentals")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: classes / [Classes and namespaces](part0035_split_000.html#11C3M2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Classes and namespaces")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: namespaces / [Classes and namespaces](part0035_split_000.html#11C3M2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Classes and namespaces"), [Namespaces in WinJS](part0035_split_000.html#11C3M2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Namespaces in WinJS")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: classes, defining in WinJS / [Defining classes in WinJS](part0035_split_000.html#11C3M2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Defining classes in WinJS")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: classes, deriving in WinJS / [Deriving classes in WinJS](part0035_split_000.html#11C3M2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Deriving classes in WinJS")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: mixin / [Mixin](part0035_split_000.html#11C3M2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Mixin")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: events / [Events in WinJS](part0035_split_000.html#11C3M2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Events in WinJS")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Databinding / [Databinding](part0035_split_000.html#11C3M2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Databinding")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: WinJS, features
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: about / [WinJS features](part0032_split_000.html#UGI01-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "WinJS features")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: JavaScript coding and language patterns / [JavaScript coding and language patterns](part0032_split_000.html#UGI01-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "JavaScript coding and language patterns")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: stylesheets / [Stylesheets](part0032_split_000.html#UGI01-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Stylesheets")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Windows runtime access / [Windows runtime access](part0032_split_000.html#UGI01-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Windows runtime access")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: security / [Security](part0032_split_000.html#UGI01-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Security")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: App model / [App model](part0032_split_000.html#UGI01-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "App model")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Databinding / [Databinding](part0032_split_000.html#UGI01-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Databinding")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: controls / [Controls](part0032_split_000.html#UGI01-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Controls")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: utilities / [Utilities](part0032_split_000.html#UGI01-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Utilities")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: WinJS library, adding in ASP.NET application
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: about / [Adding the WinJS library in the ASP.NET application](part0033_split_000.html#VF2I1-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Adding the WinJS library in the ASP.NET application")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: CDN library / [CDN](part0033_split_000.html#VF2I1-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "CDN")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: NPM / [NPM](part0033_split_000.html#VF2I1-40dd2de0d2d94f79a49cd7a43c4b76e6 "NPM")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: NuGet / [NuGet](part0033_split_000.html#VF2I1-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "NuGet")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: X
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: XHR
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: about / [XHR](part0054_split_000.html#1JFUC2-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "XHR")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: XHR object
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: used, for AJAX request / [Ajax requests using the classic XHR object](part0025_split_000.html#NQU22-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "Ajax requests using the classic XHR object")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: methods / [XHR methods](part0025_split_000.html#NQU22-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "XHR methods")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: events / [XHR events](part0025_split_000.html#NQU22-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "XHR events")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: properties / [XHR properties](part0025_split_000.html#NQU22-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "XHR properties")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: XHR object, headers
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Cookie / [XHR methods](part0025_split_000.html#NQU22-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "XHR methods")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Host / [XHR methods](part0025_split_000.html#NQU22-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "XHR methods")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Connection / [XHR methods](part0025_split_000.html#NQU22-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "XHR methods")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Accept / [XHR methods](part0025_split_000.html#NQU22-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "XHR methods")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Accept-charset / [XHR methods](part0025_split_000.html#NQU22-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "XHR methods")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Accept-encoding / [XHR methods](part0025_split_000.html#NQU22-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "XHR methods")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Accept-language / [XHR methods](part0025_split_000.html#NQU22-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "XHR methods")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: User-Agent / [XHR methods](part0025_split_000.html#NQU22-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "XHR methods")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Referer / [XHR methods](part0025_split_000.html#NQU22-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "XHR methods")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: XHR object, methods
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: request, sending / [XHR methods](part0025_split_000.html#NQU22-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "XHR methods")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: void send() / [XHR methods](part0025_split_000.html#NQU22-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "XHR methods")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: void send (DOMString? Data) / [XHR methods](part0025_split_000.html#NQU22-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "XHR methods")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: void send(Document data) / [XHR methods](part0025_split_000.html#NQU22-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "XHR methods")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: void send(Blob data) / [XHR methods](part0025_split_000.html#NQU22-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "XHR methods")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: void send(FormData data) / [XHR methods](part0025_split_000.html#NQU22-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "XHR methods")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: request, aborting / [XHR methods](part0025_split_000.html#NQU22-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "XHR methods")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: request headers, setting / [XHR methods](part0025_split_000.html#NQU22-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "XHR methods")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: response headers, obtaining / [XHR methods](part0025_split_000.html#NQU22-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "XHR methods")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: XHR object, properties
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: request state, obtaining / [XHR properties](part0025_split_000.html#NQU22-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "XHR properties")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: response state, obtaining / [XHR properties](part0025_split_000.html#NQU22-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "XHR properties")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: response status, obtaining / [XHR properties](part0025_split_000.html#NQU22-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "XHR properties")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: XMLHttpRequest (XHR)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: about / [How Ajax works](part0025_split_000.html#NQU22-40dd2de0d2d94f79a49cd7a43c4b76e6
+    "How Ajax works")
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL

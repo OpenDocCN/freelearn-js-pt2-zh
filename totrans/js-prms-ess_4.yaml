@@ -1,0 +1,285 @@
+- en: Chapter 4. Error Handling
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'As in any programming language, errors and exceptions are bound to rise; to
+    ensure a smooth running code and easier debugging, we will need to throw and catch
+    these exceptions. Handling errors with asynchronous JavaScript programming can
+    be tedious. Promises, however, offer us a great mechanism to handle errors, which
+    we will explore in this chapter. Throughout the previous chapter, we learned about
+    the chaining of asynchronous operations. We also saw how we can transform from
+    callback hell to the more readable and maintainable promise chains. In this chapter,
+    we will cover the following topics:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Exceptions and error handling in promise
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to handle errors with promises using `then` and `catch` methods
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Exceptions and promises
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: There is no standard or agreed-on mechanism to handle exceptions in asynchronous
+    JavaScript programming, mainly due to the fact that these exceptions happen in
+    the future and there is no way to tell if a rejected promise will eventually be
+    handled. Moreover, in an asynchronous world, we can't just simply throw exceptions,
+    because there is no one there to catch these errors when they are not ready yet.
+    Hence, workarounds were created to address this issue. The common technique of
+    catching errors and exceptions involved passing these exceptions manually up the
+    chain of nested callbacks. Promises, on the other hand, provide us with error
+    handling and bubbling out of the box. They do so by stating that your functions
+    should return a promise that is rejected with a reason if it fails.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We learned in [Chapter 1](part0015_split_000.html#E9OE2-fe4c0b71cd2847c897e147ea131725a8
+    "Chapter 1. JavaScript Promises – Why Should I Care?"), *JavaScript Promises –
+    Why Should I Care?* that a promise can exist in three different states: pending,
+    fulfilled, and rejected. The requirements for a rejected state are as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The promise must not change to any other state (pending or fulfilled)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The promise must have a reason for being rejected, and that reason must not
+    change within that promise
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: These two requirements of the rejected state allow error handling, and more
+    importantly error composition, whereby the reason for the rejection of that promise
+    will automatically bubble up that chain of promises using the `then` method. Promises
+    allow errors to propagate up the chain of code similar to the synchronous exceptions.
+    Moreover, it provides a cleaner style to handle errors in asynchrony.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Typically, in asynchronous programming using the Callback approach, we need
+    to wrap the code block that we think is unsafe in a `try` catch block. This is
+    shown in the following code sample:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: The previous code sample shows a block of script that intends to alert an error.
+    In that block of code, we wrapped `return JSON.parse("json");` in a `try`...`catch`
+    block and intentionally caused an error by passing it an invalid JSON parameter.
+    The JavaScript function `JSON.parse()` is used to convert JSON text into a JavaScript
+    object. In our example, it will try to parse the text `json` and will throw an
+    error. We will catch that exception and display an alert with the details of that
+    error.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'If we run this script in an HTML page or online JavaScript Editor, the result
+    will be an alert box with the following message:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**I have an error with the following details:**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**SyntaxError: Unexpected token j**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: We can browse the code via this public jsFiddle URL at [http://jsfiddle.net/RamiSarieddine/mj6hs0xu/](http://jsfiddle.net/RamiSarieddine/mj6hs0xu/)
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Promises, as we have seen so far, are either fulfilled or rejected if an error
+    occurs in the promise. When a promise is rejected, it is similar to throwing an
+    exception in synchronous code. A standard promise with a `then` function takes
+    the two parameters `onFulfilled` and `onRejected` as the following code shows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The `onRejected` parameter is a function that will act as an error handler,
+    and it will be called when the promise fails. When an error or exception happens
+    in a promise, it means that the promise was rejected, and the error raised will
+    be provided to the `onRejected` error handler. There are a couple of considerations
+    when we call `onRejected`, which can be summarized in the following list, assuming
+    we have a simple `promise.then(onFulfilled, onRejected)`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`onRejected` must be called only after the promise had been rejected, with
+    the rejection reason as its first argument'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`onRejected` must not be called more than once'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The second consideration is very straightforward. The `onRejected` function
+    does not get called multiple times on the same promise. The first consideration
+    asserts that `onRejected` will not be called if a promise was rejected.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Nevertheless, rejections do happen implicitly as well as in cases where an
+    error is thrown in the constructor callback of that promise. The following code
+    sample illustrates this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: In the previous code, we define a new promise called `promiseTest` and call
+    `then` upon that promise. All that this promise does in its constructor callback
+    is resolve `JSON.parse()`, to which we intentionally passed an invalid argument
+    to cause an error. Now, this will throw an error in the constructor, and it will
+    indirectly cause a rejection when we call the promise with a `then` method. If
+    we only had an `onFullfilled` handler, we wouldn't have caught the error. The
+    exception will be raised as an argument in the rejection with its value `error`.
+    We provided an `error` handler in the arguments of `promiseTest.then()`; hence,
+    we can catch and handle the error.
+  prefs: []
+  type: TYPE_NORMAL
+- en: You can test this sample code via this public Fiddle at [http://jsfiddle.net/RamiSarieddine/x2Latjg6/](http://jsfiddle.net/RamiSarieddine/x2Latjg6/).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: As errors do automatically bubble up and become rejections, it becomes quite
+    handy to process all the promise-related jobs inside the promise constructor callback;
+    if any error arises there, it will be caught when the promise is called.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Handling errors with promises
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: As we have seen, promises offer a richer error handling mechanism in asynchronous
+    programming. Although the Promises/A+ spec tackles only one method, that is `.then(onFulfilled,
+    onRejected)`, and does not provide any other, the specifications of `.then()`
+    lay the foundation for promise interoperability and, hence, extend the promise
+    features, including error handling.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We might come across several implementations for error handling within JavaScript
+    libraries that are compatible with Promises/A+. Some of these extensions include
+    the `catch()` method, which is implemented on top of the elementary `then()` function.
+    Anyone can author a `catch()` method and include it in their scripts by extending
+    the promise object as per the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'In the previous code sample, we defined a method named `catch` that extends
+    the current `this.then` method and returns a rejected promise by executing the
+    `onRejected` handler only and neglecting the `onFulfilled` handler argument for
+    `then`. In use, the `catch()` method will look like the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: The `catch()` function allowed us to replace the error handler with a more readable
+    function that provides a cleaner approach to handle the errors.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We can conclude from the previous code samples that there is nothing distinctive
+    about catch, simply its sugarcoating `then(null, function)` function. Moreover,
+    as Brian Cavalier, one of the authors of Promise/A+ specifications, puts it: `catch()`
+    is simply a restricted subset of `then()`. But does it make the code in general
+    and error handling specifically more readable? The ECMAScript 6.0 incorporates
+    `catch()` as a requirement in the promise specification, and as I stated earlier,
+    most of the popular implementations nowadays include it.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'However, there is a gotcha between `then()` and `catch()` in implementation
+    as `then()` tends to be somehow misleading at times. To see it in an example so
+    as to better understand it, take the following two sample lines of code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'These two lines of code include `promise`, `then`, and `catch` methods with
+    two handlers: `handler1` and `handler2`. These two calls are not equivalent—the
+    first line will not call `handler2` if an error occurs in `handler1`. That is
+    because, if the promise is fulfilled, `handler1` will be invoked, and if the promise
+    is rejected, `handler2` will be invoked. But if `handler1` throws `error`, `handler2`
+    will not be called in return.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Meanwhile, in the second line, `handler2` will be invoked if either promise
+    is rejected or `handler1` throws an exception. Since `catch()` is merely a sugarcoat
+    for `then(null, handler)`, the second line is identical to the following, which
+    can make this conundrum clearer:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: The reason behind this nonequivalence in the previous two lines of code is the
+    way `then()` operates. The `then(handler1, handler2)` methods register two parallel
+    handlers for a promise, whereby either `handler1` or `handler2` will be called
+    but never both. On the other hand, with `then(handler1).catch(handler2)`, both
+    handlers/functions will be invoked if `handler1` rejects, because they represent
+    two separate steps in the promise chain. Promise rejections will move forward
+    to the succeeding `then` method with a rejection callback only when we have `catch`
+    as an equivalent of `then`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Although this does not seem very intuitive at first glance, it is very important
+    to provide an easier reasoning about asynchronous programming and it makes rejecting
+    a promise quite similar to throwing an exception in synchronous programming. In
+    the synchronous world, exceptions do not allow for executing both the code that
+    immediately follows a `throw` block and the code inside the closest `catch` block,
+    whereby the errors that happen within a `try` block moves directly to the `catch`
+    block.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The `Catch()` function is preferable for application developers as we have learned,
+    for better readability and its intuitive error handling flow, while `promise.then(handler1,
+    handler2)` is mostly used internally when implementing a promise.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The error handling mechanism allows us to write functions that do things in
+    a safe manner. Let us take the following chain of promises that includes error
+    handling with `catch()` and see how it translates in a flowchart:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The corresponding flowchart for the preceding chain of promises and errors
+    will look like the following diagram:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Handling errors with promises](img/00004.jpeg)'
+  prefs: []
+  type: TYPE_IMG
+- en: The boxes in green will be the ones that fulfill; the ones that are colored
+    red represent the error handlers if the promise is rejected. We can follow the
+    flow of the process with the lines to know which is fulfilled and which is rejected
+    and compare it to the previous code sample to get a better visual idea of how
+    the errors will propagate in that promise chain.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'JavaScript''s promises provide a standardized approach to error handling with
+    the foundation of its implementation existing in the specifications of the `then`
+    method that can be extended to breed methods such as `catch`, which allows a more
+    readable and intuitive error handling code. The `then` function is provided with
+    two powerful parameters: `onFulfilled` and `onRejected`. These function parameters
+    allow us to handle the values returned from a promise operation that has been
+    fulfilled and the errors returned when a promise is rejected. In the next chapter,
+    we will cover the WinJS library; we will learn about the promises object in that
+    library and how we can use it in Windows development.'
+  prefs: []
+  type: TYPE_NORMAL

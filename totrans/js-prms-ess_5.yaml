@@ -1,0 +1,564 @@
+- en: Chapter 5. Promises in WinJS
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Promises have various implementations from a variety of frameworks, all of
+    which share a common base; this is the concept of promises. Practically all of
+    the promise libraries out there deliver a common feature in different forms to
+    make asynchronous programming using JavaScript easier and better. WinJS, the Windows
+    library for JavaScript, is one of the libraries that have their own implementation
+    of promises, which we will explore throughout this chapter. In the previous chapter,
+    we learned about handling exceptions that arise during promise operations. We
+    also saw how JavaScript promises are equipped with a powerful error handling mechanism.
+    Moreover, we learned how to handle errors with `then` and `catch` methods. In
+    this chapter, we will cover the following topics:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: An introduction to the WinJS namespace
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The promise object of WinJS in full detail
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: A basic example of using WinJS.Promise in Windows app development
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Introducing WinJS
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'WinJS, which stands for the Windows library for JavaScript, is a JavaScript
+    library developed by Microsoft, which was recently made open source. This library
+    has been designed with the purpose of allowing developers to build Windows Store
+    apps for Windows 8 (with HTML5 and JavaScript) that are first-class and native-quality
+    experience, such as Skype and Music apps. It prevailed as the second option to
+    programming the native apps with XAML and C#, VB.Net, or C++. This alternative
+    allowed web developers to leverage their knowledge and skills to build store apps.
+    WinJS library is more of a comprehensive toolkit. Not only does it provide a rich
+    namespace, but it also includes the following features:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Access to the device hardware via the Windows Runtime (WinRT)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Delivers polished UI controls, such as ListView, FlipView, and Semantic Zoom
+    alongside page controls
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Provides a solid infrastructure, such as promises and data-binding
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Moreover, WinJS can be used in standalone solutions alongside other libraries
+    and frameworks.
+  prefs: []
+  type: TYPE_NORMAL
+- en: WinJS has evolved much since its initiation. What started as a platform specific
+    to Windows Store apps now supports web browsers and other devices in an attempt
+    to become cross-platform. That attempt is crystalizing with the latest version
+    of WinJS 2.1, which supports Windows Phone 8.1, and now WinJS is being used in
+    the Xbox One apps. Moreover, it is now prepared to cover websites and web apps
+    on other non-Microsoft browsers and devices.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The open source WinJS is now hosted on GitHub via [https://github.com/winjs/winjs/](https://github.com/winjs/winjs/),
+    where community members can have a look at the library and contribute to its source
+    code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'All WinJS library functions are defined under a namespace called WinJS. The
+    WinJS namespace provides for special functionalities in the Windows Library for
+    JavaScript that includes the promise object and `xhr` function. It includes three
+    types of member objects: properties, and functions'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Objects include the following two members:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`ErrorFromName`: This is simply an error object.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'A promise object: This is our talk of the town in this chapter. Similar to
+    the promise object, we have been discussing throughout this book, it basically
+    provides a technique to assign work to be executed against a value that does not
+    yet exist. It presents an abstract mechanism for handling interactions with APIs
+    that are exposed asynchronously.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Properties include the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`validation`: This property contains a setter to display the outcomes of a
+    validation process'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Functions include the following three members:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`log`: This function logs output and writes it to the JavaScript console within
+    Visual Studio. This function can be extended with a custom implementation or use
+    `WinJS.Utilities.startLog` to log on to the JavaScript console.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`strictProcessing`: This function is no longer needed, as strict processing
+    is by default always turned on. With the function no longer needed, it has been
+    declared deprecated.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`xhr`: This function simply wraps the call to `XMLHttpRequest` in a promise.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: This sums up the WinJS namespace from a high-level view; the code for WinJS
+    is found in the `base.js` file.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Explaining the WinJS.Promise object
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: This object is one of the most important aspects of the WinJS library, and instances
+    of promise are involved with anything we do with asynchronous APIs. Let us dive
+    into the details of this object. In terms of anatomy, the promise object includes
+    the following three types of members.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Constructors
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'At the level of constructors in WinJS, a class is created using the `WinJS.Class.define`
+    function. In this first parameter is a function that acts as the constructor.
+    Now, in the case of the `Promise` class, it is derived from a base class called
+    `PromiseStateMachine` using the `WinJS.Class.derive` function, whose second parameter
+    is the constructor function. In both cases, constructor functions can be named
+    anything; alternatively, they can be anonymous as well. The description of this
+    `WinJS.Promise` constructor, however, is the same as the object description itself.
+    The `WinJS.Promise` constructor takes two function parameters: `init` and `onCancel`.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'When declaring a new promise object, we need two parameters: `init` and `onCancel`.
+    These two parameters are both functions. The syntax will look like the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: The `init` parameter is optional. The `init` function is called during the initialization
+    or construction of the promise object, which comprises the actual implementation
+    of the work that promise, in this case `promiseObj`, will represent. This implementation
+    can be either asynchronous or synchronous, depending on the scope and nature of
+    the work needed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: One important thing to note here is that the code written within the `init`
+    function does not render it by default to be asynchronous. In order to ensure
+    the code runs asynchronously, we must use asynchronous APIs, such as the Windows
+    Runtime asynchronous APIs, `setTimeout`, `setImmediate`, and `requestAnimationFrame`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The `init` function used in this parameter takes the following three arguments:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`completeDispatch`: This parameter will be invoked when the operation within
+    `init` has been completed, thus passing the result of that operation The `init`
+    code should invoke this when the operation is complete, passing the result of
+    the operation as an argument.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`errorDispatch`: This parameter will be invoked when an error occurs in that
+    operation and, hence, the promise acquires an error state. Since it is an error,
+    the argument to `errorDispatch` should be an instance of `WinJS.Promise.ErrorFromName`.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`progressDispatch`: This parameter will be invoked, but periodically, while
+    the operation is being processed. The argument to this function will contain an
+    intermediate result. This parameter is used if the operation within the promise
+    needs to support progress.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The `onCancel` parameter is the second parameter to the Promise constructor.
+    This function can be used by the consumer of the promise to cancel any of its
+    uncompleted work. However, promises are not obliged to provide or support cancellation
+    in WinJS.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Events
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Next on the list of promise object member types, we have `Events`. Currently,
+    the Promise object has a single event called `onerror`. As the name shows, this
+    event happens when an error occurs during the processing of a promise. Furthermore,
+    this `onerror` event is fired whenever a runtime error is raised in any promise
+    regardless of whether this event is handled somewhere else or not. The error handler
+    can aid in debugging, where it can be used to set breakpoints and provide error
+    logging. However, it will only provide insight and details on the code or input
+    that caused the error at the end of the day. This `onerror` event delivers a general
+    error-handling mechanism. In code, adding a generic error handler will look like
+    the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: The first line of the code sample is simply attaching the `errorHandler` function
+    to the `onerror` event of the promise object. Next, we define the `errorHandler`
+    function, which takes an argument `event`; what the function does is simply retrieve
+    information from the event in this example, such as the `exception` and the `promise`.
+    Then, we assign the values to variables. The parameter `event` is an event handler
+    argument of the type `CustomEvent`; usually it's an object that contains information
+    about the event.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Methods
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The last member type of the promise object is `Methods`, and currently `WinJS.Promise`
+    has the following six methods:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`addEventListener`: This method simply attaches and adds an event listener
+    to the promise. It takes three parameters: `eventType`, which is the string type
+    name of the event; `listener`, which is a function to be invoked when the event
+    is triggered; and `capture` which is a Boolean value to enable or disable capture.
+    This method has no return value and its basic syntax looks like the following:'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: '`removeEventListener`: This method takes out an event listener from the control.
+    In syntax, it is similar to the `addEventListener` method and looks like the following
+    line of code:'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: '`Cancel`: This method tries to cancel the promise. In cases where a promise
+    supports cancellation and hasn''t been fulfilled yet, this method will cause the
+    promise to enter the error state, with the value Error("Canceled"). It has no
+    parameters and no return values. Its basic syntax is like the following:'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: '`dispatchEvent`: This method simply dispatches and raises an event with the
+    specified type and properties. It takes two parameters and returns a Boolean value
+    depending on whether `preventDefault` was called on the event or not. The parameters
+    of this method are of a string value type, containing the name of the event and
+    `eventDetails`, an object which includes the set of additional properties to be
+    attached to the event object. The basic syntax of this method looks like the following:'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: '`Then`: This is the most important method of the promise object. This takes
+    three parameters of the type function, which allows us to specify the work to
+    be done on the completion of the promise: the promise value has been fulfilled;
+    the error handling that will be performed when the promise raises an error, and
+    it has failed to fulfill a value; and lastly the handling of the work progress
+    within the promise along the way. The return value of `then` is a promise that
+    contains the result of executing the `onComplete` function in its value. In its
+    basic form, the `then` method will have the following syntax:'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'The three arguments of the `then` method are of the type function. These are
+    as follows:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '`onComplete`: This handler will be called when the promise is completed successfully
+    and fulfilled with a value. The value will be passed as a single argument. The
+    value returned from `onComplete` becomes the fulfilled value of the promise returned
+    by `then`. In the case of an error or exception during the execution of this function,
+    the promise returned by `then` will enter the error state.'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`onError`: This handler will be called when the promise breaks and it is fulfilled
+    with an error; the value returned from `onError` will become the value of the
+    promise returned by the `then` method. Instead of passing a value as in the `onComplete`
+    function, here the error will be passed as an argument.'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`onProgress`: This handler is used if we need to report the progress of a promises
+    operation. It has a single argument, which is the progress data. Note that promises
+    are not obliged to support progress in WinJS.'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'The `Done` method, like `Then`, also allows us to specify what needs to be
+    executed when a promise has been fulfilled, the error handling when a promise
+    fails, and the reporting of progress along the way. In addition, this function
+    will throw any error that would have been returned from `then` as a value for
+    the promise in the error state. Unlike `then` which returns a promise, `Done`
+    does not return a value. The basic syntax of this method looks like the following
+    line of code:'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'As we can see in the previous code syntax, `promise.done` is similar to `promise.then`
+    in terms of parameters as it has the function parameters: `onComplete`, `onError`,
+    and `onProgress` that practically behave and do the same thing as their counterparts
+    in the `Then` method.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'There are some differences between `then` and `done`; the most obvious one
+    is the return value. As stated earlier, the `then` method returns the promise
+    while `done` has no return value, which has a direct effect on the chaining of
+    WinJS promises. The following list summarizes those differences:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**In chaining**: `Then` allows for chaining multiple `then` functions, because
+    it returns a promise. While with `done` we cannot chain more than one `done` method
+    because it does not return a value; more specifically, it returns `undefined`.
+    Hence, `done` must be the final call. For example, we can have `.then().then().then().then()`,
+    and so on, while with `done` it ends at `.then().then().done()`.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**In error handling**: If there was no error handler provided to `done` and
+    an error occurs (in other words, an unhandled exception), an exception will be
+    thrown to the event loop allowing us to catch it in the `window.onerror` event,
+    but not within a `try`/`catch` block. Thus, the `done` function guarantees to
+    the caller method to throw any error that is not handled inside the method. While,
+    with `then`, those unhandled exceptions that arise are silently caught and traversed
+    as part of the promise state, `then` does not throw an exception but instead returns
+    a promise that is in the error state.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Knowing the difference between these two methods is critical to using them.
+    Nevertheless, for both methods, it is recommended to adopt flat promise chains
+    in favor of nested ones, as the formatting of promise chains makes them easier
+    to read and easier to handle errors. For example, the following sample code is
+    preferable:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'And the following is labeled as one of the *don''ts*:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: We chain Windows Runtime (WinRT) methods that return promises, which is the
+    same as chaining WinJS promises.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Bear in mind that the promises in WinJS are compliant to the promises defined
+    in the CommonJS Promises/A proposal, and till the time of this writing, WinJS
+    promises have not been tested against the new Promises/A+ specifications. This
+    has no effect on Windows app development, as the apps are running in a store.
+    In the browser, the main difference that can arise between WinJS promises and
+    A+-complaint promises is that WinJS promises do not guarantee that the callback
+    function of the promise will be asynchronous. For example, if we call `promise.then(a)`
+    with `a` being the callback function, we won't be certain whether `a` will be
+    called in an asynchronous or synchronous manner. While in Promises/A+ specifications,
+    the callback function `a` will always be called asynchronously. It is a must.
+    The authors of the specifications explain that not ensuring an asynchronous callback
+    will make promises much harder to reason about and debug. Nevertheless, as I mentioned
+    earlier in the chapter that WinJS itself is now open source and hosted on GitHub,
+    the community members, and anyone interested for that matter, can download WinJS,
+    build, and test it against the Promises/A+ Compliance Test Suite.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Up next, let us have a look at how to use these WinJS promises in Windows apps
+    development.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using WinJS promises
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We leverage promises on the Web to make the UI more responsive and avoid blocking
+    the UI thread by executing the work asynchronously. Likewise, we use WinJS promises
+    to handle the work asynchronously and thus keep the UI thread of the Windows app
+    available to respond to user input. We also allow the app layout and static items
+    to load properly and promptly while fetching what needs to be fetched from servers
+    and databases asynchronously in the background. For that purpose, the asynchronous
+    APIs in WinJS and Windows Runtime are exposed in JavaScript as promises.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let us have a look at a basic example of promises. In order to follow with
+    and replicate the following example, we will need Visual Studio (the Express Version
+    would do). We need to start by creating a basic Windows app of the type JavaScript.
+    In order to do so, from the Visual Studio top menu, we need to go to **File**
+    | **New** | **Project**, which will pop up a small window containing the project
+    type. There, we need to go to **JavaScript** | **Store Apps** | **Windows Apps**,
+    which will list for us the different JavaScript Windows App templates available.
+    For this example, we can select **Blank App**, which is a project for a single-page
+    Windows app that has no predefined controls or layout. Name the app as you please,
+    and click on **Ok**. The following screenshot illustrates the steps taken:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Using WinJS promises](img/00005.jpeg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'Now, we have a blank Windows app that we can add some code to. For that, we
+    need to navigate to the `default.html` page and modify it. Open that page, and
+    insert an `input` element and a `div` element to display some result in the `body`
+    element, as per the following syntax:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: Next, we need to attach some code to the change handler for the `input` element
+    so that we can do some work whenever the value of the `input` element changes.
+    We can achieve this with the `addEventListener` method and request this as part
+    of the `WinJS.Utilities.ready` function. Adding the event listener inside this
+    function will allow the change handler that we are attaching to be called directly
+    after the DOM has been loaded via the `DOMContentLoaded` event, which will in
+    turn, fire after the page code has been parsed and before all the resources have
+    been loaded.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Navigate to the `default.js` file, located inside the `js` folder. There, we
+    need to add the following code to the end of the `app.onactivated` event handler:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: In the previous code, we are adding an anonymous function code to `WinJS.Utilities.ready`.
+    In that anonymous function, we first get that `input` element from the DOM, assign
+    it to a variable named `inpt`, and then call the method `addEventListener` on
+    that `inpt` variable, which adds the function named `onChangeHandler` to the change
+    event.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The last step would be to write the code for the `onChangeHandler` function.
+    In that function, we will call the `WinJS.xhr` method, which basically wraps calls
+    to `XMLHttpRequest` and exposes it as a promise. We can use this method for cross-domain
+    requests and intranet requests. We will pass the URL that the user enters in the
+    `input` element to the parameter of `xhr` and accordingly update the `resultDiv`
+    element with the result. `Xhr` is an asynchronous function that returns a promise;
+    hence, we can call the `then` or `done` methods of the promise object on this
+    function to update the UI. For this example, we will call the `then` method that
+    is invoked as soon as the `xhr` function has either successfully completed the
+    `XmlHttpRequest` or has raised an error. `Then` can take up to three parameters
+    for success, error, and progress, as we have seen in the definition earlier. However,
+    for this basic example, we will just see how to add the `onCompleted` function.
+    This success handler will apply some changes to the `resultDiv` element by setting
+    its background color to blue and the inner text to `Hooray!`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The syntax for the `onChangeHandler` function will look like the following
+    code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: Let's analyze the previous code sample. We first retrieve the `input` element
+    from the `e` argument, we get the `resultDiv` element to a variable `resDiv`,
+    and then we call `WinJS.xhr` and pass it the value of the `input` element we got
+    from the target. This value holds the URL that we enter in the textbox. Next,
+    we call `then` on the `xhr` function, and pass to `then` the success handler `onCompleted`
+    that contains the result as an argument. The result here represents the HTTP request.
+    If the request holds the status 200, which is the status of success in HTTP requests,
+    we will apply the changes on the `resultDiv`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'If we run the app now, we will have the following outcome after we enter a
+    URL into the textbox:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Using WinJS promises](img/00006.jpeg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'How about reporting the progress while the result is retrieved? In order to
+    do so, we will need to write the handler for progress in the `then` call on the
+    `xhr` function. We will change the background color to green until the request
+    is completed and the `onCompleted` handler is invoked, which will change the background
+    color to blue. We will modify the code to include the progress handler as per
+    the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: In the previous code sample, we added an empty error handler and a progress
+    handler as an anonymous function `function progress(result)`, which will check
+    whether the request status is different from 200, which means it is not a success
+    yet and sets the background color to green. If we run the app now and enter a
+    URL into the textbox, we will notice that the background color of the `div` element
+    is green for a second or so, and then it changes to blue and the text is updated
+    to Hooray!.
+  prefs: []
+  type: TYPE_NORMAL
+- en: WinJS promises can now also be used in the browser as the product team has enabled
+    some WinJS features to run on the Web. You can see WinJS in live action using
+    the new online editor via [http://try.buildwinjs.com/](http://try.buildwinjs.com/).
+    In any browser, we can view and edit the code, play around with WinJS, and check
+    the results live.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: WinJS provides a strong implementation of promises that we can use to wrap any
+    kind of operation and leverage asynchronous programming for Windows apps using
+    JavaScript in an efficient and effective manner.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the next and last chapter, we will summarize what we have learned throughout
+    the previous chapters on JavaScript promises and put into action more mature code
+    samples than the ones we have seen so far.
+  prefs: []
+  type: TYPE_NORMAL

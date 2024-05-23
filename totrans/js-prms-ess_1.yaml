@@ -1,0 +1,525 @@
+- en: Chapter 1. JavaScript Promises – Why Should I Care?
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'There was never a time before when JavaScript had been this popular. What was
+    once and maybe still is for some, the most misunderstood programing language,
+    mainly because of its name, now ranks among the top popular programming languages
+    available. Furthermore, nearly every personal computer out there might have at
+    least one JavaScript interpreter in use or at least installed. The growing popularity
+    of JavaScript is entirely due to its role as the scripting language of the Web.
+    When it was first developed, JavaScript was designed to run in Netscape Navigator.
+    Its success there led to it becoming the standard equipment in virtually all the
+    web browsers, but JavaScript has grown and matured and is now exposed to a large
+    portion of development not related to the Web. In this first chapter, we will
+    be covering a brief introduction about the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Asynchronous programming in JavaScript
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Issues that developers face with traditional approaches to handle asynchronous
+    operations
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Introduction to JavaScript Promises
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Why we should care about promises when comparing it to the common way of doing
+    things asynchronously
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Asynchronous programming in JavaScript
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'When it comes to asynchronous programming in JavaScript, there are two things
+    to talk about: the web and programming language. The web environment represented
+    by browsers is different from the desktop environment and this reflects in the
+    way we program and code for each of them. Browsers, contrary to the desktop environment,
+    provide a single thread for everything that needs access to the user interface;
+    in HTML terms, the DOM. This single threading model has a negative impact on the
+    application code that might need to access and modify the UI elements, because
+    it restricts the execution of that code to the same thread. Hence, we will have
+    blocking functions and threads that basically block the UI until that thread has
+    been executed. That is why, in web development, it is highly important to take
+    advantage of any asynchronous capabilities the browser offers.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let's review some history to get more context. Back in the day, websites comprised
+    complete HTML pages in which every user action needed the entire web page to be
+    loaded from the server. This caused a lot of problems for developers, especially
+    when writing a server-side code that would affect the page. Furthermore, it resulted
+    in an unpleasant end user experience. Responding to a user action or changes to
+    an HTML form were carried on with an HTTP `POST` request to the same page that
+    the form was on; this caused the server to refresh the same page using the information
+    it had just received. This entire process and model were inefficient as it resulted
+    in having the entire content of the page disappear, and then reappear, and sometimes
+    the content would get lost along the way in a slow internet environment. The browser
+    then reloaded a web page resending all of the content even though only some of
+    the information had changed; this used excessive bandwidth and resulted in additional
+    load on the server. Additionally, it reflected negatively on the user experience.
+    Later, with much work and effort from different parties in the industry, asynchronous
+    web technologies started emerging to help address this limitation. A famous player
+    in this area is **Asynchronous JavaScript and XML** (**AJAX**), which is a group
+    of technologies used on the client-side to create web applications that communicate
+    in an asynchronous manner. The AJAX technology allowed web applications to send
+    data to and retrieve data from a server in an asynchronous manner without interfering
+    with the UI and behavior of the current page; basically, without the need to reload
+    the whole page. The core API to achieve this was the `XMLHttpRequest` API.
+  prefs: []
+  type: TYPE_NORMAL
+- en: While the web technologies and browsers advanced, JavaScript grew more prominent
+    as a web scripting language allowing developers to access the DOM and dynamically
+    display and interact with the content presented on the web page. However, JavaScript
+    is also single-threaded by nature, which means that, at any given time, any two
+    lines of script cannot run together; instead, JavaScript statements are executed
+    line by line. Likewise, in browsers, JavaScript shares that single thread with
+    a bunch of other workloads executed by the browser from painting and updating
+    styles to handling user actions. One activity will delay the other.
+  prefs: []
+  type: TYPE_NORMAL
+- en: When it first started, JavaScript was intended for short, quick-running pieces
+    of code. Major application logic and calculations were done on the server side.
+    Ever since loading content on the web changed from reloading the whole page to
+    the client side, asynchronous loading developers started relying more heavily
+    on JavaScript for web development. Now, we can find complete application logic
+    being written with JavaScript, and so many libraries have flourished to help developers
+    do so.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In web development, we have the following three main components:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: HTML and CSS
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The Document Object Model (DOM)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: JavaScript
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'And I will add a fourth component that plays a pivotal role in AJAX programming:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The XMLHttpRequest API
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Briefly, HTML and CSS are used for the presentation and layout of a web page.
+    The DOM is used for the dynamic display and interaction with content. The XHR
+    object sends HTTP/HTTPS requests to a web server and loads the server response
+    data back into the script, mediating an asynchronous communication. Lastly, JavaScript
+    allows developers to bring all these technologies together in order to create
+    beautiful, responsive, and dynamic web applications.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In order to tackle the multithreading limitation, developers relied heavily
+    on events and callbacks because that is the way browsers expose asynchronous programming
+    to the application logic.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In event-based asynchronous APIs, an event handler is registered for a given
+    object and the action is called when the event is fired. The browser will perform
+    the action usually in a different thread, and triggers the event in the main thread
+    when appropriate.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We can achieve this event-based technique using the `object.addEventListener()`
+    method. This method will simply register a listener on the target object it is
+    called on. The event target object may be an element in an HTML document, the
+    document itself, a window, or any other object that supports events (such as XHR).
+  prefs: []
+  type: TYPE_NORMAL
+- en: The following code shows what a simple event listener looks like using HTML
+    and JavaScript.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The HTML part is as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The JavaScript part is as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: In the HTML part, we define a `div` element in the DOM with the `testDiv` ID.
+    In the JavaScript part, we retrieve the `div` element in the first line of the
+    code and assign it to a variable. Then, we add an event listener on that object
+    and pass it to the `click` event followed by an anonymous function (a function
+    without a name) as the listener function. This function will be invoked later
+    in response to a click event on the element.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: If you add this JavaScript code before the HTML markup that includes the `div`
+    element, it will raise an error. Since the element is not created yet when the
+    code executes against it, the code will not find the target object to call `addEventListener`
+    on.
+  prefs: []
+  type: TYPE_NORMAL
+- en: As we can see in the previous code sample, the second parameter to the `addEventListener`
+    method is a function in itself that contains some inline code. We are able to
+    do so in JavaScript because functions are first-class objects. This function is
+    a callback. Callback functions are *super* important and widely spread in JavaScript
+    programming because they give us the ability to do things asynchronously.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Passing a callback function as a parameter to another function is only passing
+    the function definition. Hence, the function is not executed immediately in the
+    parameter; it is *called back* (hence the name) at some specified point inside
+    the container function's body. This is very useful for scripts that take some
+    time to complete actions such as making an AJAX request to the server or performing
+    some IO activity without holding up the browser along the way.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: If you're new to JavaScript, seeing functions passed as parameters might be
+    somewhat unfamiliar, but don't worry; it becomes easy when you think of them as
+    objects.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Some browser APIs such as HTML5 Geolocation are called back based on design.
+    I will use Geolocation''s `getCurrentMethod` to use a callback function in an
+    example. The code will look like the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: In the previous example, we simply called the `getCurrentPosition` method and
+    pass it an anonymous function, which in turn invokes an alert method that will
+    get called back with the result we requested. This allows the browser to execute
+    this code synchronously or asynchronously; thus, the code will not be blocking
+    the browser while the position is being retrieved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this case, we used a built-in browser API, but we can also make our applications
+    asynchronous-ready by exposing their basic APIs in an asynchronous manner with
+    callback functions at least the ones involved in an I/O operation or in heavy
+    computing, which might take a great deal of time.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'For example, in a callback scenario, the simplest code to retrieve some data
+    would look like the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: In the previous JavaScript code, we just defined a `getMyData` function that
+    takes a callback function as a parameter, which in turn executes an alert that
+    displays the data we are supposed to retrieve. This code actually obliges with
+    the application UI code to be asynchronous-ready; thus, the UI will not be blocked
+    while the code is retrieving the data.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s compare it to a non-callback scenario; the code will look like the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: In the previous example, the JavaScript code will run line by line, and the
+    next line of code will run even though the first one is not finished. Such an
+    API design will make the code UI-blocking because it will freeze the UI until
+    the data is retrieved. Furthermore, if the the execution of the `getMyData()`
+    function happens to take some time, for example, fetching data from the internet,
+    the overall experience will not be pleasant to the user because the UI will have
+    to wait for this function to finish executing.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Moreover, in the previous examples of callback functions, we passed an anonymous
+    function as a parameter of the containing function. This is the most common pattern
+    of using callback functions. Another way to use callback functions is to declare
+    a named function and pass the name of that function as a parameter. In the following
+    example, we will use a named function instead. We will create a generic function
+    that takes a string parameter and displays it in an alert. We will call it `popup`.
+    Then, we will create another function and call it `getContent`; this takes two
+    parameters: a string object and a callback function. Lastly, we will call the
+    `getContent` function, and pass it a string value in the first parameter and the
+    callback function `popup` in the second. Run the script and the result will be
+    an alert that contains the value in the first string parameter. The following
+    is a code sample for this example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: As we can see in the previous example, we were able to pass a parameter to the
+    callback function since, at the end of the day, it is just a normal function when
+    it is executed. We can pass to the callback function any of the containing function's
+    variables as parameters or even global variables from elsewhere in the code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: To summarize, JavaScript callback functions are powerful and have contributed
+    greatly to the web development environment, thus allowing developers to have asynchronous
+    JavaScript programming.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Why should I care about promises?
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: What do promises have to do with all of this? Well, let's start by defining
+    promises.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '|   | *A promise represents the eventual result of an asynchronous operation.*
+    |   |'
+  prefs: []
+  type: TYPE_TB
+- en: '|   | --*Promises/A+ specification, [http://promisesaplus.com/](http://promisesaplus.com/)*
+    |'
+  prefs: []
+  type: TYPE_TB
+- en: So, a promise object represents a value that may not be available yet, but will
+    be resolved at some point in the future.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Promises have states and at any point in time, can be in one of the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Pending**: The promise''s value is not yet determined and its state may transition
+    to either fulfilled or rejected.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Fulfilled**: The promise was fulfilled with success and now has a value that
+    must not change. Additionally, it must not transition to any other state from
+    the fulfilled state.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Rejected**: The promise is returned from a failed operation and must have
+    a reason for failure. This reason must not change and the promise must not transition
+    to any other state from this state.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: A promise may only move from the pending state to the fulfilled state or from
+    the pending state to the rejected state. However, once a promise is either fulfilled
+    or rejected, it must not transition to any other state and its value cannot change
+    because it is immutable.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The immutable characteristic of promises is *super* important. It helps evade
+    undesired side effects from listeners, which can cause unexpected changes in behavior,
+    and in turn allows promises to be passed to other functions without affecting
+    the caller function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'From an API perspective, a promise is defined as an object that has a function
+    as the value for the property `then`. The promise object has a primary `then`
+    method that returns a new promise object. Its syntax will look like the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The following two arguments are basically callback functions that will be called
+    for completion of a promise:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`onFulfilled`: This argument is called when a promise is fulfilled'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`onRejected`: This argument is called when a promise has failed'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Bear in mind that both the arguments are optional. Moreover, non-function values
+    for the arguments will be ignored, so it might be a good practice to always check
+    whether the arguments passed are functions before executing them.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'It is worth noting that, when you research promises, you might come across
+    two definitions/specifications: one based on Promises/A+ and an older one based
+    on Promises/A by CommonJS. While Promises/A+ is based on the concepts and then
+    API presented in the CommonJS Promises/A proposal, A+ implementation differs from
+    Promises/A in several ways, as we will see in [Chapter 2](part0018_split_000.html#H5A42-fe4c0b71cd2847c897e147ea131725a8
+    "Chapter 2. The Promise API and Its Compatibility"), *The Promise API and Its
+    Compatibility*.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The new promise returned by the `then` method is resolved when the given `onFulfilled`
+    or `onRejected` callback is completed. The implementation reflects a very simple
+    concept: when a promise is fulfilled, it has a value, and when it is rejected,
+    it has a reason.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The following is a simple example of how to use a promise:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The fact that the value returned from the callback handler is the fulfillment
+    value for the returned promise allows promise operations to be chained together.
+    Hence, we will have something like the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: Well, you guessed it right! What the previous code sample does is chain the
+    promise returned from the first `then()` call to the second `then()` call. Hence,
+    the `getJSON` method will return a promise that contains the value of the JSON
+    returned. Thus, we can call a `then` method on it, following which we will invoke
+    another `then` call on the promise returned. This promise includes the value of
+    `JSON.parse`. Eventually, we will take that value and display it in an alert.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Can't I just use a callback?
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Callbacks are simple! We pass a function, it gets invoked at some point in the
+    future, and we get to do things asynchronously. Additionally, callbacks are lightweight
+    since we need to add extra libraries. Using functions as higher-order objects
+    is already built into the JavaScript programming language; hence, we do not require
+    additional code to use it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'However, asynchronous programming in JavaScript can quickly become complicated
+    if not dealt with care, especially callbacks. Callback functions tend to become
+    difficult to maintain and debug when nested within long lines of code. Additionally,
+    the use of anonymous inline functions in a callback can make reading the call
+    stack very tedious. Also, when it comes to debugging, exceptions that are thrown
+    back from within a deeply nested set of callbacks might not propagate properly
+    up to the function that initiated the call within the chain, which makes it difficult
+    to determine exactly where the error is located. Moreover, it is hard to structure
+    a code that is based around callbacks as they roll out a messy code like a snowball.
+    We will end up having something like the following code sample but on a much larger
+    scale:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The sample code in the previous example is an excerpt of a deeply nested code
+    that is sometimes referred to as the *pyramid of doom*. Such a code, when it grows,
+    will make it a daunting task to read through, structure, maintain, and debug.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Promises, on the other hand, provide an abstraction to manage interactions with
+    asynchronous APIs and present a more managed approach towards asynchronous programming
+    in JavaScript when compared to the use of callbacks and event handlers. We can
+    think of promises as more of a pattern for asynchronous programming.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Simply put, the promises pattern will allow the asynchronous programming to
+    move from the continuation-passing style that is widespread to one where the functions
+    we call return a value, called a promise, which will represent the eventual results
+    of that particular operation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'It allows you to go from:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'To:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'If we list the properties that make promises easier to work with, they will
+    be as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: It is easier to read as with the usage of cleaner method signatures
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: It allows us to attach more than one callback to a single promise
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: It allows for values and errors to be passed along and bubble up to the caller
+    function
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: It allows for chaining of promises
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: What we can observe is that promises bring functional composition to synchronous
+    capabilities by returning values, and error bubbling by throwing exceptions to
+    the asynchronous functions. These are capabilities that we take for granted in
+    the synchronous world.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The following sample (dummy) code shows the difference between using callbacks
+    to compose asynchronous functions communicating with each other and promises to
+    do the same.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The following is an example with callbacks:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The following is a code example that converts the previous callback functions
+    to promise-returning functions that can be chained to each other:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: As we have seen, the flat chains that promises provide allow us to have code
+    that is easier to read and eventually easier to maintain when compared to the
+    traditional callback approach.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Callbacks in JavaScript allow us to have a user interface that is more responsive
+    by responding asynchronously to events (that is, user input), without blocking
+    the rest of the application. Promises are a pattern that allows for a standardized
+    approach in asynchronous programming, which enables developers to write asynchronous
+    code that is more readable and maintainable.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the next chapter, we will take a look at the browsers that support promises
+    and their compatibility with jQuery. You will also learn about libraries that
+    support promise-like functionalities.
+  prefs: []
+  type: TYPE_NORMAL

@@ -1,0 +1,938 @@
+- en: Chapter 1. Reading and Writing JSON on the Client
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'In this chapter, we will cover the following recipes:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Reading and writing JSON in JavaScript
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Reading and writing JSON in C++
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Reading and writing JSON in C#
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Reading and writing JSON in Java
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Reading and writing JSON in Perl
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Reading and writing JSON in Python
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: In addition to reading and writing JSON in Python, we will begin by showing
+    you a brief review of JSON formatting to help set the stage for what follows in
+    this book.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Introduction
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: '**JSON** stands for **JavaScript Object Notation**. It''s an open standard
+    to represent data as attributes with values. Originally derived from the JavaScript
+    syntax (hence its name) for use in web applications as an alternative to the more
+    verbose and structured **Extensible Markup Language** (**XML**), it is now used
+    for data serialization and transport in many standalone and web applications.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: JSON provides an ideal means to encapsulate data between the client and server.
+    In this first chapter, you will learn how to work with JSON in languages specified
+    at the beginning of this chapter.
+  prefs: []
+  type: TYPE_NORMAL
+- en: These languages are often used for client-side development, which is what we
+    will focus on here. We'll look more at server-side languages in [Chapter 2](ch02.html
+    "Chapter 2. Reading and Writing JSON on the Server"), *Reading and Writing JSON
+    on the Server*.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s take a look at some JSON returned by the web API, available at [http://www.aprs.fi](http://www.aprs.fi),
+    and modified a bit by me to make the example clear (later, in [Chapter 4](ch04.html
+    "Chapter 4. Using JSON in AJAX Applications with jQuery and AngularJS"), *Using
+    JSON in AJAX Applications with jQuery and AngularJS*, you''ll learn how to fetch
+    this data yourself using a web browser and JavaScript):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '**Downloading the example code**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: You can download the example code files from your account at [http://www.packtpub.com](http://www.packtpub.com)
+    for all the Packt Publishing books you have purchased. If you purchased this book
+    elsewhere, you can visit [http://www.packtpub.com/support](http://www.packtpub.com/support)
+    and register to have the files e-mailed directly to you.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'There are a few things to notice about this example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The data is organized into attributes and values, each separated by a colon.
+    (Note that a JSON document can also be a single value, such as a string, float,
+    integer, or Boolean value.)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Attributes appear as character strings enclosed by double quotes on the left-hand
+    side of a colon.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Values are on the right side of the colon and can be the following:'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Character strings (enclosed in double quotes) such as `KF6GPE`
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Numbers (either integers or floating point) such as `2` or `37.17667`
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Arrays (comma-delimited values contained in square brackets), such as the value
+    for `entries`
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Whole objects consisting of more attributes and values, such as the two-array
+    values in the `entries` value
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Alternatively (although this example doesn't show it), the Boolean values `true`
+    and `false`
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Note that many other kinds of values, such as date/time pairs or individual
+    characters are not supported by JSON.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Although it's not entirely clear from this example, whitespace is insignificant.
+    There's no need to have each pair on its own line, for example, and the indentation
+    is completely arbitrary.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The attribute-name-attribute-value property of JSON, along with the ability
+    to nest values and represent arrays, gives JSON a lot of flexibility. You can
+    represent a lot of common objects using JSON, including most objects that don't
+    have a lot of binary data (For ideas on how to represent binary data using JavaScript
+    and JSON, see [Chapter 8](ch08.html "Chapter 8. Using JSON for Binary Data Transfer"),
+    *Using JSON for Binary Data Transfer*). This includes primitive values (self-documenting
+    because each value is accompanied by an attribute), flat objects with simple values
+    including maps, and arrays of simple or complex objects.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The self-documenting nature of JSON makes it an ideal choice for data transport
+    as you develop new objects, despite its lack of support for comments as you might
+    find in XML. Its plaintext nature makes it amenable to compression over the wire
+    using popular compression schemes such as `gzip` (available inside most web servers
+    and web clients), and its format is easier for humans to read than the more verbose
+    XML.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Note that JSON documents are inherently trees, and thus, do not have support
+    for cyclical data structures, such as graphs, where a node points to another node
+    in the same data structure.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If you create such a data structure using the native representation in the programming
+    language you're using and try to convert that to JSON, you'll get an error.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Reading and writing JSON in JavaScript
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: JSON originated as a means to carry data between web servers and JavaScript,
+    so let's begin with a simple code snippet that reads and writes JSON in JavaScript
+    in a web browser. We'll show the entirety of a web application using AJAX and
+    JSON in [Chapter 4](ch04.html "Chapter 4. Using JSON in AJAX Applications with
+    jQuery and AngularJS"), *Using JSON in AJAX Applications with jQuery and AngularJS*;
+    what follows is how to obtain a JavaScript object from JSON and how to create
+    a JSON string from a JavaScript object.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting ready
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'You''ll need a way to edit the JavaScript and run it in your browser. In this
+    example, and nearly all examples in this book, we''ll use Google Chrome for this.
+    You can download Google Chrome at [https://www.google.com/chrome/browser](https://www.google.com/chrome/browser).
+    Once you install Google Chrome, you''ll want to activate the JavaScript console
+    by clicking on the **Customize and control Doodle Chrome** icon on the right-hand
+    side, which looks like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Getting ready](img/B04206_01_01.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'Then, you''ll want to go to **More Tools | JavaScript console**. You should
+    see a JavaScript console on the side of the web page, like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Getting ready](img/B04206_01_02.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: If you prefer key commands, you can also use *Ctrl* + *Shift* + *J* on Windows
+    and Linux, or *control* + *option* + *J* on a Macintosh.
+  prefs: []
+  type: TYPE_NORMAL
+- en: From here, you can enter JavaScript on the lower right-hand corner and press
+    *Enter* (*return* on a Mac OS X system) to evaluate the JavaScript.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Modern web browsers, such as Chrome, define a JSON object in the JavaScript
+    runtime that can convert the string data containing JSON to JavaScript objects,
+    and convert a JavaScript object to JSON. Here''s a simple example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: In this and subsequent JavaScript examples, the text you type in the JavaScript
+    console is preceded by a `>` symbol, while what the JavaScript console prints
+    is anything beginning with `<-` symbol.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How it works...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Chrome and other modern web browsers define the `JSON` object, which has methods
+    to convert between strings containing JSON and JavaScript objects.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the previous example, we begin by setting the value of the `json` variable
+    to a simple JSON expression consisting of one attribute `result` with the value
+    `ok`. The JavaScript interpreter returns the resulting value of the variable `json`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The next line uses the `JSON` method `parse` to convert the JSON string referenced
+    by `json` into a JavaScript object:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'You can then access any of the values in the object, just as you would any
+    other JavaScript object; it is, after all, just an object:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Finally, if you need to convert an object to JSON, you can do that with the
+    `JSON` method `stringify`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: There's more...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'You should know two things about these methods. First of all, parse will throw
+    an exception if the JSON you pass is malformed, or isn''t JSON at all:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: The errors aren't very helpful but better than nothing if you're debugging JSON
+    sent by a less-than-fully compliant and debugged JSON encoder.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Second, very old web browsers may not have a JSON object with these methods.
+    In that case, you can use the JavaScript function `eval` after wrapping the JSON
+    in parenthesis, like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The `eval` function evaluates the string you pass as JavaScript, and the JSON
+    notation is really just a subset of JavaScript. However, you should avoid using
+    `eval` whenever you can for a few reasons. First, it''s often slower than the
+    methods provided by the `JSON` object. Second, it''s not safe; your string might
+    contain malicious JavaScript that can crash or otherwise subvert your JavaScript
+    application, which is not a threat you should take lightly. Use the `JSON` object
+    whenever it''s available. Third, you can use the `parse` and `stringify` methods
+    to handle simple values, such as Booleans, numbers, and strings; you''re not limited
+    to the key-value pairs in the previous example. If all I wanted to do was pass
+    a Boolean (such as "the transaction succeeded!"), I might just write the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Finally, it''s worth pointing out that both the `parse` and `stringify` methods
+    to JSON take an optional replacer function, which is invoked on every key and
+    value in the object being serialized or deserialized. You can use this function
+    to perform on-the-fly data conversions as the JSON is being parsed; for example,
+    you can use it to convert between the string representation of a date and the
+    number of seconds since midnight at the start of the epoch, or to correct the
+    capitalization of strings. I could use a replacer function for either side of
+    the transformation, as shown in the following code, to make the call field lowercase:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'You can also return `undefined` to remove an item from the results; to omit
+    the type field from the JSON I generate, I can execute the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: Reading and writing JSON in C++
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: C++ is a language that long-predates JSON, but is still relevant for many projects.
+    There's no native support for JSON in C++ but there are a number of libraries
+    that provide support for working with JSON. Perhaps the most widely used is **JsonCpp**,
+    available from GitHub at [https://github.com/open-source-parsers/jsoncpp](https://github.com/open-source-parsers/jsoncpp).
+    It's licensed under the MIT license or public domain if you so desire, so there
+    are virtually no limitations on its use.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting ready
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: To use JsonCpp, you need to first go to the website and download the zip file
+    with the entire library. Once you do so, you need to integrate it with your application's
+    source code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'How you integrate it with your application''s source code differs from platform
+    to platform, but the general process is this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Create an amalgamated source and header for the library using the instructions
+    on the website. To do this, you'll need to have JsonCpp downloaded and Python
+    2.6 or later installed. From the top level directory of JsonCpp, run `python amalgamate.py`.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Include the include file `dist/json/json.h` in any file where you want to use
+    the JsonCpp library.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Include the source file `dist/jsoncpp.cpp` in your project's make file or build
+    system.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Once you do this, you should have access to the JsonCpp interface in any file
+    that includes the `json/json.h` header.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Here''s a simple C++ application that uses JsonCpp to convert between `std::string`
+    containing some simple JSON and a JSON object:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: How it works...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This example begins by including the necessary includes, including `json/json.h`,
+    which defines the interface to JsonCpp. We explicitly reference the `std` namespace
+    for brevity, although don't do so for the `Json` namespace, in which JsonCpp defines
+    all of its interfaces.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The JsonCpp implementation defines `Json::Reader` and `Json::Writer`, specifying
+    the interfaces to JSON readers and writers, respectively. In practice, the `Json::Reader`
+    interface is also the implementation of a JSON class that can read JSON, returning
+    its values as `Json::Value`. The `Json::Writer` variable just defines an interface;
+    you'll want to use a subclass of it such as `Json::FastWriter` or `Json::StyledWriter`
+    to create JSON from `Json::Value` objects.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The previous listing begins by defining `Json::Reader` and `Json::Value`; we'll
+    use the reader to read the JSON we define on the next line and store its value
+    in the `Json::Value` variable `root`. (Presumably your C++ application would get
+    its JSON from another source, such as a web service or local file.)
+  prefs: []
+  type: TYPE_NORMAL
+- en: Parsing JSON is as simple as calling the reader's `parse` function, passing
+    the JSON and `Json::Value` into which it will write the JSON values. It returns
+    a Boolean, which will be `true` if the JSON parsing succeeds.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The `Json::Value` class represents the JSON object as a tree; individual values
+    are referenced by the attribute name in the original JSON, and the values are
+    the values of those keys, accessible through methods such as `asString`, which
+    returns the value of the object as a native C++ type. These methods of `Json::Value`
+    includes the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`asString`, which returns `std::string`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`asInt`, which returns `Int`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`asUInt`, which returns `UInt`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`asInt64`, which returns `Int64`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`asFloat`, which returns `float`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`asDouble`, which returns `double`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`asBool`, which returns `bool`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: In addition, the class provides `operator[]`, letting you access array elements.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'You can also query a `Json::Value` object to determine its type using one of
+    these methods:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`isNull`, which returns `true` if the value is `null`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`isBool`, which returns `true` if the value is `bool`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`isInt`, which returns `true` if the value is `Int`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`isUInt`, which returns `true` if the value is `UInt`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`isIntegral`, which returns `true` if the value is an integer'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`isDouble`, which returns `true` if the value is `double`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`isNumeric`, which returns `true` if the value is numeric'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`isString`, which returns `true` if the value is a string'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`isArray`, which returns `true` if the value is an array'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`isObject`, which returns true if the value is another JSON object (which you
+    can decompose using another `Json::Value` value)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: At any rate, our code uses `asString` to fetch the `std::string` value encoded
+    as the `result` attribute, and writes it to the console.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The code then defines `Json::StyledWriter` and `Json::FastWriter` to create
+    some pretty-printed JSON and unformatted JSON in strings, as well as a single
+    `Json::Value` object to contain our new JSON. Assigning content to the JSON value
+    is simple because it overrides the `operator[]` and `operator[]=` methods with
+    the appropriate implementations to convert standard C++ types to JSON objects.
+    So, the following line of code creates a single JSON attribute/value pair with
+    the attribute set to `result`, and the value set to `ok` (although this code doesn''t
+    show it, you can create trees of JSON attribute-value pairs by assigning JSON
+    objects to other JSON objects):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: We first use `StyledWriter` and then `FastWriter` to encode the JSON value in
+    `newValue`, writing each string to the console.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Of course, you can also pass single values to JsonCpp; there''s no reason why
+    you can''t execute the following code if all you wanted to do was pass a double-precision
+    number:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: See also
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: For the documentation for JsonCpp, you can install doxygen from [http://www.stack.nl/~dimitri/doxygen/](http://www.stack.nl/~dimitri/doxygen/)
+    and run it over the `doc` folder of the main JsonCpp distribution.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There are other JSON conversion implementations for C++, too. For a complete
+    list, see the list at [http://json.org/](http://json.org/).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Reading and writing JSON in C#
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: C# is a common client-side language for rich applications as well as for writing
+    the client implementation of web services running on ASP.NET. The .NET library
+    includes JSON serialization and deserialization in the System.Web.Extensions assembly.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting ready
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This example uses the built-in JSON serializer and deserializer in the System.Web.Extensions
+    assembly, one of the many .NET libraries that are available. If you've installed
+    a recent version of Visual Studio (see [https://www.visualstudio.com/en-us/downloads/visual-studio-2015-downloads-vs.aspx](https://www.visualstudio.com/en-us/downloads/visual-studio-2015-downloads-vs.aspx)),
+    it should be available. All you need to do to use this assembly is include it
+    in the assemblies your application references in Visual Studio by right-clicking
+    the **References** item in your project, choosing **Add Reference**, and scrolling
+    down to **System.Web.Extensions** in the **Framework Assemblies** list.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Here''s a simple application that deserializes some JSON, as a dictionary of
+    attribute-object pairs:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: How it works...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The System.Web.Extensions assembly provides the `JavaScriptSerializer` class
+    in the `System.Web.Script.Serialization` namespace. This code begins by defining
+    a simple class, `SimpleResult`, which we'll encode as JSON in our example.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `Main` method first defines a `JavaScriptSerializer` instance, and then
+    `string` containing our JSON. Parsing the JSON is as easy as calling the `JavaScriptSerializer`
+    instance's `DeserializeObject` method, which returns an object whose type is determined
+    at run-time based on the JSON you pass.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: You can also use `DeserializeObject` to parse JSON in a type-safe manner, and
+    then the type of the returned object matches the type you pass to the method.
+    I'll show you how to do this in [Chapter 7](ch07.html "Chapter 7. Using JSON in
+    a Type-safe Manner"), *Using JSON in a Type-safe Manner*.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`DeserializeObject` returns a `Dictionary` of key-value pairs; the keys are
+    the attributes in the JSON, and the values are objects representing the values
+    of those attributes. In our example, we simply walk the keys and values in the
+    dictionary, printing each. Because we know the type of the value in the JSON,
+    we can simply cast it to the appropriate type (`string`, in this case) using the
+    C# `as` keyword; if it wasn''t `string`, we''d receive the value `null`. You can
+    use `as` or the type inference of C# to determine the type of unknown objects
+    in your JSON, making it easy to parse JSON for which you lack strict semantics.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `JavaScriptSerializer` class also includes a `Serialize` method; you can
+    either pass it as a dictionary of attribute-value pairs, as we do with our deserialized
+    result, or you can pass it as an instance of a C# class. If you pass it as a class,
+    it'll attempt to serialize the class by introspecting the class fields and values.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There's more...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The JSON implementation that Microsoft provides is adequate for many purposes,
+    but not necessarily the best for your application. Other developers have implemented
+    better ones that typically use the same interface as the Microsoft implementation.
+    One good choice is Newtonsoft''s Json.NET, which you can get at [http://json.codeplex.com/](http://json.codeplex.com/)
+    or from NuGet in Visual Studio. It supports a wider variety of .NET platforms
+    (including Windows Phone), LINQ queries, XPath-like queries against the JSON,
+    and is faster than the Microsoft implementation. Using it is similar to using
+    the Microsoft implementation: install the package from the Web or NuGet, add a
+    reference of the assembly to your application, and then use the `JsonSerializer`
+    class in the `NewtonSoft.Json` namespace. It defines the same `SerializeObject`
+    and `DeserializeObject` methods that the Microsoft implementation does, making
+    switching to this library easy. *James Newton-King*, the author of *Json.NET*,
+    makes it available under the MIT license.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'As with other languages, you can also carry primitive types through the deserialization
+    and serialization process. For example, after evaluating the following code, the
+    resulting dynamic variable `piResult` will contain a floating-point number, 3.14:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: See also
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: As I previously hinted, you can do this in a type-safe manner; we'll discuss
+    more of this in [Chapter 7](ch07.html "Chapter 7. Using JSON in a Type-safe Manner"),
+    *Using JSON in a Type-safe Manner*. You'll do this using the generic method `DeserializeObject<>`,
+    passing a type variable of the type you want to deserialize into.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Reading and writing JSON in Java
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Java, like C++, predates JSON. Oracle is presently working on adding JSON support
+    to Java, but in the meantime, several implementations providing JSON support are
+    available on the Web. Similar to the C++ implementation you saw previously in
+    this chapter, you can convert between JSON and Java using a third-party library;
+    in this case, packaged as a Java archive (JAR) file, whose implementation typically
+    represents JSON objects as a tree of named objects.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Perhaps the best Java implementation of JSON parsing is Gson, available from
+    Google at [http://code.google.com/p/google-gson/](http://code.google.com/p/google-gson/)
+    licensed under the Apache License 2.0.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting ready
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'First, you''ll need to get Gson; you can do this by doing a read-only checkout
+    of the repository using SVN over HTTP with SVN by using the following command:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: Of course, this assumes that you have a Java development kit ([http://www.oracle.com/technetwork/java/javase/downloads/index.html](http://www.oracle.com/technetwork/java/javase/downloads/index.html))
+    and SVN (TortoiseSVN is a good client for Windows available at [http://tortoisesvn.net/downloads.html](http://tortoisesvn.net/downloads.html))
+    installed. Many Java IDEs include support for SVN.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Once you check out the code, follow the instructions that come with it to build
+    the Gson JAR file, and add the JAR file to your project.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'To begin, you need to create a `com.google.gson.Gson` object. This class defines
+    the interface you''ll use to convert between JSON and Java:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The `JsonObject` class defines the top-level object for containing a JSON object;
+    you use its `get` and `add` methods to get and set attributes, like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The Gson library uses the `JsonElement` class to encapsulate a single JSON
+    value; it has the following methods that let you get the value contained in `JsonElement`
+    as a plain Java type:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`getAsBoolean`, which returns the value as `Boolean`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`getAsByte`, which returns the value as `byte`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`getAsCharacter`, which returns the value as `char`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`getAsDouble`, which returns the value as `double`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`getAsFloat`, which returns the value as `float`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`getAsInt`, which returns the value as `int`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`getAsJsonArray`, which returns the value as `JsonArray`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`getAsJsonObject`, which returns the value as `JsonObject`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`getAsLong`, which returns the value as `long`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`getAsShort`, which returns the value as `short`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`getAsString`, which returns the value as `String`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'You can also learn about the type in `JsonElement` using one of the following
+    methods:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`isJsonArray`, which returns `true` if the element is an array of objects'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`isJsonNull`, which returns `true` if the element is null'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`isJsonObject`, which returns `true` if the element is a composite object (another
+    JSON tree) instead of a single type'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`isJsonPrimitive`, which returns true if the element is a primitive type, such
+    as a number or string'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: There's more…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'You can also convert instances of your classes directly to JSON, writing something
+    like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: This defines a class `SimpleResult`, which we use to create a single instance,
+    and then use the `Gson` object instance to convert to a string containing the
+    JSON using the `Gson` method `toJson`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Finally, because `JsonElement` encapsulates a single value, you can also handle
+    simple values expressed in JSON, like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs: []
+  type: TYPE_PRE
+- en: This converts the primitive value `3.14` in JSON to a Java `double`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: See also
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Like the C# example, you can convert directly from JSON to a plain old Java
+    object (POJO) in a type-safe manner. You'll see how to do this in [Chapter 7](ch07.html
+    "Chapter 7. Using JSON in a Type-safe Manner"), *Using JSON in a Type-safe Manner*.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There are other JSON conversion implementations for Java, too. For a complete
+    list, see the list at [http://json.org/](http://json.org/).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Reading and writing JSON in Perl
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Perl predates JSON, although there's a good implementation of JSON conversion
+    available from CPAN, the Comprehensive Perl Archive Network.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'To begin with, download the JSON module from CPAN and install it. Typically,
+    you''ll download the file, unpack it, and then run the following code on a system
+    that already has Perl and make configured:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Here''s a simple example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE21]'
+  prefs: []
+  type: TYPE_PRE
+- en: Let's look at the interface the JSON module provides.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How it works...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The CPAN module defines the `decode_json` and `encode_json` methods to decode
+    and encode JSON respectively. These methods interconvert between Perl objects,
+    such as literal values and associative arrays, and strings containing JSON respectively.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The code begins by importing the JSON and `Data::Dumper` modules. Next, it defines
+    a single string, `$json`, which contains the JSON we want to parse.
+  prefs: []
+  type: TYPE_NORMAL
+- en: With the JSON in `$json`, we define `%result` to be the associative array containing
+    the objects defined in the JSON, and dump the values in the hash on the next line.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Finally, we re-encode the hash as JSON and print the results to the terminal.
+  prefs: []
+  type: TYPE_NORMAL
+- en: See also
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: For more information and to download the JSON CPAN module, visit [https://metacpan.org/pod/JSON](https://metacpan.org/pod/JSON).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Reading and writing JSON in Python
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Python has had native support for JSON since Python 2.6 through the `json` module.
+    Using the module is as simple as using the `import` statement to import the module
+    and then accessing the encoder and decoder through the `json` object that it defines.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting ready
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Simply enter the following in your source code to be able to reference the
+    JSON facility:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE22]'
+  prefs: []
+  type: TYPE_PRE
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Here''s a simple example from the Python interpreter:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE23]'
+  prefs: []
+  type: TYPE_PRE
+- en: Let's look at `loads` and `dumps` further.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How it works...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Python has great support for associative arrays through its object hierarchy.
+    The `json` module offers a `json` object with `loads` and `dumps` method that
+    convert from JSON in text strings to associative arrays, and from associative
+    arrays to JSON in text strings. If you're familiar with the Python `marshal` and
+    `pickle` modules, the interface is similar; you use the `loads` method to obtain
+    a Python object from its JSON representation and the `dumps` method to convert
+    an object into its JSON equivalent.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The previous listing does just this. It defines a variable `j` that contains
+    our JSON, and then obtains a Python object `result` using `json.loads`. Fields
+    in the JSON are accessible as named objects in the resulting Python object. (Note
+    that we can't call our JSON string `json` because it would shadow the definition
+    of the interface to the module.)
+  prefs: []
+  type: TYPE_NORMAL
+- en: To convert to JSON, we use the `json.dumps` method. By default, `dumps` creates
+    a compact machine-readable version of JSON with minimum whitespace; this is best
+    used for over-the-wire transmissions or for storage in a file. When you're debugging
+    your JSON, it helps to pretty-print it with indentation and some whitespace around
+    separators; you can do this using the optional `indent` and `separators` arguments.
+    The `indent` argument indicates the number of spaces that each successive nested
+    object should be indented in the string, and `separators` indicates the separators
+    between each object and between each attribute and value.
+  prefs: []
+  type: TYPE_NORMAL
+- en: See also
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: For more documentation on the `json` module, see the Python documentation at
+    [https://docs.python.org/2/library/json.html](https://docs.python.org/2/library/json.html).
+  prefs: []
+  type: TYPE_NORMAL

@@ -1,0 +1,590 @@
+- en: Chapter 8. Using JSON for Binary Data Transfer
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'In this chapter, we will discuss the intersection between JSON and binary data.
+    Here, you''ll find the following recipes:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Encoding binary data as a base64 string using Node.js
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Decoding binary data from a base64 string using Node.js
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Encoding and decoding binary data as a base64 string using JavaScript in the
+    browser
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Encoding data as BSON using Json.NET
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Decoding data from BSON using Json.NET
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using `DataView` to access `ArrayBuffer`
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Encoding and decoding base64 using an `ArrayBuffer`
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Compressing object-body content from a Node.js server built using the express
+    module
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Introduction
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'There are typically two reasons why you might want to think about binary representation
+    when using JSON: either because you need to carry binary data between one part
+    of your application to another or because you''re worried about the size of the
+    JSON you''re transporting.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the first case, you're actually a little stuck, as the existing JSON specification
+    doesn't provide a container format for binary data because JSON is a text-based
+    representation of data at its heart. You can choose to encode binary data in another
+    format, such as base64, which renders binary data as a printable character string,
+    or you can use an extension of JSON, such as Binary JSON (BSON), that supports
+    Binary data.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'BSON uses the semantics of JSON but represents the data in a binary form. Thus,
+    the same basic structure is available: a (possibly nested) map of key-value pairs,
+    where values can be other key-value pairs, arrays, strings, or even binary data.
+    However, instead of using plaintext encoding, the format is binary, which yields
+    a smaller data size and support for binary objects natively (you can learn more
+    about BSON at [http://bsonspec.org/](http://bsonspec.org/)). The down side to
+    BSON is that it''s not natively supported in JavaScript, and being a binary format,
+    isn''t amenable to easy inspection. To whet your appetite, I will discuss how
+    to use BSON with the popular Json.NET library in this chapter.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: A second approach is to take any binary data and encode it in a format that
+    makes it compatible with text. Base64 is one such encoding mechanism that's been
+    used for a variety of purposes over the years on the Internet, and there's support
+    for it in both modern browsers and Node.js. In this chapter, I show recipes to
+    interconvert with base64 using both the modern browser interfaces and Node.js.
+    Be aware, though, that this means data bloat, because representing binary information
+    as text increases the size of the data being transported.
+  prefs: []
+  type: TYPE_NORMAL
+- en: A common concern people express as they consider JSON for their application
+    is the size of the JSON package in comparison to binary formats such as BSON,
+    protocol buffers, or a hand-tuned binary representation. While JSON can be larger
+    than a binary representation, you gain human readability (especially helpful for
+    debugging), clear semantics, and a large assortment of libraries with working
+    implementations from which to draw. Minimizing whitespace and using short key
+    names can help reduce the size of JSON, as can compression—in a recent project
+    I was working on, my testing showed that compressing the JSON using standard HTTP
+    compression yielded more memory savings than an all-binary representation would
+    have, and was of course easier to implement on both server and clients as well.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Remember that going to binary for the sake of memory—either BSON, compression,
+    or a custom format—negates one of JSON's most useful attributes, which is its
+    property of self-documentation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Encoding binary data as a base64 string using Node.js
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: If you have binary data that you need to encode to pass to the client as JSON,
+    you can convert it to base64, a common means on the Internet to represent eight-bit
+    values in solely printable characters. Node.js provides the `Buffer` object and
+    a `base64` encoder and decoder for this task.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'First, you''ll allocate a buffer, and then you''ll convert it to a string,
+    indicating that the string you want should be base64-encoded, like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: How it works…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The Node.js `Buffer` class wraps a collection of octets outside the Node.js
+    V8 runtime heap. It's used in Node.js anytime you need to work with purely binary
+    data. The first line of our example makes a buffer, populating it with the string
+    `Hello world`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The `Buffer` class includes the `toString` method, which takes a single argument,
+    the means to encode the buffer. Here, we''re passing `base64`, indicating that
+    we want `s` to contain the `base64` representation of `b`, but we could just as
+    easily pass one of the following values:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`ascii`: This value indicates that the high bit should be stripped and the
+    remaining seven bits of each octet converted to their ASCII equivalent.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`utf8`: This value indicates that it should be encoded as multi-byte Unicode.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`utf16le`: These are 2 or 4-byte little-endian Unicode characters.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`hex`: This value is for encoding each octet as two characters, the value in
+    `hex` of the octet.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: See also
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: For documentation on the `Buffer` class of Node.js, see [https://nodejs.org/api/buffer.html](https://nodejs.org/api/buffer.html).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Decoding binary data from a base64 string using Node.js
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In Node.js, there's no inverse of `Buffer.toString`; instead, you pass the base64
+    data directly to the buffer constructor, along with a flag indicating that the
+    data is base64 encoded.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting ready
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'If you want to run the example as it appears here, you''ll need the `buffertools`
+    module installed, in order to get the `Buffer.compare` method. To get that, run
+    `npm` on a command prompt:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: If all you're going to do is use the `Buffer` constructor of Node.js to decode
+    `base64` data, you don't need to do this.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Here, we''ll take our original buffer and compare it to another one initialized
+    with the original base64 for the first message:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: How it works…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The first line of the code includes the `buffertools` module, which extends
+    the `Buffer` interface. This is only necessary because I want to use buffer tools's
+    `Buffer.compare` method in the last line; it's not necessary for `base64` to decode
+    itself.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The next two lines create a `Buffer` object and obtain its `base64` representation,
+    which the following line logs to the console.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Finally, I create a second `Buffer` object, initializing it with some base64
+    data, passing base64 to indicate that the initialization data should be decoded
+    into the buffer. I compare these two buffers on the last line. Note that the buffer
+    tool's `compare` method is an ordinal compare, meaning that it returns 0 if both
+    buffers contain the same data, -1 if the first contains an ordinal sort less than
+    the data, and 1 if the first contains data that would be ordinally sorted as greater.
+  prefs: []
+  type: TYPE_NORMAL
+- en: See also
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: For information about the `buffertools` module and its implementation, see [https://github.com/bnoordhuis/node-buffertools#](https://github.com/bnoordhuis/node-buffertools#).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Encoding and decoding binary data as a base64 string using JavaScript in the
+    browser
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The base implementation of JavaScript does not include base64 encoding or decoding.
+    However, all modern browsers include the `atob` and `btoa` methods to decode and
+    encode base64 data respectively. These are methods of the window object, defined
+    by the JavaScript runtime.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'It''s as easy as a method call:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: How it works…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The `btoa` function takes a string and returns the base64 encoding of that string.
+    It's a method of the window object and calls to native browser code. The `atob`
+    function does the reverse, taking a string containing base64 and returning a string
+    with the binary data.
+  prefs: []
+  type: TYPE_NORMAL
+- en: See also
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: For a summary of `btoa` and `atob`, see the Mozilla developer website at [https://developer.mozilla.org/en-US/docs/Web/API/WindowBase64/Base64_encoding_and_decoding](https://developer.mozilla.org/en-US/docs/Web/API/WindowBase64/Base64_encoding_and_decoding)
+    (note that while the documentation is from Mozilla, these methods of `window`
+    are defined by most modern browsers).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Encoding data as BSON using Json.NET
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: BSON encoding is a reasonable alternative to JSON if you have an implementation
+    of an encoder and decoder on each side of the connection. Unfortunately, there's
+    no good encoder and decoder available yet for JavaScript, but there are implementations
+    for a number of other platforms, including .NET and C++. Let's look at how to
+    encode a class using BSON with Json.NET in C#.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting ready
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: First, you'll need to have the Json.NET assembly available to your application.
+    As you saw in the last chapter, in the recipe *How to deserialize an object using
+    Json.NET*, the easiest way to do this is with NuGet. If you haven't already, add
+    the Json.NET assembly to your solution using the steps in that recipe.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Using Json.NET to encode BSON is fairly simple, once you have a class you want
+    to encode:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: How it works…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: It's easiest to start with a class that has the fields that you want to convert,
+    defined, as you'd do for other type-safe conversions from JSON. Here, we define
+    a simple `Record` class for this purpose and then create a record to encode.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Next, we create `MemoryStream` to contain the encoded data, and a `BsonWriter`
+    object to do the writing to the memory stream. Of course, anything that implements
+    the .NET streaming interface will work with the `BsonWriter` instance; you could
+    write to a file instead if you preferred. After that, we create an actual serializer
+    to do the work, an instance of `JsonSerializer`, and use it to serialize the record
+    we created using the writer itself. We wrap the actual serialization in a using
+    block, so that at the end of the operation, the resources used by the writer (but
+    not the stream) are immediately cleaned up by the .NET runtime.
+  prefs: []
+  type: TYPE_NORMAL
+- en: See also
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Documentation for the BsonWriter class is available from NewtonSoft at [http://www.newtonsoft.com/json/help/html/T_Newtonsoft_Json_Bson_BsonWriter.htm](http://www.newtonsoft.com/json/help/html/T_Newtonsoft_Json_Bson_BsonWriter.htm).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Decoding data from BSON using Json.NET
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Using Json.NET, decoding BSON is the opposite of encoding; given a class that
+    describes the data to decode and a blob of binary data, invoke a reader to read
+    the data.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting ready
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Of course, you need a reference to the Json.NET assembly in your project in
+    order to do this. See recipe *How to Deserialize an object using Json.NET* in
+    [Chapter 7](ch07.html "Chapter 7. Using JSON in a Type-safe Manner"), *Using JSON
+    in a Type-safe Manner*, to learn how to add a reference to Json.NET in your application
+    using NuGet.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Starting with a stream, you''ll use a `BsonReader` with a `JsonSerializer`
+    to deserialize the BSON. Assuming data is `byte[]` of BSON data:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: How it works…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We create `MemoryStream` from the incoming data, which we use with `BsonReader`
+    to actually read the data from the stream. The reading is done by the `JsonSerializer`,
+    which deserializes using the reader into a new instance of the `Record` class.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There's more…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: You may not have a class that represents the data you deserialize in your application;
+    that's often the case early in development, when you're still defining the semantics
+    of your data transfer. You can use the `Deserialize` method to deserialize a `JsonObject`
+    instance, and then use the JsonObject's interface to obtain individual field values.
+    For information about `JsonObject`, see the Json.NET documentation at [http://www.newtonsoft.com/json/help/html/T_Newtonsoft_Json_JsonObjectAttribute.htm](http://www.newtonsoft.com/json/help/html/T_Newtonsoft_Json_JsonObjectAttribute.htm).
+  prefs: []
+  type: TYPE_NORMAL
+- en: See also
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The documentation for `BsonReader` from NewtonSoft is at [http://www.newtonsoft.com/json/help/html/T_Newtonsoft_Json_Bson_BsonReader.htm](http://www.newtonsoft.com/json/help/html/T_Newtonsoft_Json_Bson_BsonReader.htm).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using a DataView to access an ArrayBuffer
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Sometimes, you don't want to work with JSON at all, but instead with pure binary
+    data. JavaScript provides the `DataView` abstraction, which lets you perform typed
+    accesses on an array buffer of memory, such as one obtained from an `XMLHttpRequest`
+    object.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting ready
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: To begin, you need your data in an `ArrayBuffer`, such as the one returned by
+    the `XMLHttpRequest` object. With this, you can create a `DataView`, and then
+    using that `DataArray`, create a typed array over the data view to extract just
+    the bytes that you're interested in. Let's see an example.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Here''s a simple example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: How it works…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The first thing to notice is `responseType` of the `XMLHttpRequest` object.
+    In this example, we're setting it to `arraybuffer`, indicating that we want a
+    raw buffer of bytes back represented as an instance of the `ArrayBuffer` class.
+    We make the request, and on the done handler, create `DataView` of the response.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `DataView` is an abstraction object from which we can create different views
+    to read and write the binary data to and from the `ArrayBuffer` object.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`DataView` supports viewing `ArrayBuffer` objects as any of the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`Int8Array`: This is an 8-bit two''s complement signed integer array'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`Uint8Array`: This is an 8-bit unsigned integer array'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`Int16Array`: This is a 16-bit two''s complement signed integer array'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`Uint16Array`: This is a 16-bit unsigned integer array'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`Int32Array`: This is a 32-bit two''s complement signed integer array'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`Uint32Array`: This is a 32-bit unsigned integer array'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`Float32Array`: This is a 32-bit floating point number array'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`Float64Array`: This is a 64-bit floating point number array'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: In addition to constructing one of these arrays from a `DataView`, you can also
+    access individual 8-bit, 16-bit, 32-bit integers, or 32-bit or 64-bit floats from
+    a `DataView`, using a corresponding getter function, passing the offset to the
+    number you want to get. For example, `getInt8` returns `Int8` at the location
+    you specify, while `getFloat64` gets the corresponding 64-bit floating point number
+    at the offset you specify.
+  prefs: []
+  type: TYPE_NORMAL
+- en: See also
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Although `ArrayBuffer` and `DataView` aren't specific to Microsoft Internet
+    Explorer, the documentation at Microsoft's MSDN site is very clear. See [https://msdn.microsoft.com/en-us/library/br212463(v=vs.94).aspx](https://msdn.microsoft.com/en-us/library/br212463(v=vs.94).aspx)
+    for information about the `DataView` methods, or see [https://msdn.microsoft.com/library/br212485(v=vs.94).aspx](https://msdn.microsoft.com/library/br212485(v=vs.94).aspx)
+    for an overview of typed arrays in general.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Encoding and decoding base64 using an ArrayBuffer
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: If you're going to use `ArrayBuffer` and `DataView` for your binary data and
+    carry binary data as base64 strings, you can use the Mozilla-written functions
+    at [https://developer.mozilla.org/en-US/docs/Web/API/WindowBase64/Base64_encoding_and_decoding#Solution_.232_.E2.80.93_rewriting_atob%28%29_and_btoa%28%29_using_TypedArrays_and_UTF-8](https://developer.mozilla.org/en-US/docs/Web/API/WindowBase64/Base64_encoding_and_decoding#Solution_.232_.E2.80.93_rewriting_atob%28%29_and_btoa%28%29_using_TypedArrays_and_UTF-8)
+    to do so. They provide the functions `strToUTF8Arr` and `UTF8ArrToStr` to perform
+    UTF-8 encoding and decoding, as well as `base64EncArr` and `base64DecToArr` to
+    convert between base64 strings and array buffers.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Here''s an interconversion example that encodes a text string as UTF-8, then
+    converts the text into base64, then shows the base64 results, and finally converts
+    the base64 to `ArrayBuffer` of UTF-8 data before converting the UTF-8 back to
+    a regular character string:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: How it works…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Mozilla defines four functions in the file on their website:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `base64EncArr` function encodes `ArrayBuffer` of bytes as a base64 string
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The `base64DecToArr` function decodes a base64 string to `ArrayBuffer` of bytes
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The `strToUTF8Arr` function encodes a string as an array of UTF-8 encoded characters
+    in `ArrayBuffer`
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The `UTF8ArrToStr` function takes `ArrayBuffer` of UTF-8 encoded characters
+    and returns the string it encodes
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Compressing object-body content from a Node.js server built using the express
+    module
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: If space is your primary concern when using JSON that has you considering a
+    binary representation, you should seriously consider using compression instead.
+    Compression can yield similar savings to a binary representation, it is implemented
+    with `gzip` in most servers and HTTP clients, and can be added as a transparent
+    layer after you've finished debugging your application. Here, we discuss adding
+    object-body compression for JSON and other objects sent by the popular express
+    server built on top of Node.js with the express module.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting ready
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'First, you need to make sure you''ve installed the express and compress modules:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: You could also `npm install –g` it, if you want it to be available to all Node.js
+    applications in your workspace.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'When initializing your `express` module in your server''s entry point, require
+    compression, and tell `express` to use it:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: For more information on using `express` module to set up a server, see the recipe
+    "Installing the express module for Node.js" in [Chapter 5](ch05.html "Chapter 5. Using
+    JSON with MongoDB"), *Using JSON with MongoDB*.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How it works…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: HTTP headers support the client indicating whether or not it can decompress
+    object bodies sent over HTTP, and modern browsers all accept `gzipped` object
+    bodies. By including compress in your server built on express, you make it possible
+    for clients to request compressed JSON as part of their web API requests, and
+    receive compressed JSON in response. No change is necessary in most cases for
+    most clients, although if you're writing a native client with your own HTTP implementation,
+    you may need to check the documentation to determine how to enable `gzip` decompression
+    over HTTP.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The code begins by requiring the express module and compression module, and
+    then configures the express module to optionally use compression if it's requested
+    by the client when sending responses.
+  prefs: []
+  type: TYPE_NORMAL

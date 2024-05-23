@@ -1,0 +1,839 @@
+- en: Chapter 1. Scale from a JavaScript Perspective
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: JavaScript applications are getting bigger. That's because we can do more with
+    the language—more than most thought possible. After all, JavaScript was conceived
+    as a means to activate otherwise static web pages. A means by which to fill gaps
+    in HTML, as it were. Year after year, more and more web sites started developing
+    JavaScript code to improve the functionality of their pages.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Despite the frustrations of certain language idiosyncrasies, JavaScript popularity
+    gained critical mass—today it's the most popular programming language on GitHub
+    ([http://githut.info/](http://githut.info/)). From then onward, web sites started
+    looking more like applications that a user would install on their desktop. Libraries
+    and frameworks started popping up left right and center. Why? Because frontend
+    JavaScript applications are large and complex.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the present day frontend development profession, there's a lot of tools at
+    our disposal. The JavaScript language has evolved into something that's usable
+    on its own; it's becoming less dependent on libraries to perform the most fundamental
+    and basic programming tasks. This is especially true of the next iteration of
+    the ECMAScript specification, where problems that have plagued developers for
+    years are at least partially addressed by constructs added to the language. This,
+    of course, doesn't negate the need for application frameworks. The frontend development
+    environment and its supporting web standards are far from perfect, but they're
+    improving.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Something that's been missing from the frontend development picture for a long
+    time is architecture. Frontend architectures have become prevalent in recent years
+    due to the complexity of what's being implemented. Sophisticated tools, allow
+    frontend developers to design an architecture that's able to scale with the problems
+    we're trying to solve. And that's the crux of this book—JavaScript architectures
+    that scale. But scale to what exactly? It's not your traditional scaling problem
+    in computing, where you need to handle more load in a distributed server environment.
+    Scaling in the frontend presents its own unique challenges and constraints. This
+    chapter will define some of the scaling issues faced by JavaScript architectures.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Scaling influencers
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: We don't scale our software systems just because we can. While it's common to
+    tout scalability, these claims need to be put into practice. In order to do so,
+    there has to be a reason for scalable software. If there's no need to scale, then
+    it's much easier, not to mention cost-effective, to simply build a system that
+    doesn't scale. Putting something that was built to handle a wide variety of scaling
+    issues into a context where scale isn't warranted just feels clunky. Especially
+    to the end user.
+  prefs: []
+  type: TYPE_NORMAL
+- en: So we, as JavaScript developers and architects, need to acknowledge and understand
+    the influences that necessitate scalability. While it's true that not all JavaScript
+    applications need to scale, it may not always be the case. For example, it's difficult
+    to say that we know this system isn't going to need to scale in any meaningful
+    way, so let's not invest the time and effort to make it scalable. Unless we're
+    developing a throw-away system, there's always going to be expectations of growth
+    and success.
+  prefs: []
+  type: TYPE_NORMAL
+- en: At the opposite end of the spectrum, JavaScript applications aren't born as
+    mature scalable systems. They grow up, accumulating scalable properties along
+    the way. Scaling influencers are an effective tool for those of us working on
+    JavaScript projects. We don't want to over-engineer something straight from inception,
+    and we don't want to build something that's tied-down by early decisions, limiting
+    its ability to scale.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The need for scale
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Scaling software is a reactive event. Thinking about scaling influencers helps
+    us proactively prepare for these scaling events. In other systems, such as web
+    application backends, these scaling events may be brief spikes, and are generally
+    handled automatically. For example, there's an increased load due to more users
+    issuing more requests. The load balancer kicks in and distributes the load evenly
+    across backend servers. In the extreme case, the system may automatically provision
+    new backend resources when needed, and destroy them when they're no longer of
+    use.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Scaling events in the frontend aren't like that. Rather, the scaling events
+    that take place generally happen over longer periods of time, and are more complex.
+    The unique aspect of JavaScript applications is that the only hardware resources
+    available to them are those available to the browser in which they run. They get
+    their data from the backend, and this may scale up perfectly fine, but that's
+    not what we're concerned with. As our software grows, a necessary side-effect
+    of doing something successfully, is that we need to pay attention to the influencers
+    of scale.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![The need for scale](img/4369_01_01.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: The preceding figure shows us a top-down flow chart of scaling influencers,
+    starting with users, who require that our software implements features. Depending
+    on various aspects of the features, such as their size and how they relate to
+    other features, this influences the team of developers working on features. As
+    we move down through the scaling influencers, this grows.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Growing user base
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We're not building an application for just one user. If we were, there would
+    be no need to scale our efforts. While what we build might be based on the requirements
+    of one user representative, our software serves the needs of many users. We need
+    to anticipate a growing user base as our application evolves. There's no exact
+    target user count, although, depending on the nature of our application, we may
+    set goals for the number of active users, possibly by benchmarking similar applications
+    using a tool such as [http://www.alexa.com/](http://www.alexa.com/). For example,
+    if our application is exposed on the public internet, we want lots of registered
+    users. On the other hand, we might target private installations, and there, the
+    number of users joining the system is a little slower. But even in the latter
+    case, we still want the number of deployments to go up, increasing the total number
+    of people using our software.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The number of users interacting with our frontend is the largest influencer
+    of scale. With each user added, along with the various architectural perspectives,
+    growth happens exponentially. If you look at it from a top-down point of view,
+    users call the shots. At the end of the day, our application exists to serve them.
+    The better we're able to scale our JavaScript code, the more users we'll please.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Building new features
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Perhaps the most obvious side-effect of successful software with a strong user
+    base is the features necessary to keep those users happy. The feature set grows
+    along with the users of the system. This is often overlooked by projects, despite
+    the obviousness of new features. We know they're coming, yet, little thought goes
+    into how the endless stream of features going into our code impedes our ability
+    to scale up our efforts.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This is especially tricky when the software is in its infancy. The organization
+    developing the software will bend over backwards to reel in new users. And there's
+    little consequence of doing so in the beginning because the side-effects are limited.
+    There's not a lot of mature features, there's not a huge development team, and
+    there's less chance of annoying existing users by breaking something that they've
+    come to rely on. When these factors aren't there, it's easier for us to nimbly
+    crank out the features and dazzle existing/prospective users. But how do we force
+    ourselves to be mindful of these early design decisions? How do we make sure that
+    we don't unnecessarily limit our ability to scale the software up, in terms of
+    supporting more features?
+  prefs: []
+  type: TYPE_NORMAL
+- en: As we'll see throughout this book, new feature development, as well as enhancing
+    existing features, is an ongoing issue with scalable JavaScript architecture.
+    It's not just the number of features listed in the marketing literature of our
+    software that we need to be concerned about . There's also the complexity of a
+    given feature, how common our features are with one another, and how many moving
+    parts each of these features has. If the user is the first level when looking
+    at JavaScript architecture from a top-down perspective, each feature is the next
+    level, and from there, it expands out into enormous complexity.
+  prefs: []
+  type: TYPE_NORMAL
+- en: It's not just the individual users who make a given feature complex. Instead,
+    it's a group of users that all need the same feature in order to use our software
+    effectively. And from there, we have to start thinking about personas, or roles,
+    and which features are available for which roles. The need for this type of organizational
+    structure isn't made apparent till much later on in the game; after we've made
+    decisions that make it difficult to introduce role-based feature delivery. And
+    depending on how our software is deployed, we may have to support a variety of
+    unique use cases. For example, if we have several large organizations as our customers,
+    each with their own deployments, they'll likely have their own unique constraints
+    on how users are structured. This is challenging, and our architecture needs to
+    support the disparate needs of many organizations, if we're going to scale.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Hiring more developers
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Making these features a reality requires solid JavaScript developers who know
+    what they're doing, and if we're lucky, we'll be able to hire a team of them.
+    The team part doesn't happen automatically. There's a level of trust and respect
+    that needs to be established before the team members begin to actively rely on
+    one another to crank out some awesome code. Once that starts happening, we're
+    in good shape. Turning once again to the top-down perspective of our scaling influencers,
+    the features we deliver can directly impact the health of our team. There's a
+    balance that's essentially impossible to maintain, but we can at least get close.
+    Too many features and not enough developers lead to a sense of perpetual inadequacy
+    among team members. When there's no chance of delivering what's expected, there's
+    not much sense in trying. On the other hand, if you have too many developers,
+    and there's too much communication overhead due to a limited number of features,
+    it's tough to define responsibilities. When there's no shared understanding of
+    responsibilities, things start to break down.
+  prefs: []
+  type: TYPE_NORMAL
+- en: It's actually easier to deal with not enough developers for the features we're
+    trying to develop, than having too many developers. When there's a large burden
+    of feature development, it's a good opportunity to step back and think—"what would
+    we do differently if we had more developers?" This question usually gets skipped.
+    We go hire more developers, and when they arrive, it's to everyone's surprise
+    that there's no immediate improvement in feature throughput. This is why it's
+    best to have an open development culture where there are no stupid questions,
+    and where responsibilities are defined.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There's no one correct team structure or development methodology. The development
+    team needs to apply itself to the issues faced by the software we're trying to
+    deliver. The biggest hurdle is for sure the number, size, and complexity of features.
+    So that's something we need to consider when forming our team initially, as well
+    as when growing the team. This latter point is especially true because the team
+    structure we used way back when the software was new isn't going to fit what we
+    face when the features scale up.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Architectural perspectives
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'The preceding section was a sampling of the factors that influence scale in
+    JavaScript applications. Starting from the top, each of these influencers affects
+    the influencer below it. The number and nature of our users is the first and foremost
+    influencer, and this has a direct impact on the number and nature of the features
+    we develop. Further more, the size of the development team, and the structure
+    of that team, are influenced by these features. Our job is to take these influencers
+    of scale, and translate them into factors to consider from an architectural perspective:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Architectural perspectives](img/4369_01_02.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Scaling influences the perspectives of our architecture. Our architecture, in
+    turn, determines responses to scaling influencers. The process is iterative and
+    never-ending throughout the lifetime of our software.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The browser is a unique environment
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Scaling up in the traditional sense doesn't really work in a browser environment.
+    When backend services are overwhelmed by demand, it's common to "throw more hardware"
+    at the problem. Easier said than done of course, but it's a lot easier to scale
+    up our data services these days, compared to 20 years ago. Today's software systems
+    are designed with scalability in mind. It's helpful to our frontend application
+    if the backend services are always available and always responsive, but that's
+    just a small portion of the issues we face.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We can't throw more hardware at the web browsers running our code; given that;
+    the time and space complexities of our algorithms are important. Desktop applications
+    generally have a set of system requirements for running the software, such as
+    OS version, minimum memory, minimum CPU, and so on. If we were to advertise requirements
+    such as these in our JavaScript applications, our user base would shrink dramatically,
+    and possibly generate some hate mail.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The expectation that browser-based web applications be lean and fast is an
+    emergent phenomenon. Perhaps, that''s due in part to the competition we face.
+    There are a lot of bloated applications out there, and whether they''re used in
+    the browser or natively on the desktop, users know what bloat feels like, and
+    generally run the other way:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![The browser is a unique environment](img/4369_01_03.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: JavaScript applications require many resources, all of different types; these
+    are all fetched by the browser, on the application's behalf.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Adding to our trouble is the fact that we''re using a platform that was designed
+    as a means to download and display hypertext, to click on a link, and repeat.
+    Now we''re doing the same thing, except with full-sized applications. Multi-page
+    applications are slowly being set aside in favor of single-page applications.
+    That being said, the application is still treated as though it were a web page.
+    Despite all that, we''re in the midst of big changes. The browser is a fully viable
+    web platform, the JavaScript language is maturing, and there are numerous W3C
+    specifications in progress; they assist with treating our JavaScript more like
+    an application and less like a document. Take a look at the following diagram:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![The browser is a unique environment](img/4369_01_04.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: A sampling of the technologies found in the growing web platform
+  prefs: []
+  type: TYPE_NORMAL
+- en: We use architectural perspectives to assess any architectural design we come
+    up with. It's a powerful technique to examine our design through a different lens.
+    JavaScript architecture is no different, especially for those that scale. The
+    difference between JavaScript architecture and architecture for other environments
+    is that ours have unique perspectives. The browser environment requires that we
+    think differently about how we design, build, and deploy applications. Anything
+    that runs in the browser is transient by nature, and this changes software design
+    practices that we've taken for granted over the years. Additionally, we spend
+    more time coding our architectures than diagramming them. By the time we sketch
+    anything out, it's been superseded by another specification or another tool.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Component design
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: At an architectural level, components are the main building blocks we work with.
+    These may be very high-level components with several levels of abstraction. Or,
+    they could be something exposed by a framework we're using, as many of these tools
+    provide their own idea of "components". For our purposes in this book, components
+    sit somewhere in the middle—not too abstract, and not too implementation-specific.
+    The idea being that we need to be thoughtful of our application composition, without
+    worrying too much about the specifics.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'When we first set out to build a JavaScript application with scale in mind,
+    the composition of our components began to take shape. How our components are
+    composed is a huge limiting factor in how we scale, because they set the standard.
+    Components implement patterns for the sake of consistency, and it''s important
+    to get those patterns right:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Component design](img/4369_01_05.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Components have an internal structure. The complexity of this composition depends
+    on the type of component under consideration
+  prefs: []
+  type: TYPE_NORMAL
+- en: As we'll see, the design of our various components is closely-tied to the trade-offs
+    we make in other perspectives. And that's a good thing, because it means that
+    if we're paying attention to the scalable qualities we're after, we can go back
+    and adjust the design of our components in order to meet those qualities.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Component communication
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Components don''t sit in the browser on their own. Components communicate with
+    one another all the time. There''s a wide variety of communication techniques
+    at our disposal here. Component communication could be as simple as method invocation,
+    or as complex as an asynchronous publish-subscribe event system. The approach
+    we take with our architecture depends on our more specific goals. The challenge
+    with components is that we often don''t know what the ideal communication mechanism
+    will be, till after we''ve started implementing our application. We have to make
+    sure that we can adjust the chosen communication path:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Component communication](img/4369_01_06.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: The component communication mechanism decouples components, enabling scalable
+    structures
+  prefs: []
+  type: TYPE_NORMAL
+- en: Seldom will we implement our own communication mechanism for our components.
+    Not when so many tools exist, that solve at least part of the problem for us.
+    Most likely, we'll end up with a concoction of an existing tool for communication
+    and our own implementation specifics. What's important is that the component communication
+    mechanism is its own perspective, which can be designed independently of the components
+    themselves.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Load time
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: JavaScript applications are always loading something. The biggest challenge
+    is the application itself, loading all the static resources it needs to run, before
+    the user is allowed to do anything. Then there's the application data. This needs
+    to be loaded at some point, often on demand, and contributes to the overall latency
+    experienced by the user. Load time is an important perspective, because it hugely
+    contributes to the overall perception of our product quality.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Load time](img/4369_01_07.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: The initial load is the user's first impression and this is where most components
+    are initialized; it's tough to get the initial load to be fast without sacrificing
+    performance in other areas
+  prefs: []
+  type: TYPE_NORMAL
+- en: There's lots we can do here to offset the negative user experience of waiting
+    for things to load. This includes utilizing web specifications that allow us to
+    treat applications and the services they use as installable components in the
+    web browser platform. Of course, these are all nascent ideas, but worth considering
+    as they mature alongside our application.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Responsiveness
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The second part of the performance perspective of our architecture is concerned
+    with responsiveness. That is, after everything has loaded, how long does it take
+    for us to respond to user input? Although this is a separate problem from that
+    of loading resources from the backend, they're still closely-related. Often, user
+    actions trigger API requests, and the techniques we employ to handle these workflows
+    impact user-perceived responsiveness.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Responsiveness](img/4369_01_08.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: User-perceived responsiveness is affected by the time taken by our components
+    to respond to DOM events; a lot can happen in between the initial DOM event and
+    when we finally notify the user by updating the DOM.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Because of this necessary API interaction, user-perceived responsiveness is
+    important. While we can't make the API go any faster, we can take steps to ensure
+    that the user always has feedback from the UI and that feedback is immediate.
+    Then, there's the responsiveness of simply navigating around the UI, using cached
+    data that's already been loaded, for example. Every other architectural perspective
+    is closely-tied to the performance of our JavaScript code, and ultimately, to
+    the user-perceived responsiveness. This perspective is a subtle sanity-check for
+    the design of our components and their chosen communication paths.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Addressability
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Just because we''re building a single-page application doesn''t mean we no
+    longer care about addressable URIs. This is perhaps the crowning achievement of
+    the web— unique identifiers that point to the resource we want. We paste them
+    in to our browser address bar and watch the magic happen. Our application most
+    certainly has addressable resources, we just point to them differently. Instead
+    of a URI that''s parsed by the backend web server, where the page is constructed
+    and sent back to the browser, it''s our local JavaScript code that understands
+    the URI:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Addressability](img/4369_01_09.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Components listen to routers for route events and respond accordingly. A changing
+    browser URI triggers these events.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Typically, these URIs will map to an API resource. When the user hits one of
+    these URIs in our application, we'll translate the URI into another URI that's
+    used to request backend data. The component we use to manage these application
+    URIs is called a router, and there's lots of frameworks and libraries with a base
+    implementation of a router. We'll likely use one of these.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The addressability perspective plays a major role in our architecture, because
+    ensuring that the various aspects of our application have an addressable URI complicates
+    our design. However, it can also make things easier if we're clever about it.
+    We can have our components utilize the URIs in the same way a user utilizes links.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Configurability
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Rarely does software do what you need it to straight out of the box. Highly-configurable
+    software systems are touted as being good software systems. Configuration in the
+    frontend is a challenge because there''s several dimensions of configuration,
+    not to mention the issue of where we store these configuration options. Default
+    values for configurable components are problematic too—where do they come from?
+    For example, is there a default language setting that''s set until the user changes
+    it? As is often the case, different deployments of our frontend will require different
+    default values for these settings:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Configurability](img/4369_01_10.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Component configuration values can come from the backend server, or from the
+    web browser. Defaults must reside somewhere
+  prefs: []
+  type: TYPE_NORMAL
+- en: Every configurable aspect of our software complicates its design. Not to mention
+    the performance overhead and potential bugs. So, configurability is a large issue,
+    and it's worth the time spent up-front discussing with various stakeholders what
+    they value in terms of configurability. Depending on the nature of our deployment,
+    users may value portability with their configuration. This means that their values
+    need to be stored in the backend, under their account settings. Obviously decisions
+    like these have backend design implications, and sometimes it's better to get
+    away with approaches that don't require a modified backend service.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Making architectural trade-offs
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: There's a lot to consider from the various perspectives of our architecture,
+    if we're going to build something that scales. We'll never get everything that
+    we need out of every perspective simultaneously. This is why we make architectural
+    trade-offs—we trade one aspect of our design for another more desirable aspect.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Defining your constants
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Before we start making trade-offs, it's important to state explicitly what cannot
+    be traded. What aspects of our design are so crucial to achieving scale that they
+    must remain constant? For instance, a constant might be the number of entities
+    rendered on a given page, or a maximum level of function call **indirection**.
+    There shouldn't be a ton of these architectural constants, but they do exist.
+    It's best if we keep them narrow in scope and limited in number. If we have too
+    many strict design principles that cannot be violated or otherwise changed to
+    fit our needs, we won't be able to easily adapt to changing influencers of scale.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Does it make sense to have constant design principles that never change, given
+    the unpredictability of scaling influencers? It does, but only once they emerge
+    and are obvious. So this may not be an up-front principle, though we'll often
+    have at least one or two up-front principles to follow. The discovery of these
+    principles may result from the early refactoring of code or the later success
+    of our software. In any case, the constants we use going forward must be made
+    explicit and be agreed upon by all those involved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Performance for ease of development
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Performance bottlenecks need to be fixed, or avoided in the first place where
+    possible. Some performance bottlenecks are obvious and have an observable impact
+    on the user experience. These need to be fixed immediately, because it means our
+    code isn't scaling for some reason, and might even point to a larger design issue.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Other performance issues are relatively small. These are generally noticed by
+    developers running benchmarks against code, trying by all means necessary to improve
+    the performance. This doesn't scale well, because these smaller performance bottlenecks
+    that aren't observable by the end user are time-consuming to fix. If our application
+    is of a reasonable size, with more than a few developers working on it, we're
+    not going to be able to keep up with feature development if everyone's fixing
+    minor performance problems.
+  prefs: []
+  type: TYPE_NORMAL
+- en: These micro-optimizations introduce specialized solutions into our code, and
+    they're not exactly easy reading for other developers. On the other hand, if we
+    let these minor inefficiencies go, we will manage to keep our code cleaner and
+    thus easier to work with. Where possible, trade off optimized performance for
+    better code quality. This improves our ability to scale from a number of perspectives.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Configurability for performance
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'It''s nice to have generic components where nearly every aspect is configurable.
+    However, this approach to component design comes at a performance cost. It''s
+    not noticeable at first, when there are few components, but as our software scales
+    in feature count, the number of components grows, and so does the number of configuration
+    options. Depending on the size of each component (its complexity, number of configuration
+    options, and so forth) the potential for performance degradation increases exponentially.
+    Take a look at the following diagram:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Configurability for performance](img/4369_01_11.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: The component on the left has twice as many configuration options as the component
+    on the right. It's also twice as difficult to use and maintain.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We can keep our configuration options around as long as there're no performance
+    issues affecting our users. Just keep in mind that we may have to remove certain
+    options in an effort to remove performance bottlenecks. It's unlikely that configurability
+    is going to be our main source of performance issues. It's also easy to get carried
+    away as we scale and add features. We'll find, retrospectively, that we created
+    configuration options at design time that we thought would be helpful, but turned
+    out to be nothing but overhead. Trade off configurability for performance when
+    there's no tangible benefit to having the configuration option.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Performance for substitutability
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: A related problem to that of configurability is substitutability. Our user interface
+    performs well, but as our user base grows and more features are added, we discover
+    that certain components cannot be easily substituted with another. This can be
+    a developmental problem, where we want to design a new component to replace something
+    pre-existing. Or perhaps we need to substitute components at runtime.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Our ability to substitute components lies mostly with the component communication
+    model. If the new component is able to send/receive messages/events the same as
+    the existing component, then it's a fairly straightforward substitution. However,
+    not all aspects of our software are substitutable. In the interest of performance,
+    there may not even be a component to replace.
+  prefs: []
+  type: TYPE_NORMAL
+- en: As we scale, we may need to re-factor larger components into smaller components
+    that are replaceable. By doing so, we're introducing a new level of indirection,
+    and a performance hit. Trade off minor performance penalties to gain substitutability
+    that aids in other aspects of scaling our architecture.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Ease of development for addressability
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Assigning addressable URIs to resources in our application certainly makes implementing
+    features more difficult. Do we actually need URIs for every resource exposed by
+    our application? Probably not. For the sake of consistency though, it would make
+    sense to have URIs for almost every resource. If we don't have a router and URI
+    generation scheme that's consistent and easy to follow, we're more likely to skip
+    implementing URIs for certain resources.
+  prefs: []
+  type: TYPE_NORMAL
+- en: It's almost always better to have the added burden of assigning URIs to every
+    resource in our application than to skip out on URIs. Or worse still, not supporting
+    addressable resources at all. URIs make our application behave like the rest of
+    the Web; the training ground for all our users. For example, perhaps URI generation
+    and routes are a constant for anything in our application—a trade-off that cannot
+    happen. Trade off ease of development for addressability in almost every case.
+    The ease of development problem with regard to URIs can be tackled in more depth
+    as the software matures.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Maintainability for performance
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The ease with which features are developed in our software boils down to the
+    development team and it's scaling influencers. For example, we could face pressure
+    to hire entry-level developers for budgetary reasons. How well this approach scales
+    depends on our code. When we're concerned with performance, we're likely to introduce
+    all kinds of intimidating code that relatively inexperienced developers will have
+    trouble swallowing. Obviously, this impedes the ease of developing new features,
+    and if it's difficult, it takes longer. This obviously does not scale with respect
+    to customer demand.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Developers don't always have to struggle with understanding the unorthodox approaches
+    we've taken to tackle performance bottlenecks in specific areas of the code. We
+    can certainly help the situation by writing quality code that's understandable.
+    Maybe even documentation. But we won't get all of this for free; if we're to support
+    the team as a whole as it scales, we need to pay the productivity penalty in the
+    short term for having to coach and mentor.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Trade off ease of development for performance in critical code paths that are
+    heavily utilized and not modified often. We can't always escape the ugliness required
+    for performance purposes, but if it's well-hidden, we'll gain the benefit of the
+    more common code being comprehensible and self-explanatory. For example, low-level
+    JavaScript libraries perform well and have a cohesive API that's easy to use.
+    But if you look at some of the underlying code, it isn't pretty. That's our gain—having
+    someone else maintain code that's ugly for performance reasons.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Maintainability for performance](img/4369_01_12.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Our components on the left follow coding styles that are consistent and easy
+    to read; they all utilize the high-performance library on the right, giving our
+    application performance while isolating optimized code that's difficult to read
+    and understand.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Less features for maintainability
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: When all else fails, we need to take a step back and look holistically at the
+    featureset of our application. Can our architecture support them all? Is there
+    a better alternative? Scrapping an architecture that we've sunk many hours into
+    almost never makes sense—but it does happen. The majority of the time, however,
+    we'll be asked to introduce a challenging set of features that violate one or
+    more of our architectural constants.
+  prefs: []
+  type: TYPE_NORMAL
+- en: When that happens, we're disrupting stable features that already exist, or we're
+    introducing something of poor quality into the application. Neither case is good,
+    and it's worth the time, the headache, and the cursing to work with the stakeholders
+    to figure out what has to go.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If we've taken the time to figure out our architecture by making trade-offs,
+    we should have a sound argument for why our software can't support hundreds of
+    features.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Less features for maintainability](img/4369_01_13.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: When an architecture is full, we can't continue to scale. The key is understanding
+    where that breaking threshold lies, so we can better understand and communicate
+    it to stakeholders.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Leveraging frameworks
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Frameworks exist to help us implement our architecture using a cohesive set
+    of patterns. There's a lot of variety out there, and choosing which framework
+    is a combination of personal taste, and fitness based on our design. For example,
+    one JavaScript application framework will do a lot for us out-of-the-box, while
+    another has even more features, but a lot of them we don't need.
+  prefs: []
+  type: TYPE_NORMAL
+- en: JavaScript application frameworks vary in size and sophistication. Some come
+    with batteries included, and some tend toward mechanism over policy. None of these
+    frameworks were specifically designed for our application. Any purported ability
+    of a framework needs to be taken with a grain of salt. The features advertised
+    by frameworks are applied to a general case, and a simple one at that. Applied
+    in the context of our architecture is something else entirely.
+  prefs: []
+  type: TYPE_NORMAL
+- en: That being said, we can certainly use a given framework of our liking as input
+    to the design process. If we really like the tool, and our team has experience
+    using it, we can let it influence our design decisions. Just as long as we understand
+    that the framework does not automatically respond to scaling influencers—that
+    part is up to us.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: It's worth the time investigating the framework to use for our project because
+    choosing the wrong framework is a costly mistake. The realization that we should
+    have gone with something else usually comes after we've implemented lots of functionality.
+    The end result is lots of re-writing, re-planning, re-training, and re-documenting.
+    Not to mention the time lost on the first implementation. Choose your frameworks
+    wisely, and be cautious about being framework-coupling.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Frameworks versus libraries
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Why use a mash-up of smaller libraries when there's a monolithic framework out
+    there with everything that we need? Libraries are our tools, and if they fulfill
+    a need in our architecture, by all means use them. Some developers shy away from
+    low-level tools because of the dependency-chaos that ensues. In practice, this
+    happens anyway, even if we're leveraging an all-encompassing framework.
+  prefs: []
+  type: TYPE_NORMAL
+- en: At the end of the day, the distinction between frameworks and libraries doesn't
+    really matter to us. Creating a third-party dependency nightmare doesn't scale
+    well. Neither does sticking with one tool exclusively and maintaining a lot of
+    code ourselves. It's about finding the right fit between depending heavily on
+    other projects and reinventing the wheel ourselves.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Implementing patterns consistently
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The tools we use to help implement our architecture do so by exposing patterns
+    common throughout JavaScript applications. And they do so consistently. As our
+    application scales in size due to a growing featureset, we can apply the same
+    framework components over and over. Frameworks also promote consistency in the
+    patterns we implement ourselves. If we look at the internals of any framework,
+    we will see that it has its own generic components; these are extended to provide
+    us with usable components.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Performance is built in
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Open source frameworks have the most developers looking at the code, and the
+    most projects using the framework in production. They get lots of feedback from
+    the community of users, and these include performance enhancements. Third-party
+    tools are the right place to focus on performance, because they're likely the
+    most utilized code in a given application. Leaving all performance outcomes up
+    to browser vendors and JavaScript libraries isn't smart. Leveraging the performance
+    behind components we use all the time is smart.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Leverage community wisdom
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Successful JavaScript frameworks have strong communities surrounding them. This
+    is more powerful than having robust documentation because we can ask questions
+    as they arise. Odds are, someone else is trying to do something similar in their
+    project, using the same framework as us. Open source projects are like a knowledge
+    engine; even if the exact answer we need isn't out there, we can often find enough
+    through the wisdom of the community to figure it out ourselves.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Frameworks don't scale out-of-the-box
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Saying one framework scales better than another isn't justified. Writing a **TODO**
+    application as a benchmark for how well the framework scales is hardly useful.
+    We write TODO applications to get a feel for the framework, and how it compares
+    to others. If we're unsure about which framework fits our style, a TODO application
+    is a good start.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Our goal is to implement something that scales well in response to influencers.
+    These are unique and unknown upfront. The best we can do is make predictions about
+    what scaling influencers we'll likely be hit with in the future. Based on these
+    likely influencers, and the nature of the application we're building, some frameworks
+    are better candidates than others. Frameworks help us scale, but they don't scale
+    for us.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Scaling a JavaScript application isn't the same as scaling other types of applications.
+    Although we can use JavaScript to create large-scale backend services, our concern
+    is with scaling the applications our users interact with in the browser. And there're
+    a number of influencers that guide our decision making process on producing an
+    architecture that scales.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We reviewed some of these influencers, and how they flow in a top-down fashion,
+    creating challenges unique to frontend JavaScript development. We examined the
+    effect of more users, more features, and more developers; we can see that there's
+    a lot to think about. While the browser is becoming a powerful platform, onto
+    which we're delivering our applications, it still has constraints not found on
+    other platforms.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Designing and implementing a scalable JavaScript application requires having
+    an architecture. What the software must ultimately do is just one input to that
+    design. The scaling influencers are key as well. From there, we address different
+    perspectives of the architecture under consideration. Things such as component
+    composition and responsiveness come into play when we talk about scale. These
+    are observable aspects of our architecture that are impacted by influencers of
+    scale.
+  prefs: []
+  type: TYPE_NORMAL
+- en: As these scaling factors change over time, we use architectural perspectives
+    as tools to modify our design, or the product to align with scaling challenges.
+    The focus of the next chapter will be to look into these scaling influencers in
+    more detail. Understanding them and putting together a checklist will empower
+    us to implement a JavaScript that scales in response to these events.
+  prefs: []
+  type: TYPE_NORMAL

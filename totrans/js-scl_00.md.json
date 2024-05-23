@@ -1,0 +1,1 @@
+["```js\n// Renders the sections of the view. Each section\n    // either has a renderer, or it doesn't. Either way,\n    // content is returned.\n    render() {\n```"]

@@ -1,0 +1,520 @@
+- en: Chapter 10. JSON on Mobile Platforms
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Mobile applications today are all the rage—devices like tablets and smart phones
+    are outselling PCs in many parts of the world. Powered by platforms such as iOS
+    and Android, these devices include APIs for creating and parsing JSON as part
+    of the platform, making your life as an application developer a little easier.
+    In this chapter are recipes for:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Parsing JSON on Android
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Generating JSON on Android
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Parsing JSON on iOS in Objective-C
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Generating JSON on iOS in Objective-C
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Parsing JSON on iOS using Swift
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Generating JSON on iOS using Swift
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Parsing JSON using Qt
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Generating JSON using Qt
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Introduction
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: As we discussed in previous chapters, JSON is an excellent medium to communicate
+    with web services and clients, whether the clients are web applications or traditional
+    applications. This is especially true for mobile applications, many of which run
+    over lower-bandwidth wide area networks, where JSON's brevity in comparison with
+    XML makes overall data payloads smaller, and thereby ensuring faster response
+    time for remote queries.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Today's leading mobile platforms are Android and iOS. Android, running a variant
+    of Linux, supports software development in Java and includes a JSON processor
+    in the `org.json` namespace. iOS, loosely derived from Mach and BSD, supports
+    software development using Objective-C, Swift, C, and C++, although for most application
+    development, you use Objective-C or Swift, each of which contains a binding to
+    the `NSJSONSerialization` class, which implements JSON parsing and JSON serialization.
+  prefs: []
+  type: TYPE_NORMAL
+- en: An additional option for mobile developers is to use a cross-platform toolkit,
+    such as Qt, for application development. Qt runs on a variety of platforms, including
+    Android, iOS, and BlackBerry. Qt defines the `QJsonDocument` and `QJsonObject`
+    classes, which you can use to interconvert between maps and JSON. Qt is an open
+    source framework that's been around for many years, and runs not just on mobile
+    platforms, but on Mac OS X, Windows, and Linux, as well as many other platforms.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The JSON we''ll discuss in the following sections is similar to what we''ve
+    been using in the past chapters and is a document that looks like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'In the discussions that follow, I assume that you''ve correctly set up the
+    software development environment for the platform you''re targeting. Describing
+    the process of setting up software environments for Android, iOS, and Qt would
+    take more space than this book allows. If you''re interested in developing software
+    for a specific mobile platform, you may want to consult the developer resources
+    for Android or iOS:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: You can find Apple's developer site for iOS developers at [https://developer.apple.com](https://developer.apple.com).
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: You can find Google's developer site for Android developers at [http://developer.android.com/index.html](http://developer.android.com/index.html).
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: You can find information about Qt at [http://www.qt.io](http://www.qt.io).
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Parsing JSON on Android
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Android provides the `JSONObject` class, which lets you represent the name-value
+    pairs of JSON documents through an interface that's conceptually similar to a
+    map, and includes serialization and deserialization through getter and setter
+    methods that access the named fields of a JSON object.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'You begin by initializing `JSONObject` with the JSON that you want to parse
+    and then use its various `get` methods to obtain the values of the JSON fields:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: How it works…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The `JSONObject` constructor takes the JSON to parse and provides accessor methods
+    to access the fields of the JSON. Here, we use the `getString` and `getDouble`
+    accessors to access the `call`, `lat`, and `lng` fields of the JSON respectively.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The `JSONObject` class defines the following accessors:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `get` method, which returns a subclass of `java.lang.Object` containing
+    the value in the named slot.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The `getBoolean` method, which returns a `Boolean` if the slot contains a `Boolean`.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The `getDouble` method, which returns a `double` if the slot contains a `double`.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The `getInt` method, which returns an `int` if the slot contains an `int`.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The `getJSONArray` method, which returns an instance of `JSONArray`, the JSON
+    parsing class that handles arrays, if the slot contains an array.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The `getJSONObject` method, which returns an instance of `JSONObject` if the
+    slot contains another map.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The `getLong` method, which returns a `long` if the slot contains a `long`.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The `getString` method, which returns a `String` if the slot contains a `String`.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The class also defines `has` and `isNull`. These take the name of a slot and
+    return `true` if there's a value in the field name, or if there's no field named
+    or the value is `null` respectively.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`JSONArray` is similar to `JSONObject`, except that it works with arrays and
+    not maps. It has the same getter methods, which take integer indices in the collection,
+    returning objects, Booleans, strings, numbers, and so forth.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: There's more…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The `JSONObject` class also defines the `keys` method, which returns `Iterator<String>`
+    of the keys in the JSON. You can also obtain `JSONArray` of the names in the JSON
+    by invoking `names` or the number of key-value pairs in the JSON by invoking `length`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: See also
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: For more information about `JSONObject`, see the Android documentation at [http://developer.android.com/reference/org/json/JSONObject.html](http://developer.android.com/reference/org/json/JSONObject.html).
+    For more information about `JSONArray`, see [http://developer.android.com/reference/org/json/JSONArray.html](http://developer.android.com/reference/org/json/JSONArray.html).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Generating JSON on Android
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: '`JSONObject` also supports setter methods to initialize data in a JSON map.
+    With these methods, you can assign data to a JSON object and then get the JSON
+    representation by invoking its `toString` method.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Here''s a simple example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: How it works…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The polymorphic put method can take an integer, long integer, object, Boolean,
+    or double, assigning the slot you name the value you specify.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `JSONObject` class defines the `toString` method, which takes an optional
+    number of spaces to indent nested structures for pretty-printed JSON. If you don't
+    pass this indent, or pass 0, the implementation encodes the JSON in as compact
+    a manner as possible.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There's more…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: There's also the `putOpt` method, which takes any subclass of `Object`, and
+    puts the value to the name if both the name and value are non-null.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'You can assign a slot an array of values by passing `JSONArray` or nest maps
+    by passing another `JSONObject` as the value to be set. `JSONArray` defines a
+    similar put method, which takes as a first argument the integer index into the
+    array, rather than a slot name. For example, with the data object from the previous
+    example, I could add an array of measured voltages at a station (maybe from the
+    radio''s battery) with the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'You can also put `java.util.Collection` and `java.util.Map` instances directly,
+    instead of passing `JSONArray` or `JSONObject` instances. The previous code might
+    also be written as:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: This makes life a little easier when constructing more complex JSON objects
+    because you needn't wrap every Java collection or map in a corresponding JSON
+    object.
+  prefs: []
+  type: TYPE_NORMAL
+- en: See also
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: For more information about `JSONObject`, see the Android documentation at [http://developer.android.com/reference/org/json/JSONObject.html](http://developer.android.com/reference/org/json/JSONObject.html).
+    For more information about `JSONArray`, see [http://developer.android.com/reference/org/json/JSONArray.html](http://developer.android.com/reference/org/json/JSONArray.html).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Parsing JSON on iOS in Objective-C
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Objective-C's class libraries define the `NSJSONSerialization` class, which
+    can serialize to and from JSON. It converts JSON to `NSDictionary` objects of
+    values, with the keys, the names of the slots in the JSON, and the values of their
+    JSON. It's available in iOS 5.0 and later.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Here''s a simple example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: How it works…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The `NSJSONSerialization` class has a method, `JSONObjectWithData:options:error`,
+    that takes an `NSString`, parsing options, and a place to record errors, and performs
+    JSON parsing. It can accept JSON whose top level is an array or dictionary, returning
+    an `NSArray` or `NSDictionary` result respectively. All values must be instances
+    of `NSString`, `NSNumber`, `NSArray`, `NSDictionary`, or `NSNull` respectively.
+    If the top-level object is an array, the method returns `NSArray`; otherwise,
+    it returns `NSDictionary`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There's more…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: By default, the data that this method returns is non-mutable. If you want mutable
+    data structures, instead, you can pass the option `NSJSONReadingMutableContainers`.
+    To parse top-level fields that are not arrays or dictionaries, pass the option
+    `NSJSONReadingAllowFragments`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: See also
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Apple's documentation for the class is at [https://developer.apple.com/library/ios/documentation/Foundation/Reference/NSJSONSerialization_Class/index.html](https://developer.apple.com/library/ios/documentation/Foundation/Reference/NSJSONSerialization_Class/index.html).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Generating JSON on iOS in Objective-C
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: You can also use the `NSJSONSerializer` class to serialize `NSDictionary` or
+    `NSArray`; simply use the `dataWithJSONObject` method.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Here''s a simple example assuming that data is `NSDictionary` you want to convert
+    to JSON:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: How it works…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The `dataWithJSONObject:options:error` method can take `NSArray` or `NSDictionary`
+    and returns an `NSData` blob with the encoded JSON of the collection you passed.
+    If you pass `kNilOptions`, the JSON will be encoded in a compact manner; for pretty-printed
+    JSON, pass the option `NSJSONWritingPrettyPrinted` instead.
+  prefs: []
+  type: TYPE_NORMAL
+- en: See also
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Apple's documentation for the `NSJSONSerialization` class is at [https://developer.apple.com/library/ios/documentation/Foundation/Reference/NSJSONSerialization_Class/index.html](https://developer.apple.com/library/ios/documentation/Foundation/Reference/NSJSONSerialization_Class/index.html).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Parsing JSON on iOS using Swift
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The same `NSJSONSerialization` class is available in Swift, Apple's new language
+    for iOS development.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Here''s an example of how to invoke the `JSONObjectWithData` method of `NSJSONSerialization`
+    in Swift:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: How it works…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Method invocations in Swift look like function invocations, with the arguments
+    passed as (optionally named) comma-delimited arguments, similar to how they're
+    invoked in C++ or Java. The arguments to `JSONObjectWithData` are identical to
+    the method arguments in the Objective-C version.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Generating JSON on iOS using Swift
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Of course, you can invoke the `NSJSONSerialization.dataWithJSONObject` method
+    from Swift, too, which returns an `NSData` object that you can then convert to
+    a string.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Here''s a simple example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: How it works…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The method `dataWithJSONObject` operates just as its Objective-C counterpart
+    does. Once we receive `NSData` containing the JSON-encoded version of the dictionary,
+    we convert it to `NSString` using the `NSString` constructor.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Parsing JSON using Qt
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The Qt implementation of JSON parsing is actually quite similar in its interface
+    to the Android version. Qt defines the `QJsonObject` and `QJsonArray` classes,
+    which can contain JSON maps and JSON arrays respectively. The parsing itself is
+    done by the `QJsonDocument` class, which has a static `fromJson` method that accepts
+    JSON and performs the necessary parsing.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Here''s a simple example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: How it works…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The parsing is two-step: first, the code parses the JSON using `QJsonDocument`
+    and then uses the resulting `QJsonObject` to access the data.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The `QJsonObject` class works as a map of `QJsonValue` objects, each of which
+    can be converted to their fundamental types using one of the following methods:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`toArray`: This method converts to `QJsonArray`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`toBool`: This method converts to a Boolean'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`toDouble`: This method converts to a double'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`toInt`: This method converts to an integer'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`toObject`: This method converts to another `QJsonObject`, letting you nest
+    maps of `QJsonObject`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`toString`: This method converts to `QString`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: There's more…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: You can also iterate over the keys in `QJsonObject` using either Qt's `foreach`
+    macro or the `begin`, `constBegin`, and `end` iteration methods. There's also
+    the contain method, which takes a name for a slot and returns true if the map
+    contains the slot you're looking for.
+  prefs: []
+  type: TYPE_NORMAL
+- en: See also
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: See Qt's documentation on JSON parsing at [http://doc.qt.io/qt-5/json.html](http://doc.qt.io/qt-5/json.html).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Generating JSON using Qt
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The `QJsonDocument` class also has the `toJson` method, which converts the object
+    it's referencing to JSON.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Here''s an example that converts from JSON and back to JSON, pretty-printing
+    the JSON along the way:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: How it works…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The `QJsonDocument` class has a method, `toJson`, which converts the document
+    or array it's referencing to JSON. You can ask for a pretty-printed version of
+    the JSON by passing `QJsonDocument::Indented`, or a compact version of the JSON
+    by passing `QJsonDcoument::Compact`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: See also
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: For more information on `QJsonDocument`, see the Qt documentation at [http://doc.qt.io/qt-5/qjsondocument.html](http://doc.qt.io/qt-5/qjsondocument.html).
+  prefs: []
+  type: TYPE_NORMAL

@@ -1,0 +1,787 @@
+- en: Chapter 8. Portability and Testing
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Web applications have come a long way from only a few years ago. Gone are the
+    days when JavaScript code was embedded, sort of as an afterthought, inside a webpage.
+    In today's web, we build JavaScript applications, and if you're reading this book,
+    applications that scale. This means our architecture needs to be designed with
+    portability in mind; the idea that the backend that serves our application and
+    feeds it data, is replaceable.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Along with portability comes the idea of testability. We can't make assumptions
+    about the backend when we're developing large scale JavaScript code, and that
+    means having the ability to run with no backend at all. This chapter looks at
+    these two closely related topics and what they mean for us in the face of changing
+    scaling influences.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Decoupling the backend
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: If we need any further motivation that JavaScript is no longer just for scriptable
+    web pages, look no further than NodeJS. It doesn't require the full browser environment,
+    just the V8 JavaScript engine. Node was created primarily as a backend server
+    environment, but it still serves as a great showcase for how far JavaScript as
+    a language has come. In the same vein, we want our code to be portable, running
+    with any backend infrastructure we can throw at it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this section, we'll look at the reasons why we want to loosen the coupling
+    between our frontend JavaScript code, and the APIs it talks to in the backend.
+    We'll then introduce the first steps to mocking APIs, negating the need for a
+    backend entirely.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Mocking the backend API
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: If we're developing a large scale JavaScript application, we'll have the beginnings
+    of a backend infrastructure. So why then, would we consider detaching our code
+    from that backend so that it no longer depends on it? It's always a good idea
+    to support loosely coupled components when striving for something that scales,
+    and that's true of the coupling between the frontend and backend environments
+    in a web application. Even if the backend API never changes, we can never assume
+    that the technologies and the frameworks used to build the API never will. There
+    are other benefits to loosening this dependency too—like the ability to update
+    the UI independently of the rest of the system. But the main scaling benefit to
+    mocking our backend APIs comes from the development and testing perspectives.
+    There's simply no substitute for being able throw together new API endpoints and
+    hammer them with requests. Mock APIs are the crash test dummies for our JavaScript
+    code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Like it or not, it sometimes feels like we're creating demo-ware—in the middle
+    of a development sprint, we have to show off what we have to an interested stakeholder.
+    Rather than letting this lead to despair, we'll gain confidence from our mock
+    data. Demoing is no longer a big deal, and with the confidence of our mocked data,
+    we'll start to view these events as little challenges for ourselves. Of course,
+    we always have to maintain the outward appearance of a heroic programmer—for management's
+    sake!
+  prefs: []
+  type: TYPE_NORMAL
+- en: Given how awesome mock data is, what are the downsides? Like anything else in
+    our product, it's a piece of software that has to be maintained—and that always
+    carries risk. For example, the mock API loses some of its value if it falls out
+    of sync with the actual API, or if it creates confusion between what's functional
+    in the UI versus what's mocked. To deal with these risks, we have to put processes
+    in place around how we design and implement our features, which we'll go over
+    here shortly.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Mocking the backend API](img/4639_08_01.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: The mock API sites outside of any component that communicates with the actual
+    API; when the mock is removed, the component doesn't know any better
+  prefs: []
+  type: TYPE_NORMAL
+- en: Frontend entry points
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Where does the seam of our frontend meet with the backend? This is where we'd
+    like to make the switch, between mock data and what's normally returned by the
+    API. The seam might actually be located behind the web server—in which case we're
+    still making real HTTP requests, just not interacting with the real application.
+    In the other case, we're mocking entirely within the web browser, where HTTP requests
+    are intercepted by the mocking library handlers before they ever leave the browser.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In both kinds of mocking, there's a conceptual seam between our frontend application—which
+    is what we're trying to establish. This is key, once we find it, because it represents
+    our independence from the backend. It's not that there's anything wrong with being
+    tightly coupled to the backend in production—that's what it's there for. In other
+    circumstances, such as during development, being able to orchestrate what happens
+    when our components send API requests is a crucial scaling tactic.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There's the possibility of creating mock data modules using models and collections
+    directly. For example, if we're running in mock mode, we would import this module
+    and we'd have mock data to work with. The problem with this approach is that our
+    application knows it's not really working with the backend. We don't want that.
+    Because we want our code to run as though it's running in a production environment.
+    Otherwise we're going to experience some side effects of manually instantiating
+    the mocks—it needs to be as far-removed from our actual code as possible.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Whichever mocking mechanism we decide to go with, it needs to be modular. In
+    other words, we need the ability to turn it off and take it out of the build entirely.
+    In production environments, there should be no mocks. In fact, our mocking code
+    shouldn't even be present in production builds. This is a little easier to achieve
+    if our mocks are served up by a web server. If our mock handlers reside in the
+    browser, we need to take them out somehow, which requires a build option of some
+    sort. There'll be more on build tools later on in the chapter.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Frontend entry points](img/4639_08_02.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Mocking API requests in the browser, intercept calls at the XHR level. If there's
+    mocking code there, it will look for mock APIs. When the mock is taken out, the
+    native HTTP requests function as usual.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Mocking tools
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: As mentioned in the preceding section, there're two main approaches to mocking
+    the backend API. The first approach involves bringing in a library such as Mockjax
+    into our application to intercept XHR requests. The second approach is having
+    a real HTTP server in place, but one that isn't actually touching the real application—it
+    serves up mock data the same way as the Mockjax approach.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The way Mockjax works is simple yet clever. It works under the assumption that
+    the application is using jQuery `ajax()` calls to make HTTP requests, which is
+    a fairly safe assumption since most frameworks use this under the hood. When Mockjax
+    is called, it overrides some core jQuery XHR functionality with its own. This
+    is run whenever an XHR request is made. It checks if there's a route spec that
+    matches the requested URI, and will run the handler if one is found. Otherwise,
+    it'll just pass through and attempt making a request to the backend—which is kind
+    of useful if we wanted to combine real API requests with mocked requests. We'll
+    dig into that combination later.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Any given handler can return JSON data, or any other format for that matter,
+    just as our real API would. The key is that our core code—our models and collections
+    that initiate the requests—know nothing about Mockjax because it's all happening
+    at a lower layer. The same model and collection code runs unmodified against the
+    production backend. All we have to do is *unplug* the module where Mockjax is
+    called when deploying against the real API.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We can achieve the same property—running unmodified code—using the mock web
+    server technique as well. It's actually the exact same idea as hijacking the XHR
+    requests, only done at another level. The main advantage being that we don't have
+    any special steps to take during deployment. It's either a mock server or a real
+    one, and in production environments, it's unlikely there's a mock server running.
+    The disadvantage is that we do need a server running, which isn't a lot to ask—it
+    is an added step though. And we do lose a little bit of portability. For example,
+    we can package up a mock build and send it to someone. If it doesn't require a
+    web server, the entire application can be demonstrated in the browser.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Mocking tools](img/4639_08_03.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Mocking APIs from the browser, or behind a web server; both approaches achieve
+    the same result–our code doesn't know it's talking to a mock.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Generating mock data sets
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Now that we know what the options are for declaring the mocked API endpoints,
+    we need data. Assuming our API is returning JSON data, we could store our mock
+    data in JSON files. For example, the mock module can pull in these JSON modules
+    as dependencies, and the mock handlers can use them as a data source. But where
+    does this data come from?
+  prefs: []
+  type: TYPE_NORMAL
+- en: As we start building mocks, there's most likely an API in existence, running
+    somewhere. Using our browser, we can look at the data returned by various API
+    endpoints and manually curate our mocked data. This process is a lot simpler if
+    the API is documented, because then we'll have a clue as to the allowable values
+    for any given field in any given entity. Sometimes we don't actually have a starting
+    point for the creation of our mock data—we'll go over that in the feature design
+    process section.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The advantage of manually creating our mock data sets like this is that we can
+    ensure that it is accurate. That is, we don't want to create something that's
+    not reflective of the data we're mocking, because that would defeat the whole
+    purpose. Not to mention the scaling bottleneck of keeping up with changes in the
+    API. What would be nice, is using a tool to automate the task of generating mock
+    data sets. It would just need to know the schema for a given entity and it could
+    take care of the rest, accepting a few arguments and throwing in some randomness
+    for good measure.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Another useful mock data generation tool would be something that extracts the
+    real API data from a given deployment, and stores them as JSON files. For instance,
+    say there's a staging environment where our code is showing signs of issues. We
+    could run our data extraction tool against that environment to get the mock data
+    we need. Since we want to leave the staging environment more or less intact, this
+    approach is safe since any damage we do to the mock data while diagnosing, is
+    in memory and easily wiped clean.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Performing actions
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: One challenging aspect of implementing mock APIs is performing actions. These
+    are requests other than GET, and usually need to change the state of some resource.
+    For example, changing the value of a resource property, or removing a resource
+    entirely. We need some common code that our handlers can leverage to perform these
+    actions, since our API endpoints should follow the same patterns when it comes
+    to performing actions on them.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How manageable this is to actually implement depends on the complexity of our
+    API action workflow. An easy to implement action would be modifying the property
+    value of a resource then returning `200` successful. However, our application
+    most likely has more complex workflows, such as long-running actions. For example,
+    these types of actions might return the ID of a newly created *action* resource,
+    and from there, we'll need to monitor the state of that action. Our frontend code
+    already does this, since that's what it needs to do with the real API—it's the
+    mock where we need to implement these subtleties of our application.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The actions can get quite messy, fast. Especially if the application is a large
+    one, with lots of entity types, and lots of actions. The idea is to strive for
+    the minimum viable success path for mocking these actions. Don't go into great
+    detail in trying to simulate, step by step, everything the application does—it
+    doesn't scale.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Feature design process
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: We're not creating mock APIs for the fun of it, we're creating them to aid in
+    the development of features. Given that we could have a rather large API, and
+    thus lots to mock, we need a process in place that somewhat governs the order
+    in which we do things. For example, do we need to wait for an API to be in place
+    before we go ahead and start implementing a feature? If we can mock the API, then
+    we shouldn't have to, but the API itself still needs to be designed, and there
+    are lots of API stakeholders.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this section we'll go over some of the necessary steps to ensure that we're
+    using mocks correctly, and in a way that scales alongside our feature development.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Designing the API
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Some API endpoints are generic enough to support multiple features. These are
+    the entities that are central to our application. Typically, there're a handful
+    of entities that play a vital role, and most features use them. On the other hand,
+    most new features we develop will require an expansion of our API. This could
+    mean one new API endpoint, or several. It's a question of how our backend resources
+    are composed, and this involves some level of design work.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The problem with trying to scale our feature development is that implementing
+    a new API could take a really long time. So if we need the API in place before
+    we start working on the frontend feature, we end up delaying the feature, which
+    isn't ideal. We want to start working on something while it's fresh. If something
+    sits in a backlog as a to-do, it often stays there forever. Having a mock API
+    in place for the proposed feature lets us get the ball rolling without delay,
+    which is crucial for scaling development.
+  prefs: []
+  type: TYPE_NORMAL
+- en: When we implement the mock of a new API endpoint, we enter greenfield design
+    territory. This means that we have to take into account the considerations of
+    those who may not necessarily do frontend development. And we may or may not touch
+    the actual implementation of the real API—it all depends on our team structure.
+    That said, whoever the subject matter experts are, they'll need transparent access
+    into the design of our proposed API. They can provide suggestions, changes, and
+    so on. There's no point in continuing down the path of the impossible. Another
+    approach might be to get a backend programmer to sketch out a possible API spec.
+    This is strictly big picture stuff; only the essential endpoints with minimal
+    properties and actions. The rest are details that can easily be changed in our
+    mocks and in our actual code after the fact.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Implementing features using mock APIs before the backend code is touched, can
+    help prevent costly mistakes. For example, let's say we implement some feature
+    in the frontend, using mock APIs, to the point where it's demonstrable. This gives
+    other engineers with specific backend domain knowledge an opportunity to call
+    out the infeasibility of the feature, and we get to avoid avoid making a costly
+    mistake in the future.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Designing the API](img/4639_08_04.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: The cycle of designing a mock API, and implementing features against it
+  prefs: []
+  type: TYPE_NORMAL
+- en: Implementing the mock
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Now that we've been tasked with implementing a feature, the first step is implementing
+    a mock API to support the development of our frontend code. As we saw in the preceding
+    section, we should be interacting closely with whoever will ultimately implement
+    the real API. The first step is to figure out what the API will look like at a
+    high level. The rest we can fine-tune as we move closer to having to implement
+    the real API.
+  prefs: []
+  type: TYPE_NORMAL
+- en: However, we don't always have to depend on the API team members for hand-holding
+    during the development of our mocks. We probably have some API endpoints, and
+    they're probably already used by some of our frontend components. That said, there's
+    probably a discernible pattern that we can follow, especially if the mock is just
+    another mundane entity type that we just happen to be missing. If we follow a
+    good pattern, then that's a good starting point because there's less chance of
+    radical changes later on.
+  prefs: []
+  type: TYPE_NORMAL
+- en: When we know what our mock API looks like, and what we can do with it, we need
+    to populate it with mock data. If we have tools in place that generate data for
+    other mocks, we need to figure out how to extend that. Or, we need to just manually
+    create some test entities to get started. We don't want to spend a lot of time
+    up-front entering data. We only need the minimum viable number of entities to
+    prove our approach is feasible.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: We might not always want to start off with the actual mock endpoint before creating
+    the data. Instead, we may want to work from the data upward—designing the right
+    entity rather than worrying about the mechanics of the API itself. This is because,
+    the data ultimately needs to be stored somewhere, which is an important activity.
+    Working on the data lets us work in a different mindset. Choose the approach that
+    best fits the task at hand.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The mocks we create aren't always creating something brand new. That is, the
+    API we're mocking may already exist, or the implementation of it is underway.
+    This actually makes the mock much easier to implement, because we can ask the
+    API author for sample data, or help in general, in order to build our mocks. Remember,
+    if we want to be portable, we have to be able to remove the frontend from the
+    backend, which means we'll need to mock the API in its entirety.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Implementing the feature
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Now that we have our mock API in place, it's time to profit. It's not all said
+    and done—the mock APIs are tweaked all the time. But it's enough for us to get
+    going with the real frontend code. And right away, we'll find problems. These
+    could be problems with the proposed API, or problems with the component that talks
+    to the API. We can't let these discourage us, because that's exactly what we're
+    looking for—early problem detection. You just don't get this without mock APIs.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If the API is generally acceptable, and our component code works, we could discover
+    performance bottlenecks in our design. This is especially easy to find if we have
+    tools that generate mock data for us, because it's nothing to generate 100,000
+    entities, and see what happens with our frontend code. Sometimes this is a quick
+    refactoring, other times it's a complete change in approach. The point is that
+    we need to find these issues earlier rather than later.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Something else we can do with mocks that's otherwise difficult is to demo often.
+    That's not easy to do when we're heavily dependent on a large backend environment
+    with lots of overhead. If it takes less than a couple minutes to get a feature
+    up and running for demonstration, we can confidently show off what we're doing.
+    Maybe it's wrong, maybe the stakeholders think of something they missed, having
+    seen their idea come to life. This is how mocks help us scale the feature development
+    life cycle through early and continuous feedback.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Implementing the feature](img/4639_08_05.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: The internals of a component under development, communicating with mock API
+    endpoints
+  prefs: []
+  type: TYPE_NORMAL
+- en: Reconciling mock data with API data
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: At this point, the feature is implemented, and how we reconcile the mock we've
+    created for our feature depends on the state of the real API. For example, if
+    we're just mocking something in the API that's been around for a while, then it's
+    safe to assume nothing needs to happen as long as there's high fidelity between
+    our mock and the real thing. However, if we're mocking a greenfield API, there's
+    a good chance that something will have changed, even subtly. It's important that
+    we capture these changes to make sure our existing mocks stay relevant in subsequent
+    releases.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This is the part of the mocking process that's tough to scale, and generally
+    unpleasant. There're so many different ways that our mocks can get out of sync
+    with what's in the real API, it's daunting to even try to keep up. If we have
+    tools for generating mocks, it's a lot easier. We might even be able to generate
+    the entire API based on specs the API team creates. But this is problematic too,
+    because while the mock generation can be automated, the specs themselves need
+    to be created, somewhere, somehow. So it might be best to implement a tool that
+    can generate mock data, but have our own code process requests. As long as we
+    don't repeat ourselves too much, and the API has a decent pattern, we should be
+    able to keep up with our mocks.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Another possibility is turning off certain mock API endpoints while leaving
+    others on. Think of it as a sort of pass through—where the granularity of mock
+    endpoints can be specified, instead of only being able to toggle the entire mock
+    API. For example, this capability could come in handy if we're trying to troubleshoot
+    a specific problem in our application, and we'll need to coax certain API endpoints
+    to return specific responses in order to replicate the problem. We can do this
+    in libraries such as Mockjax, because requests that don't match a request path
+    spec are just forwarded on to the native XHR mechanism.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Reconciling mock data with API data](img/4639_08_06.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: One component uses a mock API, while another uses the actual API
+  prefs: []
+  type: TYPE_NORMAL
+- en: Unit testing tools
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: It's time to turn our attention to testing, having covered the basics of mocking
+    API endpoints at scale. Our ability to mock APIs is highly relevant to testing
+    our code, because we can test against those same mocks, or at least the same data.
+    This means that if our tests fail, we can start interacting with the UI if we
+    need to, using the same data that failed the test, trying to figure out what's
+    happening.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We'll look into using the unit testing tools that ship with JavaScript frameworks,
+    and figure out where their value lies. We'll also look at using more generic standalone
+    testing frameworks that run with any code. We'll close out the section with a
+    look at how our tests can be automated, and how this automation fits into our
+    development workflow.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tools built into frameworks
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: If we're using one of the larger, all-encompassing JavaScript application frameworks,
+    there's a good chance that it will ship with some unit testing tools. These aren't
+    meant to replace the existing unit testing tools that are framework-agnostic.
+    Rather, they're meant to augment them—providing specific support for writing tests
+    in the flavor of the framework.
+  prefs: []
+  type: TYPE_NORMAL
+- en: What that ultimately means for us is writing less unit test code. If we're following
+    the patterns of the framework, then there're lots of unit testing tools that already
+    know about our code. For example, if it already knows the types of components
+    we'll be using to implement our features, then it can stub out tests for us. This
+    is a huge help, not having to repeat ourselves, and it leads to us ultimately
+    getting more test coverage on our code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In addition to generating the skeleton of our tests for us, framework testing
+    facilities can provide utility functions for us to use within our tests. This
+    means less unit test code for us to maintain, and this is only possible because
+    the framework knows what kinds of things we'll want to do within our tests, and
+    can abstract them out for us in the form of utility functions.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The challenge with relying on framework-specific testing tools is that we'll
+    be coupling our product with a specific framework. This is unlikely to be a problem
+    for us, because once a framework is chosen, we're going to stick with it, right?
+    Well, not necessarily. Not in today's tumultuous JavaScript ecosystem. Part of
+    being portable requires a level of agility in our architecture, meaning we have
+    to be adaptable to change. This is perhaps why more of today's projects rely less
+    on mega frameworks and more on a composition of libraries.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Tools built into frameworks](img/4639_08_07.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Unit test is tightly coupled to components and unit testing tools from the framework
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: There's a lot of asynchronous code in large-scale JavaScript applications, and
+    this async code shouldn't be ignored by our unit tests. For example, we need to
+    make sure that our model units are able to fetch data and perform actions. These
+    types of functions return promises, and we want to ensure that they resolve or
+    fail as expected.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This is much easier to achieve with a mock API in place. Using either the in-browser
+    approach or the web server approach is fine, because our code still treats them
+    as real asynchronous operations. Something else we might consider mocking is a
+    web socket connection. This is a little trickier to do in the browser because
+    we have to override the built-in web socket class. We can use a real web socket
+    connection to test with if our mock sits behind a web server.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Either way, mocking web sockets is difficult, because we have to mock the logic
+    that triggers web socket messages in response to something else happening, such
+    as an API action. However, we still might want to consider mocking web sockets
+    after we have more basic test coverage, because if our application depends on
+    them, it's important to automate tests for them.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Standalone unit testing tools
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Another approach to unit testing tools is to use a stand-alone framework. That
+    is, a unit testing tool that doesn't care which JavaScript application framework
+    or libraries we're using. Jasmine is the standard for this purpose, as it provides
+    a clean and concise way for us to declare test specifications. Out-of-the-box,
+    it has a test runner that works in the browser, which gives us nicely formatted
+    output for tests that pass, and tests that fail.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Most other stand-alone unit testing facilities use Jasmine as their base, and
+    extend it to provide additional capabilities. For example, there's the Jest project,
+    which is essentially Jasmine with additional capabilities such as module loading
+    and mocks built-in. Again, something like this is framework-agnostic; it's focused
+    purely on the tests. Using these types of stand-alone tools for unit testing is
+    a good portability tactic, because it means that should we decide to move to different
+    technologies in our code, our tests will still be valid and can actually help
+    make the transition run smoothly.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Jasmine isn't the only game in town, it's simply the most generic and gives
+    us a lot of freedom in how we structure our tests. Qunit, for instance, has been
+    around for a long time. It's applicable to any framework, but was originally conceived
+    as a testing tool for jQuery projects. We might even want to roll our own testing
+    tools, should we feel that the available testing tools are too heavy, and don't
+    give us the kind of flexibility or the kind of output our project needs. Something
+    we probably don't want to write ourselves is a test runner. Our unit tests aren't
+    run haphazardly, whenever we feel like it. They're often part of a large chain
+    of tasks we want to automate.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Some code is more testable than other code. This simply means that depending
+    on how our components are structured, it may be easy to break them down into testable
+    units, or it could be difficult. For example, code with a lot of moving parts,
+    and a lot of side effects means that we have to write a relatively large suite
+    of tests for this component if we want decent test coverage on it. If our code
+    is loosely coupled, with relatively few side effects, it will be much easier to
+    write tests for.
+  prefs: []
+  type: TYPE_NORMAL
+- en: While we want to strive for testable code, to make the process of writing unit
+    tests easier, it isn't always possible. So if it means sacrificing coverage, sometimes
+    that's the better option. We want to avoid re-writing code, or worse, changing
+    around the architecture we're happy with, for the sake of writing more tests.
+    We should only do this if we feel that our component is sufficiently large that
+    it deserves more test coverage. If it gets to this point, we should probably re-think
+    our design anyway. Good code is naturally easy to test.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Toolchains and automation
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: As our application grows more large and complex, a lot needs to happen "offline",
+    as part of the ongoing development process. Running unit tests is just one task
+    we want to automate. For example, before we even run our tests, we'll probably
+    want to use a tool that lints our code to ensure we're not committing anything
+    too sloppy. After the tests pass, we might need to build our component artifacts,
+    so they can be used by a running instance of our application. If we're generating
+    mock data, this might also be part of the same process.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Collectively, we have a toolchain that can automate all of these tasks for us.
+    These tasks are often smaller steps in a larger, more coarse-grained task, like
+    *build production* or *build develop*. Larger tasks are just a composition of
+    smaller tasks, as defined by us. This is a flexible approach because the **toolchain**
+    can handle the sequence of tasks, in the order they need to happen, or, we can
+    just run tasks piecemeal. For instance, we might only want to run tests.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The most popular toolchain is a task runner called Grunt. Other similar tools,
+    such as Gulp, are gaining traction too. What's nice about these tools is that
+    they have a thriving ecosystem of plugins that do much of what we need—we just
+    need to configure the individual tasks that use these plugins, and the larger
+    tasks that we want to compose. It takes very little effort on our part to setup
+    a toolchain that can automate much of our development process—pretty much everything
+    aside from writing the code itself. Without toolchains, it ranges from very difficult
+    to impossible, to scale our development efforts to more than just a few contributors.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Another bonus of using toolchains for automated tasks is that we can change
+    the type of artifacts we're building on-the-fly. For example, when we're right
+    in the middle of developing a feature, we won't necessarily want to build the
+    production artifacts with every change. Doing so can really slow us down, in fact.
+    It's better if our tools can just deploy the raw source modules, which can also
+    make debugging a lot easier too. Then when we're closer to being done, we start
+    with the production builds, and test against those. Our unit tests can run against
+    both the raw source code and the resulting artifact builds—because we never know
+    what can be introduced after compilation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Testing mock scenarios
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The more our application scales, the more scenarios it'll have to deal with.
+    This is the result of more users using more features, and all the ensuing complexity
+    our code has to handle. Having mock data and unit tests can really help put these
+    scenarios to the test. In this section, we'll go over some of the options available
+    to us for creating these mock scenarios and then testing them, both with our unit
+    tests and by interacting with the system as a user.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Mock APIs and test fixtures
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Mock data is valuable to us for many reasons, one of which is unit tests. If
+    we're mocking the API, we can run our unit tests as though our code is hitting
+    a real API. We have fine-grained control over individual data points in our mock
+    data, and we're free to change it how we see fit—it's sandboxed data, it has no
+    negative effect on the outside world. Even if we're generating our mock data using
+    a tool, we can get in there and shuffle things about.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Some unit testing tools accept fixtures, data used for the sole purpose of running
+    the tests. This isn't all that different from the data we would use with an API
+    mocking tool like Mockjax. The main difference is that fixtures aren't much use
+    to us outside of the unit testing framework that consumes them.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Well, what if we could use it for both testing and mocking? For instance, say
+    that we want to utilize the fixture data capabilities of our unit testing framework.
+    It's got some automated features that we couldn't use if we didn't feed it fixture
+    data. On the other hand, we also want to mock the API for development purposes,
+    interacting with the feature, detachment from the backend, and so on. There's
+    nothing stopping us from feeding the fixture data into both the unit tests, and
+    into the API mocks. That way, we could use any mock data generators we've created
+    to generate scenarios that are shared by our tests, and by the user interactions
+    in the browser.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Mock APIs and test fixtures](img/4639_08_08.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Unit tests can hit the mock API with requests, or use fixture data directly;
+    if the mock API serves the same data, then it's easier to figure out what's wrong
+    with failed tests
+  prefs: []
+  type: TYPE_NORMAL
+- en: Scenario generation tools
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Over time we'll accumulate new features and more scenarios in which our customers
+    will use those features. Therefore, it would be immensely helpful to have, as
+    part of our toolchain, a utility for generating mock data. Taking things a step
+    further, this utility could accept arguments for generating mocks. These could
+    be simply course-grained arguments, but that's usually all we need to turn randomly
+    generated mock data into a curated scenario we need.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The individual mock scenarios we'll generate won't vary a great deal from one
+    another. That's kind of the point—we need something that serves as a baseline,
+    so that if we do make interesting discoveries about our scenarios, we can ask—*what's
+    different about this data?* If we do start generating lots of scenarios because
+    we have a tool that enables us to do so, we need to make sure we do in fact have
+    a "gold" mock data set—which is something that we know works as expected.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The types of changes we would need to make to the gold mock data are things
+    like changing the number of entities in a collection. For example, let's say we
+    wanted to see how something performs on a given page. So we create a million mock
+    entities, and see what happens. The page breaks entirely—further investigation
+    reveals a `reduce()` function that tries to sum a number greater than the maximum
+    safe integer. Scenarios can reveal interesting bugs like this. Even if the scenario
+    we're using is far fetched and unlikely to occur in production, we should still
+    fix the bug because other less extreme scenarios could certainly trigger it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Scenario generation tools](img/4639_08_09.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Changing the scenario can cause our tests to fail; usually we create scaling
+    scenarios to see where our code falls apart
+  prefs: []
+  type: TYPE_NORMAL
+- en: There's a huge number of possibilities we could simulate. For example, we could
+    mangle some of the data by deleting properties from entities, ensuring that our
+    frontend components have sane defaults for things it expects, or that it fails
+    gracefully. This latter point is actually really important. As we scale our JavaScript
+    code, there're more and more scenarios that we cannot fix, and we just have to
+    make sure our failure mode is acceptable.
+  prefs: []
+  type: TYPE_NORMAL
+- en: End-to-end tests and continuous integration
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The final piece of the puzzle is putting together end-to-end tests for our feature,
+    and hooking it into our continuous integration process. Unit tests are one thing,
+    they leave us confident that our components are solid—when they pass. Users don't
+    care about unit tests, end-to-end tests serve as a proxy for our users that interact
+    with our UI. For instance, there's probably a set of use cases embedded within
+    the requirements of any given feature we implement. The end-to-end tests should
+    be designed around these.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tools like Selenium make automating end-to-end tests possible. They record the
+    test as a set of steps we perform as a user. Those same steps can then be repeated
+    whenever we tell it to. For example, an end-to-end test might involve the creation,
+    modification, and deletion of a resource. The tool knows what to look for in the
+    UI as a success path. When this doesn't happen, we know the test has failed, and
+    there's something we need to go fix. Automating these types of tests is essential
+    to scaling, as the number of ways users can interact with our application grows
+    as we add features.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We can look to our toolchain for help here once more, since it's already automating
+    all our other tasks, it should probably automate our end-to-end tests as well.
+    The toolchain is essential for our continuous integration process as well. We'll
+    probably share a CI server that builds other aspects of our system as well, only
+    they're done differently. The toolchain makes it easy for us to integrate with
+    a CI process, because we simply need to script the appropriate toolchain commands.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Having mock data in place can help us run end-to-end tests, because if the tool
+    is going to behave as a user would, it's going to have to make backend API requests.
+    This gets us consistency, and helps us rule out the tests themselves as being
+    problem sources. With mock APIs, we can develop unit tests, and end-to-end test
+    against the same source.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![End-to-end tests and continuous integration](img/4639_08_10.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: The toolchain, the mock data, and our tests, all running in a CI environment;
+    the code we're developing is the input
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: This chapter introduced the concept of portability in frontend JavaScript applications.
+    Portability in this context means not being tightly coupled with the backend.
+    The main advantage of being portable means that we can treat our UI as its own
+    application, it doesn't require any specific backend technologies to be in place.
+  prefs: []
+  type: TYPE_NORMAL
+- en: To help our frontend achieve independence, we can mock the backend API it depends
+    on. Mocking also lets us focus strictly on UI development—eliminating the possibility
+    of backend issues from hindering our development.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Mocks can help us test our code as well. There're a number of unit testing libraries,
+    each with their own approach, that we can utilize. If we're using the same mock
+    data to run our tests, then we can rule out inconsistencies with what we see in
+    the browser. Our tests need to be automated, alongside several other tasks that
+    take place as part of our development process.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The toolchain we implement fits in nicely with a continuous integration server—an
+    essential scaling tool. This is also where end-to-end tests are automated, which
+    gives us a better idea of what the user will encounter when they use our software.
+    Now it's time to switch gears and take a hard look at the limits of scaling our
+    application. We can't scale up infinitely, and the next chapter will look at how
+    to avoid hitting a wall, as we scale beyond a certain size.
+  prefs: []
+  type: TYPE_NORMAL

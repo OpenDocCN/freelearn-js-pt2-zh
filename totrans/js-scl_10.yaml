@@ -1,0 +1,958 @@
+- en: Chapter 10. Coping with Failure
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: At this point in the book, we would like to think that our architecture is sound.
+    We've thought about scale, and made all the appropriate trade-offs, sacrificing
+    performance for configurability, and so on. The one aspect of scalable JavaScript
+    architectures we have yet to go into any depth on is the human factor. As smart
+    as we are, we're the weakest link because we design the application and write
+    the code—and we're really good at making subtle mistakes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Until we're taken out of the software development equation completely, we have
+    to design our components with failure in mind. This involves thinking about the
+    failure modes—do we fail fast, or do we try to recover from the error? It involves
+    thinking about the quality of our errors—some errors are easier to work with than
+    others. But it's also about understanding our limitations; we can't feasibly detect
+    and recover from every conceivable error.
+  prefs: []
+  type: TYPE_NORMAL
+- en: As we scale our application, the approaches of how we deal with failures need
+    to scale too. This is yet another trade-off we need to make amongst the many other
+    scaling influences. Let's start by looking at the fail-fast failure mode.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Failing fast
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Systems or components that fail-fast, stop running when they fail. This may
+    not sound like a desirable design trait, but consider the alternative: a system
+    or a component that fails, but then continues to run anyway. These components
+    could be running in an erroneous state, whereas, that''s not possible if the system
+    or component halts.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: There are times where we'll want to recover a failed component, and we'll get
+    into that topic later on in the chapter. In this section, we'll go over some of
+    the criteria used in determining whether a JavaScript component should fail fast,
+    and what the consequences are for the user. Sometimes, even our fail-fast mechanisms
+    fail us, which we also need to consider.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using quality constraints
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: When our components fail-fast, it's usually due to a known error state. On the
+    other hand, something completely unexpected could happen. In either case, it's
+    likely to leave our component in a bad state, and we don't want the application
+    to carry on like everything is fine. Let's focus on failing-fast when quality
+    constraints aren't met. These are assertions about how our application behaves.
+    For example, we shouldn't try sending API requests more than three times; we wouldn't
+    wait more than 30 seconds for a response—this property of a model should always
+    have a non-empty string, and so on.
+  prefs: []
+  type: TYPE_NORMAL
+- en: When these assertions prove false, it's time to stop executing—either the one
+    component, or the whole system. It's not as though we're doing this to annoy the
+    user. Like any failure, we hope they happen as infrequently as possible. Think
+    of failing-fast as the airbags deploying in a car accident—when that happens,
+    our car is no longer drivable.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The decision to make a component or the system as a whole fail fast under certain
+    conditions shouldn't be taken lightly. For example, if we fail fast in one place
+    because a feature team implemented it thusly, for reasons unknown to other teams,
+    the whole application starts to fail. Meanwhile, it turns out that this is by
+    design, and is expected behavior. There needs to be strict rationale for this
+    failure mode. What really helps with discussion around fail-fast scenarios are
+    the catastrophic results that could potentially happen if the application were
+    to continue on undeterred.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Using quality constraints](img/4639_10_01.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Constraints that when violated, cause the component to fail-fast, possibly causing
+    the whole application to fail fast
+  prefs: []
+  type: TYPE_NORMAL
+- en: Providing meaningful feedback
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We don't want to give users, or other members of our development team the wrong
+    idea about why our software isn't running under certain scenarios. This means
+    that we have to distinguish between failing-fast, and total uncontrolled failure.
+    The latter is something that breaks our application, and may cause the browser
+    tab to crash. Or worse, it's still alive, crawling around on the floor, giving
+    the user the impression that it still kind of works, doing harm all the while.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This means that when we fail fast, we have to make it glaringly obvious to the
+    user that something has stopped working, and they shouldn't continue using it.
+    Whether it's a single component that failed or the entire application, we have
+    to make the messaging clear and concise. The user doesn't always need to know
+    what went wrong; they just need to know that the component or the application
+    is currently broken, and anything they do, will not work.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This is actually an important consequence of introducing fail-fast into our
+    architecture—we get responsiveness under certain conditions. We never leave the
+    user guessing. Sure, it's annoying to have broken software in front of us, but
+    not as annoying as waiting, trying, and waiting some more, to find out it's broken.
+    With a clear message stating that the application isn't working, or parts of it
+    aren't, we may want to physically prevent the user front interacting with it.
+    For example, by throwing a `div` overlay on top of the elements or by turning
+    off the DOM event handlers.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Next is an example that shows two error handlers. The first implicitly handles
+    the error by disabling the button. The other callback does the same thing, but
+    also explicitly displays an error message:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: When we can't fail fast...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We can design fail-fast mechanisms into our components. What we can't do is
+    guarantee that these mechanisms themselves won't fail. That is, the code we write
+    to protect us from ourselves is written by us. And so on, and so on. We could
+    keep writing layer after layer of error handling code that fails fast and gracefully
+    when there's a failure in the layer beneath it. But to what end?
+  prefs: []
+  type: TYPE_NORMAL
+- en: Understanding that we can't always fail predictably is part of the scaling challenge
+    we face. Because, at some point, we have to focus on the features we're actually
+    trying to provide, and not the scaffolding that keeps it up. Extraneous failure
+    handling code doesn't make our product any better, it just adds bulk in the form
+    of code. If we try to stay focused on the features we're building, the obvious
+    cases where we want to fail fast will reveal themselves.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The problem with failure detection code is that it needs to scale with the rest
+    of our application, with the external scaling influencers guiding its evolution.
+    For example, more users mean more demand on the backend. This means there's a
+    very real possibility that our failure detection code will never arrive—how do
+    we account for this scenario? We don't. Because trying to solve problems like
+    these, doesn't scale. Trying to prevent them from happening in the first place
+    is a more fruitful endeavor.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Fault tolerance
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Systems that are fault-tolerant have the ability to survive a malfunctioning
+    component. This is done by either correcting the error in the component, or by
+    replacing the defective one with a new instance. Think of fault tolerance as an
+    airplane with the ability to land using only one engine—the passengers are our
+    users.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Typically, we hear about fault tolerance in the context of large scale server
+    environments. It's a viable concept in frontend development too, given sufficient
+    complexity. In this section, we'll start off by thinking about how to classify
+    components into critical versus noncritical components. Then we'll move on to
+    detecting errors, and how to go about handling the error so that the application
+    can continue to function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Classifying critical behavior
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Just like there're critical sections of code that can't be interrupted, by another
+    thread for example, there're components that can't fail gracefully in our application.
+    Some components just have to work, no matter what, and if they don't, then they
+    need to fail-fast to avoid causing further damage. This is why we need to classify
+    our components as such. While it may seem obvious that a given component has to
+    be functioning as expected, it makes sense to consistently classify them somehow.
+    It's a good idea to socialize ideas like this throughout the organization.
+  prefs: []
+  type: TYPE_NORMAL
+- en: When we know which components are critical, we know that they just have to work,
+    and there's no conceivable situation from which they'll need to recover. If these
+    components fail, there's a bug that needs to be fixed. We can also target these
+    critical components more heavily with unit tests.
+  prefs: []
+  type: TYPE_NORMAL
+- en: It's not a good idea to have tiers of criticality for components. For example,
+    a level for components that are absolutely critical, and the next level of components
+    that are not critical but too important to be deemed regular, and so on—it defeats
+    the purpose. We can either survive without the component, or we can't. That kind
+    of simplicity lets us divide our components into two categories, and labeling
+    them is much more straightforward than tiring them. Anything that's not critical
+    has the potential to tolerate failures, and so we can start thinking about the
+    failure detection and recovery design of these components.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Classifying critical behavior](img/4639_10_02.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Critical components, versus other components that are tolerant of errors
+  prefs: []
+  type: TYPE_NORMAL
+- en: Detecting and containing errant behavior
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Our components should be decoupled from one another, if we're designing an architecture
+    that scales well. Part of that decoupling is errors. Errors that cause one component
+    to fail, should never cause another component to fail. If we can adopt that mantra,
+    everything else becomes simpler. Because if one component fails, we can say with
+    confidence that the failure wasn't caused by another component. From there, it's
+    substantially more straightforward to figure out the cause and deliver a solution.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Decoupling errors in one component from other components is much simpler to
+    do if we have something like an event broker in place. If all inter-component
+    communication is brokered, then that's a good place to implement a mechanism to
+    detect errors and prevent them from propagating to other components. For example,
+    if one component receives an event and runs a callback function that fails, it
+    could have side effects across the entire application, possibly even causing it
+    to fail entirely.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Instead the event broker would detect this error, an exception thrown for example,
+    or an error state code returned by the callback function. In the case of the exception,
+    it doesn't find its way up the **call stack**, because it's caught. The next handlers
+    in the event queue can then receive information about the failed handler—so they
+    can decide what to do, perhaps nothing. What's important is that the error is
+    contained, and its occurrence is communicated to other components.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Following is an example that shows an event broker that''s capable of detecting
+    errors and forwarding them on to the next callback for the event:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: '![Detecting and containing errant behavior](img/4639_10_03.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Containing errors means that errors emitted by one component can't affect other
+    components
+  prefs: []
+  type: TYPE_NORMAL
+- en: Disabling defective components
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: When we fail-fast for the entire application, it's because we're trying to avoid
+    worse problems from materializing. But, what if there's a problem with a component
+    that's completely decoupled from the rest of the components in the system? We
+    can try to recover from the failure, but that's not always possible—if there's
+    a bug, the only recovery option is to patch the code. In the meantime, we could
+    disable the component when recovery isn't an option.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Doing this serves two purposes. First, there's less chance of the errant component
+    spreading its problems around the system. Second, disabling the component, or
+    hiding it completely, prevents any user interaction. This means that there's less
+    chance of the user repeatedly retrying things that eventually lead to other bugs.
+    It shouldn't, because the component is isolated, but still—we don't always know
+    where our design is flawed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: With the problematic component out of the way, we can take some solace in that
+    the user isn't completely out of luck. It's just that there is one aspect of the
+    system that they can't interact with. This gives us a little bit of time to diagnose
+    the issues and patch the problematic component.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The design question is—who is responsible for disabling the component—is it
+    the component itself, or is it the responsibility of some core component that
+    detects the problem? On the one hand, the component turning itself off is a good
+    idea because there may be several steps involved in shutting down safely, so as
+    to keep the rest of the components running smoothly. On the other hand, having
+    something like the event broker shut down problematic components when it encounters
+    them keeps the error handling in one place. The approach we take really depends
+    on the simplest possible solution. If the event broker can safely do this, then
+    that's probably the best bet.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Disabling defective components](img/4639_10_04.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Disabled components don't interact with the rest of the system, which decreases
+    the likelihood of the problematic component causing problems
+  prefs: []
+  type: TYPE_NORMAL
+- en: Gracefully degrading functionality
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Disabling components when an error is detected is one thing. It's another thing
+    to handle a failed component and gracefully remove it from the UI. As much as
+    we strive to keep our components loosely coupled with one another, it's a different
+    problem entirely when it comes to the DOM. For example, can we actually remove
+    the DOM elements of a failed component without disrupting the surrounding elements?
+    Or are we better off leaving the elements where they are, but disabling them visually
+    and turning off any JavaScript event handlers?
+  prefs: []
+  type: TYPE_NORMAL
+- en: The approach we take depends on what we're building, that is, the nature of
+    our application. Some applications make it easy to add and remove features, due
+    in part to the composition of our components, but also the general layout of the
+    UI. Avoid thinking that the visual design is just a skin that's detachable from
+    the rest of the application without consequence. In theory, it should be decoupled
+    from the rest of the system, but in practice this notion doesn't scale. If we
+    want to scale, the layout of our elements on the page is relevant, for reasons
+    like failed components, and our ability to disable or remove them without side
+    effects in other places.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We should think of dealing with failed components as shutting them down, because
+    there are usually actions that need to happen—so we can gracefully degrade the
+    user experience. Rarely does the whole feature fail—it's one component, like a
+    router, that causes a feature to be nonfunctional. So, if we turn off the router
+    handlers for a given component, we'll need to turn off other components in order
+    to remove the feature from the UI, and display error messages for the user, and
+    so on. These shutdown semantics need to be considered and tested for any given
+    feature we build. It's not the feature itself we're trying to protect; rather,
+    we're protecting the rest of the system from the feature should it go rogue.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Gracefully degrading functionality](img/4639_10_05.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: A collection component failed, causing the feature as a whole to go out of service;
+    but the application as a whole is still functional
+  prefs: []
+  type: TYPE_NORMAL
+- en: Failure recovery
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In the preceding section, we started to think about fault tolerance in our frontend
+    code. That is, our application needs to survive the loss of a failed component—at
+    least in the short term. But what if there are certain kinds of errors that we
+    can recover from? So instead of shutting down the component after detecting the
+    error, we would take some alternative course of action; one that would still satisfy
+    the user.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this section, we'll look at the various ways our components can recover from
+    failed operations. For example, we can retry an operation, or we could flush out
+    the bad state of a component by restarting it. Sometimes, it makes sense to get
+    input from the user on how they wish to proceed during a recovery effort.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Retrying failed operations
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: If our component executes an operation that fails, it can retry the operation.
+    The operation doesn't even have to be an integral part of the component. But since
+    the component depends on this operation, if it fails, then so does the component.
+    For example, a backend API call can fail, leaving our component that made the
+    call in an uncertain state. API calls are good candidates for retrying in the
+    event of failure.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Whether it''s an API call we''re retrying, or an operation concerning another
+    component, we have to make sure that it''s **idempotent**. This means that *after*
+    the initial operation call, subsequent calls have no side effects. Calling the
+    operation several times in succession will not have a negative impact elsewhere
+    in the system, in other words. Fetch requests—requests that ask the API for data
+    without changing the state of any backend resources—are good candidates for retries.
+    For example, if our fetch request fails because the backend is taking too long,
+    possibly due to competing requests from other users, we could try the request
+    again and get an immediate result. We may not want to continue waiting, but we''re
+    safe to retry should we decide to. Next is an example that shows a model that
+    will retry failed fetch attempts:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: We have to be aware of the types of operations we're performing, and the types
+    of failures we're receiving. For example, submitting a form that creates a new
+    resource can fail in a number of ways. If we were to attempt this operation, and
+    it returned a 503 error, we'd know that it's safe to retry—because no resources
+    in the back-end were actually touched. On the other hand, we could get a 500—meaning
+    that we have no idea what took place in the backend.
+  prefs: []
+  type: TYPE_NORMAL
+- en: With fetch requests, we don't necessarily need to worry about the type of failure
+    as much because we're not changing the state of anything. This means that before
+    retrying an operation, we need to consider the type of operation, and if it modifies
+    resources, the type of error response.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Restarting components
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Components usually have a lifecycle—startup, shutdown, and several phases of
+    existence in between, depending on the type of component. Usually, this lifecycle
+    needs to be kicked-off by whatever creates the component. As the component moves
+    throughout its lifecycle, it changes its internal state. This state could potentially
+    be the source of failures seen later on with the component.
+  prefs: []
+  type: TYPE_NORMAL
+- en: For example, if a component is in a *busy* state, and doesn't process any external
+    requests coming from outside components, then we're likely to see issues elsewhere
+    in the system. Maybe the component is legitimately busy, or maybe something else
+    happened to get it stuck in that state erroneously. If that's that case, then
+    maybe restarting the lifecycle over again would be enough to resolve any issues
+    and get the component in a running state, able to process external requests again.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Essentially, restarting a component is a last-ditch effort to recover from an
+    error. It means that we don't know what's wrong with the component, only that
+    something's not working, and it's wreaking havoc throughout the application. The
+    main complication with restarting components when there's a problem, is that once
+    we've flushed out the bad internal state, the component still needs to pick up
+    where it left off. For instance, if we have a component with a collection that's
+    fetched from the backend, and we restart it, due to problems with the state of
+    the component, then it needs to fetch that collection again.
+  prefs: []
+  type: TYPE_NORMAL
+- en: So before we start designing restart functionality into our components, we need
+    to consider several things. First of all, how do we know when to restart a component?
+    That's generally an application-specific decision to make, but they're mostly
+    centered around edge cases where the component is failing. If there's a bug, then
+    restarting it isn't likely to help, but it also doesn't hurt to try. The other
+    aspect is the restoration of the data source—not the internal state, but the source
+    of the data this application uses. These are two separate things—the internal
+    state is something that's *computed* by the component, and the data is an external
+    source that's *supplied* as input.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We don't want to implement the component restart capability as a mechanism that
+    masks other problems with our code. It's just a good way to think about designing
+    our components. It forces us to think about the various ways the component might
+    get tossed around in the environment. Even just asking the question is worthwhile—what
+    would happen if I restarted this component, or replaced it with a new instance
+    at runtime? We may never actually do these things, and it may not be feasible
+    even if we wanted to. However, going through the exercise means that we'll start
+    designing our components to be more resilient in these scenarios.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Restarting components](img/4639_10_06.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: A very high-level view of a component's state cycle
+  prefs: []
+  type: TYPE_NORMAL
+- en: Manual user intervention
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: If the component that's causing problems is capable of restarting itself, in
+    an effort to rid itself of error states, then we might want to give the user some
+    control over when this happens. For example, if a component generates an error,
+    then we could disable the feature, telling the user that something went wrong
+    with the feature, and ask them if they would like to reload the feature.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The same approach can be taken with retrying failed operations—ask the user
+    if they want to try again. Of course, we have to take the liberty of handling
+    the more mundane retry/restart attempts for the user. When it's obvious that the
+    user wants this action to succeed, and they haven't been waiting too long, then
+    we shouldn't bother them with questions about retrying an operation. That defeats
+    the purpose—which is to be responsive, by giving control back to the user, when
+    our software has encountered a scenario that doesn't allow it to do its job.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We would probably want to declare some sort of threshold that must be met by
+    our restart/retry attempts before seeking input from the user. For instance, the
+    API data we're trying to fetch has timed out twice, and the user is probably growing
+    impatient. So we stop there, and tell the user what's going on—that we're not
+    getting a response from the backend. Should we keep trying, or stop here? Because
+    when our components encounter non-deterministic situations like this, it's better
+    to pass control to a human, who may have a little more insight than our code does.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Our component will happily chug along restarting and retrying things, but only
+    if that's OK with the user. But what happens when the user gives up, they've been
+    through enough torture and want to take affirmative action, rather than letting
+    the wheels spin? Then we probably need to provide some guidance to the user. What
+    else can they do besides let their application try the same thing over and over?
+    Is there anything our component knows about the error, that can be translated
+    for the user? For example, what if the cause of a particular error is fixed by
+    changing a user preference? Then it would make sense to show a friendly, instructive
+    message here, telling them how to go about fixing the problem.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: It's probably best to phrase troubleshooting suggestions as *possible* solutions—not
+    as sure bets. Just in the spirit of avoiding nasty support requests.
+  prefs: []
+  type: TYPE_NORMAL
+- en: When we can't recover from failures...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: If we've reached this point in a failure, and the user still isn't getting what
+    they need from our software, there's nothing we can do. As the section title suggests,
+    not everything is recoverable. The backend API isn't always going to be reachable.
+    Our components will have bugs in production environments, sometimes for years
+    before they're even found.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Epic fails like these are akin to our application doing a face plant in front
+    of a crowd of people. Retrying actions just returns the same result. Restarting
+    components have no effect. Asking the user for input isn't going to help, because
+    maybe it's not possible to retry the particular action that's failing, or we just
+    haven't implemented any kind of user input here.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In either case, the solution is to revert to the fail-fast mode of failure—pull
+    the plug on the component, or on the entire application under exceptional circumstances.
+    If we're disabling just the failed component, we have to make sure that our application
+    can function without it. It's back to the plane landing with a single engine analogy—can
+    it be done? If not, then we have to stop the entire application.
+  prefs: []
+  type: TYPE_NORMAL
+- en: All this may sound a little bit drastic at first glance. However, doing so eliminates
+    a whole class of other defects that our support team doesn't have to worry about.
+    There's less chance of new defects being introduced into a live system, due to
+    the side effects of buggy components.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We're playing the odds with scalable error handling, and the odds are in our
+    favor when we don't try to be too clever with our recovery activities.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![When we can''t recover from failures...](img/4639_10_07.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: The two failure mode options of a failed component; the choice can be made at
+    runtime, and it isn't necessarily an up-front design decision
+  prefs: []
+  type: TYPE_NORMAL
+- en: Performance and complexity
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: With robust failure detection and recovery in place, it's time to turn our attention
+    to the performance and complexity implications they introduce. With any large
+    scale JavaScript application, nothing is free—with every gain, there's a new scaling
+    challenge. Failure handling is just one of those gains.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The two closely related scaling factors related to failure handling are performance
+    and complexity. Our software fails in interesting ways, and there's no elegant
+    way to handle them, resulting in complex implementations. Complex code is generally
+    not very good for performance. So we'll start by looking at what makes our exception-handling
+    code slow.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Exception handling
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: When we handle exceptions in JavaScript, we generally catch all errors that
+    get thrown. Whether it's something we anticipate being thrown, or something that's
+    out of the blue, it's up to the exception handler to then figure out what to do
+    with the error. For example, does it shut the component down, or retry the operation?
+    What's nice about `try`/`catch` statements is that we can ensure that nothing
+    slips through a given section of code uncaught. Because that's when we start seeing
+    side effects across other components.
+  prefs: []
+  type: TYPE_NORMAL
+- en: One way to implement this, as an overarching exception handling mechanism that
+    doesn't let errors through, is in the event broker. Here, we would wrap calls
+    to any event callbacks in a `try`/`catch` block. That way, no matter the outcome
+    of calling an event callback function, the exception handling code can examine
+    the exception and figure out what to do.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Here's the problem though—code that runs within an exception handler pays a
+    performance penalty. JavaScript engines are quite good at optimizing our code
+    just in time. Certain things prevent these optimizations from happening, and exception
+    handlers are one of those things. The problem is magnified when the there're several
+    levels of exception handlers, all the way down the call stack.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How noticeable is this impact, in terms of user-perceptible lag? That depends
+    on the scale of our application—more components means more code running that may
+    not be getting optimized. But in general, this isn't going to be the factor that
+    determines whether our application is slow or not. In conjunction with other determinants,
+    however, it could be important. Having lean exception handling in place at the
+    event broker level is a reasonable trade-off. All our code runs through the try
+    block here, but, we get a lot in return—we can only go fast if we handle failures
+    appropriately.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The nested exception handling, that takes place inside each one of our components,
+    is likely to cause more performance and complexity issues. For example, if our
+    event callback function catches errors, and does a poor job of dealing with them,
+    then we're likely doing more harm than good. It's usually better to let the exceptions
+    be caught in the same place. There are also the performance implications as mentioned
+    previously. We can take a hit at a higher level, but we don't want to take further
+    hits on each one of our components, especially since these will grow in number.
+  prefs: []
+  type: TYPE_NORMAL
+- en: State checking
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In addition to exception handling, we have logic that checks the state of our
+    components before executing actions. If the current state is not suitable for
+    the action, then it isn't performed, because doing so could cause problems. This
+    is a kind of proactive exception-handling where we handle any potential error
+    before attempting to do anything, whereas exception handling is more optimistic.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Component states on their own can be simple, but when our code has to check
+    for edge cases, it usually involves checking the state of the component where
+    it lives, but also the state of other components. Not necessarily directly—because
+    our components are decoupled—but indirectly, such as by issuing a query to the
+    main application. This can get quite complicated. And as we add more components,
+    there'll be more state checking to be done there, along with a good chance that
+    our existing state checking code will grow more complex.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Simple state checks are fine if they're coded as an `if` statement, or something
+    along those lines. But what tends to happen is that these edge cases grow as tests
+    fail, and more edge-case-handling gets added to the tangle. If we think about
+    the state of the application as a whole, we'll see that it's just an aggregate
+    sum of all our component states. Given that there are lots of components, each
+    with its own unique states and constraints on what actions can be performed under
+    what circumstances, it's no wonder that we cannot predict how our application
+    will fail. When we start down this path, it's easy to introduce more problems
+    into the system. This is the cost of complexity—where there wasn't a problem before,
+    there is now, thanks to some error handling we added somewhere else.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: One approach to ease the complexities of state-checking our components in order
+    to facilitate error handling, is to declaratively bind our operations to conditions
+    that must be satisfied. For example, we could have some kind of mapping with the
+    name of the operation, and a collection of all the conditions to check. Then a
+    generalized mechanism could look at this mapping and figure out whether or not
+    we can execute the action. Using something like this consistently across components
+    will reduce the number of problematic `if` statements.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Notifying other components
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Another challenge we face as JavaScript architects is failure handling in a
+    system of decoupled components. We want our components decoupled from one another
+    because it means they're interchangeable, and the system is easier to build and
+    extend. In the context of error handling, this separation acts as a safety net
+    between a failed component and the rest of the system. This is all great news,
+    but we also need to communicate component failures, along with all the other events
+    that take place along the happy path. How do we do this while retaining the loose
+    coupling we have in place?
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let's start by thinking about the event broker—the arbiter of all inter-component
+    communication. If it can deliver all our component events, surely it can deliver
+    error notifications as well? Let's say the broker executes a function callback,
+    and it raises an exception. The exception is caught by the broker, and the details
+    about the error are included as an argument to the next callback function for
+    the event.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Under normal circumstances, the callbacks would receive an error argument, so
+    this would need to be checked for—a minor obstacle with minor overhead. In the
+    case that the function doesn't care what happens before it, then this argument
+    can be safely ignored. Or, if an error is passed, the callback can look at the
+    error and figure out what to do next. If it's this type of error—check the state
+    of this, otherwise, do that, and so on—it may choose to do nothing. The important
+    thing is that the error is communicated, because if we don't want an error in
+    one component to have side effects, then sometimes corrective action needs to
+    be taken in other components, but it needs to know that the error happened.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Logging and debugging
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Part of coping with failure in a large-scale JavaScript application is producing
+    the right information. The most obvious place to start is the error console, where
+    uncaught exceptions are logged, or just plain error messages generated using `console.error()`.
+    Some error messages lead to quick fixes, while others send programmers on a wild
+    goose chase.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Apart from logging errors as they happen, we might also want to log situations
+    where something erroneous is about to happen. These are warning messages and they're
+    not used as much as they should be in frontend applications. Warnings are especially
+    useful in diagnosing the more insidious problems with our code, as they leave
+    a trail of clues in the wake of a failure.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The user doesn't necessarily see these logs if they don't have their developer
+    tools window open, and the average user probably doesn't. Instead, we only show
+    them the errors that are relevant to what they're doing in the application. Therefore,
+    we can't just make statements, we have to follow them up with the next steps.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Meaningful error logs
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Meaningful error messages go a long way. This is indeed a scaling issue, considering
+    that the effectiveness of the error message directly impacts the developers' ability
+    to resolve issues in a timely manor. Consider error messages that don't contain
+    useful information. When we investigate these failures, much more time is spent
+    piecing together what went wrong. We can use the developer tools in the browser
+    to trace the origin of the error, but that will only get us the location. We'll
+    need better guidance on what went wrong.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Sometimes these ambiguous error messages aren't a big deal, because when we
+    trace their origin in the code, it's immediately obvious what's wrong. Often it's
+    just an edge case that we overlooked, and it's fixed with a few lines of code.
+    Other times, the problem is deeper than that. For example, what if it turns out
+    that the error is actually caused as a side effect of something another component
+    is doing? Does that suggest that we might want to fix the design problem, since
+    we were under the assumption that we didn't have any side effects?
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Consider the following error message: `Uncaught TypeError: component.action
+    is not a function`. There''s a lot of work in trying to decipher this—unless we''re
+    intimately familiar with the code because we interact with it on a daily basis.
+    The problem is that we grow less familiar with our code as our application scales,
+    because there''re more components added. This means we spend less time with them,
+    and when they break, it''s tough to fix them with a quick turn-around. Unless
+    we have help from the errors themselves. What if the error above were changed
+    to: `ActionError: The "query" component does not support the "save" action`.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Admittedly, having this kind of specific detail in the error messages we generate
+    does add to the complexity of our code. However, the benefits will prove useful
+    if we can strike a balance between providing specific checks and letting our code
+    fail naturally. For example, it's completely pointless to spend time and effort
+    coding an error check and detailed message for something that never happens. Only
+    focus on the scenarios that have a large payoff. Meaning, that if there's a strong
+    likelihood of the error occurring, then that message can point to a quick solution.
+  prefs: []
+  type: TYPE_NORMAL
+- en: When we fail fast, we should throw our own exceptions. This makes the error
+    explicit in the console, and we can provide meaningful information that helps
+    developers diagnose the issue. Throwing exceptions is an easy way to fail fast,
+    because once thrown, the current execution stack stops running.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Warning about potential failures
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The difference between an error message and a warning message is that the latter
+    means that the system is still functioning as normal, albeit, not optimally. For
+    example, if we have some quantity constraints in place, like the number of items
+    in a given collection, we could issue a warning when we're nearing that limit.
+    This capability comes with the same concerns as enhanced error messaging—there's
+    more code and complexity involved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: So, what's the point then, if we have strong error handling in place? Warnings
+    are good because they have a visual distinction in the developer tools console
+    where they're displayed. Errors have a dysfunctional connotation, whereas, that's
+    not the point we're making with warnings. We're trying to state that something
+    bad *might* happen. For example, if we were to rev our car engine high, we'd notice
+    that the tachometer needle enters a red zone. This is a warning, meaning that
+    if this behavior continues, something "not good" might happen.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The ambiguity behind warnings is actually helpful, but with errors, we aim for
+    specificity. We want warnings to be generic so that they can be broad assertions
+    about the state of our applications. This means that our logs won't get filled
+    up with little warning messages that start to repeat themselves. At this point
+    they lose all meaning. If they're general, they can aid in the pathology of errors
+    as we diagnose them. They serve as a clue, most of the time, as to what cased
+    the error that happened a few seconds later. If we're troubleshooting with a more
+    savvy user, who might have developer tools open, they can pass these warnings
+    our way. For the less involved users, we need a more friendly approach to troubleshooting.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Informing and instructing users
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The errors and warnings we've discussed so far in this section generally end
+    up in the developer tools console. This implies that we're not too concerned whether
+    the user sees it or not. For the messages we want the users to see, they need
+    to be part of the UI—we can't rely on developer tools being open or present at
+    all. Some of the same error message principles apply to the messages we explicitly
+    display to the user. For example, we want to inform the user that something has
+    gone wrong. It's up to us how specific we get with this message. We have to keep
+    the audience in mind here as well—telling them a component state must be such
+    and such before a method can be called, isn't helpful.
+  prefs: []
+  type: TYPE_NORMAL
+- en: However, if we're able to translate the noun of the error into a feature that
+    the user sees and directly interacts with, then it's going to make immediate sense
+    to them. Now they own what's not working. They probably don't care why it's not—what
+    are they going to do with that information? It's better to follow up with instructions.
+    *This is broken, so here's what you need to do*. This is worth the effort to implement
+    because in terms of scale, the software is taking care of a lot of problems we
+    otherwise need human intervention for, which does not scale. It also keeps the
+    users using our software—which is a big scaling influence to begin with.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Sometimes there aren't good instructions. That is, the feature the user needs
+    just isn't working, and there isn't anything they can do about it. However, we
+    can still aim for a message that tells them this feature has stopped working.
+    The error message in the developer tools console probably has a lot more relevant
+    information as to what went wrong. However, we want to avoid raising exceptions
+    without also doing something user-friendly in the UI as well. Then we'll be servicing
+    both audiences—developers and users.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Improving the architecture
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: We need robust approaches to handle failed components if our architecture is
+    to scale. But that'll only take us so far into the future—because handling the
+    same failures over and over again doesn't scale. Eliminating the possibility of
+    failure, where possible, does scale. Adding new components introduces new failure
+    modes that we need to account for, and we need to offset these by eliminating
+    old failure modes from the equation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This is done through design; in particular, revised design. The change can be
+    something minor, or it could be a radical shift in direction. It really depends
+    on the frequency, the severity, and the rate of growth. Factor all these together,
+    and we' come up with design trade-offs that enable us to move forward.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There are a number of techniques that can help get us there. For example, when
+    we encounter new failure scenarios, we need a means to consistently document them,
+    we need to better classify our components into critical versus non-critical categories.
+    And as always, we need to keep things simple.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Documenting failure scenarios
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: End-to-end tests are a great way to document scenarios. In particular, scenarios
+    that cause our software to fail. We can think some of these up, on the fly, as
+    we design and implement our features. But where end-to-end tests shine is in reproducing
+    actual failures that have taken place in a production environment. Not only are
+    these tests essential for reproducing the error so that we know it's fixed, but
+    also for historical preservation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Over time, we'll accumulate end-to-end tests that model real life scenarios;
+    something one of our customers actually did, resulting in failure. This makes
+    our software stronger, but only at the implementation level. To a degree, our
+    software is defective by design with each end-to-end test we need to account for.
+    The idea is to improve the architecture to a point where some failures simply
+    aren't possible.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let's say that we have a few end-to-end tests that fail during the fetch of
+    a given collection. It turns out that the way we're sending parameters, with every
+    request, isn't actually needed. Further, the way we're parsing the response can
+    be fixed as well—certain sections are static. These are architectural improvements
+    because they apply generically, across our data model, and they eliminate certain
+    failures because the code that generated the failure is no longer there.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Improving component classification
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Critical components cannot fail, they're an integral part of our core application—if
+    they fail, then so does the application. This is why we have so few of them; perhaps
+    a handful of components that touch every component and absolutely need to function
+    as expected. Components that aren't critical, on the other hand, can fail without
+    bringing down the entire application with them. Or, they can attempt to recover
+    from failures, to keep everything running smoothly for the user.
+  prefs: []
+  type: TYPE_NORMAL
+- en: While the classification of our critical components is a relatively static thing,
+    this isn't always the case. For example, we may have a feature component that
+    we thought wasn't critical, and that the application could survive without it.
+    This may have been true in the past, but now our application has grown, and it
+    turns out that this component touches every other component in non-obvious ways—so
+    it's critical that it doesn't fail.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Do critical components ever lose their criticality? It's more likely that they'll
+    be removed from the design entirely than them being downgraded to a non-critical
+    component. However, we need to make sure that we always have a solid understanding
+    of our critical components. This is an important property of our architecture—having
+    components that cannot fail. If they do, then it's considered an entire application
+    failure. We have to keep this architectural property intact as we scale, which
+    often means making sure we recognize new critical components as they're introduced.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Complexity promotes failure
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Complex components have lots of internal parts, and they're connected to their
+    environments in many ways. With complexity, we have implicit states, which often
+    aren't discovered till after a component fails. We just can't grasp, mentally,
+    complex design. And when the designers themselves can't grasp the design, they
+    can't possibly grasp all the failure modes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There're two ways complexity hurts us. The first ways is in triggering failures
+    in the first place. Because of all the moving parts, we miss edge cases that would
+    be obvious in a simpler component. We have to introduce a lot of error handling
+    code to account for the complexity, making the component more complex, and triggering
+    more failures. The cycle repeats itself.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The second way complexity hurts us is in dealing with failures when they do
+    occur. For example, simple components with few moving parts fail in obvious ways.
+    Even the ones we miss and have to go fix later, take no time to repair. This is
+    due to the simple fact that there's so little for us to traverse mentally. Simplicity
+    promotes safety.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: This chapter introduced us to the various failure modes of our large scale JavaScript
+    applications. The fail-fast mode means that once we detect a problem, we stop
+    everything right away, in an effort to prevent further damage. This is often desirable
+    when a critical component of our application fails.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Fault tolerance is an architectural property that means the system is capable
+    of detecting errors, and preventing them from disrupting regular operation. In
+    a JavaScript context, this usually means catching exceptions and preventing them
+    from disrupting other components. There're several ways that a component can recover
+    from an error, including retrying an operation, or restarting itself, to flush
+    out bad states.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Error handling adds to the complexity of our code, and has performance implications
+    if not handled with care. To avoid these, we have to aim for simple components
+    that don't manipulate state, and avoid excessive exception handling. Error messages
+    can help both programmers and users get the information they need to better cope
+    with failures. The ultimate goal is to turn failures into improved design, eliminating
+    the offending code entirely.
+  prefs: []
+  type: TYPE_NORMAL
+- en: JavaScript at scale is indeed achievable, although at times it can seem like
+    an insurmountable obstacle. To get the right answers, we first need to ask the
+    right questions. I hope this book has equipped you with the requisite knowledge
+    to formulate questions around scaling your JavaScript application. Looking at
+    the right scaling influencer, in the right context, at the right time, will provide
+    you with answers.
+  prefs: []
+  type: TYPE_NORMAL

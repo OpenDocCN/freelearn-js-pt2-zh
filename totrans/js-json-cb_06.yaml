@@ -1,0 +1,684 @@
+- en: Chapter 6. Using JSON with CouchDB
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'In the last chapter, we looked at using JSON with MongoDB, a popular NoSQL
+    database. In this chapter, we continue in the same vein, showing you how to use
+    JSON with CouchDB, another popular NoSQL database. Here, you''ll find recipes
+    about:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Installing and setting up CouchDB and Cradle
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Connecting to a CouchDB document using Node.js and Cradle
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Creating a CouchDB database using Node.js and Cradle
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Creating a document in CouchDB using Node.js and Cradle
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Setting up a data view in CouchDB with Node.js and Cradle
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Searching for a document in CouchDB with Node.js and Cradle
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Updating a document in CouchDB with Node.js and Cradle
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Deleting a document in CouchDB using Node.js and Cradle
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using REST to enumerate CouchDB records
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using REST to search CouchDB
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using REST to upsert a document in CouchDB
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using REST to delete a document in CouchDB
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Introduction
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: CouchDB is a highly available, scalable document database. Like MongoDB, it
+    is a NoSQL database; instead of organizing your data in tables related by IDs,
+    you can place documents in the database. Unlike MongoDB, CouchDB has the interesting
+    feature of *views*.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Documents you place in the DB with specific map and reduce functions that iterate
+    across the data to provide specific views of the data by indexes that you can
+    provide. Views are cached, making it easy to construct high-performance queries
+    that return subsets of data or computed data-like reports.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The primary way you interact with CouchDB is via REST; even the Cradle driver
+    we discuss in this chapter uses REST under the hood for document creation, updation,
+    and deletion. You can also use REST for queries, either through document ID, or
+    by converting an indexed query into a view.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this chapter, we examine how to integrate CouchDB with Node.js using the
+    Cradle module and how to make REST queries of a CouchDB from the Web.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Installing and setting up CouchDB and Cradle
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: CouchDB comes as a click-and-run installer for major platforms.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: To begin, you first need to install the server. To do this, go to [http://couchdb.apache.org/](http://couchdb.apache.org/)
+    and download the installer appropriate for your platform. Before installing Cradle,
+    be sure to run the installer.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Next, on a command line, run the following command to install Cradle:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Finally, you need to enable cross-resource requests on the CouchDB server,
+    to permit those requests on the Web. To do this, edit the `/etc/couchdb/default.ini`
+    file, and change the following line:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'With the following line:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'You also need to indicate which origin servers you''ll accept CORS requests
+    from; to enable cross-resource requests for all domains, add the following line
+    to `/etc/couchdb/default.ini` in the section labeled `[cors]`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: If you want to be more specific, you can provide a comma-separated list of origin
+    domains from which your HTML content and scripts are loaded.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Finally, you must start (or restart) the CouchDB server. On Windows, assuming
+    you didn't install it as a service, go to the `bin` directory where you installed
+    it and run `couchdb.bat`; on Linux and Mac OS X, kill and restart the CouchDB
+    server process.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How it works…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The Cradle module is a popular way to integrate CouchDB with Node.js, although
+    if you prefer, you could just use Node.js's request module and make REST requests
+    directly.
+  prefs: []
+  type: TYPE_NORMAL
+- en: See also
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: For more information about CouchDB, see the Apache CouchDB wiki at [http://docs.couchdb.org/en/latest/contents.html](http://docs.couchdb.org/en/latest/contents.html).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Connecting to a CouchDB database using Node.js and Cradle
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Although CouchDB provides a RESTful interface, you don't strictly need to make
+    a database connection before using CouchDB; the Cradle module uses the notion
+    of a connection to manage its internal state and there's still a connection object
+    you need to create.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Here''s how to include the Cradle module in your Node.js application and initialize
+    it, getting a handle to a particular database:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: How it works…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'This code first includes the Cradle module, and then creates a new Cradle `Connection`
+    object, setting its database to the database `documents`. This initializes Cradle
+    with the default CouchDB host (localhost) and port (5984). If you need to override
+    the host or port, you can do so by passing the host and port as the first and
+    second arguments to the `Connection` constructor, like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: Creating a CouchDB database using Node.js and Cradle
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Before you can use a database in CouchDB, you must create it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Once you''ve obtained a handle to the database that you want to use, you should
+    check to see whether it exists, and create it if it doesn''t:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: How it works…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The `exists` method checks to see whether a database exists, calling the callback
+    you provide with an error if one occurred and a flag indicating whether or not
+    the database exists. If the database doesn't exist, you create it using the `create`
+    method.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This is a common pattern for Cradle because the RESTful interface is, by nature,
+    asynchronous. You'll pass the arguments to the method you want to perform and
+    a callback function that the method invokes when it's complete.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: A common mistake that beginners make is to assume that you can call one of these
+    methods without the callback function and then do something immediately that depends
+    on the previous result. It won't work because the original operation hasn't taken
+    place yet. Consider an insert and update on the same record. The insert completes
+    asynchronously; if you try to do the update synchronously, there will be nothing
+    to update!
+  prefs: []
+  type: TYPE_NORMAL
+- en: There's more…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: If you want to destroy a database, you can do so using the `destroy` method,
+    which also takes a callback function like create. This destroys all records in
+    the database as you might imagine, so use it with caution!
+  prefs: []
+  type: TYPE_NORMAL
+- en: Creating a document in CouchDB using Node.js and Cradle
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The Cradle module provides the `save` method to save a new document to the database.
+    You pass the document to save and a callback to invoke when the operation completes
+    or fails.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Here''s how to save a simple record using `save`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: How it works…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The save method returns a JavaScript object to your callback with fields for
+    the newly created document IDs and an internal revision number, along with a field
+    titled ok, which should be true. As you''ll see in the recipe titled *Updating
+    a Record in CouchDB with Node.js*, you need both the revision of a document you
+    store and the ID in order to update it; otherwise, you end up creating a new document
+    or receiving a failure to save the record. An example result might look like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: Setting up a data view in CouchDB with Node.js and Cradle
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'You can query CouchDB for documents by their ID, but of course, most of the
+    time, you''ll want to issue more complex queries, such as matching a field in
+    a record against a particular value. CouchDB lets you define *views* of your data
+    that consist of an arbitrary key in a collection of objects and then the objects
+    derived from the view. When you specify a view, you''re specifying two JavaScript
+    functions: a `map` function that maps keys to items in your collection, and then
+    an optional `reduce` function that iterates over the keys and values to create
+    a final collection. In this recipe, we''ll use the map function of a view to create
+    an index of records by a single field.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Here''s how to add a simple view to the database using CouchDB:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: This defines a single view for our database, the `byCall` view that consists
+    of a map of call signs to documents in the database.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How it works…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Views are a powerful way to refer to documents in your database because you
+    can construct arbitrarily simple or complex documents based on each document in
+    the database.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Our example creates a single view, `byCall`, stored under the `views` directory
+    (which is where you should put views) consisting of the call field of each record,
+    and then the record is repeated. CouchDB defines the `emit` function to let you
+    create pairings of keys for your view and view values; here, we use the `call`
+    field as the key for each value and the document itself as the value. You could
+    just as easily define a smaller subset of fields in a JavaScript object, or compute
+    something across your JavaScript fields and emit that instead. You can define
+    more than one view, each a field in the `views` field with a separate `map` function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: CouchDB caches views and updates them on demand as the database changes, storing
+    the view data as B-trees, so updating and querying views are very fast at run
+    time. As you'll see in the next example, searching a view for a specific key is
+    as simple as passing the key to the view.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Views are just documents in CouchDB, stored in a special location with functions
+    instead of data values. Internally, CouchDB compiles the view's functions when
+    it stores the view and runs them when there are changes such as insertions and
+    deletions to the store.
+  prefs: []
+  type: TYPE_NORMAL
+- en: See also
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: For more information on the CouchDB view concept, see the CouchDB wiki at [http://wiki.apache.org/couchdb/Introduction_to_CouchDB_views](http://wiki.apache.org/couchdb/Introduction_to_CouchDB_views)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: CouchDB view API documentation at [http://wiki.apache.org/couchdb/HTTP_view_API](http://wiki.apache.org/couchdb/HTTP_view_API).
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Searching for a document in CouchDB with Node.js and Cradle
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Searching for a document in CouchDB is a matter of querying a specific view
+    for a specific key. The Cradle module defines the `view` function to do this.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'You''ll pass the URL of the view for the query you want to execute, and then
+    pass the key for which you''re searching as the key parameter, like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: In addition to passing the view and key you're looking for, you must pass a
+    callback function that handles the result.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How it works…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Here, we're searching the `byCall` view for a call sign of `kf6gpe-7`. Recall
+    from the last recipe that the view consists of a map of call signs in the `call`
+    field to records; when we issue the view request with the database's `view` method,
+    it searches that map for records with keys matching `kf6gpe-7`, and returns a
+    result that consists of an array of matching records. The method uses the array's
+    `forEach` method to iterate across each item of the array, writing each item one
+    at a time to the console.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There's more
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: You can pass a number of arguments to a view. The most obvious is the `key`
+    argument, which lets you pass a single key to match. There's also the `keys` argument,
+    which lets you pass an array of keys. You can also pass `startkey` and `endkey`
+    instead, to query a view for a range of keys. If you need to limit the results,
+    you can use the `limit` and `skip` arguments to limit the number of results, or
+    skip the first *n* results that match.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'If you know a document''s ID, you can also use Cradle''s `get` method to get
+    the object directly:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: See also
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: For details about the query operations you can invoke on views, see the CouchDB
+    wiki at [http://wiki.apache.org/couchdb/HTTP_view_API#Querying_Options](http://wiki.apache.org/couchdb/HTTP_view_API#Querying_Options).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Updating a document in CouchDB with Node.js and Cradle
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The Cradle module defines the `merge` method to let you update an existing document.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Here''s an example where we change the call of a record from `kf6gpe-7` to
+    `kf6gpe-9` by specifying its ID, and then performing a merge with the new data:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: As you can see from the function, `merge` takes the ID of the record to merge,
+    and a JavaScript object with the fields to replace or add to the existing object.
+    You can also pass a callback, which is invoked by merge when the operation completes.
+    The error value will be non-zero in the event of an error, and the document is
+    returned as the second argument. Here, we just log the contents of the revised
+    document to the console.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Deleting a document in CouchDB using Node.js and Cradle
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: To remove a record, you use the Cradle module's `remove` method and pass the
+    ID of the document you want to remove.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Here''s an example of remove:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: Passing an ID removes the document with the given ID.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There's more…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'If you have more than one document to remove, you could iterate across all
+    documents, the way the following code does, removing each document in turn:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: This is a more complex use of `remove`; it takes the document's ID, the revision
+    of the document, and a callback function, which logs to the console the ID of
+    each document that was removed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using REST to enumerate CouchDB records
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: REST semantics dictate that to fetch the full contents of a collection of objects,
+    we just send a `GET` request to the collection's root. We can do that from a web
+    client to a CouchDB with CORS enabled using jQuery with a single call.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Here''s some HTML, jQuery, and JavaScript that enumerate all items in a CouchDB
+    view and shows some of the fields of each objects in an embedded table:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: How it works…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The HTML is straightforward; it includes jQuery, and then defines three `div`
+    regions to show the results of the request. After that, it defines a form with
+    fields for the document's ID, revision, callsign, latitude and longitude, and
+    adds buttons to get a list of records, perform an insertion or update, and remove
+    a record.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We need to have the `byCall` view defined for this to work (see the recipe *Setting
+    up a Data View in CouchDB Using Node.js* for how to set up the data view using
+    Node.js). This code performs a HTTP GET to the view's base URL, and takes the
+    returned JavaScript object (parsed from the JSON by jQuery) and formats it as
+    a table. (Note that we could have appended a specific key to the URL to obtain
+    only a single URL).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The format of the REST response is a little different than if you query the
+    collection using Cradle; you''re seeing the actual response from CouchDB rather
+    than the result massaged by Cradle. It looks something like this in the raw form:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: Specifically, the `total_rows` field indicates how many rows are in the result
+    in the collection; the `offset` field indicates how many rows were skipped in
+    the collection before the first row returned, and then the `rows` array contains
+    each key-value pair generated by the map of the view. The rows field has an ID
+    field, the unique ID generating that map entry, the key emitted by the map operation,
+    and the record emitted by the map operation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Note that if you perform a `GET` request on the base URL for the database,
+    you get something different; not all the records in the database, but information
+    about the database:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: These fields may vary depending on the version of CouchDB that you're running.
+  prefs: []
+  type: TYPE_NORMAL
+- en: See also
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: For information about the HTTP REST interface to CouchDB, see the documentation
+    at [http://wiki.apache.org/couchdb/HTTP_Document_API](http://wiki.apache.org/couchdb/HTTP_Document_API).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using REST to search CouchDB
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Using REST to search CouchDB uses a view with a map to create your index, which
+    you insert once, and then a GET HTTP request.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'We can modify the previous `doGet` function to search for a particular call
+    sign, like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: How it works…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The relevant lines are the argument call, passed to `doGet`, and the construction
+    of the URL to which we dispatch the `GET` request. Note how we check for a null
+    or empty call to fetch the entire collection; your code may want to do something
+    different like report an error, especially if the collection is large.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Note that the view must exist prior to doing this. I like to use Node.js to
+    create my views once when I initially update my database, and update the views
+    if I make changes, rather than embedding the views in the client, because for
+    most applications there are many clients and there's no point in thrashing the
+    store with the same views being updated by many clients.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using REST to upsert a document in CouchDB
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: There's no REST equivalent of Cradle's merge when you want to perform an upsert;
+    instead, insertion is handled by a HTTP `POST` request, while updating is handled
+    by a `PUT` request.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Here''s some HTML and a `doUpsert` method that looks at form elements on your
+    HTML page and either creates a new document in the database or updates an existing
+    document if one already exists and you pass both the ID and revision fields:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs: []
+  type: TYPE_PRE
+- en: How it works…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The `doUpsert` method begins by defining an empty JavaScript object, which is
+    what we'll populate and send to the server with either a `PUT` or `POST` request.
+    We then extract the values of the form fields; if the `id` field is set with an
+    ID, we assume that this is an update, rather than an insert, and also capture
+    the contents of the revision field named `rev`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If there is no ID value set, it's an insert operation, and we set the request
+    type to `POST`. If it's an update, we set the request type to `PUT`, indicating
+    to CouchDB that this is an update.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Next, we construct the URL; the URL for a document update must include the ID
+    of the document to be updated; that's how CouchDB knows which document to update.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Finally, we perform an AJAX request of the type we previously defined (either
+    `PUT` or `POST`). Of course, we JSON-encode the JavaScript document we send to
+    the server, and include a header indicating that the document being sent is JSON.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The returned value is a JSON document (converted by jQuery to a JavaScript
+    object) that consists of the ID and revision of the inserted document, something
+    like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs: []
+  type: TYPE_PRE
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Note that your request to update a document must include both the document's
+    current revision and ID, or the `PUT` request will fail with a HTTP 409 error.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using REST to delete a document in CouchDB
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: You denote a RESTful deletion of a document by sending a HTTP `DELETE` request
+    with the ID and revision of the document to be deleted.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Using the HTML from the previous recipe, here''s a script that extracts the
+    ID and revision from the form fields, does some simple error checking, and sends
+    a deletion request to the server for the document with the indicated ID and revision:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE21]'
+  prefs: []
+  type: TYPE_PRE
+- en: How it works…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The code begins by extracting the ID and revision from the form elements and
+    popping up error dialogs if either is empty. Next, construct an AJAX HTTP `DELETE`
+    request. The URL is the URL of the document—the database and document ID—with
+    the revision of the document as an argument passed with the name `rev`. Assuming
+    that you specify the ID and revision correctly, you''ll get a response identical
+    to that of an update: the ID and revision of the document that was removed. If
+    it fails, you''ll get an HTTP error.'
+  prefs: []
+  type: TYPE_NORMAL

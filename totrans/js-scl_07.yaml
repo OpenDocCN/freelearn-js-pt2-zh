@@ -1,0 +1,751 @@
+- en: Chapter 7. Load Time and Responsiveness
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: JavaScript scalability includes the *load time* of the application, and the
+    *responsiveness* of the application when the user interacts with it. Collectively,
+    we refer to these two architectural qualities as performance. Performance is the
+    prominent indicator of quality in the eyes of a user—it's important to get it
+    right.
+  prefs: []
+  type: TYPE_NORMAL
+- en: As our applications acquire new features and as the user base grows, we must
+    find a way to avoid the associated performance degradation. The initial load is
+    affected by things such as the JavaScript artifact payload size. The responsiveness
+    of our UI has more to do with the runtime characteristics of our code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Throughout this chapter, we'll address these two dimensions of performance,
+    and how the various trade-offs we'll make will impact other areas of the system.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Component artifacts
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Earlier on in the book, we had emphasized that large-scale JavaScript applications
+    are just collections of components. These components communicate with one another
+    in complex and intricate ways—these communications are what realize the behavior
+    of our system. Before components can communicate, they have to be delivered to
+    the browser. It's helpful in understanding what these components are made of,
+    and how they're actually delivered to the browser. Then we can reason about the
+    initial load time of our application.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Component dependencies
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Components are the bedrocks of our application; that means we need to deliver
+    them to the browser, and execute them in some coherent manner. The components
+    themselves can range from being monolithic JavaScript files, to something that's
+    spread out over several modules. All the puzzle pieces are put together through
+    the dependency graph. We start off with an application component, as this is the
+    entry point into our application. It finds all the components it needs by requiring
+    them. For example, there may only be a handful of top-level components, which
+    map to the key features of our software. This is the first level of the dependency
+    tree, and unless all our feature components are composed monolithically, there'll
+    probably further module dependencies to resolve.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The module loading mechanism progresses through the tree until it has everything
+    it needs. What's nice about modules and dependencies, broken down to a reasonable
+    level of granularity, is that a lot of complexity is masked. We don't have to
+    hold the entire dependency graph in our heads, an unreasonable goal for even medium-scale
+    applications.
+  prefs: []
+  type: TYPE_NORMAL
+- en: With this modular structure, and the mechanism used to load and process dependencies,
+    comes performance implications. Namely, the initial load time is impacted since
+    the module loader needs to walk through the dependency graph, and ask the backend
+    for each resource. While the requests are asynchronous, the network overhead exists
+    nonetheless—that's what hurts us the most during the initial load.
+  prefs: []
+  type: TYPE_NORMAL
+- en: However, just because we want a modular structure, doesn't mean we have to suffer
+    the consequences of network overhead. Especially as we start scaling to lots of
+    features and lots of users. There's more to deliver to each client session, and
+    there's more resource contention in the backend as more users ask for the same
+    thing. Module dependencies are traceable, which give our build tools a number
+    of options.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Component dependencies](img/4639_07_01.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: How JavaScript application modules are loaded; dependencies are automatically
+    loaded
+  prefs: []
+  type: TYPE_NORMAL
+- en: Building components
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: When our components reach a certain level of complexity, they'll likely require
+    more than just a few modules to realize all their functionality. Multiply this
+    by a growing number of components, and we've got ourselves a network request overhead
+    issue. Even if the modules carry a small payload, there's still the network overhead
+    to consider.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We should actually strive for smaller modules, as they're more easily consumed
+    by other developers—if they're small, they likely have less moving parts. As we
+    saw in the preceding section, modules and the dependencies amongst them, enable
+    us to divide and conquer. That's because the module loader traces the dependency
+    graph and pulls in the modules as they're needed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If we want to avoid hitting the backend with so many requests, we can build
+    larger component artifacts as part of our build toolchain. There are many tools
+    out there, that directly leverage the module loader to trace the dependencies,
+    and build the corresponding components, like RequireJS and Browserify. This is
+    important because it means that we can choose a level of module granularity that
+    suits our application, and still be able to build larger component artifacts.
+    Or we can switch back to loading smaller modules into the browser on the fly.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The scaling implications in terms of network request overhead make big difference.
+    The more components, and the larger these components are, the more this build
+    process matters. Especially since uglification, the process of shrinking down
+    the file size, is often part of the process. Being able to turn these build steps
+    off, on the other hand, has scaling implications for the development team as well.
+    If we can switch back and forth between the types of component artifacts delivered
+    to the browser, the development process can move forward much quicker.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Building components](img/4639_07_02.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Building components results in fewer requested artifacts, and fewer network
+    requests
+  prefs: []
+  type: TYPE_NORMAL
+- en: Loading components
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this section, we'll take a look at the mechanisms responsible for actually
+    loading our source modules and built components into the browser. There are many
+    third-party tools in use today for structuring our modules and declaring their
+    dependencies, but the trend is moving toward using newer browser standards for
+    these tasks. We'll also look at lazily loading our modules, and the usability
+    implications for load latency.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Loading modules
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Many large-scale applications in production today use technologies such as RequireJS
+    and Browserify. RequireJS is a pure JavaScript module loader and has tools that
+    can build larger components. The aim with Browserify is to build components that
+    run in the browser, using code that was written for Node.js. While both these
+    technologies solve many of the issues discussed so far in this chapter, the new
+    ECMAScript 6 module approach is the way forward.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The main argument in favor of using the browser-based approach to module loading
+    and dependency management is that there's no longer a need for another third-party
+    tool. If the language has a feature to solve a scaling issue, it's always better
+    to go that route, because there's less work for us. It's certainly not a silver
+    bullet, but it does have a lot of the functionality we require.
+  prefs: []
+  type: TYPE_NORMAL
+- en: For example, we no longer have to rely on sending Ajax requests, and evaluating
+    the JavaScript code when it arrives—that's all up to the browser now. The syntax
+    itself is actually more aligned with the standard `import export` keywords found
+    in other programming languages. On the other hand, native JavaScript modules are
+    still new hotness, and that's not really justification enough to throw away code
+    that's using a different module loader. For new projects, it's worth looking at
+    ES6 transpiler technologies that allow us to start using these new module constructs
+    from the start.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: A portion of the network overhead our application experiences, and the user
+    ultimately pays for, has to do with the HTTP specification. The latest draft Version
+    of the spec, 2.0, addresses a lot of overhead and performance issues. What does
+    this mean for loading modules? Well, if we can get reasonable network performance
+    with minimal overhead, we might be able to simplify our artifacts. The need to
+    compile larger components can be de-prioritized in favor of focusing on a solid
+    modular architecture.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Lazy module loading
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: One advantage we lose with monolithically compiled components is the opportunity
+    to defer loading of certain modules till they're actually required. With compiled
+    components, it's all or nothing—which is especially true if our entire frontend
+    is compiled into a single JavaScript artifact. On the plus side, everything is
+    there when it's needed. If the user decides to interact with a feature five minutes
+    after the initial load, the code is already in the browser, ready to go.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Lazy loading, on the other hand, is the default mode. This simply means that
+    the module isn't loaded into the browser till some other component explicitly
+    asks for it. This could mean either a `require()` call or an `import` statement.
+    Until these calls are made, they're not fetched from the backend. The advantage
+    being, the initial page load should be a lot faster, it's only pulling in the
+    modules it needs for the features displayed to the user initially.
+  prefs: []
+  type: TYPE_NORMAL
+- en: On the other hand, when the user goes to use some feature, five minutes after
+    the initial load, our application will be requiring or importing some modules
+    for the first time. This means that there's some latency involved after the initial
+    load. Mind you, the modules that are loaded on demand, later on in the session,
+    should be small in number. Because there're bound to be some shared modules loaded
+    up-front by the initial page presented to the user.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We have to put some thought into the dependencies throughout our system. While
+    we may think we're deferring the loading of certain modules, there could be some
+    indirect dependencies that inadvertently load modules for the home screen, when
+    they're not actually needed. The network panel in the developer tools is ideal
+    for this, as it's usually obvious that we're loading things we don't actually
+    need. If our application has lots of features, lazy loading is especially helpful.
+    The savings on initial load time are big, and there are likely to be features
+    that the user never uses, and hence never needs to load.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Next is an example that shows the concept of not loading modules until they''re
+    actually needed:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: Module load latency
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Modules load in response to events, and these are almost always user events.
+    The application is launched. A tab is selected. These types of events have the
+    potential to load new modules if they haven't been loaded already. The challenge
+    is what can we do for the user while these code modules are in transit, or being
+    evaluated? Because it's the code we're waiting on, we can't exactly execute code
+    that makes for a better loading experience.
+  prefs: []
+  type: TYPE_NORMAL
+- en: For example, until we have a module loaded, and until all its dependencies have
+    been loaded, we can't do things that are critical to the user-perceived responsiveness
+    of our UI. These are things like making API calls, and manipulating the DOM to
+    provide user feedback. Without data from the API, all we can tell the user is,
+    *sit tight, stuff is loading!* If the user is frustrated enough, because our modules
+    are taking a while and the loading indicator isn't going away, they'll start randomly
+    clicking elements that look clickable. If we don't have any event handlers setup
+    for these, then the UI will feel unresponsive.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '''Following is an example that shows how an imported module that runs expensive
+    code, can block code in the importing module from running:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: Networks aren't predictable, nor are the scaling influencers our application
+    is facing in the backend. Lot's of users means there's a potential for high latency
+    with loading our modules. We have to account for these circumstances if we want
+    to scale. This involves the use of tactics. The first module we need to load,
+    after the main application, is something that's capable of notifying the user.
+  prefs: []
+  type: TYPE_NORMAL
+- en: For example, our UI has a default loader element, but when our first module
+    loads, it proceeds to render more detailed information on what's loading and how
+    long it might take, or, it just might have to deliver the bad news that there's
+    something wrong with the network or the backend. As we scale, these types of unpleasant
+    events will happen. If we want to keep scaling up, we have to account for them
+    early on, and make the UI always feel responsive, even when it isn't.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Communication bottlenecks
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: When our application acquires more moving parts, it acquires more communication
+    overhead. That's because our components need to communicate with one another in
+    order to realize the larger behavior of our features. We could reduce the inter-component
+    communication overhead to essentially zero, if we were so inclined, but then we
+    would face the issue of monolithic and repetitive code. If we want modular components,
+    communication has to happen, but that comes at a cost.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This section looks at some issues we'll face as we scale our software in terms
+    of communication bottlenecks. We need to look for the trade-offs that improve
+    communication performance, without sacrificing modularity. One of the most effective
+    ways to do that is by using the profiling tools available in our web browsers.
+    They can reveal the same responsiveness issues that the user experiences while
+    interacting with our UI.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Reducing indirection
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The primary abstraction, by which our components communicate with one another,
+    is an event broker. It's the job of the broker to maintain the list of subscribers
+    for any given event type. Our JavaScript applications scale in two respects—the
+    number of subscribers for a given event type, and the number of event types. In
+    terms of performance bottlenecks, this can get out of control quickly.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The first thing we''ll want to pay close attention to is the composition of
+    our features. To implement a feature, we''ll follow the same pattern of existing
+    features. This means that we''ll use the same component types, the same events,
+    and so on. There are subtle variations, but the over-arching pattern is the same
+    across features. This is a good practice: following the same pattern from feature
+    to feature. The patterns used are a good starting point to figure out how to reduce
+    overhead.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: For example, say the pattern we're using throughout our application requires
+    8-10 components to realize a given feature. That's too much overhead. Any one
+    of these components communicates with several others, and some of the abstractions
+    just aren't all that valuable. They looked good in our heads and on paper, as
+    we designed the architecture where the pattern originated. Now that we've implemented
+    the pattern, that initial value has diluted a bit, and is now a performance issue.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Next is an example that shows how simply adding new components is enough to
+    increase communication overhead costs exponentially:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: Loosely coupled components are a good thing, as they separate concerns, and
+    give us more implementation freedoms with less risk of breaking other components.
+    The way we couple our components establishes a repeatable pattern. At some point
+    after initial implementation, as our software matures, we will realize that the
+    pattern that once served us well is now too heavy. The concerns of our components
+    are well understood, and we have no need for the implementation freedoms we thought
+    we might need. The solution to this is changing the pattern. The pattern is what's
+    followed, so it's the ultimate indicator of what our code will look like in future
+    components. It's the best place to fix communication bottlenecks, by removing
+    unnecessary components.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Profiling code
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We can get an intuitive sense, just by looking at our code; that there's a lot
+    more going on than there needs to be. As we saw in the preceding section, the
+    inter-component communication patterns we use throughout the application are quite
+    telling. We can see the excessive components at a logical design level, but what
+    about the physical level during runtime?
+  prefs: []
+  type: TYPE_NORMAL
+- en: Before we go and start re-factoring our code, changing patterns, removing components,
+    and so on, we need to profile our code. This will give us an idea of the runtime
+    performance characteristics of our code, and not just how it appears. Profiles
+    give us the information we need to make useful decisions on optimizations. Most
+    importantly, by profiling our code, we can avoid micro-optimizations that have
+    little or no impact on the end user's experience. At the very least, we can prioritize
+    the performance issues we need to tackle. Communication overhead between our components
+    is likely to take top priority, as it has the most tangible impact on the user,
+    and is a huge scaling obstacle.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The first tool available to us is the built-in profiling tools of the browser.
+    We can manually use the developer tools UI to profile the entire application as
+    we interact with it. This is useful for diagnosing specific responsiveness issues
+    in the UI. We can also write code that uses the same in-browser profiling mechanism
+    to target smaller pieces of code, like individual functions, and get the same
+    output. The resulting profile is essentially a call stack, with a breakdown of
+    how much CPU time is spent where. This points us in the right direction, so we
+    can focus our efforts on optimizing expensive code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'We''re only scratching the surface of profiling JavaScript application performance.
+    This is a huge topic, and you can Google "Profiling JavaScript code"—there are
+    a ton of good resources out there. Here''s a great resource to get you started:
+    [https://developer.chrome.com/devtools/docs/cpu-profiling](https://developer.chrome.com/devtools/docs/cpu-profiling)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Next is an example that shows how to use the browser developer tools to create
+    a profile that compares several functions:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: Other tools that profile JavaScript code exist outside of the browser. We use
+    these for different purposes. For example, benchmark.js and tools similar to it,
+    are used to measure the raw performance of our code. The output tells us how many
+    operations per second our code is running at. The really useful aspect of this
+    approach is comparing two or more function implementations. The profile can give
+    as a breakdown of which function is the fastest, and by what margin. At the end
+    of the day, that's the most important profiling information we need.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Component optimization
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Now that we've fixed our component communication performance bottlenecks, it's
+    time to look inside our components, at the implementation specifics and the performance
+    issues they may present. For example, maintaining state is a common requirement
+    of JavaScript components, however, this does not scale well performance-wise because
+    of all the book-keeping code required. We also need to be aware of side effects
+    introduced by functions that mutate data that other components use. Finally, the
+    DOM itself, and the way our code interacts with it, has much potential for unresponsiveness.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Components that maintain state
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Most components in our code need to maintain state, and this is unavoidable
+    for the most part. For example, if our component is composed of a model and a
+    view, the view needs to know when to render itself, based on the state of the
+    model. The view also holds a reference to a DOM element—either directly or through
+    a selector string—and any given element has state, at all times.
+  prefs: []
+  type: TYPE_NORMAL
+- en: So state is a fact of life in our components—what's the big deal? There isn't
+    one, really. In fact, we get to write some really nice event-driven code that
+    reacts to these changes in state, resulting in a change to what the user is looking
+    at. The problem comes when we scale, of course; our components, on an individual
+    basis, acquire more state to maintain, our data model served up by the backend
+    grows more complex, and the DOM elements grow as well. All these things with state
+    depend on one another. There's a multitude of complexity as systems like these
+    grow, and can really hurt performance.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Thankfully, the frameworks we use, handle a lot of this complexity for us. Not
+    only that—they're also heavily optimized for these types of state change operations,
+    since they're so fundamental to the applications using them. Different frameworks
+    take different approaches to handling the changing states of components. For example,
+    some take a more automated approach, requiring more overhead in monitoring for
+    changes in state. Others are more explicit in that the state is explicitly changed,
+    and as a direct result, events are fired. The latter approach requires more discipline
+    on the part of the programmer, but also requires less overhead.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There are two things we can do to avoid performance issues that might occur
+    as we scale up the number of our components and their complexity. First, we can
+    make sure that we're only maintaining state for things that matter. For example,
+    if we set up handlers for changes in state that never happen, it's wasteful. Likewise,
+    if we have components that change state and fire events that never result in a
+    UI update, it's also wasteful. Though difficult to spot, if these hidden gems
+    can be avoided, we'll also avoid future scaling issues related to responsiveness.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Components that maintain state](img/4639_07_03.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Views can react the same to any model property change; or, they can have specialized
+    responses to specific property changes. Virtual DOMs attempt to automate this
+    process for us.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Dealing with side-effects
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In the preceding section, we looked at the states that components maintain,
+    and how they can hurt performance if we're not careful. So how do these changes
+    in state come about? They don't happen spontaneously—something explicitly has
+    to change the value of a variable. This is called a side effect, something else
+    that has the potential to hurt performance, and is unavoidable. Side effects are
+    what cause the changes in state we covered in the previous section, and they too
+    can hurt performance if not treated with care.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The opposite of a function with side effects is a pure function. These take
+    input and return output. Nothing changes state in between. Functions such as these
+    have what's known as **referential transparency**—which means that for a given
+    input, we're guaranteed the same output, no matter how many times we call the
+    function. This property is important for things like optimization and concurrency.
+    For example, if we're always going to get the same result for a given input, the
+    temporal location of the function call really doesn't matter.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Think about generic components that our application shares with components that
+    are specific to features. These are less likely to maintain state—the state is
+    more likely to be in components that are closer to the DOM. Functions in these
+    top-level components are good candidates for implementations free of side effects.
+    Even our feature components could potentially implement side-effect-free functions.
+    As a rule of thumb, we should push our state and side effects as close to the
+    DOM as possible.
+  prefs: []
+  type: TYPE_NORMAL
+- en: As we saw in [Chapter 4](ch04.html "Chapter 4. Component Communication and Responsibilities"),
+    *Component Communication and Responsibilities*, it's difficult to mentally trace
+    what's happening in a convoluted publish/subscribe event system. With events,
+    we don't really need to trace these paths, but with functions, it's a different
+    story. The challenge is that if our function changes the state of something, and
+    that causes a problem elsewhere in the system, it's very difficult to track that
+    sort of issue down. Additionally, the more side-effect-free functions we use,
+    the less sanity checking code that's needed. We often come across bits of code
+    that check the state of something, seemingly for no reason. The reason—that's
+    what made it work. This approach can only get one so far with scaling up the development
+    effort.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Following is an example that shows a function with side effects, versus a function
+    *without* side effects:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: DOM rendering techniques
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Updating the DOM is expensive. The best way to optimize DOM updates is to not
+    update them. In other words, as infrequently as possible. The challenge with scaling
+    up our application is that DOM manipulations become more frequent, out of necessity.
+    There's more state to monitor, and more things that we need to notify the user
+    about. Even so, in addition to the techniques employed by our frameworks of choice,
+    there're things we can do with our code to lighten the load on DOM updates.
+  prefs: []
+  type: TYPE_NORMAL
+- en: So, why exactly are DOM updates so expensive, relative to plain JavaScript that's
+    running in the page? The computations that take place to figure out what the display
+    should look like, eat a lot of CPU cycles. We can take steps to ease the load
+    on the browser render engine, and improve the responsiveness of our UI, using
+    techniques in our view components that require less work from the rendering engine.
+  prefs: []
+  type: TYPE_NORMAL
+- en: For example, reflows are rendering events that result in a whole class of computations
+    that need to be made. Essentially, reflows happen when something about our element
+    changes, which could result in changes to the layout of other nearby elements.
+    The whole process cascades throughout the DOM, so a seemingly inexpensive DOM
+    operation could result in quite a lot of overhead. Rendering engines in modern
+    browsers are fast. We can get away with a little sloppiness in our DOM code, and
+    the UI will perform perfectly. But as new moving parts are added, the scalability
+    of our DOM rendering techniques comes into play.
+  prefs: []
+  type: TYPE_NORMAL
+- en: So the first strategy to consider is, which view updates can result in reflows?
+    For example, changing the content of elements is not a big deal and will likely
+    never cause performance problems. Inserting new elements into the page, or altering
+    the style of existing elements in response to user interactions—these have potential
+    for responsiveness issues.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: One DOM rendering technique that's trendy today is using a **virtual DOM**.
+    ReactJS and similar libraries leverage this concept. The idea is that our code
+    can just render content into the DOM, as though it's rendering the whole component
+    for the first time. The virtual DOM intercepts these rendering calls and figures
+    out the difference between what's already rendered, and what's changed. The name
+    virtual DOM comes from the fact that a representation of the DOM is stored in
+    JavaScript memory, and this is used to make comparisons. This way, the real DOM
+    is only touched when absolutely necessary. This abstraction allows for some interesting
+    optimizations, while keeping the view code minimalistic.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Sending one update after another to DOM isn't ideal either. Because the DOM
+    will receive the list of changes to make and apply them sequentially. For complex
+    DOM updates that have the potential to trigger reflow after reflow, it's better
+    to detach the DOM element, make the updates, and then reattach it. When the element
+    is reattached, the expensive reflow calculations are done at once, rather than
+    several times in succession.
+  prefs: []
+  type: TYPE_NORMAL
+- en: However, sometimes the DOM itself isn't the problem—it's the single-threaded
+    nature of JavaScript. While our component JavaScript is running, there's no chance
+    for the DOM to render any pending updates. If our UI is unresponsive in certain
+    scenarios, it's best to set a timeout to let the DOM update. This also gives any
+    pending DOM events a chance to be processed, which is important if the user is
+    trying to do something while there's JavaScript code running.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Next is an example that shows how to defer running JavaScript code during CPU-intensive
+    computations, giving the DOM a chance to update:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: Web Workers are another possibility for long-running JavaScript code. Because
+    they can't touch the DOM, they don't interfere with the responsiveness of it.
+    However, this technology is beyond the scope of this book.
+  prefs: []
+  type: TYPE_NORMAL
+- en: API data
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The last major obstacle that will hit us with performance issues as we continue
+    to scale, is the application data itself. This is an area we have to be especially
+    mindful of, because there are so many scaling influencers at play. More features
+    doesn't necessarily translate to more data, but it often does. That's more types
+    of data, and more data volume. The latter is mostly influenced by the growing
+    user base of our software. Our job as JavaScript architects is to figure out how
+    we can scale our application to deal with both the increased load time, and the
+    increased size of our data once it arrives at the browser.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Load latency
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Perhaps the biggest risk to scaling our application's performance is the data
+    itself. The way our application data changes and evolves over time is somewhat
+    of a phenomenon. The features we add in the frontend certainly influence the shape
+    of our data, but our JavaScript code doesn't control the number of users or the
+    way they interact with our software. These latter two points can lead to an explosion
+    in data, and if our frontend isn't prepared, it will grind to a halt.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The challenge we face as frontend engineers is that there's nothing to display
+    for the user when we're waiting for data. All we can do is take the necessary
+    steps for providing an acceptable *loading* user experience. Which begs the question—while
+    we're waiting for data to load, do we block the whole screen with a loading message,
+    or do we show loading messages piecemeal for the elements that are waiting on
+    data? With the first approach, there's little risk of the user doing something
+    that's not allowed, because we prevent them from interacting with the UI. With
+    the second approach, we have to worry about the user interacting with the UI while
+    there are outstanding network requests.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Neither approach is ideal, because at any point while data is loading, the responsiveness
+    of our application is fundamentally constrained. We don't want to completely block
+    the user from interacting with the UI. So, maybe we need to enforce a strict timeout
+    for data loading. On the plus side, we're guaranteeing responsiveness, even if
+    the response is to inform the user that the backend is taking too long. The down
+    side is that sometimes waiting is necessary, as far as the user is concerned,
+    if something needs to get done. Sometimes, the bad user experience is preferable—instead
+    of unintentionally creating an even worse experience.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There are two things that the frontend needs to do to help scale our backend
+    data. First, we need to cache responses where possible. This reduces the load
+    on the backend, and also improves the responsiveness for the client with the cached
+    data, since it doesn't have to make another request. Obviously, we need some kind
+    of invalidation mechanism in place, because we don't want to cache stale data.
+    Web sockets are a good candidate solution here—even if they only notify the frontend
+    sessions that a particular entity type has changed, so that the cache can be cleared.
+    The second technique to help with growing datasets is to reduce the amount of
+    data that's loaded with any given request. For example, most API calls have options
+    that let us constrain the number of results. This needs to be kept to a reasonable
+    number. It helps to think about what the user needs to look at first, and design
+    around that.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Working with large data sets
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In the preceding section, we went over some of the scaling issues we face in
+    frontend development concerning application data. As our application grows, so
+    does the data, presenting a loading challenge. Once we've managed to get the data
+    into the browser, we still have lots of data to work with, which can lead to unresponsive
+    user interactions. For example, if we have a 1000 item collection, and an event
+    passes this structure around to several components for processing, the user experience
+    is affected. What we need are tools that help us transform data that's big and
+    difficult to scale across several components, into something that's filtered down
+    to just the essentials.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This is where low-level utility libraries come in handy—complex transformations
+    on large data sets. Larger frameworks might expose similar tools—they're likely
+    using low-level utilities under the hood. The transformations we'll want to perform
+    on our data are of the map-reduce variety. That's the abstract pattern anyway,
+    functional programming libraries such as Underscore/lodash, provide many variations
+    on this pattern. How does this help us scale with large data sets? We can write
+    clean reusable mapping and reducing functionality, while deferring much of the
+    optimizations to these libraries.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Ideally, our application would only load the data it needs for rendering the
+    current page. A lot of the time this simply isn't possible—the API can't account
+    for every possible query scenario required by our features. So we use the API
+    to filter broadly, then when the data arrives, our components filter the data
+    using more specific criteria.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The scaling problem here is the confusion between what's being filtered by the
+    backend, and what's filtered in the browser. If one component relies more on the
+    API, while other components do most of their filtering locally, it leads to confusion
+    amongst developers, and non-intuitive code. It can even lead to unpredictable
+    bugs if the API changes, even subtly, since our components are using it differently.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The less time that's spent mapping or reducing, the more responsive the UI feels
+    to the user. This is why it's important that we get only the data that the user
+    sees, as early on as possible. For example, we don't want to pass around API data
+    in an event as soon as it arrives. We need to structure our component communication
+    in such a way that the computationally expensive filtering on large collections
+    happens as soon as possible. This lightens the load for all the components, since
+    they're now working with a smaller collection. So scaling to more components isn't
+    a big deal because they'll have less data to process.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Optimizing components at runtime
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Our code should be optimized for the common case. This is a good scaling tactic
+    because as more features and users are added to the mix, it's the common cases
+    that grow, not the edge cases. However, there's always the possibility that we'll
+    have two equally common cases to deal with. Think about deploying our software
+    to a number of customer environments. Over time, as features evolve to meet customer
+    requests, there could be two or three common cases for any given piece of functionality.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If we have two functions that deal with the common case, then we have to figure
+    out which function to use at runtime. These common cases are extremely course-grained.
+    For example, a common case might be "collection is large" or "collection is small".
+    Checking for these conditions isn't expensive. So if we're adaptable to the common
+    case as it changes, our software will be more responsive than if we weren't adaptable
+    to changing conditions. For example, if the collection is large, the function
+    could take a different approach to filtering it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Optimizing components at runtime](img/4639_07_04.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: A component can alter it's behavior at runtime, based on broad classifications
+    such as small or large collections
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Responsiveness, from the user's perspective, is a strong indicator of quality.
+    Unresponsive user interfaces are frustrating to work with, and are unlikely to
+    require any further scaling efforts on our part. The initial load of the application
+    is the first impression the user has of our application, and it's also the most
+    difficult to make fast. We looked at the challenges of loading all our resources
+    into the browser. This is a combination of modules, dependencies, and build tools.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The next major hurdle to responsiveness in JavaScript applications are the inter-component
+    communication bottlenecks. These usually result from too much indirection, and
+    the design of the events required to fulfill a given feature. The components themselves
+    can also serve as bottlenecks to responsiveness, because JavaScript is single-threaded.
+    We went over several potential issues in this space, including the cost of maintaining
+    state, and the cost of dealing with side effects.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The API data is what the user cares about, and the user experience degrades
+    until we have it. We looked at some of the scaling issues posed by an expanding
+    API and the data within. Once we have the data, our components need to be able
+    to quickly map and reduce it, all while the data set continues to grow as we scale.
+    Now that we have a better idea of how to make our architecture perform well, it's
+    time to look into making it testable and functional in a variety of contexts.
+  prefs: []
+  type: TYPE_NORMAL

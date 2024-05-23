@@ -1,0 +1,747 @@
+- en: Chapter 4. Using JSON in AJAX Applications with jQuery and AngularJS
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'In this chapter, we''ll look at the part that JSON plays in asynchronous JavaScript
+    and XML (AJAX) applications that provide better responsiveness than older web
+    pages by dynamically loading bits of a web page on demand. In this chapter, you''ll
+    find the following recipes:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Adding a dependency to jQuery to your web page
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Requesting JSON content using jQuery
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Sending JSON to your web server using jQuery
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Getting the progress of a request using jQuery
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Parsing the returned JSON using jQuery
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Adding a dependency to AngularJS to your web page
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Requesting JSON content using AngularJS
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Sending JSON to your web server using AngularJS
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Getting the progress of a request using AngularJS
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Parsing the returned JSON using AngularJS
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Introduction
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In the last chapter, you saw recipes that showed you how to use `XMLHttpRequest`
+    to make AJAX requests that exchanged JSON. In practice, handling all of the special
+    cases in different browsers makes this a pesky, error-prone job. Fortunately,
+    most client-side JavaScript frameworks wrap this object for you, giving you a
+    browser-independent way to do the same thing. Often, the interface is easier to
+    use too—as you'll soon see, in the case of AngularJS, you don't need to do anything
+    special to move objects back and forth using JSON; the framework even takes care
+    of serializing and deserializing the JSON for you!
+  prefs: []
+  type: TYPE_NORMAL
+- en: Both AngularJS and jQuery are client-side JavaScript frameworks that make developing
+    web applications easier. jQuery was one of the first and is probably the most
+    widely adopted framework; AngularJS is newer and has the additional advantage
+    of providing you with the ability to structure your code using the **model-view-controller**
+    (**MVC**) paradigm.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'MVC is a design pattern that dates back decades, originally introduced as a
+    part of Smalltalk in the 1970s. This pattern divides your code into three distinct
+    segments: the model, which contains the data your user wants to manipulate, the
+    view, which shows the contents of the model, and the controller, which accepts
+    events and changes the model in response to the accepted events.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In this chapter, we will use the server in Node.js that we based last chapter''s
+    recipes on, with an extension to support serving client-side JavaScript as well
+    as HTML. Here''s the code for this, broken down step by step:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: These four lines include the interfaces our server needs—the modules to handle
+    the HTTP server module, the file system module, the URL parsing module, and a
+    simple module to make HTTP requests.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Next, we log that the server starts and create an HTTP server that accepts
+    all requests with a single function callback:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Our server handles two kinds of requests: `POST` requests and `GET` requests.
+    The `POST` request handler needs to read the incoming data that''s been posted
+    to the server, which we do by concatenating it with an originally empty `body`
+    buffer:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We register a function that Node.js calls back when the HTTP post finishes,
+    which parses the JSON and makes a `GET` request to the remote server for our data,
+    simulating what a middleware server might do:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This request itself has a callback, which parses the incoming JSON from the
+    remote server, looks for the first element of the array in the result entries
+    attribute, and constructs a JSON object to return to the web client. If we don''t
+    get a valid response, we set an error value so the client can do something with
+    the error. We return this by converting the JavaScript object to JSON and writing
+    it to the client:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'If it''s not a `POST` request we''re handling, it might be a `GET` request.
+    Here''s the new code from the last chapter. We need to determine whether the incoming
+    URL indicates that the content to be fetched is an HTML file (whose suffix is
+    `.html` or `.htm`) or a JavaScript file (whose suffix is `.js`). First, we see
+    whether we''re getting a request for a favicon; Chrome always does this, and we
+    just return an empty object body. Assuming that it''s not a favicon being requested,
+    we check the incoming URL to see how it ends, so we can write the appropriate
+    Content-Type header (either text/html or application/json). If it''s neither of
+    those, we assume plaintext and send a text/plain Content-Type header:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Next, we read the content from the public directory below the Node.js server
+    source and return it to the client:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Finally, this big function gets registered as a listening HTTP server on port
+    `1337` of the localhost, and we log that the server''s started:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: A real server probably shouldn't guess the MIME type of the returned data by
+    looking at the incoming URL, but actually sniff the outgoing data and make a determination
+    as to the MIME type and use that. There's a Node.js module magic that does just
+    this; if you're a little less paranoid, you could use the file name suffix on
+    the disk and hope that the content provider was correctly naming files.
+  prefs: []
+  type: TYPE_NORMAL
+- en: That's it for the server, which you'll find in the ZIP for the samples that
+    accompany this book.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Adding a dependency to jQuery to your web page
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: jQuery is a popular client-side framework for AJAX applications that gives you
+    browser-independent support to search and manipulate the **Document Object Model**
+    (**DOM**) and **Cascading Style Sheets** (**CSS**), perform AJAX queries, as well
+    as include several HTML controls you can style using CSS. You need to include
+    the source for jQuery in your page, either by pointing to a released version on
+    the jQuery Content Delivery Network (CDN), or by going to [http://www.jquery.com](http://www.jquery.com)
+    and downloading a copy of the framework for you to serve with your own application.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'You''ll need to include the jQuery library in your web page by starting a new
+    json-example.html file, like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: How it works…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: These two lines include two scripts containing the minified version of the jQuery
+    client library from the jquery.com CDN. This is probably what you want to do for
+    production applications; the minified jQuery implementation is smaller than the
+    full-blown library, so it's faster for your clients to download, and using the
+    version on the CDN provides performance that may well be faster than what you
+    can provide, unless you're hosting multiple servers at a major cloud provider
+    such as Amazon Web Services or Microsoft Azure.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There's more…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: If you don't want to include the minified versions—often the case when you're
+    deep in your development cycle and want to debug your code—you can include the
+    standard version served from your server. Just download the necessary files from
+    [http://www.jquery.com/](http://www.jquery.com/) and serve them from your server.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'jQuery comes in two revisions: revision 1.x, which has support for older browsers,
+    including Microsoft Internet Explorer 6 and above, and revision 2.x, which requires
+    at least Microsoft Internet Explorer 9\. Our examples will use jQuery 1.x, but
+    never fear; the APIs we discuss are the same for jQuery 2.x.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: See also
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Head over to [http://www.jquery.com](http://www.jquery.com) to download jQuery
+    or learn more about it. If you're looking for a JavaScript framework, it's probably
+    worth looking at the jQuery learning center at [http://learn.jquery.com/](http://learn.jquery.com/),
+    or perhaps take a look at Packt Publishing's book, *Learning jQuery – Fourth Edition*,
+    by *Jonathan Chaffer* and *Karl Swedberg*.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Requesting JSON content using jQuery
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: jQuery defines the variable `$`, which exposes methods for everything you want
+    to do with the interface. (There are ways to rename that variable, say if you're
+    working with another JavaScript environment that uses the same variable, but I
+    don't recommend it). Among the methods `$` exposes is the `ajax` method, which
+    you use to make AJAX queries. Let's see how.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Here''s a whole page that makes an AJAX request. The AJAX code is in bold:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: The HTML in this example is straightforward. It includes the jQuery modules,
+    and then defines three `div` regions for the AJAX request to update when the request
+    is complete. Let's look at the JavaScript function `doAjax` in more detail.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How it works…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The `doAjax` function, called when the page finishes loading, first sets the
+    HTML contents of `div` named `debug` to the text "`loaded… executing.`". The `$()`
+    syntax is the jQuery syntax to find an item in the DOM; you can find items by
+    their ID by prefixing the name with a `#` (hash) symbol, such as a CSS selector.
+    The value returned isn't the actual DOM element but a jQuery class that wraps
+    the DOM element that exposes simple methods such as `html` to get or set the HTML
+    contents of the item.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Next, we define the JSON object that has the particulars of our request, as
+    we did in the previous chapter's recipes. It has one attribute, `call`, containing
+    the call sign of the station we're interested in.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Next, we invoke the `ajax` method of `$`, passing a JavaScript object with
+    the semantics of our request. It should have the following fields:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `type` field, which indicates the HTTP method of the request (such as `POST`
+    or `GET`).
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The `url` field, which indicates the URL to which the request should be submitted.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The `data` field, containing string data to be sent to the server for the request
+    (if any). We'll see that used in the next recipe.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The `dataType` field, indicating the type of data you're expecting from the
+    server; an optional field, which can be `xml`, `json`, `script`, or `html`.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: See also
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Curious readers should consult the jQuery `ajax` method documentation available
+    at [http://api.jquery.com/jQuery.ajax/](http://api.jquery.com/jQuery.ajax/).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Sending JSON to your web server using jQuery
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Sending JSON to your server using jQuery is easy. Just get the data in the JSON
+    format and specify it using the `ajax` method argument's `data` field.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Let''s look at `doAjax` again, this time modified to send our request JSON:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: How it works…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The magic line in the previous listing is highlighted; it''s the following
+    line in the arguments passed to the `ajax` method:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: Of course, we use `JSON.stringify` to encode the JavaScript object as JSON before
+    assigning it to the data field.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting the progress of a request using jQuery
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: jQuery abstracts the various progress reporting mechanisms of the underlying
+    `XMLHttpRequest` object in a platform-agnostic way, giving you the ability to
+    determine whether your request succeeded or failed. You do this by registering
+    functions that the jQuery AJAX handler will invoke when an error occurs or the
+    results are successfully loaded.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Here''s `doAjax` rewritten to support getting notifications on failure, regardless
+    of whether the event succeeds or fails:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: The new methods here are the `fail` and `always` methods.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How it works…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: jQuery uses a pattern called *chaining*, in which most of its methods return
+    an instance of an object to which you can apply additional methods. So, methods
+    such as `fail` and `always` operate on the same object, and return the same object,
+    that encapsulates the return value from the `$.ajax` method call using chaining
+    yields easier-to-read and easier-to-write code. In the case of `$.ajax`, what's
+    returned is an instance of a jQuery `XMLHttpRequest` object, whose fields are
+    a superset of the `XMLHttpRequest` object returned by the browser.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Here, I''m setting two event handlers on the return value to `$.ajax`: one
+    for the failure case, in which the request fails for some reason, and one for
+    the always case. Note that thanks to chaining, I could have reversed these and
+    put the handler for the always case first and the handler for the failure case
+    second. It''s entirely up to you which you prefer.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `always` and `failure` methods take a single function, which can take up
+    to three arguments. In this case, I'm not using any of the available arguments
+    and just appending some text to the HTML of the `div` region with the `id` debug.
+    jQuery passes the `failure` event handler to the jQuery `XMLHttpRequest` object,
+    a textual status message, and the error code associated with the failure, while
+    it passes the `always` method to either those arguments on an error, or the data,
+    a textual status message, and the jQuery `XMLHttpRequest` object.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There's more...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: If you'd prefer, you can specify the fail event handler as a function in the
+    attribute named error in the initial JavaScript object argument to `$.ajax`. Similarly,
+    you can specify the always event handler as a function in the attribute named
+    `complete` in the initial JavaScript object to `$.ajax`. While this puts all of
+    the code in one place, I personally find that harder to read because the indentation
+    can get unwieldy quickly.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Parsing the returned JSON using jQuery
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Finally, it's time to see how to get the returned JSON from the server and use
+    it. You'll do this by registering an event handler on `$.ajax` to receive the
+    resulting JavaScript object, which jQuery helpfully deserializes from JSON for
+    you.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'To get the result from the AJAX request, we need to add an event handler to
+    the jQuery `XMLHttpRequest` object''s `done` event, as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: How it works…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: jQuery invokes the done event handler when the request successfully completes,
+    passing the resulting data as an argument. Because we specified a data type of
+    `json` in the initial call to `$.ajax`, jQuery helpfully uses `JSON.parse` to
+    parse the return value, and passes the JavaScript object we're interested in,
+    saving us the need to call `parse` on our own.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Our `done` event handler does two things: it puts the JSON of the object (as
+    serialized by the browser, not as returned by the server) in the `div` field with
+    the ID `json`, and updates the result `div` with the station''s call sign, latitude,
+    and longitude from the resulting data. This gives us a web page that looks like
+    this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How it works…](img/B04206_04_01.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: There's more...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: If you prefer, you can register the event handler for successful completion
+    by passing it as the `success` field of the initial request to `$.ajax`. Like
+    `fail` and `always`, I prefer using chaining to set it explicitly because I think
+    it's more readable.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Adding a dependency to AngularJS to your web page
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Just as another JavaScript framework, you need to include AngularJS in your
+    HTML. As you'll see in this section, there are a few other things you do differently
+    to get set up. First, be sure that you create a new HTML file, such as `json-example-angular.html`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Here''s the HTML for our application in its entirety:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: Let's look more closely at this HTML and see what's different.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How it works…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: First, note that the `body` tag has the attribute `ng-app`, which is set to
+    `aprsapp`. AngularJS applications are given defined names, and you reference those
+    names in the JavaScript that implements the logic for your application.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Next, note that the `div` region containing our UI has the attribute `ng-controller`,
+    which identifies the specific controller module responsible for handling the events
+    for that part of the UI. We'll see how that's linked to the JavaScript in a moment.
+    In that `div` are other `div` regions, whose contents are contained in double
+    brackets, defining a document template that Angular.js fills out for you. This
+    is a variable in AngularJS; at the time the controller loads, these variables
+    in HTML will be replaced by the contents set by the controller. Each is a *model*,
+    containing data to show.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Finally, we need to include the AngularJS module itself, as well as our JavaScript.
+    It's customary to keep the JavaScript for your application in a separate file
+    when working with AngularJS because this helps you enforce good separation between
+    the appearance of the web application (contained in your HTML and CSS) and the
+    implementation (contained in your JavaScript).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Now, let''s look at the skeleton of the JavaScript for our page, which we put
+    in the file `json-examnple-angular.js`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This code defines a single AngularJS application, `aprsapp`. Note that this
+    name has to match the name given to the `ng-app` attribute in your body tag. The
+    code then registers a single controller for the application, `AprsController`.
+    A controller is a function that takes at least one argument, the scope of the
+    controller, which is where you define your data models and other variables. In
+    our controller''s scope, we set the initial values for two of our models: `json`
+    and `message`.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: See also
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: To get started with AngularJS, see its website at [https://angularjs.org](https://angularjs.org)
+    or the book *AngularJS Essentials* by *Rodrigo Branas* published by *Packt Publishing*.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Requesting JSON content using AngularJS
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Angular defines a core object, `$http`, which you use to make HTTP requests
+    of remote servers. It's passed to your controller when you initialize it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Let''s extend our controller to add a reference to the `$http` object and use
+    it to make a request:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here, we define a function `doAjax` in our scope that will perform the asynchronous
+    HTTP request. It updates our models so that the `debug` model contains a status
+    message, and the `json` and `message` models are empty strings. Let's look at
+    the `$http` object in more detail.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How it works…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Looking at the controller definition function, you can see that we passed not
+    just the scope for the controller, but the `$http` object as well. It defines
+    a function that takes one argument, a JavaScript object that defines the parameters
+    of the HTTP request to make. In our example, we ask to make a `POST` request to
+    the root of our server by setting the `method` field to `POST` and the `url` field
+    to `/`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The argument to the `$http` method can include these attributes:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `method` attribute, which indicates the HTTP method to use.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The `url` attribute, which indicates the URL the method should be sent to.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The `params` attribute, which is a map of strings or objects to send to the
+    server; if the value is not a string, it will be encoded as JSON (more about that
+    in the next recipe); the `params` attribute is appended to the URL.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The `data` attribute, which is the data to be sent to the remote server.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The `headers` attribute, which is a map of headers and header values to send
+    to the remote server.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The `timeout` attribute, which indicates how long to wait for a response.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The `$http()` method returns a *promise*, an object on which you will invoke
+    other methods to register event handlers to detect errors and process data when
+    it's been successfully sent. (We'll discuss the promise further in the recipes
+    *Getting the progress of a request using AngularJS* and *Parsing the returned
+    JSON using AngularJS*.)
+  prefs: []
+  type: TYPE_NORMAL
+- en: There's more...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The `$http` object also defines separate methods `get`, `post`, `put`, `delete`,
+    and `patch`, which make the appropriate HTTP requests. You can use them instead
+    of the `$http()` method if you want to, omitting the `method` attribute. Like
+    `$http()`, they all return a promise.
+  prefs: []
+  type: TYPE_NORMAL
+- en: See also
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: For documentation on the `$http()` method and AngularJS support for AJAX, see
+    [https://docs.angularjs.org/api/ng/service/$http](https://docs.angularjs.org/api/ng/service/$http).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Sending JSON to your web server using AngularJS
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Sending JSON with AngularJS is as easy as providing a data attribute in the
+    argument to your `$http()` method call. AngularJS will even encode the object
+    as JSON on your behalf.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Like before, we''ll make an AJAX request. This time, we include a data attribute:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: How it works…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We define the JavaScript object request as we have in past examples, with a
+    single call attribute containing the call sign of the station we're interested
+    in. By passing this value as the data attribute in our argument to `$http()`,
+    AngularJS converts the object to JSON and sends it to the server.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There's more...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'If you use a method, such as `$http.post()`, pass the data as the second argument,
+    like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: You can also pass an optional configuration argument as the third argument.
+    Such a configuration object will contain the attributes I described in the previous
+    recipe for the request object.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting the progress of a request using AngularJS
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The `$http()` method returns a promise, which is your way of determining what's
+    happening with the request. It defines methods to which you can pass JavaScript
+    functions that operate as event handlers when the underlying network transaction
+    changes state.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The returned promise defines `success` and `error` methods, which take event
+    handlers. To use them, we write the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs: []
+  type: TYPE_PRE
+- en: How it works…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: On success, AngularJS invokes the function you register with the promise using
+    the `success` method, passing it the result data, HTTP status, HTTP headers, and
+    the configuration associated with the request. Here's where you'll deal with the
+    results of your network transaction, which we discuss more in the next recipe.
+    On any kind of failure, AngularJS invokes the callback you register with `error`,
+    passing it the same data.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note that `success` and `error` return the promise again, so you can chain these
+    requests if you like.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Parsing the returned JSON using AngularJS
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Handling the returned data with AngularJS is easy because it parses the returned
+    JSON for you and passes the resulting object to the event handler you registered
+    with the promise's `success` method.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Here''s the complete client-side code for our AngularJS application. The `success`
+    promise''s callback just updates the models with the fields of the object we get
+    as a result:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs: []
+  type: TYPE_PRE
+- en: How it works…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Because AngularJS handles the parsing of JSON, we can dereference the values
+    in the resulting JSON directly when we populate the text in the message model.
+    Note as well that we can assign the JSON model the result object, and when this
+    is displayed, it'll show the JSON for the result object itself.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'If you load up the HTML and JavaScript in Chrome and press the button that
+    invokes `doAjax`, you should see something like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How it works…](img/B04206_04_02.jpg)'
+  prefs: []
+  type: TYPE_IMG

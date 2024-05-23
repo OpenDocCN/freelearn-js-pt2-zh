@@ -1,0 +1,217 @@
+- en: Preface
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: '*JavaScript Promises Essentials* is a practical guide to the new concept of
+    promises. It presents a single resource replacing all the scattered information
+    out there about the topic. It covers in detail the new standard that will enhance
+    the way we do asynchronous programming in JavaScript. The book is a brief, yet
+    concise, explanation of the Promises API and its features and how it can be used
+    in JavaScript programming. It covers the essentials of JavaScript promises, touching
+    on the details that matter the most in your new learning with some very useful
+    tips on the different aspects of the topic.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Promises are for the most part a programming concept and provide a process that
+    allows developers to arrange work to be executed on data and values that do not
+    yet exist and allows them to deal with those values at an undetermined point in
+    the future (asynchronously). It also presents an abstraction to handle the communication
+    with asynchronous APIs. Currently, there are ways to achieve asynchronous calling
+    in JavaScript through callback, timers, and events, but all come with caveats.
+    Promises solve real development headaches and allow developers to handle JavaScript's
+    asynchronous operations in a more native manner compared to the traditional approaches.
+    Furthermore, promises present a straightforward correspondence between synchronous
+    functionality and asynchronous functions, especially at the level of error handling.
+    Several libraries have started using promises and now offer a robust implementation
+    of promises. You can find promises on the Web in many libraries and also by interacting
+    with Node.js and WinRT. Learning the details of promise implementations will help
+    you avoid the many problems that arise in the world of asynchronous JavaScript
+    and to construct better JavaScript APIs.
+  prefs: []
+  type: TYPE_NORMAL
+- en: What this book covers
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: '[Chapter 1](part0015_split_000.html#E9OE2-fe4c0b71cd2847c897e147ea131725a8
+    "Chapter 1. JavaScript Promises – Why Should I Care?"), *JavaScript Promises –
+    Why Should I Care?*, presents an introduction to the world of asynchronous programming
+    in JavaScript and the importance of promises in that world.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[Chapter 2](part0018_split_000.html#H5A42-fe4c0b71cd2847c897e147ea131725a8
+    "Chapter 2. The Promise API and Its Compatibility"), *The Promise API and Its
+    Compatibility*, takes you through more details of the Promises API. We will also
+    learn about current browser support for the promises standard and have a look
+    at the JavaScript libraries out there that implement promises and promise-like
+    features.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[Chapter 3](part0021_split_000.html#K0RQ2-fe4c0b71cd2847c897e147ea131725a8
+    "Chapter 3. Chaining of Promises"), *Chaining of Promises*, shows you how promises
+    allow easy chaining of asynchronous operations and what that entails. This chapter
+    also covers how to queue asynchronous operations.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[Chapter 4](part0023_split_000.html#LTSU2-fe4c0b71cd2847c897e147ea131725a8
+    "Chapter 4. Error Handling"), *Error Handling*, covers exceptions and error handling
+    in JavaScript. This chapter will also explain how promises make error handling
+    easier and better.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[Chapter 5](part0026_split_000.html#OPEK1-fe4c0b71cd2847c897e147ea131725a8
+    "Chapter 5. Promises in WinJS"), *Promises in WinJS*, explores all about the WinJS.Promise
+    object and how it is used in Windows Apps development.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[Chapter 6](part0029_split_000.html#RL0A2-fe4c0b71cd2847c897e147ea131725a8
+    "Chapter 6. Putting It All Together – Promises in Action"), *Putting It All Together
+    – Promises in Action*, shows you the promises in action and how and where we can
+    use promises in scenarios that put together everything we have learned so far.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: What you need for this book
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'In order to implement what you will be learning in this book, you just need
+    an HTML and JavaScript editor. You can choose from the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Microsoft Visual Studio Express 2013 for Web: This provides a full-featured
+    markup and code editors.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'WebMatrix: This is another option to run the sample code. It is a free, lightweight,
+    cloud-connected web development tool that leverages the latest web standards and
+    popular JavaScript libraries.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'jsFiddle: This is an online web editor that allows you to write HTML and JavaScript
+    code and run it directly in the browser.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Who this book is for
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: This book is for all developers who are involved in JavaScript programming,
+    be it in web development or with technologies, such as Node.js and WinRT, which
+    make heavy use of asynchronous APIs. Moreover, it targets developers who are interested
+    in learning about asynchronous programming in JavaScript and the new standard
+    that will make that experience much better. In short, this book is for everyone
+    who wants to learn about the new kid on the block that goes by the name of JavaScript
+    Promise.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Conventions
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this book, you will find a number of styles of text that distinguish between
+    different kinds of information. Here are some examples of these styles, and an
+    explanation of their meaning.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Code words in text, database table names, folder names, filenames, file extensions,
+    pathnames, dummy URLs, user input, and Twitter handles are shown as follows: "We
+    can achieve this event-based technique using the `object.addEventListener()` method."'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'A block of code is set as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: '**New terms** and **important words** are shown in bold. Words that you see
+    on the screen, in menus or dialog boxes for example, appear in the text like this:
+    "Name the app as you please, and click on **Ok**."'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Warnings or important notes appear in a box like this.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Tips and tricks appear like this.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Reader feedback
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Feedback from our readers is always welcome. Let us know what you think about
+    this book—what you liked or may have disliked. Reader feedback is important for
+    us to develop titles that you really get the most out of.
+  prefs: []
+  type: TYPE_NORMAL
+- en: To send us general feedback, simply send an e-mail to `<[feedback@packtpub.com](mailto:feedback@packtpub.com)>`,
+    and mention the book title via the subject of your message.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If there is a topic that you have expertise in and you are interested in either
+    writing or contributing to a book, see our author guide on [www.packtpub.com/authors](http://www.packtpub.com/authors).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Customer support
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Now that you are the proud owner of a Packt book, we have a number of things
+    to help you to get the most from your purchase.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Errata
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Although we have taken every care to ensure the accuracy of our content, mistakes
+    do happen. If you find a mistake in one of our books—maybe a mistake in the text
+    or the code—we would be grateful if you would report this to us. By doing so,
+    you can save other readers from frustration and help us improve subsequent versions
+    of this book. If you find any errata, please report them by visiting [http://www.packtpub.com/submit-errata](http://www.packtpub.com/submit-errata),
+    selecting your book, clicking on the **errata** **submission** **form** link,
+    and entering the details of your errata. Once your errata are verified, your submission
+    will be accepted and the errata will be uploaded on our website, or added to any
+    list of existing errata, under the Errata section of that title. Any existing
+    errata can be viewed by selecting your title from [http://www.packtpub.com/support](http://www.packtpub.com/support).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Piracy
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Piracy of copyright material on the Internet is an ongoing problem across all
+    media. At Packt, we take the protection of our copyright and licenses very seriously.
+    If you come across any illegal copies of our works, in any form, on the Internet,
+    please provide us with the location address or website name immediately so that
+    we can pursue a remedy.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Please contact us at `<[copyright@packtpub.com](mailto:copyright@packtpub.com)>`
+    with a link to the suspected pirated material.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We appreciate your help in protecting our authors, and our ability to bring
+    you valuable content.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Questions
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: You can contact us at `<[questions@packtpub.com](mailto:questions@packtpub.com)>`
+    if you are having a problem with any aspect of the book, and we will do our best
+    to address it.
+  prefs: []
+  type: TYPE_NORMAL

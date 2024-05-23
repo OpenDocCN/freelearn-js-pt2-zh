@@ -1,0 +1,1474 @@
+- en: Chapter 2. Influencers of Scale
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Influencers of scale start with the users of our software. They're the number
+    one influencer because they're the reason we've set out to build an application.
+    As we saw in the preceding chapter, users influence features that ultimately influence
+    the code we write and the development personnel who implement it. When we pause
+    and think about these scaling influencers, we recognize that a sound JavaScript
+    architecture that can handle them is a prudent cause. We can then take our findings
+    and look at our code from different architectural perspectives. We'll dig into
+    each of these perspectives throughout this book, starting with the next chapter.
+  prefs: []
+  type: TYPE_NORMAL
+- en: But before we do that, let's go into more detail on these influencers of scale.
+    We want to pay close attention to these because with every decision we make about
+    our design, how it actually scales depends largely on the influences we've anticipated.
+    Perhaps more importantly, we need to design our architecture in such a way that
+    it enables us to handle scaling scenarios we haven't anticipated.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We'll start with a closer look at the users of our software. Why are they using
+    it? How does our software make them happy? What's in it for us? These questions,
+    believe it or not, are pertinent to the way we write our JavaScript. From users,
+    we then move down to features, the outward-facing personality of our application.
+    Some features aren't a good fit for our application, but sometimes that doesn't
+    matter—we don't have a say. If we're going to scale up, to please our users, sometimes
+    we have to make the best of these features.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The development resources, ultimately responsible for implementing these features,
+    are a scaling influencer that can make or break a product. We'll look at the challenges
+    faced by the development team, and how they're constrained by the feature influences.
+    We'll close the chapter with a generic checklist for each of these influencers;
+    to help ensure we've thought of the most pressing issues concerning our ability
+    to scale.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Scaling users
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The most important user is us—the development organization. While our mission
+    is to keep our users happy by delivering software that scales, we need to keep
+    ourselves happy too. And that requires a viable business model. The reason we
+    care about this is because different models mean different approaches to acquire
+    new users, and manage existing users. From there, the complexities of scaling
+    our user base get deeper. We need to consider how our users are organized, how
+    they use our software to communicate with one another, how to provide support,
+    collect feedback, and collect user metrics.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Viable business models for JavaScript applications range from deploying a free
+    service that's ad-supported, to a private, on-premise deployment of our software,
+    where we collect license fees. Deciding which approach is right for the organization
+    is likely out of our hands. However, it's our responsibility to understand the
+    chosen business model and relate it to the current and future users of our software.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The business model can grow quite complex. For instance, organizations will
+    often start off with one approach that's clear cut and keeps users happy, while
+    meeting business expectations. However, as the organization grows and matures,
+    the once coherent business model is obscured into something that's less approachable,
+    and has unpredictable results for our architecture. Let's take a look at some
+    of these business models and how each impacts the scalability of our user base.
+  prefs: []
+  type: TYPE_NORMAL
+- en: License fees
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Software licensing is a complex topic, one that we're not going to explore in
+    depth here. What's important is simply whether or not we're relying on licensed
+    software as our business model. If we are, then we likely have other organizations
+    deploying our JavaScript applications on-premise. It's unlikely that we'll have
+    individuals purchasing licenses. Not impossible though—it depends on the nature
+    of the software. The likely case with selling licenses is that our software will
+    be privately deployed by multiple organizations.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There are two interesting scaling properties to consider with this business
+    model. Firstly, there's a fundamental limit on the number of users within a given
+    organization. While organizations can be large, and we can sell to multiple large
+    organizations, the common case is to have fewer users overall with a licensed
+    model. Secondly, each organization has different needs in terms of customizations.
+    This involves configurability, user organization, and so on. We're more likely
+    to experience requests for these types of changes or enhancements using a licensed
+    model.
+  prefs: []
+  type: TYPE_NORMAL
+- en: So, while there're not as many users to support, the nature of supporting them
+    is more complex due to the structure of the organization using our software, and
+    hence difficult to scale. Dependency management in these environments can be challenging
+    as well, due to restrictions that determine how our software is able to scale.
+    In other environments, these restrictions are more lax.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Subscription fees
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Subscriptions are recurring fees we collect for the use of our software. This
+    approach costs our users less, most of the time. It's also a more flexible business
+    model in that it can easily apply to software that's deployed on-premise, and
+    software that's deployed publicly.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Since it's cheaper for organizations to deploy subscription-based software rather
+    than license-based ones, we're more likely to reach more organizations. Mind you,
+    these are organizations divided into departments, each with their own budgetary
+    constraints.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In terms of scale, however, the challenge with subscriptions is similar to the
+    challenge faced with licenses, that is, complex customization requests. If subscriptions
+    are likely to get us more on-premise deployments and likely more arcane feature
+    requests. Another scaling problem facing the subscription approach is customer
+    retention. Users aren't going to continue paying subscription fees if value isn't
+    continuously delivered.
+  prefs: []
+  type: TYPE_NORMAL
+- en: So if we go the subscription route, we need to scale up our efforts in delivering
+    new features that justify the recurring subscription costs for our users.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Consumption fees
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Another business model for software is consumption, or, pay-as-you-go. This
+    is an appealing model for users since they're not paying for resources they don't
+    use. Of course, this doesn't suit every application. What if there are no meaningful
+    resources for users to consume? What if we're running our application in a way
+    that resource consumption is of no concern to us?
+  prefs: []
+  type: TYPE_NORMAL
+- en: In other cases, the resource usage is glaringly obvious. Maybe the user performs
+    some computationally-expensive task, or stores a lot of data for a period of time.
+    In these cases, the consumption model makes perfect sense, for both us and the
+    user. Users that consume less, pay less. User behavior can be erratic, with spikes
+    of consumption. However, these events are brief, relative to the rest of the time
+    they're using our application.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The scaling challenge we face with this business model is that we need good
+    tools in addition to the core aspects of our application. First, we need a tool
+    that measures and records consumption. Second, we need tools to accurately portray
+    these consumption metrics, often visually. Depending on what users are consuming,
+    and what level of integration we're expecting, there might be a third-party component
+    to consider.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Ad-supported
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Another option is to deploy our application to the public internet and use display
+    advertisements for revenue. These are free applications, and hence more likely
+    to be used. On the other hand, advertisements are a big turn-off to many people,
+    which counteracts the appeal of "free".
+  prefs: []
+  type: TYPE_NORMAL
+- en: Perhaps the goal when using this approach, rather than ad revenue, is generating
+    mass usage. The two go hand-in-hand actually, more users means more ad revenue.
+    However, mass adoption of an online JavaScript application can catch the attention
+    of investors. So lots of user accounts, by itself, has merit.
+  prefs: []
+  type: TYPE_NORMAL
+- en: These types of applications are different from those that follow other business
+    models, in how they scale. Applications that gain mass appeal on the internet
+    solve different problems for different user personas. Following this model means
+    we need to have reach, and to scale our reach means lowering the barrier to entry.
+    Our focus, while using this business model, is on ease-of-use and social validity.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Open source
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The final business model for us to consider is open source. Don't laugh; open
+    source software is vital to the functioning of the web. It's highly unlikely that
+    our JavaScript application doesn't use any open source components. It's more likely
+    that we're only using open source components. But why do people spend their valuable
+    time developing tools for everyone else to use, even their competition?
+  prefs: []
+  type: TYPE_NORMAL
+- en: The first misconception here is that folks are just sitting around, unemployed,
+    building open source software for the rest of us to use. The fact is, most of
+    the tools we'll use are built by people in strong positions at companies that
+    use the same technologies we do. They may have even started the open source project
+    to solve a problem for the company—to provide a missing tool in their development
+    process.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The second misconception is that we're helping out our competitors by starting
+    up, or contributing to, open source projects. It's not possible for us to single-handedly
+    put ourselves in a worse position than our competition via open source software.
+    By other measures, yes, it's absolutely possible to help out our competition by
+    hurting ourselves.
+  prefs: []
+  type: TYPE_NORMAL
+- en: On the other hand, open source projects can be good for an organization. They
+    have to be effective projects; something that's usable and generic. If it grows
+    legs, we're creating new stakeholders in technology that we rely on, and that's
+    a good thing. The community that surrounds an open source project is invaluable.
+    While open source by itself can't support an organization, there's no escaping
+    the fact that it's an integral part of any JavaScript application business model.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Groups and rolesGroups allow us to classify our users. Think of the role as
+    a user type. This is a powerful abstraction, because it allows us to generalize
+    aspects of features by role type. For example, instead of checking conditions
+    based on user properties, we check them based on role properties. It's a lot easier
+    to move a user from one role to another, than to modify our logic.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Figuring out user roles and how they translate into group implementations is
+    a tricky subject. The only thing we can count on is having to shuffle around the
+    organizational structure of our users. So, making the grouping mechanism as generic
+    as possible is our first goal. This has trade-offs too—anything that's completely
+    generic has negative performance implications.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Some grouping decisions will be obvious up front. Like whether users are aware
+    of other users in the system or not. If they are, we can start drilling into the
+    specific questions around how users communicate with one another using our application.
+    Again, this may be obvious based on the types of features our application has.
+    The business model we're following influences our user management design as well.
+    If we're selling software licenses and likely to be deployed on-premise, then
+    we can expect lots of varying needs for user roles, and the subsequent grouping
+    implementation. If we're deployed publicly on the internet, grouping is less of
+    a concern—we can probably choose a simple approach in favor of performance, for
+    example.
+  prefs: []
+  type: TYPE_NORMAL
+- en: As our software grows more complex, as we add more features and bring on more
+    customers, we'll start to see the need to segregate parts of our application.
+    That is, we'll need to tie-down certain features based on access control permissions.
+    Rather than having different user roles, install separate software systems; it's
+    easier for them to have a single system with users, groups, and access control.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This has implications for us as JavaScript architects because once we start
+    down the access control path, there's no turning back. From that point forward,
+    we have to be consistent—every feature needs to check for the appropriate permissions.
+    Further complicating matters, is that if we're grouping users this way, we're
+    probably going to have to group other entities of our system in a similar fashion
+    at some point. Which only makes sense, especially to the end user – this group
+    of things is accessed and used by that group of users.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Communicating users
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Another aspect to consider with regard to users, and their relationships with
+    one another, is the communication channels available to these users. Do they explicitly
+    pick and choose other users to communicate with? Or is the communication more
+    implicit? An example of the latter might be a user from the same group as us,
+    looking at a chart. This chart is generated based on data that's put into the
+    system by other members of the group. Is it worthwhile to think about these sorts
+    of implicit communication channels in addition to the explicit ones?
+  prefs: []
+  type: TYPE_NORMAL
+- en: The nature of our application determines which communication channels are open
+    to our users. It might also depend on the users themselves. Some applications
+    have users that need to get in there, and expertly perform a task—communicating
+    with other users is unnecessary. On the other hand, we might find ourselves developing
+    something that's a little more social-minded. In fact, we might even depend on
+    the services of an external social network.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If we're going to rely on third-party user management, social networks or otherwise,
+    we have to be careful how tightly coupled we become with these services. In terms
+    of scale, using third-party authentication mechanisms may have social bonus features
+    we want—especially considering that most users will love the fact that they don't
+    need yet another account to use our application. Scaling this approach to user
+    management becomes a problem from other perspectives once we start implementing
+    new features, where third-party integration is complex. For example, a photo editing
+    application might scale better using a Facebook login, since that's where most
+    users' photos originate.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Users are going to find a way to communicate with one another if our application
+    is useful or fun to use. We can fight it, or we can leverage user communication
+    as a tool to help us scale. That is, scale the transparency with which our users
+    can point their peers to something useful, that they would otherwise have to go
+    and dig-around for.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Support mechanisms
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: It's great to have our JavaScript application just work. Even when everything's
+    going according to plan, we've deployed and there are no bugs, we have to support
+    the cases where the users have no idea how to use something. Or they've performed
+    some action they probably shouldn't have. Or where one of the other ten million
+    usability issues are relevant, and swift rescue is in order.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Our support mechanism not scaling can grind our business to a halt. So, in addition
+    to our software scaling well, we need to think about how the user support systems
+    are going to scale alongside it. Support can be tightly integrated, or farmed
+    out to third-party software and personnel.
+  prefs: []
+  type: TYPE_NORMAL
+- en: It's better if users don't need support to use our software. That's why we design
+    with usability in mind. We walk through the various user experiences, often with
+    experts and/or actual users, and integrate design for them in our software. This
+    is the most obvious thing we can tackle when it comes to supporting our users.
+    Because if we can do this, through usability design, then we can eliminate a large
+    portion of the likely support issues we'll face as we scale.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Regardless, we still have to assume that we're not thinking of the support cases
+    that will inevitably pop up after deployment. Users are inquisitive. Even if everything
+    is going fine, they still might have questions. So we can't really say, "we've
+    designed a great user experience for you and everything's working, so go away".
+    We need to be responsive with our users' questions and concerns. Because the second
+    we're being dismissive about inquiries, we're failing to scale our application.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Can our JavaScript components help with supporting our users? If that's what
+    we want, absolutely! In fact, contextual help is probably the most effective.
+    If a user has a question about a particular component, and they see a help button,
+    right there within the problematic component, then they can use that to submit
+    their question. On the receiving end of the support question, there's less confusion.
+    We know exactly what the user is trying to do, and spending time creating the
+    context around the issue is no longer necessary.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This is definitely easier said than done and has other scaling implications
+    for us. These contextual help systems aren't effort-free. And should we decide
+    to go that route, we' would have to consider contextual help with every feature
+    we implement. Can this scale alongside everything else we're doing?
+  prefs: []
+  type: TYPE_NORMAL
+- en: Another approach we might want to consider is a knowledge base with information
+    from the organization creating the software, and also from those that use it.
+    Those using it for a particular purpose are apt to have better answers than us,
+    and these answers are super-valuable. Not only to users looking for answers, but
+    also to us.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Feedback mechanisms
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Is feedback really worth differentiating from support? Support is definitely
+    feedback. If we pay attention to the various support issues we encounter over
+    time, we can transform it into feedback and use this information as feedback.
+    However, it's still worth differentiating the two forms, because the user is in
+    a different frame of mind. While experiencing a support issue, there's frustration,
+    ranging from mild to intense. This user doesn't care about improving the product
+    now—they need to get their job done.
+  prefs: []
+  type: TYPE_NORMAL
+- en: On the other hand, users who've used our software for a while grow acutely aware
+    of the inefficiencies of their workflow. Collecting this type of feedback is crucial.
+    How do we get it? One option is supplying a feedback button in the application,
+    as we would with a contextual support button. Another option is to let a third-party
+    handle feedback collection. As with support, automating the context is always
+    better for us when it comes to understanding what the user is talking about without
+    spending too much time on it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The key with feedback is keeping customers engaged. Not everyone who uses our
+    software is going to share their thoughts with us. But some no doubt will—even
+    if they're just venting frustration. We have to respond to these in order to establish
+    a dialog. Users who supply feedback like this want us to respond to them. And
+    it's in the ongoing conversation with these users where the product improvements
+    emerge, not in the brilliant ideas initially submitted by users.
+  prefs: []
+  type: TYPE_NORMAL
+- en: As our user base grows, can we keep up and stay responsive to user feedback?
+    Obviously this is a challenge, given everything else that's on our plate, dealing
+    with our application's growth. It's one thing to create dialog around a given
+    piece of user data, but it's another to act on that feedback. Suppose we've enabled
+    great feedback mechanisms, embedded in our software. We will have to turn this
+    into actionable work at some point. So, we need to think about how our process
+    of generating requirements based on user feedback scales. If it doesn't, and user
+    feedback is never acted upon, they'll bail and we will have failed to scale.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Notifying users
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: JavaScript applications need to display notifications to its users. These can
+    be fairly straightforward to implement, especially if we're mainly concerned with
+    responding to user actions. For example, when users do something, it results in
+    an API request to the back-end. We will want to display a notification to the
+    user, indicating that the action has succeeded or failed. These notifications
+    look the same across the application—we can use the same tool for most, if not
+    all, notifications.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Notifications are easy to forget about in terms of designing a scalable JavaScript
+    architecture. It's a big topic—there are contextual notifications, general notifications,
+    and notifications that take place when the user is offline. The latter generally
+    means that something has been emailed to the user, prompting them to log in and
+    take action if need be.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The contextual notifications are probably the most important, as they supply
+    feedback to the user on something they're currently doing. This is challenging
+    to scale because we have to ensure that these types of notifications remain consistent
+    across the user interface, for all types of entities. The more general notifications
+    take place as a result of something happening in the background.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Some resource that belongs to a user may have changed state, either expectedly
+    or unexpectedly. Regardless, the user probably wants to know about these events.
+    Ideally, if they're logged in and using the system, then a generic notification
+    will reveal itself. However, we may want these types of notifications emailed
+    to users as well.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The challenge with any notification system is volume. If there are a lot of
+    users, and they're fairly active, a lot of notifications will need to be generated
+    and delivered. This will no doubt interfere with the performance of other components
+    in our code. We're also faced with the configurability that comes with notifications.
+    We'll never get the notifications right for all of our users, so we'll need some
+    degree of notification tuning. The right level that scales our application is
+    up to us JavaScript architects and developers.
+  prefs: []
+  type: TYPE_NORMAL
+- en: User metrics
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The best way to approach the question of how users interact with our software
+    is through data. Certain data points cannot be guessed at or manually collected.
+    This is where we need to rely on tools that automatically collect user metrics
+    as they interact with our software. With the raw data in place, we're well-equipped
+    to analyze what we see, and make decisions.
+  prefs: []
+  type: TYPE_NORMAL
+- en: While it makes sense to automate this task, the task may not be necessary in
+    the first place. It may only be worthwhile to collect user metrics when we're
+    really unsure about the future direction of a given feature, or when we want further
+    insight on what work to prioritize. A lot of the time, we can get these answers
+    without much effort, and 'there'll certainly be no need for analytical tools.
+    We may not even be permitted to collect such data if we've deployed on-premise
+    somewhere.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There's a ton of good third-party metric collection tools available. These are
+    especially helpful because they ship with a lot of the reporting we need. And
+    a lot that we don't. There's also the question of how tightly integrated we want
+    our third-party components. There's always a chance that we would need to turn
+    such a feature off. Or, at least change where such data is stored.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There are a number of uses for this data other than just input for product direction
+    decisions. Our code can take user metric data and reflectively improve the experience.
+    This could be something as innocent as making suggestions on what to do next,
+    based on past events. Or we could get really fancy and make efficiency optimizations
+    based on this data. It all comes down to the common case of what our users want.
+    Figuring out what our users want is a scaling problem in and of itself, because
+    as we grow, we acquire more users who all want different things. User metrics
+    could turn out to be a helpful tool with which to combat this issue.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Scaling users example
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Our software firm is developing an online lending application. It's fairly straightforward;
+    there's not a lot of moving parts in the front end. The applicant first creates
+    an account, and then can apply for a new loan and manage existing loans. The business
+    model of this application is consumption-based. We earn revenue through interest
+    on the loans, so the more the loans consumed, the more we earn.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The obvious scaling influencers are user volume and ease of use. Part of our
+    value proposition is low interest on small loans. There should be very little
+    overhead for the users when applying for a new loan; minimal input required, and
+    minimal wait time for the loan application to succeed or fail. This is our highly
+    focused vision for delivering value, and some of more apparent scaling influencers
+    we'll be up against.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let's think about some of the more subtle implications of our application with
+    regard to scale. Given the type of application this is, we're unlikely to see
+    requests for social functions. For the most part, the user can be treated as a
+    black box; they're in their own little universe when using our application. Since
+    ease of use is very important to us, and our application has few moving parts,
+    support and feedback are unlikely factors when it comes to scale. We can't eliminate
+    support and feedback, but our focus on those areas can be minimal.
+  prefs: []
+  type: TYPE_NORMAL
+- en: On the other hand, we need to market our service and we really have no idea
+    what our customers are getting loans for, what are the most popular repayment
+    schedules, and so on. For this, we can probably deliver a more effective market
+    message, as well as improve our overall user experience. The implication here
+    being that collecting meta data about our application is a big deal. Since we're
+    after large user numbers, the implication is that we'll need to store lots of
+    meta data. We'll also have to design each feature in such a way that we can collect
+    metrics and store them for later use, which complicates the design.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Scaling features
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Now we'll turn our attention to scaling the features we implement in our software.
+    The users are the ultimate influence, and now that we have a rough idea of what's
+    required in terms of scaling them, we can put this knowledge to work with feature
+    development. When we think about scaling users, we're thinking about the why.
+    Why do we choose this business model over that business model? Why do we need
+    to enable things for one user role, and disable them for others? Once we get into
+    actually designing and implementing the feature in JavaScript, we start thinking
+    of the how. Not only are we concerned about correctness, but also scalability.
+    As with users, influencers are the determinant when it comes to scalable features.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Application value
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We'd like to think that we're doing a good job with the features we implement,
+    and that with each new feature we introduce, we're providing value to the user.
+    It's worthwhile for us to think about this, because in essence, that's what we're
+    trying to do—scale the value of our software to a broader audience. An example
+    of not scaling, in this regard, is when existing users who rely on existing features
+    are neglected, and feel disappointed with our software because we've focused on
+    scaling new areas.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This happens when we forget about the problems we had originally set out to
+    solve with our software. It might sound like a ridiculous notion, but it's easy
+    to move in a completely different direction based on a number of factors. In some
+    rare cases, this change in direction has led to some of the most successful software
+    the world has seen. In the more common case, it leads to failed software, and
+    it is indeed a scaling problem. There's a core set of value propositions our software
+    should always deliver—this is the essence of our software and should never falter.
+    We're often faced with other scaling influencers, like the addition of new customers
+    who want different things from the core values offered by our software. The inability
+    to handle this means we're not able to scale the main value proposition of our
+    application.
+  prefs: []
+  type: TYPE_NORMAL
+- en: An indicator that we're headed down the wrong path when it comes to scaling
+    value is confusion with current value and ideal value. That is, what our software
+    currently does versus what we might like it to do someday. We have to be forward
+    thinking, there's no doubt about that. But future plans need to be continuously
+    sanity-checked against what's possible. And this often means backtracking to why
+    we set out to create the software in the first place.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If our application is really compelling, and we hope that it is, then we have
+    to fight against other scaling influencers to keep it that way. Maybe this means
+    that part of our process for evaluating new features involves ensuring the feature
+    in some way contributes to the core value proposition features of our software.
+    Not all features under consideration will be able to, and these deserve the most
+    scrutiny. Is it really worth the change in direction, and jeopardy to our ability
+    to scale?
+  prefs: []
+  type: TYPE_NORMAL
+- en: Killer features versus features that kill
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We want our application to stand out from the crowd. It'd be nice if there were
+    a niche-enough market where we had little to no competition. Then it would be
+    easy to implement stable software that just works, without anything fancy, and
+    everyone would be happy. Given that this isn't reality, we have to differentiate—one
+    such way to do this is by implementing a killer feature—which is an aspect of
+    our software that nobody else has, and something users care deeply for.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The challenge is that killer features are rarely planned. Instead, they're a
+    side-effect of something else going well in the delivery of our application. As
+    we continuously mature our application, refining and tweaking features, we'll
+    stumble upon that one "minor" change that evolves into a killer feature. It's
+    no surprise that this is often the way killer features come into being. By listening
+    to our customers and meeting scaling requirements, we're able to evolve our features.
+    We add new features, take some away, and modify existing features. If we do that
+    successfully for long enough, the killer features will reveal themselves.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Sometimes it's clear during the planning of a given feature that it's trying
+    to be a killer feature, for the sake of being a killer feature. That's not optimal.
+    Nor is it valuable to the user. They didn't choose our software because we had
+    "lots of killer features" on our product roadmap. They chose us because we do
+    something they need done. Possibly more efficiently than the alternatives. As
+    we start thinking about killer features for their own sake, we start gravitating
+    away from the core values of our application.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The best solution to this problem is an open environment, one that welcomes
+    input from all team members at feature inception time. The earlier we're able
+    to kill a bad idea, the more time we will save by not working on it. It's not
+    always as clear-cut as this, unfortunately, and we have to do some development
+    on the feature in order to discover that one or more aspects don't scale well.
+    This could be for any number of reasons, but it's not a total loss. If we're still
+    willing to pull the plug on a feature after development has commenced, then we
+    can learn a valuable lesson.
+  prefs: []
+  type: TYPE_NORMAL
+- en: When things don't scale and we decide to terminate the feature, we'll be doing
+    our software a favor. We're not compromising our architecture by forcing something
+    on it that doesn't work. We'll reach a point during the development of any feature
+    where we'll need to ask ourselves; "do we value this feature more than the architecture
+    we have in place, and if so, are we willing to change the architecture to accommodate
+    it?" Most of the time, our architecture is more valuable than the feature. So
+    putting a stop to developing something that doesn't fit can serve as a valuable
+    lesson. In the future, we'll have a better idea of what will scale and what won't,
+    based on this cancelled feature.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Data-driven features
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: It's one thing to have an application with a large and varied user base. It's
+    another to be able to make use of the ways they interact with our software by
+    collecting data. User metrics are a powerful tool for collecting information pertinent
+    to making decisions about our software, and the future direction it takes. We'll
+    call these data-driven features.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the beginning, when we have few or no users, we obviously can't collect user
+    metrics. We'll have to rely on other information, such as the collective wisdom
+    of our team. We've all likely worked on JavaScript projects in the past, so we
+    have enough of a rough idea to get the product off the ground. Once there, we
+    need tools in place to better support our decisions on features. In particular,
+    which features we need versus those that we do not? As our software matures, and
+    we collect more user metrics, we can further refine our features to match the
+    reality of what our users need.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Having the necessary data to make a feature data-driven is a challenging feat
+    to scale, because we need the mechanism to collect and refine the data in the
+    first place. This requires development effort that we simply may not have. Additionally,
+    we have to actually make the decisions about features based on this data—the data
+    alone isn't going to turn itself into requirements for us.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We'll also want to predict the viability of features we've been asked to implement.
+    This task is difficult without data to support our hypotheses. For example, do
+    we have any data on the environments in which our application will run? Simple
+    data points can be enough to determine that a feature isn't worth implementing.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Data-driven features work from two angles, that is, the data we collect automatically,
+    and the data we supply. Both are difficult to scale, and yet both are necessary
+    to scale. The only real solution is to make sure that the number of features we
+    implement are small enough in number, so that we can handle the amount of data
+    generated by a given feature.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Competing with other products
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Unless we're operating in a completely niche market, there's a good probability
+    of competing products. Even if we are in a somewhat niche market, there's still
+    going to be some overlap with other applications. There're a lot of software development
+    firms out there— so we're likely to face direct competition. We compete with similar
+    offerings by creating superior features. This means that not only do we have to
+    keep delivering top-notch software, but we need to be aware of what the competition
+    is up to, and what users of their software think. This is a limiting factor in
+    our ability to scale, because we have to spend time understanding how these competing
+    technologies work.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If we have a sales force out-selling our product, they're often a good source
+    of information on what the other guys are doing. They'll often be asked by prospective
+    customers if our software does such and such because this other application does
+    it. Perhaps the most compelling selling point is that we can deliver that feature,
+    and we can do it better.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This is where we must be careful, as this is yet another scaling factor that
+    limits our ability to win customers. We have to scale to promises we make to existing
+    and prospective customers. Promise too much, and we won't be able to implement
+    the features, leading to disappointed users. Promise too little, or nothing at
+    all, and we won't win customers in the first place. The best way to combat this
+    scaling limitation is to ensure that those selling our product are kept well in
+    touch with the reality of our software. What it can and cannot do, what's a future
+    possibility versus impractical options.
+  prefs: []
+  type: TYPE_NORMAL
+- en: To sell our product, there has to be some wiggle room for promising some things
+    without understanding the full implications of implementing such promises. Otherwise,
+    we won't get the customers we're after, because we're not generating any excitement
+    around our product. If we're going to scale this approach to selling to new customers,
+    we need a proven means to distill the promises into something that's achievable.
+    On the one hand, we can't compromise the architecture. On the other hand, we have
+    to meet somewhere in the middle to give the user what they need.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Modifying existing features
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Long after we've successfully deployed our JavaScript application, we're still
+    constantly refining the design of our code and the overall architecture. The only
+    constant is change, or something to that effect. It takes a sizeable amount of
+    discipline to go back and modify existing features of our software in an effort
+    to improve the experience for users. The reason is that we feel more pressure
+    from stakeholders to add new features. This presents a long-term scaling problem
+    for our application because we can't add new features forever, without ever improving
+    what's already in place.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The unlikely scenario is that there's no need to change anything; all our existing
+    users are happy and they don't want us to touch anything. Some users are afraid
+    of change, which means they like aspects of our software because we did a good
+    job implementing them. We obviously want more features that are this good, by
+    which, users are generally happy and don't see a need to improve.
+  prefs: []
+  type: TYPE_NORMAL
+- en: So how do we reach this point? We have to listen to user feedback, and base
+    our roadmap for modifying features on this feedback. To keep scaling along with
+    our users and their demands, we have to strike a balance between implementing
+    new features and modifying existing features. One way to check if we're moving
+    in the right direction with feature enhancements is to broadcast the proposed
+    changes to our user base. We can then gauge the feedback we get, if any. In fact,
+    this might entice our otherwise quiet users to give us some specific suggestions.
+    It's a way of putting the ball in the user's court—"here's what we're thinking,
+    what do you think?"
+  prefs: []
+  type: TYPE_NORMAL
+- en: Beyond figuring out what features to improve and when to improve them relative
+    to implementing new features, there's the architectural risk. How tightly coupled
+    is our code? Can we isolate a feature to the extent that there's no chance of
+    us breaking other features? We're never going to completely eliminate this risk—we
+    can only reduce coupling. The scaling issue at play here is how much time do we
+    spend modifying a given feature due to re-factoring, fixing regressions, and so
+    on? We spend less time on these activities when our components are loosely-coupled,
+    consequently, we can scale our feature enhancements. From a management point of
+    view, we always run the risk of blocking other people in the organization, through
+    conflicts brought about by our changes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Supporting user groups and roles
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Depending on the type of business model we're following and the size of our
+    user base, user management becomes a scaling issue for us because it touches every
+    feature we implement. This is further complicated by the fact that the user management
+    is likely to change just as frequently as the feature requirements are. As our
+    application grows, we'll likely be dealing with roles, groups, and access control.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There are a lot of side-effects with complicated user management. The new feature
+    we've just implemented may work perfectly fine initially, but fail in a number
+    of other scenarios our production customers are likely to face. This means that
+    we need more time dedicated to testing features, and the quality assurance team
+    is probably already overwhelmed. Not to mention the additional security and privacy
+    implications that arise from complicated user management in each of our features.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We can't really do much about complex user management schemas, as they're often
+    symptomatic of the organization using the application, and its structure. We're
+    more likely to face these types of complexities with on-premise deployments.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Introducing new services
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: There comes a point where the current back-end services no longer suffice for
+    new features. We can scale our front-end development efforts better when there's
+    very little dependency on the back-end. If that sounds counter-intuitive, don't
+    worry. It's true that we need back-end services to carry out the requests of our
+    users. So the dependency will always be there. What we want to avoid is changing
+    the API unnecessarily.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If there's a way to implement the feature using existing APIs, we do it. This
+    lets the back-end team focus on stability and performance by fixing bugs. They
+    can't do that if the API constantly has to change in order to support our features.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Sometimes there's no getting around adding new back-end services. In order to
+    scale our development process, we need to know when new services are necessary,
+    and how to go about implementing them.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The first question is the necessity of the new service. Sometimes this is easy—it's
+    not possible to implement the requested API. We'll have to make do with what's
+    there. The second question is the feasibility of the new service. We'll likely
+    form the shape of the new API since we're the ones who need it. Then we'll have
+    to hear what the back-end team thinks. If we're a team with full-stack developers,
+    there's less overhead because we're likely all on the same team and in closer
+    communication with one another.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now that we've decided to go ahead with the new API, we have to synchronize
+    the implementation of our feature in the front-end, with the implementation of
+    the feature in the back-end. There's no cut-and-dry solution here for us to follow,
+    because the service could be easy or difficult to implement. Our feature could
+    require several new services. The trick is reaching an agreement on the API and
+    having a mocking mechanism in place. Once the real service is available, it's
+    a time matter of disabling the mock.
+  prefs: []
+  type: TYPE_NORMAL
+- en: However, in terms of scaling our application as a whole, this is just one integration
+    point between the front-end features and back-end services. The implications of
+    introducing the new feature, for the system, aren't known. We can only guess so
+    much through testing and prior knowledge. It's not until production that we will
+    see the full implication of how well our new feature scales. Different features
+    that use the exact same service have different implications for request load,
+    error rate, and so on.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Consuming real-time data
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: It's commonplace in JavaScript applications to have socketed connections to
+    back-end data, in order to keep any user sessions synchronized with the reality.
+    This simplifies some areas of our code while complicating others. The implications
+    for scaling are substantial. Sending real-time data over web socket connections
+    is what's called "pushing data". The prevailing technique prior to web socket
+    connectivity was long-polling HTTP requests. This basically meant that instead
+    of the data being delivered to clients when it changed, the client was responsible
+    for checking if the data had changed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The same scaling issues surrounding real-time data still exist today. With web
+    socket technology, some of the burden has been shifted from our front-end code
+    to the back-end. It's up to the application services to push web socket messages
+    when relevant messages take place. There are a number of angles we need to look
+    at here though. For example, does our architecture as a whole rely on the delivery
+    of real-time data, or are we only considering real-time data for a single feature?
+  prefs: []
+  type: TYPE_NORMAL
+- en: If we're considering introducing web-socket connectivity for the first time,
+    to better support a new feature, we have to ask ourselves if it's something we
+    want to fit into our architecture moving forward. The challenge with real-time
+    data only affecting one or two features is a lack of clarity. Developers looking
+    at one feature that has real-time data fed into it, versus another that does not,
+    will have a hard time addressing things like consistency issues that arise over
+    the course of developing our software.
+  prefs: []
+  type: TYPE_NORMAL
+- en: It often makes more sense, and scales better from a number of perspectives,
+    to properly integrate real-time data into the code of our front-end architecture.
+    Which essentially means that any given component should have access to real-time
+    data in the same way as any other component. As always though, the scaling issues
+    we face when flowing top-down, from the user and their organization, ultimately
+    determines the type of features we implement. This in turn influences the rate
+    at which real-time data is published. Depending on the structure of our application,
+    and how user data is connected, the frequency with which real-time data is delivered
+    to each browser session can fluctuate dramatically. These types of considerations
+    have to be made for every feature we implement.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Scaling features example
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Our video conference software is popular with large organizations. Mainly due
+    to it's stability, performance, and the fact that it's browser-based, without
+    the need for plugins. One of our customers has requested that we implement chat
+    utilities as well. They like our software so much that they'd rather use it for
+    all real-time communication, and not just video conferencing.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The actual implementation of chat utilities at the JavaScript level wouldn't
+    be too difficult. We would end up reusing several components that enable our web
+    video conferencing functionality. A little re-factoring and we've got the new
+    chat components that we need. But there're some subtle differences between text
+    chat and video chat with regard to scale.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The key difference is the longevity of the text chats versus video chats, where
+    the latter is generally a transient occurrence. This means that we need to figure
+    out policies for persisting chats. Our video chats don't require user accounts
+    to join, in case people want to invite people outside of the organization. This
+    is different with text chats because we can't exactly invite anonymous actors,
+    and then blow the chat away after they leave. We'll likely have other changes
+    to make in our user management components as well. For example, do chat groups
+    now correspond to video groups?
+  prefs: []
+  type: TYPE_NORMAL
+- en: Since this is just one customer who's asked for this capability, we'll probably
+    want a way to turn it off. Not only does this new feature have the potential to
+    detract from our core value—video conferencing—but it can cause problems in deployments
+    for other customers. With the new back-end services, the added interface complexity,
+    and the additional training and support that's required, it's understandable that
+    not all organizations would want this feature enabled. So if this isn't something
+    we already have in our architecture, that is, the ability to turn components on
+    and off, then that's something else that influences our ability to scale.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Scaling development
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The last hurdle for us to overcome in terms of scaling influencers is that of
+    actually developing the software. Any sufficiently complex JavaScript application
+    isn't going to be written in isolation by just one developer. There's a team involved,
+    even if it is only ad-hoc and self-organized in an open source context. In other
+    institutions, teams and the roles within them are defined more concretely. Regardless
+    of how the team is put together, scaling that team is a direct consequence of
+    how we react to the other scaling influencers discussed so far in this chapter.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The first issue we'll address is the one we're most likely to run into first
+    with a nascent software project—finding development resources. A team isn't a
+    static thing; we'll have to add new resources as the software grows in code size
+    and solution scope. Like it or not, the best resources are the most likely to
+    leave as they're the most sought after. Ideally, we can hang on to a talented
+    crew, but we will nonetheless have to scale the process of acquiring new resources.
+    How and when we hire JavaScript programmers is influenced by the features we're
+    implementing, and the architecture we're putting together to to serve the functioning
+    of those features.
+  prefs: []
+  type: TYPE_NORMAL
+- en: From a day-to-day perspective, each team member should be responsible for implementing
+    a specific chunk of our application. This is a complicated matter, and scaling
+    influencers are to blame. We have to be careful about defining our roles for the
+    team; to not make them overly restrictive. When things change in response to influencers,
+    we need to pivot and deliver. Rigid role definitions don't help us much here.
+    Conversely, we need to at least make an attempt to put boundaries in place, if
+    there's going to be any level of autonomy in the way our components are developed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Finally, we'll try to figure out if there's a sound approach to determine when
+    we potentially have too many development resources. To say it out loud almost
+    sounds like a bad thing. We've got all this talent, and all this work to do—it
+    seems like those two items go hand-in-hand, do they not? No, not always.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Finding development resources
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: It's tempting, especially for product managers, to hire development resources
+    not for what we're currently working on, but for what we've planned to work on
+    in the future. But this doesn't scale well for a number of reasons. The first
+    issue that new hires are likely to face in this scenario is not being able to
+    learn the code by working on real features. Remember, they were hired to work
+    on something on the roadmap that we haven't started yet. So they end up trying
+    to be useful, but there's no real obligation for them yet. After a couple of weeks,
+    they're fighting to stay out of the way of folks who are trying to wrap up work.
+  prefs: []
+  type: TYPE_NORMAL
+- en: It's often better to consider what we're working on now. Is there a clear gap
+    in our ability to deliver something that's expected in the next release of our
+    software? If there is no well-defined gap, there's nothing for a new programmer
+    to fill, and that just creates unnecessary communication overhead. The downside
+    is that once we have clearly-defined gaps in our ability to develop the features
+    we need, we won't be able to find the resources we need. This pressure can lead
+    to hiring the wrong people, who don't gel with the team, for one reason or another.
+  prefs: []
+  type: TYPE_NORMAL
+- en: A better approach to scaling the growth of our development resources is to wait
+    till there's a gap. A gap doesn't necessary mean the world is on fire and you're
+    going to fail as a company. It just means we could do things better, development-wise.
+    We shouldn't try hiring more than one developer at a time if we can avoid it.
+    If we take the time needed to find the right resource, then they're likely to
+    fill any gaps we've identified with our process and some.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The quintessential resource on communication overhead during the software development
+    lifecycle is "The Mythical Man-Month", by Fred Brooks.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Development responsibilities
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The web browser platform is a complex space, with lots of technologies, and
+    lots of moving parts. Some components of the web platform are more greenfield
+    than others, but important nonetheless for us to understand. These emerging technologies
+    are the future of the web. So who on our team is going to take ownership of learning
+    these new technologies and socializing them throughout the organization? The challenge
+    with the web platform is that there's more to master than one person can reasonably
+    manage while simultaneously delivering product features. This is why we need at
+    least some level of development roles.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How strict the boundaries are for these roles is dependent on the organization
+    and the culture therein. The nature of the application under development will
+    likely influence the types of development roles to setup too. There's no recipe,
+    and strictness should be avoided where possible. The reason being that we need
+    to adapt to changes brought on by scaling influencers. Strict roles essentially
+    impede an otherwise capable developer from putting out fires. We generally don't
+    have time for role boundary disputes as deadlines loom.
+  prefs: []
+  type: TYPE_NORMAL
+- en: It's the architect of the front-end that's most likely to see the roles that
+    make sense for implementing a given application architecture. And these are likely
+    transient roles, guided by the architect but formed organically by the members
+    themselves. This is especially observable in open source projects where people
+    do what they're good at, and hence what they enjoy doing. While we can't always
+    adopt this model exactly, we can certainly take cues from it—shape roles around
+    what people are good at doing in the context of our feature requirements. Doing
+    so will help developers get mentorship where they need it. Being interested in
+    some aspect of JavaScript development doesn't mean they're proficient at the level
+    they need to be. That's where having a senior person show them the ropes, doing
+    something they like doing, has enormous payoffs for the product in the long term.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Too many resources
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We've partially addressed the notion that it's easy to hire too many development
+    resources— tempting even. When there's a clear roadmap ahead of us defined by
+    product management, we want to take comfort in knowing we do in fact have the
+    development resources to fulfill our roadmap. Hiring people too fast inevitably
+    leads to too many development resources. We may already be there now, and the
+    question then becomes what to do about it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If we're unhappy with members of our team, and it's clear that we have more
+    resources than are needed, the answer is straightforward. However, there's another
+    way to look at things, if we have too many good resources we don't want to lose.
+    We have to adjust the product roadmap to accommodate the development talent we've
+    recruited. This often means finding a channel in which we're able to flow product
+    ideas up from development to product management. This is more of an art than a
+    science.
+  prefs: []
+  type: TYPE_NORMAL
+- en: It's a challenging job, being a front-end architect and figuring out who's going
+    to build what. The best way to scale our development resources is to provide an
+    accurate map of our architecture to those that are currently implementing it.
+    If there's discrepancies, figure out the right path forward. For example, there
+    could be gaps and we need more JavaScript programmers, or there could be too many
+    resources and something needs to change in the product.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Scaling development example
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Our application has been around for a while, has seen some success, and is deployed
+    in a variety of contexts. One of our core developers, Ryan, touches many areas
+    of the code. He helps many other developers improve their code, providing suggestions
+    and so on. Our application has reached the point where it's large enough 'for
+    us to start noticing performance degradation across all features.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We need Ryan to implement some performance enhancements, which will involve
+    re-factoring certain sections of code, and basically occupy all his time. We still
+    have features to deliver, if we plan on scaling to meet customer demand. On the
+    other hand, we're seeing red flags with our ability to scale performance-wise.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We realize that we need to hire a new developer to help with new feature development.
+    This developer doesn't need Ryan-like chops. They need to have the basics down
+    for the technologies we're using. If we're lucky, we'll find someone that grows
+    into filling more responsibilities. But for now, the gap left by Ryan that we
+    need to fill is fairly narrow. And to scale, we don't need to find another Ryan
+    right away.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Influencer checklist
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: We'll close out the chapter with a few checklists. These are simple questions
+    for which there's no one correct answer. Some answers will remain the same throughout
+    the lifetime of our software. For example, our business model will, hopefully,
+    'not change often. Others depend on the current state of things, and that's what
+    these lists are for. We can come back to them again and again, anytime something
+    changes. These could be requirements, users, new deployments, or changes to the
+    development environment. These questions are nothing more than subtle reminders
+    of the factors that influence scalable JavaScript applications. If reading them
+    results in more questions than answers, then they've served their purpose.
+  prefs: []
+  type: TYPE_NORMAL
+- en: User checklist
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The user is why we build software in the first place. This checklist covers
+    the most fundamental aspects of why we need to scale our application. These questions
+    will be relevant throughout the lifetime of the software. And not just when something
+    with the user management perspective is in question. Changes to feature development
+    should trigger a look at this list.
+  prefs: []
+  type: TYPE_NORMAL
+- en: What's the business model of our software?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Is it *license-based*?
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Is it *subscription-based*?
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Is it *consumption-based*?
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Is it *advertisement-based*?
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Is it *open source*?
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Does our application have different user roles?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Are features hidden from one role while visible to others?
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Does every feature in our application have to be *role-aware*?
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How are roles defined and administered?
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How does our business model influence the use of roles in our application?
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Do our users communicate with each other using our software?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Do users collaborate with each other to use our application effectively?
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Does user communication happen as a side-effect of our data model?
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How do the user roles in our application influence user communication?
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How do we support our application?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Is support built into the application, or handled externally?
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Can users support each other using a central knowledge repository?
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How do our business model and application user roles influence the type of support
+    we need to provide?
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How do we collect feedback from users?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Is feedback collection built into the application, or handled externally?
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How do we incentivize users to provide feedback?
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How does the type of support we provide influence the type of feedback we want
+    to collect?
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How do we notify users with relevant information?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Does our application have a generic, context-independent notification mechanism?
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How do we ensure that only relevant notifications take place at any given time?
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Can users audit their notifications?
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: What type of user metrics should we collect?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Do we use metrics to improve future versions of the product?
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Can our features use metrics at runtime to improve the user experience?
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How does the business model influence our need to collect metrics?
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Feature checklist
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Following the scaling influencers that originate from users of our software,
+    are the features of our software. This list covers some of the questions we should
+    be asking ourselves about any new feature, or implementing changes in an existing
+    feature. They'll help us address the common issues related to scalability on a
+    per-feature basis.
+  prefs: []
+  type: TYPE_NORMAL
+- en: What's the core value proposition of our software?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Does the feature we're implementing or enhancing contribute to the overall value
+    proposition of our product?
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Is our current value proposition too broadly focused?
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How do the number of users and their roles influence our ability to focus on
+    features relevant to our application's value?
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How do we determine the feasibility of a feature?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Are we trying to implement killer features instead of letting them come about
+    naturally?
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Do we take the time to determine whether a proposed feature is feasible to implement,
+    rather than implementing it poorly?
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How does the value proposition of our software, and the feature requests from
+    our users, influence the feasibility of the features we ultimately implement?
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Can we make informed decisions about our features?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Do we have any user metric data on which we can base our decisions?
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Is there any historical data on similar features we've implemented in the past?
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How does our business model influence the data we can collect and use for decisions
+    about the features of our application?
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Who's our competition?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Are we offering something similar to a competing product, done better?
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Are we in a niché market?
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: What can we learn from competing products?
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How does our business model influence the amount of competition we face and
+    the types of features we need to implement?
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How do we make what we have better?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Given the rate at which we're adding features, do we have enough time to maintain
+    our existing features?
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Is it safe, architecturally, to modify a feature without breaking other features?
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How do our users influence the enhancements we make to existing features?
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How does our business model influence our ability to deploy product enhancements?
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How do we integrate user management into our features?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Are access control mechanisms generalized to the point that they're not a day-to-day
+    concern for feature development?
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Can we organize our features into groups?
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Can users turn features on or off?
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How does the type of application we're building, in conjunction with our users
+    and their roles, influence the complexity of our features?
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Are our features tightly coupled to backend services?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Are the existing services generic enough to handle the new feature we're implementing?
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Are we able to mock back-end services, running entirely in the browser?
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How do our features influence the design and capabilities of back-end services?
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How does the frontend stay synchronized with backend data?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Can we utilize web socket connectivity for push notifications?
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Does high user activity cause more messages to be delivered to other users?
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How does consuming real-time data influence the complexity of our features?
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Developer checklist
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The final checklist we'll want to review throughout the course of our software
+    is concerned with development resources. This checklist won't be used as frequently
+    as the users or the features lists. Nonetheless, it's important to make sure we're
+    addressing the concerns that arise in terms of development resources.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How do we find the right development resources?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Can we get by with the development resources we currently have?
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Do we need to revisit the features under development to accommodate the resources
+    we have?
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Do we have the *right* development resources for the product we're building?
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How do we allocate development responsibilities?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: How much overlap should there be between areas of responsibility?
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Do our current areas of responsibility reflect what we're building?
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How do the various skill-sets of our team members influence the responsibilities?
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Can we avoid hiring too many resources?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Are we hiring people too far in advance of actually needing them?
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Are we experiencing communication overhead due to too many resources?
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How does the number of features under development in parallel, influence the
+    perception that more developers means more will be accomplished?
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: There are three main areas of concern when it comes to scaling influencers in
+    JavaScript applications. Each area influences the area directly beneath it, until
+    we ultimately hit the ground floor, where development takes place.
+  prefs: []
+  type: TYPE_NORMAL
+- en: First and foremost are the users of our software. There are a number of user-related
+    factors that influence the need for our software to scale. For instance, the business
+    model our organization chooses subtly affects later decisions about our architecture.
+    License-based deployments are likely to be deployed on-premise somewhere, and
+    therefore more likely to require customizations. The combinations of complexities
+    are endless, and they all stem from the users of our software.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The next major area we looked at were the features themselves. We have to take
+    much of the insight gained from thinking about our users and their influence on
+    scale, and provide this as input to our feature design. For example, a lot may
+    happen in a short period of time, once people start using our software. How will
+    this distract us from the core value of our application? Believe it or not, focus
+    is something that needs to scale too.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Finally, there are the development activities. There's the team to build, and
+    finding the right people isn't easy. Even if we have a team of solid developers
+    in place, the responsibilities, and how they are influenced by the features and
+    the people using them, needs to be taken into consideration. Likewise, as the
+    development of our application progresses, we have to ensure that the right resources
+    are in place.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now that we've laid the foundation of what scaling is all about in the front-end,
+    we're ready to dive into the specifics. The remainder of this book will put the
+    concepts of the first two chapters into a JavaScript context. We know what scaling
+    influencers are, and now we get to make architectural trade-offs. This is the
+    fun part, because we get to write code.
+  prefs: []
+  type: TYPE_NORMAL

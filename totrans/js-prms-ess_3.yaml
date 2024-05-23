@@ -1,0 +1,318 @@
+- en: Chapter 3. Chaining of Promises
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'One of the most important features of promises is the ability to chain and
+    manage sequences of asynchronous operations. In the previous chapter, we learned
+    the details of the Promise API and how it works; notably, we saw how the `then`
+    method works. We also learned about the current browser compatibility for promises
+    and the libraries that have implemented and extended JavaScript promises. In this
+    chapter, we will cover the following topics:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: How chaining came to be in an asynchronous JavaScript
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Implementing chaining with promises
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Transforming from callback hell into well-organized promise chains
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Chaining like never before
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'As we learned in the previous two chapters, promises tend to bring the prowess
+    of synchronous programming to asynchronous functions. This ability of promises
+    includes two key features of synchronous functions:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: A function that returns values
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: A function that throws exceptions
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The significance of these features is that they can be used to pass the value
+    returned by one function directly into another—and not just once; this can be
+    translated into the ability to chain these functions one after the other, whereby
+    the binding association between the elements in this chain is the promise's return
+    value by each operation. Now, what the second feature implies is very important
+    as throwing exceptions allows us to primarily detect whether the process has failed;
+    secondly, it allows us to capture those exceptions by any function that handles
+    a catch in the chain and helps us to avoid losing it in the midst of these chained
+    functions.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now, how does this translate into an asynchronous world?
+  prefs: []
+  type: TYPE_NORMAL
+- en: Well, to begin with, in an asynchronous world, one cannot simply return values
+    because those values are not yet ready in time. Likewise, we cannot throw exceptions,
+    basically because there is no one there to catch those raised exceptions. So developers,
+    ever resourceful, have tried to solve this problem by reverting to nested callbacks.
+    This allowed them to chain functions with return values, but at the cost of maintainability,
+    readability, and of course, extra lines of code. When the code grows in lines
+    and the nested callback grows in depth, the code becomes harder to maintain and
+    debug when edits are needed or errors arise. Also, readability is negatively impacted
+    with nested callbacks, and developers need to collapse and expand braces in order
+    to follow with the code to tell where the callback function begins and ends.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Moreover, catching errors in these nested callbacks was very strenuous and
+    required developers to pass the errors up the chain of callbacks manually. This
+    ordeal in asynchronous programming is in famous and termed *callback hell*; it
+    usually ends up in a code that looks like the following dummy code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: In the previous example, you will notice the widespread presence of `function`
+    and `});` in what looks like a pyramid of code, bearing in mind that we didn't
+    even include error-handling code. The previous example depicts, on a small scale,
+    what *callback hell* looks like. We can also observe how nested callbacks—which
+    are quite flourishing in JavaScript programing—can grow uncontrollably into an
+    intertwined and hard–to-maintain code. So imagine how the code will look in a
+    more complex scenario.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Nevertheless, there are remedies that developers can implement to have nested
+    callbacks that are more readable and maintainable. These remedies include the
+    use of named functions instead of anonymous functions in the callback parameters.
+    Another solution would be to break down the code into smaller chunks by placing
+    the code that does a specific task into a separate module and then plug that module
+    into the application code somewhere else. However, these remedies are more of
+    a workaround and not a standard practice; also, the workarounds are still not
+    enough to address the concept of chaining asynchronous operations entirely.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Promises, on the other hand, deliver the functional composition that we have
+    in synchronous programming in more of an *out-of-the-box* way when compared with
+    asynchronous programming in JavaScript.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Why so? Because the specification states that a promise is required to provide
+    a `then` method. Not just that; the specification also necessitates that the `then`
+    function, or any other function that has a compliant implementation, should return
+    a promise. The returned promise contains either a value, if fulfilled, or an exception,
+    if rejected. Hence, `then` can combine with another `then` function using the
+    returned promise to compose a chain whereby the result of the first operation
+    will be passed on to the next one and so on. Also, this chain can be cut at any
+    point in time by a rejection, which can be handled by any operation in the chain
+    that declares an exception-handling code; in other words, the error will bubble
+    up automatically through that chain.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Some promise enthusiasts regard this chaining of promises as being the best
+    part about the new standard.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In JavaScript programming, chaining is very important when we have a scenario
+    where multiple asynchronous operations need to be executed. These scenarios include
+    the case where the work of one operation depends on the outcome of the previous
+    operation. Moreover, we might have the case where the first operation needs to
+    process some code before it can return a result and pass it to the next operation.
+    Bear in mind that all of this should take place without blocking other threads,
+    especially the UI thread. Hence, we need a straightforward, standard mechanism
+    to chain these asynchronous operations, and this is exactly what promises provide.
+  prefs: []
+  type: TYPE_NORMAL
+- en: When it comes to chaining promises, the chain can go as deep as we want to as
+    `then` will always return a promise. One thing to watch out for, though, if we
+    are making a call such as `promise.then(onFullfilled)`, is that the `onFulfilled`
+    function can only be called after the promise has run its course, with the promise's
+    value as its first argument. Therefore, if we return a simple value inside the
+    first `then` and chain it to another one, the next `then` will be called with
+    that simple value returned by the previous `then`. If we were to return a promise
+    from the first `then`, the following `then` will have to wait for the returned
+    promise and will only be called or executed when that promise has been fulfilled
+    or completed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s see this in action. The following is a very basic sample code that demonstrates
+    a chained promise:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: The script is very straightforward, and you can write it in any development
+    environment or even in an online code editor such as JSFiddle.net. First, we create
+    a promise by defining a `promiseObj` object. This object is a function that takes
+    one argument at a time and returns a new promise.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Remember that not all browsers support promises as of now, as we learned in
+    [Chapter 2](part0018_split_000.html#H5A42-fe4c0b71cd2847c897e147ea131725a8 "Chapter 2. The
+    Promise API and Its Compatibility"), *The Promise API and Its Compatibility*.
+    To do this, you will need to run or test the code on jsFiddle in a compatible
+    browser. Revert to this chapter to check for compatible browsers.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We construct the promise using `new Promise`. The constructor takes an anonymous
+    function that will execute the work. This function is passed with one `resolve`
+    argument that will fulfill the promise. Inside this constructor, we call the `resolve`
+    argument to execute a `setTimeout` function that takes another `time` argument
+    besides the function that will be executed after a given time. Hence, `setTimeout`
+    will resolve the promise.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The second part of the code is where the chaining takes place. We first call
+    the `promiseObj` we just created; since it will return a promise, we can call
+    `then` on it. By definition, `promiseObj` takes the `time` argument, in milliseconds,
+    to be passed on to the `setTimeout` function. Here, we passed `3000` (3 seconds)
+    and inside it, we simply called an `alert()` function that will pop up on the
+    screen as the following screenshot shows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Chaining like never before](img/00003.jpeg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Now, since `then` returns a promise, we can chain another `then` call to it;
+    this will be executed after the promise has been resolved and in turn will execute
+    an `alert()` function. The previous example, though very basic, illustrates how
+    we can easily chain asynchronous operations with promises.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let's try converting the example we saw earlier from nested callbacks into a
+    chain of promises. For illustration purposes, I will add an HTML element, `div`,
+    to populate it with the content as the promise propagates.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The HTML part is as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The JavaScript part is as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: In HTML, we only have a `div` element that is empty and has the ID log. In JavaScript,
+    we first declare a variable called `log` to hold the `div` element. Then, we construct
+    a new promise and assign it to a variable called `shout`. Inside that promise
+    object, we add text to emphasize that we just started the promise. What we are
+    promising here is the `shoutText` string after waiting for 2 seconds (2000 ms).
+    Again, we used the `window.setTimeout` function to simulate an asynchronous operation
+    that needs some time to finish. It will fulfill the promise by resolving it after
+    a given time.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Next, we call `shout` with the `then` method inside which we have defined what
+    it will do when the promise is fulfilled. In the first `then` method, we simply
+    pass the `val` parameter, which contains the value of `shoutText`, to the `log.insertAdjacentHTML`
+    function. This will display the value alongside the content of the `div` element
+    that contains the text `Promise fulfilled` in a small font. Next, we define a
+    new variable `newVal`, assign the text `Shout Again!` to it, and return it. Moving
+    forward, the second `then` also displays the value returned from the previous
+    promise call. We also define a new variable, assign it a text value, and return
+    it. The last `then` call just adds the value of `val`, which by now is equal to
+    `newVal2`, and adds it to the content of the `div` element. Note that `val` holds
+    the content of the value returned by the promise from one operation to the next
+    in the chain.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: This example can also be tested on JSFiddle.net.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Chaining in sequence
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Not only can we chain asynchronous operations with promises, but we can also
+    chain them in such a way that they run these operations in a sequence. As we learned
+    earlier in this chapter, if a `then` operation returns a value, the subsequent
+    `then` is called with that value unless the first `then` returns a promise; if
+    this happens, the subsequent `then` will wait on the promise that is returned
+    and will only be called when that promise gets fulfilled or rejected. This rule
+    allows us to queue these asynchronous operations in such a way that each operation
+    will wait for the previous one to finish and thus run in sequence. Let us look
+    at an example that better explains it. In this example, we have a function called
+    `getData` that takes a JSON file and retrieves data from that JSON file. The first
+    JSON file has categories, and for each category, we need to get the items under
+    each category in a sequence. Let''s use the following code to do this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: The previous code sample makes an asynchronous call to the `jsonCategoryUrl`
+    function, which will return a set of categories; after this, we request the items
+    in the first of those categories by passing the `data.categories[0]` parameter
+    and then passing on the first category to the next `then` call. In the second
+    link of these chained promises, we retrieve the second category `data.categories[1]`
+    and pass it to the last `then` call, which in turn retrieves the third category,
+    `data.categories[2]`. This example shows us how we can queue asynchronous operations
+    in chained promises if we need to have a chain in which one link depends or needs
+    to wait on the result of the preceding promise.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This functionality really makes promises stand out from regular callback patterns.
+    We can optimize the previous code by making a shortcut method to retrieve the
+    categories, as shown in the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: In the previous code sample, we first declare a variable called `catPromise`
+    to hold the category of the promise. Next, we declare a function called `getCategory(i)`
+    that takes the values of `i` as a parameter; inside this function, and we set
+    `catPromise` to the JSON data retrieved by the `getData(jsonCategoryUrl)` function;
+    however, using the `||` (or) operator, we can first check whether the `catPromise`
+    object has a value so that we don't fetch the category JSON file again, but only
+    once. When we call `getCategory` with the value `0`, it will retrieve the first
+    category; after this, it will return the next category with `getCategory(1)` and
+    pass it to the last `then` call. In this way, we won't download the category JSON
+    file until `getCategory` is called; however often we call the `getCategory` function
+    again, though, we will not need to redownload the category JSON file; rather,
+    we will reuse it since it will be called again in the sequence of operations.
+    As the `getCategory` function returns another promise object, it allows you to
+    have promise-pipelining, where we have the result from the first operation getting
+    passed to the subsequent one. Also, the important feature that this sample shows
+    is that, if the function provided to `then` returns a new promise, the promise
+    returned by `then` will not be fulfilled until the promise returned by that function
+    is fulfilled, thereby queuing the asynchronous operation in that chain of promises.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In addition, the previous sample clearly shows how promises address the traditional
+    callback model and the pyramid code that it generates.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Promises represent a great way to address the intricacies of asynchronous operations.
+    Promises provide a great mechanism for easy chaining of asynchronous operations
+    in JavaScript. They allow you to manage the sequences of these operations in a
+    better way than the callback mode does.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the next chapter, we will learn about handling errors in promises, see how
+    exceptions are managed with promises, and go over some examples on how to handle
+    errors that arise during an asynchronous operation in promises.
+  prefs: []
+  type: TYPE_NORMAL

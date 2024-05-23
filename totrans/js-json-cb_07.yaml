@@ -1,0 +1,609 @@
+- en: Chapter 7. Using JSON in a Type-safe Manner
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'In this chapter, we build on the recipes from [Chapter 1](ch01.html "Chapter 1. Reading
+    and Writing JSON on the Client"), *Reading and Writing JSON on the Client*, showing
+    you how you can use strong typing in your applications with JSON using C#, Java,
+    and TypeScript. You''ll find the following recipes:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to deserialize an object using Json.NET
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to handle date and time objects using Json.NET
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to deserialize an object using gson for Java
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to use TypeScript with Node.js
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to annotate simple types using TypeScript
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to declare interfaces using TypeScript
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to declare classes with interfaces using TypeScript
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using json2ts to generate TypeScript interfaces from your JSON
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Introduction
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: While some say that strong types are for weak minds, the truth is that strong
+    typing in programming languages can help you avoid whole classes of errors in
+    which you mistakenly assume that an object of one type is really of a different
+    type. Languages such as C# and Java provide strong types for exactly this reason.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Fortunately, the JSON serializers for C# and Java support strong typing, which
+    is especially handy once you've figured out your object representation and simply
+    want to map JSON to instances of classes you've already defined. In [Chapter 1](ch01.html
+    "Chapter 1. Reading and Writing JSON on the Client"), *Reading and Writing JSON
+    on the Client*, you saw how to convert from a C# or Java class to JSON, as well
+    as how to convert the JSON back to an untyped object; in this chapter, we use
+    Json.NET for C# and gson for Java to convert from JSON to instances of classes
+    you define in your application.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Finally, we take a look at TypeScript, an extension of JavaScript that provides
+    compile-time checking of types, compiling to plain JavaScript for use with Node.js
+    and browsers. We'll look at how to install the TypeScript compiler for Node.js,
+    how to use TypeScript to annotate types and interfaces, and how to use a web page
+    by Timmy Kokke to automatically generate TypeScript interfaces from JSON objects.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to deserialize an object using Json.NET
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this recipe, we show you how to use Newtonsoft's Json.NET to deserialize
+    JSON to an object that's an instance of a class. We'll use Json.NET, which we
+    mentioned in [Chapter 1](ch01.html "Chapter 1. Reading and Writing JSON on the
+    Client"), *Reading and Writing JSON on the Client*, because although this works
+    with the existing .NET JSON serializer, there are other things that I want you
+    to know about Json.NET, which we'll discuss in the next two recipes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting ready
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'To begin, you need to be sure you have a reference to Json.NET in your project.
+    The easiest way to do this is to use NuGet; launch NuGet, search for Json.NET,
+    and click on **Install**, as shown in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Getting ready](img/B04206_07_01.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'You''ll also need a reference to the `Newonsoft.Json` namespace in any file
+    that needs those classes with a `using` directive at the top of your file:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: How to do it…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Here''s an example that provides the implementation of a simple class, converts
+    a JSON string to an instance of that class, and then converts the instance back
+    into JSON:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: How it works…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In order to deserialize the JSON in a type-safe manner, we need to have a class
+    that has the same fields as our JSON. The `Record` class, defined in the first
+    few lines does this, defining fields for `call`, `lat`, and `lng`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `Newtonsoft.Json` namespace provides the `JsonConvert` class with static
+    methods `SerializeObject` and `DeserializeObject`. `DeserializeObject` is a generic
+    method, taking the type of the object that should be returned as a type argument,
+    and as arguments the JSON to parse, and an optional argument indicating options
+    for the JSON parsing. We pass the `MissingMemberHandling` property as a setting,
+    indicating with the value of the enumeration `Error` that in the event that a
+    field is missing, the parser should throw an exception. After parsing the class,
+    we convert it again to JSON and write the resulting JSON to the console.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There's more…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: If you skip passing the `MissingMember` option or pass `Ignore` (the default),
+    you can have mismatches between field names in your JSON and your class, which
+    probably isn't what you want for type-safe conversion. You can also pass the `NullValueHandling`
+    field with a value of `Include` or `Ignore`. If `Include`, fields with null values
+    are included; if `Ignore`, fields with Null values are ignored.
+  prefs: []
+  type: TYPE_NORMAL
+- en: See also
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The full documentation for Json.NET is at [http://www.newtonsoft.com/json/help/html/Introduction.htm](http://www.newtonsoft.com/json/help/html/Introduction.htm).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Type-safe deserialization is also possible with JSON support using the .NET
+    serializer; the syntax is similar. For an example, see the documentation for the
+    JavaScriptSerializer class at [https://msdn.microsoft.com/en-us/library/system.web.script.serialization.javascriptserializer(v=vs.110).aspx](https://msdn.microsoft.com/en-us/library/system.web.script.serialization.javascriptserializer(v=vs.110).aspx).
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to handle date and time objects using Json.NET
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Dates in JSON are problematic for people because JavaScript's dates are in milliseconds
+    from the epoch, which are generally unreadable to people. Different JSON parsers
+    handle this differently; Json.NET has a nice `IsoDateTimeConverter` that formats
+    the date and time in ISO format, making it human-readable for debugging or parsing
+    on platforms other than JavaScript. You can extend this method to converting any
+    kind of formatted data in JSON attributes, too, by creating new converter objects
+    and using the converter object to convert from one value type to another.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Simply include a new `IsoDateTimeConverter` object when you call `JsonConvert.Serialize`,
+    like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: How it works…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'This causes the serializer to invoke the `IsoDateTimeConverter` instance with
+    any instance of date and time objects, returning ISO strings like this in your
+    JSON:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: There's more…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Note that this can be parsed by Json.NET, but not JavaScript; in JavaScript,
+    you''ll want to use a function like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: The rather hairy regular expression on the third line matches dates in the ISO
+    format, extracting each of the fields. If the regular expression finds a match,
+    it extracts each of the date fields, which are then used by the `Date` class's
+    UTC method to create a new date.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Note that the entire regular expression—everything between the`/`characters—should
+    be on one line with no whitespace. It's a little long for this page, however!
+  prefs: []
+  type: TYPE_NORMAL
+- en: See also
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: For more information on how Json.NET handles dates and times, see the documentation
+    and example at [http://www.newtonsoft.com/json/help/html/SerializeDateFormatHandling.htm](http://www.newtonsoft.com/json/help/html/SerializeDateFormatHandling.htm).
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to deserialize an object using gson for Java
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Like Json.NET, gson provides a way to specify the destination class to which
+    you're deserializing a JSON object. In fact, it's the same method you used in
+    the recipe *Reading and writing JSON in Java*, in [Chapter 1](ch01.html "Chapter 1. Reading
+    and Writing JSON on the Client"), *Reading and Writing JSON on the Client*.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting ready
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: You'll need to include the gson JAR file in your application, just as you would
+    for any other external API.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'You use the same method as you use for type-unsafe JSON parsing using gson
+    using `fromJson`, except you pass the class object to gson as the second argument,
+    like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: How it works…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The `fromGson` method always takes a Java class; in [Chapter 1](ch01.html "Chapter 1. Reading
+    and Writing JSON on the Client"), *Reading and Writing JSON on the Client*, the
+    class we were deserializing to was `JsonElement`, which handles the general dynamic
+    nature of JSON. In the example in this recipe, we convert directly to a plain
+    old Java object that our application can use without needing to use the dereferencing
+    and type conversion interface of `JsonElement` that gson provides.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There's more…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The gson library can also deal with nested types and arrays as well. You can
+    also hide fields from being serialized or deserialized by declaring them `transient`,
+    which makes sense because transient fields aren't serialized.
+  prefs: []
+  type: TYPE_NORMAL
+- en: See also
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The documentation for gson and its support for deserializing instances of classes
+    is at [https://sites.google.com/site/gson/gson-user-guide#TOC-Object-Examples](https://sites.google.com/site/gson/gson-user-guide#TOC-Object-Examples).
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to use TypeScript with Node.js
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Using TypeScript with Visual Studio is easy; it's just part of the installation
+    of Visual Studio for any version after Visual Studio 2013 Update 2\. Getting the
+    TypeScript compiler for Node.js is almost as easy—it's an `npm install` away.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'On a command line with npm in your path, run the following command:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: The npm option `–g` tells npm to install the TypeScript compiler globally, so
+    it's available to every Node.js application you write. Once you run it, npm downloads
+    and installs the TypeScript compiler binary for your platform.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There's more…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Once you run this command to install the compiler, you''ll have the TypeScript
+    compiler tsc available on the command line. Compiling a file with tsc is as easy
+    as writing the source code and saving in a file that ends in `.ts` extension,
+    and running tsc on it. For example, given the following TypeScript saved in the
+    file `hello.ts`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Running `tschello.ts` at the command line creates the following JavaScript:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: Try it!
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'As we''ll see in the next section, the function declaration for `greeter` contains
+    a single TypeScript annotation; it declares the argument person to be `string`.
+    Add the following line to the bottom of `hello.ts`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Now, run the `tschello.ts` command again; you''ll get an error like this one:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: This error indicates that I'm attempting to call `greeter` with a value of the
+    wrong type, passing a number where `greeter` expects a string. In the next recipe,
+    we'll look at the kinds of type annotations TypeScript supports for simple types.
+  prefs: []
+  type: TYPE_NORMAL
+- en: See also
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The TypeScript home page, with tutorials and reference documentation, is at
+    [http://www.typescriptlang.org/](http://www.typescriptlang.org/).
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to annotate simple types using TypeScript
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Type annotations with TypeScript are simple decorators appended to the variable
+    or function after a colon. There's support for the same primitive types as in
+    JavaScript, and to declare interfaces and classes, which we will discuss next.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Here''s a simple example of some variable declarations and two function declarations:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: This example shows how to annotate functions and variables.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How it works…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Variables—either standalone or as arguments to a function—are decorated using
+    a colon and then the type. For example, the first function, `greeter`, takes a
+    single argument, person, which must be a string. The second function, `circumference`,
+    takes a radius, which must be a number, and declares a single variable in its
+    scope, `pi`, which must be a number and has the value `3.141592654`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: You declare functions in the normal way as in JavaScript, and then add the type
+    annotation after the function name, again using a colon and the type. So, `greeter`
+    returns a string, and `circumference` returns a number.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There's more…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'TypeScript defines the following fundamental type decorators, which map to
+    their underlying JavaScript types:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`array`: This is a composite type. For example, you can write a list of strings
+    as follows:'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: '`boolean`: This type decorator can contain the values `true` and `false`.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`number`: This type decorator is like JavaScript itself, can be any floating-point
+    number.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`string`: This type decorator is a character string.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`enum`: An enumeration, written with the `enum` keyword, like this:'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: '`any`: This type indicates that the variable may be of any type.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`void`: This type indicates that the value has no type. You''ll use `void`
+    to indicate a function that returns nothing.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: See also
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: For a list of the TypeScript types, see the TypeScript handbook at [http://www.typescriptlang.org/Handbook](http://www.typescriptlang.org/Handbook).
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to declare interfaces using TypeScript
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: An *interface* defines how something behaves, without defining the implementation.
+    In TypeScript, an interface names a complex type by describing the fields it has.
+    This is known as structural subtyping.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Declaring an interface is a little like declaring a structure or class; you
+    define the fields in the interface, each with its own type, like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: How it works…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The `interface` keyword in TypeScript defines an interface; as I already noted,
+    an interface consists of the fields it declares with their types. In this listing,
+    I defined a plain JavaScript object, `myObj` and then called the function `printLocation`,
+    that I previously defined, which takes a `Record`. When calling `printLocation`
+    with `myObj`, the TypeScript compiler checks the fields and types each field and
+    only permits a call to `printLocation` if the object matches the interface.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There's more…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Beware! TypeScript can only provide compile-type checking. What do you think
+    the following code does?
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'First, this compiles with `tsc` just fine. When you run it with node, you''ll
+    see the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: What happened? The TypeScript compiler does not add run-time type checking to
+    your code, so you can't impose an interface on a run-time created object that's
+    not a literal. In this example, because the `lng` field is missing from the JSON,
+    the function can't print it, and prints the value `undefined` instead.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This doesn't mean that you shouldn't use TypeScript with JSON, however. Type
+    annotations serve a purpose for all readers of the code, be they compilers or
+    people. You can use type annotations to indicate your intent as a developer, and
+    readers of the code can better understand the design and limitation of the code
+    you write.
+  prefs: []
+  type: TYPE_NORMAL
+- en: See also
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: For more information about interfaces, see the TypeScript documentation at [http://www.typescriptlang.org/Handbook#interfaces](http://www.typescriptlang.org/Handbook#interfaces).
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to declare classes with interfaces using TypeScript
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Interfaces let you specify behavior without specifying implementation; classes
+    let you encapsulate implementation details behind an interface. TypeScript classes
+    can encapsulate fields or methods, just as classes in other languages.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Here''s an example of our Record structure, this time as a class with an interface:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: How it works…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The `interface` keyword, again, defines an interface just as the previous section
+    shows. The `class` keyword, which you haven't seen before, implements a class;
+    the optional `implements` keyword indicates that this class implements the interface
+    `RecordInterface`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note that the class implementing the interface must have all of the same fields
+    and methods that the interface prescribes; otherwise, it doesn't meet the requirements
+    of the interface. As a result, our `Record` class includes fields for `call`,
+    `lat`, and `lng`, with the same types as in the interface, as well as the methods
+    constructor and `printLocation`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The constructor method is a special method called when you create a new instance
+    of the class using `new`. Note that with classes, unlike regular objects, the
+    correct way to create them is by using a constructor, rather than just building
+    them up as a collection of fields and values. We do that on the second to the
+    last line of the listing, passing the constructor arguments as function arguments
+    to the class constructor.
+  prefs: []
+  type: TYPE_NORMAL
+- en: See also
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: There's a lot more you can do with classes, including defining inheritance and
+    creating public and private fields and methods. For more information about classes
+    in TypeScript, see the documentation at [http://www.typescriptlang.org/Handbook#classes](http://www.typescriptlang.org/Handbook#classes).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using json2ts to generate TypeScript interfaces from your JSON
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: This last recipe is more of a tip than a recipe; if you've got some JSON you
+    developed using another programming language or by hand, you can easily create
+    a TypeScript interface for objects to contain the JSON by using Timmy Kokke's
+    json2ts website.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Simply go to [http://json2ts.com](http://json2ts.com) and paste your JSON in
+    the box that appears, and click on the generate TypeScript button. You'll be rewarded
+    with a second text-box that appears and shows you the definition of the TypeScript
+    interface, which you can save as its own file and include in your TypeScript applications.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How it works…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The following figure shows a simple example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How it works…](img/B04206_07_02.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'You can save this typescript as its own file, a `definition` file, with the
+    suffix `.d.ts`, and then include the module with your TypeScript using the `import`
+    keyword, like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
