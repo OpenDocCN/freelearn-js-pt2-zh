@@ -1,4 +1,4 @@
-# 第六章。Stack Overflow
+# 第六章：Stack Overflow
 
 2008 年，互联网上的编程问题市场被一个名为 Experts Exchange 的公司所主导。许多人对网站上文化和要求人们注册才能查看答案的规定表示不满。程序员 Jeff Atwood 和 Joel Spolsky 推出了“问答”网站 Stack Overflow。自那时以来，该网站迅速起飞，快速发展成为互联网上前 100 个网站之一。用户可以在网站上关于各种编程主题提问和回答问题。回答一个问题很好或者提出一个经过深思熟虑的问题可以赢得声誉点，这些点数突出显示。尽管 Stack Overflow 不是一个像 Facebook 和 Twitter 那样的社交媒体网站，但该网站的内容全部由用户创建和用户审核。Stack Overflow 提供了一个 API，你可以通过该 API 查询各种有趣的信息。
 

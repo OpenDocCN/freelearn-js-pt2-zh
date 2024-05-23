@@ -1,4 +1,4 @@
-# 第六章。大型 JavaScript 应用程序架构
+# 第六章：大型 JavaScript 应用程序架构
 
 任何有经验的程序员都会努力使代码具有可重用性和可维护性。在这里，我们遵循面向对象编程的原则，如封装、抽象、继承、组合和多态。除了这些基本原则之外，我们还遵循 Robert C. Martin 定义的面向对象编程和设计的基本原则，即著名的**SOLID**原则([`en.wikipedia.org/wiki/SOLID_(object-oriented_design)`](https://en.wikipedia.org/wiki/SOLID_(object-oriented_design)))。在代码审查过程中，如果我们遇到任何这些原则的违反，都会被视为代码异味，并导致重构。我们每天在开发中解决的核心任务，通常都是我们一次又一次遇到的问题。在本章中，我们将介绍 JavaScript 开发中最常见的通用架构解决方案和概念：
 

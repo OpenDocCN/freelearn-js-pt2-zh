@@ -1,4 +1,4 @@
-# 第四章。面向对象的 JavaScript
+# 第四章：面向对象的 JavaScript
 
 JavaScript 最基本的数据类型是对象数据类型。JavaScript 对象可以被视为可变的基于键值对的集合。在 JavaScript 中，数组、函数和 RegExp 都是对象，而数字、字符串和布尔值是类似对象的构造，是不可变的，但具有方法。在本章中，你将学习以下主题：
 

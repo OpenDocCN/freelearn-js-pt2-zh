@@ -1,4 +1,4 @@
-# 第三章. Windows 应用的 JavaScript
+# 第三章： Windows 应用的 JavaScript
 
 在本章中，我们将介绍由微软引入的**Windows 库 for JavaScript**（简称`WinJS`库）提供的一些功能，该库用于通过 JavaScript 访问 Windows 运行时，以便为 Windows 商店应用提供支持。Windows 库 for JavaScript 是一个 CSS 和 JavaScript 文件的库。它包含一组强大且功能丰富的 JavaScript 对象、函数和方法，这些对象、函数和方法按命名空间组织，旨在使开发人员更容易使用 JavaScript 创建 Windows 商店应用。
 

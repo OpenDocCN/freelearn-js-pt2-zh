@@ -1,4 +1,4 @@
-# 第八章。DOM 操作与事件
+# 第八章：DOM 操作与事件
 
 javascript 存在最重要的原因就是网络。JavaScript 是网络的语言，浏览器就是 JavaScript 存在的理由。JavaScript 为原本静态的网页赋予了动态性。在本章中，我们将深入探讨浏览器与语言之间的关系。我们将了解 JavaScript 与网页组件进行交互的方式。我们将查看**文档对象模型**（**DOM**）和 JavaScript 事件模型。
 

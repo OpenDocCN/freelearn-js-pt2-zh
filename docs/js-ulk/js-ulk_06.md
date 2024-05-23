@@ -1,4 +1,4 @@
-# 第五章。异步 JavaScript
+# 第五章：异步 JavaScript
 
 如今，互联网用户变得没有耐心，页面加载或导航过程中的 2-3 秒延迟，他们就会失去兴趣，并且可能会离开服务，转而使用其他东西。我们最高优先级的是减少用户响应时间。这里的主要方法被称为*芥末切割*（[`www.creativebloq.com/web-design/responsive-web-design-tips-bbc-news-9134667`](http://www.creativebloq.com/web-design/responsive-web-design-tips-bbc-news-9134667)）。我们提取应用程序的核心体验所需的组件并首先加载它们。然后，我们逐步添加增强的体验。至于 JavaScript，我们需要最关心的是非阻塞流程。因此，我们必须避免在 HTML 渲染之前同步加载脚本，并将所有长时间运行的任务包装到异步回调中。这可能是你已经知道的事情。但你是高效地这样做吗？
 

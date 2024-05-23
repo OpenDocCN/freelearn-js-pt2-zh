@@ -1,4 +1,4 @@
-# 第一章. JavaScript 思维方式
+# 第一章： JavaScript 思维方式
 
 JavaScript 是一种用于 Web 的脚本语言。在深入研究 JavaScript 的复杂性之前，我们需要知道它为何被使用。尽管 HTML 能告诉您的浏览器页面将呈现何种外观，但 JavaScript 将用于动态内容以及增加功能。
 

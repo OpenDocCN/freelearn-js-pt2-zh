@@ -1,4 +1,4 @@
-# 第九章。使用 JSONPath 和 LINQ 查询 JSON
+# 第九章：使用 JSONPath 和 LINQ 查询 JSON
 
 有时，您可能只想从一些 JSON 格式的数据中提取一两个字段，而不是将 JSON 块解析为一个类并处理其所有字段。使用 JSONPath 或 LINQ（使用 Json.NET），您可以做到这一点。在这里，您会找到以下食谱：
 

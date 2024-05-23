@@ -1,4 +1,4 @@
-# 第八章。jQuery 中的承诺（Promises）
+# 第八章：jQuery 中的承诺（Promises）
 
 在上一章中，我们学习了承诺（promises）是如何在 Angular.js 中实现的，以及它们如何在快速发展的实时 Web 应用行业中提供好处的。在本章中，我们将探讨另一个非常著名且实用的 JavaScript 库，用于前端 Web/移动应用开发。
 

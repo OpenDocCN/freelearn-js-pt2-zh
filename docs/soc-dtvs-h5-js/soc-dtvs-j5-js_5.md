@@ -1,4 +1,4 @@
-# 第五章 Twitter
+# 第五章：Twitter
 
 Twitter 是一个真正在开放和可用的 API 上成长起来的服务。最初，没有 Twitter 客户端。与 Twitter 的通信限于 SMS，后来是网站。在 Twitter 的开发过程中，开发者显然累积了数百美元的 SMS 费用，用于测试和构建系统。Twitter 在数百名开发者的支持下变得流行，这些开发者使用开放的 Twitter API 或 Twitter RSS 源构建了工具，如**TweetDeck**和**Tweetree**。因此，Twitter 提供了一个丰富的 API，可以用来构建应用程序，在我们这个案例中，是可视化。
 

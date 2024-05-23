@@ -1,4 +1,4 @@
-# 第五章。使用 Angular 2 和 Web API 开发 ASP.NET 应用程序
+# 第五章：使用 Angular 2 和 Web API 开发 ASP.NET 应用程序
 
 在本章中，我们将使用 MVC 6 在 ASP.NET Core 上开发一个完整的应用程序，使用 Web API 进行网络服务。对于客户端，我们将使用 Angular 2，这是客户端开发中最受欢迎的框架之一。Angular 2 是用 TypeScript 编写的，但它提供了用 JavaScript 和 Dart 编写代码的选项。在本章中，我们将使用 TypeScript，因为它遵循 ECMAScript 6 标准，并在构建项目时提供生成 ECMAScript 3，ECMAScript 4 和 ECMAScript 5 标准的 JavaScript 的能力。TypeScript 是 JavaScript 的超集，两者的大部分内容是相同的；实际上，TypeScript 提供了一些在许多浏览器中（除了 Mozilla Firefox）没有实现的 JavaScript 特性。
 

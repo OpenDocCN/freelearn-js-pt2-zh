@@ -1,4 +1,4 @@
-# 第八章。Google+
+# 第八章：Google+
 
 在主要的社交网站中，Google+是最新的成员。虽然是个新手，但它确实拥有庞大的用户基础，声称拥有超过 3.5 亿活跃账户（[`ca.ign.com/articles/2013/05/02/report-google-bigger-than-twitter-with-359-million-active-users`](http://ca.ign.com/articles/2013/05/02/report-google-bigger-than-twitter-with-359-million-active-users)）。这并非 Google 首次尝试打入价值十亿美元的社会媒体市场。他们过去曾创建过 Google Buzz、Google Friend Connect 和 Orkut，试图获得大量用户基础。除 Orkut 外都已停止使用，其用户基础几乎全部位于巴西。Google 故意没有创建写入 API，希望这能消除自动发布的垃圾信息。Google+提供了一个只读 API，我们可以利用它来创建可视化；然而，与其他此类 API 相比，该 API 非常有限——在本书撰写时，你甚至不能列出一个圈子的成员。
 

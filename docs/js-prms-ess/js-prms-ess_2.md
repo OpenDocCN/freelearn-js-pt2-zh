@@ -1,4 +1,4 @@
-# 第二章。Promise API 及其兼容性
+# 第二章：Promise API 及其兼容性
 
 Promises 对于 JavaScript 世界来说是相当新的，但绕过方法已经存在一段时间了。正如我们在上一章所看到的，有方法可以解决 JavaScript 中的异步编程问题，无论是通过事件还是回调。你还了解到为什么 promise 与传统技术不同。
 

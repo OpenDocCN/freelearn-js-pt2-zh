@@ -1,4 +1,4 @@
-# 第三章. 显示数据
+# 第三章：显示数据
 
 为了渲染视图，Aurelia 依赖于两个核心库：`aurelia-templating`，它提供了一个丰富且可扩展的模板引擎，以及`aurelia-binding`，它是一个现代且适应性强的数据绑定库。由于模板引擎依赖于数据绑定的抽象，这意味着可以使用 Aurelia 之外的数据绑定库，`aurelia-templating-binding`库充当了两者之间的桥梁。此外，`aurelia-templating-resources`建立在模板引擎之上，定义了一组标准行为和组件。
 

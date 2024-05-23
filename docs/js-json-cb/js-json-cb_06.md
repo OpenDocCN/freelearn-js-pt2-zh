@@ -1,4 +1,4 @@
-# 第六章。使用 JSON 与 CouchDB 配合
+# 第六章：使用 JSON 与 CouchDB 配合
 
 在上一章中，我们研究了如何使用 JSON 与 MongoDB 配合，MongoDB 是一个流行的 NoSQL 数据库。在本章中，我们继续这一主题，向您展示如何使用 JSON 与 CouchDB 配合，CouchDB 又是另一个流行的 NoSQL 数据库。在这里，你会发现有关以下方面的食谱：
 

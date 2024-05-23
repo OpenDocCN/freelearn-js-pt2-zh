@@ -1,4 +1,4 @@
-# 第一章。什么是 JavaScript 测试？
+# 第一章：什么是 JavaScript 测试？
 
 > 首先，请允许我欢迎你拿起这本书。如果你拿起这本书，我会假设你对 JavaScript 测试感兴趣。你很可能会经历 JavaScript，希望通过学习如何测试你的 JavaScript 程序来提高你的技能。
 > 

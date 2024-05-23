@@ -1,4 +1,4 @@
-# 第七章。调试工具
+# 第七章：调试工具
 
 > 在本章中，我们将学习一些可以使我们的生活更轻松的调试工具。我们将使用市场上主要浏览器（如 Internet Explorer、Firefox、Google Chrome 和 Safari）提供的调试工具。
 > 

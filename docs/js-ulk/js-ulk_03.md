@@ -1,4 +1,4 @@
-# 第三章 DOM 脚本和 AJAX
+# 第三章：DOM 脚本和 AJAX
 
 当涉及到**文档对象模型**（**DOM**）操作和 AJAX 时，第一反应可能是使用 jQuery 或 Zepto。但是，这难道不让你烦恼吗？你为了一些普通的任务，却加载了一个沉重的第三方库，而浏览器已经为你提供了所需的一切？有些人引入 jQuery 是为了跨浏览器兼容性。好吧，这个库是用来修复*损坏的 DOM API*。这在我们要支持像 IE7 这样老旧浏览器的时候真的很有帮助。然而，今天，当我们支持的浏览器使用率不到 0.1%时，我们几乎不需要关心遗留浏览器([`www.w3schools.com/browsers/browsers_explorer.asp`](http://www.w3schools.com/browsers/browsers_explorer.asp))。现代浏览器在支持 Web API 方面相当一致。总的来说，跨浏览器兼容性不再是问题。
 
