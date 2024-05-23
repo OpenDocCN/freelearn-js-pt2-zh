@@ -1,3 +1,4 @@
++   [精通 JavaScript](README.md)
 +   [序言](ms-js_00.md)
 +   [第一章：JavaScript 简介](ms-js_01.md)
 +   [第二章：函数、闭包和模块](ms-js_02.md)
