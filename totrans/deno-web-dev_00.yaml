@@ -264,6 +264,7 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 从请求`https://deno.land/logo.svg`开始：
 - en: '[PRE4]'
   id: totrans-41
   prefs:
@@ -275,6 +276,7 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 将其转换为`blob`：
 - en: '[PRE5]'
   id: totrans-43
   prefs:
@@ -286,6 +288,7 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 从`blob`对象中获取文本并将其转换为`base64`：
 - en: '[PRE6]'
   id: totrans-45
   prefs:
@@ -297,6 +300,7 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 将base64图像打印到控制台的HTML页面中，并使用图像标签：
 - en: '[PRE7]'
   id: totrans-47
   prefs:
@@ -308,6 +312,7 @@
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: 当我们运行这个时，我们得到了预期的输出：
 - en: '[PRE8]'
   id: totrans-49
   prefs:
@@ -319,6 +324,7 @@
   id: totrans-50
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在，借助*nix输出重定向功能，我们可以创建一个带有我们脚本输出的HTML文件：
 - en: '[PRE9]'
   id: totrans-51
   prefs: []
@@ -329,11 +335,13 @@
   id: totrans-52
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在，您可以查看文件，或者直接在浏览器中打开它以测试它是否可以工作。
 - en: 'It is also possible to use your knowledge from the previous chapter and directly
     run a script from the Deno standard library to serve the current folder:'
   id: totrans-53
   prefs: []
   type: TYPE_NORMAL
+  zh: 您还可以使用前一章的知识，直接运行Deno标准库中的脚本来服务当前文件夹：
 - en: '[PRE10]'
   id: totrans-54
   prefs: []
@@ -344,23 +352,28 @@
   id: totrans-55
   prefs: []
   type: TYPE_NORMAL
+  zh: 然后，通过导航到`http://localhost:4507/deno-logo.html`，我们可以检查图像是否在那里并且可以正常工作：
 - en: '![Figure 3.1 – Accessing a web page with the Deno.land logo as a base64 image'
   id: totrans-56
   prefs: []
   type: TYPE_NORMAL
+  zh: '![图3.1 – 使用Deno.land标志作为base64图像访问网页'
 - en: '](img/Figure_3.1_B16380.jpg)'
   id: totrans-57
   prefs: []
   type: TYPE_NORMAL
+  zh: '](img/Figure_3.1_B16380.jpg)'
 - en: Figure 3.1 – Accessing a web page with the Deno.land logo as a base64 image
   id: totrans-58
   prefs: []
   type: TYPE_NORMAL
+  zh: 图3.1 – 使用Deno.land标志作为base64图像访问网页
 - en: Those are just examples of Web APIs that are supported in Deno. In this specific
     example, we've used `fetch` and `btoa` but more will be used throughout the chapter.
   id: totrans-59
   prefs: []
   type: TYPE_NORMAL
+  zh: 这些只是Deno支持的一些Web API的例子。在本书的这个特定例子中，我们使用了`fetch`和`btoa`，但本章还将使用更多。
 - en: Feel free to experiment with these already familiar APIs, either by writing
     simple scripts or by using the REPL. In the rest of the book, we'll be using known
     functions from the Web APIs. In the next section, we'll get to know the Deno namespace,
@@ -369,32 +382,38 @@
   id: totrans-60
   prefs: []
   type: TYPE_NORMAL
+  zh: 请随意尝试这些已经熟悉的API，无论是通过编写简单脚本还是使用REPL。在本书的其余部分，我们将使用来自Web APIs的已知函数。在下一节中，我们将了解Deno命名空间，那些只在内置Deno中工作的函数，并且通常提供更低级别的行为。
 - en: Exploring the Deno namespace
   id: totrans-61
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 探索Deno命名空间
 - en: All the functionality that is not covered by a Web API lives under the Deno
     namespace. This is functionality that is exclusive to Deno and that can't, for
     instance, be bundled to run in Node or the browser.
   id: totrans-62
   prefs: []
   type: TYPE_NORMAL
+  zh: 不受Web API覆盖的所有功能都位于Deno命名空间下。这是专属于Deno的功能，并且不能，例如，被捆绑以在Node或浏览器中运行。
 - en: In this section, we'll explore some of this functionality. We'll be building
     small utilities, mimicking some of the programs you use daily.
   id: totrans-63
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本节中，我们将探索一些这些功能。我们将构建一些小工具，模仿您每天使用的程序。
 - en: If you want to explore the available functions before we get our hands dirty,
     they are available at [https://doc.deno.land/builtin/stable](https://doc.deno.land/builtin/stable).
   id: totrans-64
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果您想在动手之前探索可用的功能，它们可以在[https://doc.deno.land/builtin/stable](https://doc.deno.land/builtin/stable)找到。
 - en: Building a simple ls command
   id: totrans-65
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 构建一个简单的ls命令
 - en: If you've ever used a *nix system's Terminal or Windows PowerShell, you are
     probably familiar with the `ls` command. Briefly, it lists the files and folders
     inside a directory. What we will do is create a Deno utility that mimics some
@@ -403,22 +422,26 @@
   id: totrans-66
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果您曾经使用过*nix系统的终端或Windows PowerShell，您可能熟悉`ls`命令。简单来说，它列出了一个目录中的文件和文件夹。我们要做的是创建一个模仿`ls`一些功能的Deno工具，即列出目录中的文件，并显示它们的某些详细信息。
 - en: The original command has a countless number of flags, which we will not implement
     here for brevity reasons.
   id: totrans-67
   prefs: []
   type: TYPE_NORMAL
+  zh: 原始命令有无数的标志，出于简洁原因，我们在这里不会实现。
 - en: 'The information we decided to show is the name, size, and last modified date
     of a file. Let''s get our hands dirty:'
   id: totrans-68
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们决定显示的信息是文件的名字、大小和最后修改日期。让我们开始动手：
 - en: 'Create a file named `list-file-names.js` and use `Deno.readDir` to get a list
     of all files and folders in the current directory:'
   id: totrans-69
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 创建一个名为`list-file-names.js`的文件，并使用`Deno.readDir`获取当前目录中所有文件和文件夹的列表：
 - en: '[PRE11]'
   id: totrans-70
   prefs:
@@ -430,6 +453,7 @@
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: 这将把当前目录中的文件打印在不同的行上：
 - en: '[PRE12]'
   id: totrans-72
   prefs:
@@ -443,6 +467,7 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 使用`Deno.args`（[https://doc.deno.land/builtin/stable#Deno.args](https://doc.deno.land/builtin/stable)）来获取命令行参数。如果没有发送任何参数，请使用当前目录作为默认值：
 - en: '[PRE13]'
   id: totrans-74
   prefs:
@@ -456,12 +481,14 @@
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: 我们利用数组解构来获取`Deno.args`的第一个值，同时使用默认属性来设置`path`变量的默认值。
 - en: 'Navigate to the `demo-files` folder ([https://github.com/PacktPublishing/Deno-Web-Development/tree/master/Chapter03/ls/demo-files](https://github.com/PacktPublishing/Deno-Web-Development/tree/master/Chapter03/ls/demo-files))
     and run the following command:'
   id: totrans-76
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 导航到`demo-files`文件夹（[https://github.com/PacktPublishing/Deno-Web-Development/tree/master/Chapter03/ls/demo-files](https://github.com/PacktPublishing/Deno-Web-Development/tree/master/Chapter03/ls/demo-files)）并运行以下命令：
 - en: '[PRE14]'
   id: totrans-77
   prefs:
@@ -474,17 +501,20 @@
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: 看起来它正在工作。它正在获取当前文件夹中的文件并列出它们。
 - en: We now need to get the file information so that we can display it.
   id: totrans-79
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: 现在我们需要获取文件信息，以便我们可以显示它。
 - en: 'Use `Deno.stat` (https://doc.deno.land/builtin/stable#Deno.stat) to get information
     about the files:'
   id: totrans-80
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 使用`Deno.stat`（https://doc.deno.land/builtin/stable#Deno.stat）获取有关文件的信息：
 - en: '[PRE15]'
   id: totrans-81
   prefs:
@@ -496,36 +526,43 @@
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: $ deno run --allow-read index.ts ./demo-files
 - en: 12   7/4  .hidden
   id: totrans-83
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: 12   7/4  .hidden
 - en: 96   7/4  folder
   id: totrans-84
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: 96   7/4  folder
 - en: 96   7/4  second-folder
   id: totrans-85
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: 96   7/4  second-folder
 - en: 5    7/4  my-best-file
   id: totrans-86
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: 5    7/4  my-best-file
 - en: 20   7/4  .file1
   id: totrans-87
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: 20   7/4  .file1
 - en: 0    7/4  .hidden-file
   id: totrans-88
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: 0    7/4  .hidden-file
 - en: '[PRE16]'
   id: totrans-89
   prefs:
@@ -537,6 +574,7 @@
   id: totrans-90
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们获取了作为参数传递的`deno-files`目录中的文件和文件夹列表，以及以字节为单位的大小和创建的月份和日期。
 - en: Here, we're using the already known and required `--allow-read` flag to give
     Deno permissions to access the filesystem. However, in the previous chapter, we
     mentioned that there was a different way for Deno programs to ask for permissions,
@@ -544,11 +582,13 @@
   id: totrans-91
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这里，我们使用了已经知的必需的`--allow-read`标志，以赋予Deno访问文件系统的权限。然而，在上一章中，我们提到了Deno程序请求权限的不同方式，我们称之为“动态权限”。接下来我们将学习这方面的内容。
 - en: Using dynamic permissions
   id: totrans-92
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 使用动态权限
 - en: When writing Deno programs ourselves, it's very common that we know the required
     permissions beforehand. However, when writing or executing code that might or
     might not need some permissions or writing an interactive CLI utility, it might
@@ -557,31 +597,37 @@
   id: totrans-93
   prefs: []
   type: TYPE_NORMAL
+  zh: 当我们自己编写Deno程序时，我们通常事先知道所需的权限。然而，当编写可能需要或不需要的权限的代码，或者编写交互式CLI工具时，一次性请求所有权限可能没有意义。这就是动态权限的作用。
 - en: Dynamic permissions allow programs to ask for permissions as they are needed,
     allowing whoever is executing the code to give or deny specific permissions interactively.
   id: totrans-94
   prefs: []
   type: TYPE_NORMAL
+  zh: 动态权限允许程序在需要时请求权限，使得执行代码的人可以交互式地给予或拒绝特定的权限。
 - en: This is a feature that is still unstable and thus its APIs can change, but I
     think it's still worth mentioning, because of the amount of potential it enables.
   id: totrans-95
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是一个仍然不稳定的功能，因此其API可能会发生变化，但由于它所启用的潜在功能量，我认为它仍然值得提及。
 - en: You can have a look at Deno's permissions API at [https://doc.deno.land/builtin/unstable#Deno.permissions](https://doc.deno.land/builtin/unstable#Deno.permissions).
   id: totrans-96
   prefs: []
   type: TYPE_NORMAL
+  zh: 您可以查看Deno的权限API，位于[https://doc.deno.land/builtin/unstable#Deno.permissions](https://doc.deno.land/builtin/unstable#Deno.permissions)。
 - en: 'What we''ll do next is make sure that our `ls` program asks for filesystem
     read permissions. Let''s do it by following these steps:'
   id: totrans-97
   prefs: []
   type: TYPE_NORMAL
+  zh: 接下来我们要做的是确保我们的`ls`程序请求文件系统的读取权限。让我们按照以下步骤进行：
 - en: 'Use `Deno.permissions.request` to ask for read permissions before executing
     the program:'
   id: totrans-98
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 使用`Deno.permissions.request`在执行程序之前请求读取权限：
 - en: '[PRE17]'
   id: totrans-99
   prefs:
@@ -593,11 +639,13 @@
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: 此操作请求对程序将要运行的目录的权限。
 - en: 'Run the program and grant permissions on the current directory:'
   id: totrans-101
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 运行程序并在当前目录中授予权限：
 - en: '[PRE18]'
   id: totrans-102
   prefs:
@@ -609,6 +657,7 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 运行程序并在当前目录中拒绝读取权限：
 - en: '[PRE19]'
   id: totrans-104
   prefs:
@@ -620,6 +669,7 @@
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: 这就是动态权限的工作方式！
 - en: Here, we've used them to control the filesystem read permissions, but they can
     be used to ask for access to all the available permissions (mentioned in [*Chapter
     2*](B16380_02_Final_JM_ePub.xhtml#_idTextAnchor056), *The Toolchain*) in the runtime.
@@ -1151,17 +1201,20 @@
   id: totrans-183
   prefs: []
   type: TYPE_NORMAL
+  zh: 本书的主要焦点不仅是介绍Deno以及如何使用它，还包括学习如何使用它来构建Web应用程序。在这里，我们将创建一个简单的JSON API，以便您了解HTTP模块。
 - en: We'll build an API that will save and list notes. We will call these notes post-its.
     Imagine that this is the API that will feed your post-its board.
   id: totrans-184
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们将构建一个API，用于保存和列出便签。我们把这些便签称为笔记。想象一下，这个API将为您提供便签板的数据。
 - en: We'll create a very simple routing system with the help of Web APIs and the
     functions from the Deno standard library's HTTP module. Keep in mind we're doing
     this to explore the APIs themselves and thus this is not production-ready code.
   id: totrans-185
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们将借助Web APIs和Deno标准库HTTP模块的功能创建一个非常简单的路由系统。请记住，我们这样做是为了探索API本身，因此这并不是生产就绪的代码。
 - en: Let's start by creating a folder named `post-it-api` and a file named `index.ts`
     inside. One more time, we will use TypeScript as we believe the autocomplete and
     type checking capabilities greatly improve our experience and reduce the number
@@ -1169,15 +1222,18 @@
   id: totrans-186
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们先创建一个名为`post-it-api`的文件夹和一个名为`index.ts`的文件。再次使用TypeScript，因为我们认为自动完成和类型检查功能极大地提高了我们的体验，并减少了可能的错误数量。
 - en: 'The final code for this section is available at [https://github.com/PacktPublishing/Deno-Web-Development/blob/master/Chapter03/post-it-api/steps/7.ts](https://github.com/PacktPublishing/Deno-Web-Development/blob/master/Chapter03/post-it-api/steps/7.ts):'
   id: totrans-187
   prefs: []
   type: TYPE_NORMAL
+  zh: 本节的最终代码可在[https://github.com/PacktPublishing/Deno-Web-Development/blob/master/Chapter03/post-it-api/steps/7.ts](https://github.com/PacktPublishing/Deno-Web-Development/blob/master/Chapter03/post-it-api/steps/7.ts)找到：
 - en: 'Start by importing the standard library HTTP module into our file:'
   id: totrans-188
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 首先将标准库HTTP模块导入我们的文件中：
 - en: '[PRE35]'
   id: totrans-189
   prefs:
@@ -1190,6 +1246,7 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 使用`AsyncIterator`处理请求，就像我们之前的示例一样：
 - en: '[PRE36]'
   id: totrans-191
   prefs:
@@ -1202,6 +1259,7 @@
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: 如果我们现在运行它，这就是我们会得到的。请记住，为了使其具有网络访问权限，我们需要使用在权限部分提到的`--allow-net`标志：
 - en: '[PRE37]'
   id: totrans-193
   prefs:
@@ -1214,6 +1272,7 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 为了清晰起见，我们可以将端口和服务器实例提取到单独的变量中：
 - en: '[PRE38]'
   id: totrans-195
   prefs:
@@ -1226,17 +1285,20 @@
   id: totrans-196
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们的服务器像以前一样运行良好，唯一的区别是现在代码（有争议地）看起来更易读，因为配置变量位于文件的顶部。我们稍后学习如何从代码中提取这些变量。
 - en: Returning a list of post-its
   id: totrans-197
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 返回便签列表
 - en: Our first requisite is that we have an API that returns a list of post-its.
     Those will be composed of the name, title, and the date created. Before we get
     there, and to enable us to have multiple routes, we need a routing system.
   id: totrans-198
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们的第一个要求是我们有一个返回便签列表的API。这些便签将包括名称、标题和创建日期。在我们到达那里之前，为了使我们能够有多个路由，我们需要一个路由系统。
 - en: For the purpose of this exercise, we'll build ours. This is our way of getting
     to know some of the APIs built into Deno. We'll later agree that when writing
     production applications, it is sometimes better to reuse tested and heavily used
@@ -1245,16 +1307,19 @@
   id: totrans-199
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了进行这个练习，我们将自己构建一个。这是我们了解Deno内置的一些API的方式。我们稍后会同意，在编写生产应用程序时，有时最好重用经过测试和广泛使用的软件，而不是一直重新发明轮子。然而，为了学习目的，完全可以*重新发明轮子*。
 - en: To create our basic routing system, we will use some APIs that you probably
     know from the browser. Objects such as `URL`, `UrlSearchParams`, and so on.
   id: totrans-200
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了创建我们的基本路由系统，我们将使用一些您可能从浏览器中知道的API。例如`URL`、`UrlSearchParams`等对象。
 - en: Our goal is to be able to define a route by its URL and path. Something like
     `GET /api/post-its` would be nice. Let's do it!
   id: totrans-201
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们的目标是能够通过其URL和路径定义一个路由。像`GET /api/post-its`这样的东西会很好。让我们来做吧！
 - en: 'Start by creating a `URL` object ([https://developer.mozilla.org/en-US/docs/Web/API/URL](https://developer.mozilla.org/en-US/docs/Web/API/URL))
     to help us parse the URL and its parameters. We''ll extract `HOST` and `PROTOCOL`
     to a different variable, so we don''t have to repeat ourselves:'
@@ -1262,6 +1327,7 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 首先创建一个`URL`对象（[https://developer.mozilla.org/en-US/docs/Web/API/URL](https://developer.mozilla.org/en-US/docs/Web/API/URL)）来帮助我们解析URL和其参数。我们将提取`HOST`和`PROTOCOL`到另一个变量中，这样我们就不用重复了：
 - en: '[PRE39]'
   id: totrans-203
   prefs:
@@ -1464,11 +1530,13 @@
   id: totrans-232
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们将使用我们创建的*路由基础设施*来添加一个允许我们*插入*记录到我们数据库的路由。由于我们遵循REST指南，那个路由将位于列出`post-its`的相同路径上，但方法不同：
 - en: 'Define a route that always returns the `201` status code:'
   id: totrans-233
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 定义一个总是返回`201`状态码的路由：
 - en: '[PRE47]'
   id: totrans-234
   prefs:
@@ -1481,6 +1549,7 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 使用`curl`的帮助，我们可以看到它返回了正确的状态码：
 - en: '[PRE48]'
   id: totrans-236
   prefs:
@@ -1493,6 +1562,7 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 遵循建议，读取值并打印出来以更好地理解它：
 - en: '[PRE49]'
   id: totrans-238
   prefs:
@@ -1504,6 +1574,7 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 用`curl`发出带有`body`的请求：
 - en: '[PRE50]'
   id: totrans-240
   prefs:
@@ -1515,31 +1586,37 @@
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: Uint8Array(25) [
 - en: 123,  34, 116, 105, 116, 108, 101,
   id: totrans-242
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: 123, 34, 116, 105, 116, 108, 101,
 - en: 34,58,32,34,84,   101, 115,
   id: totrans-243
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: 34, 58, 32, 34, 84, 32, 101, 115,
 - en: 116,  32, 112, 111, 115, 116,  45,
   id: totrans-244
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: 116, 32, 112, 111, 115, 116, 45,
 - en: 105, 116,  34, 125
   id: totrans-245
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: 105, 116, 34, 125
 - en: ']'
   id: totrans-246
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: ']'
 - en: '[PRE51]'
   id: totrans-247
   prefs:
@@ -1552,6 +1629,7 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 使用`TextDecoder`将请求体作为可读值获取。完成此操作后，我们再次记录输出，然后我们将发出一个新的请求：
 - en: '[PRE52]'
   id: totrans-249
   prefs:
@@ -1563,6 +1641,7 @@
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: 这次服务器在控制台打印的就是这个：
 - en: '[PRE53]'
   id: totrans-251
   prefs:
@@ -1574,12 +1653,14 @@
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: 我们正在取得进展！
 - en: 'Since the body is a string, we need to parse it into a JavaScript object. We''ll
     use an old friend of ours, `JSON.parse`:'
   id: totrans-253
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 由于正文是一个字符串，我们需要将其解析为JavaScript对象。我们将使用我们的一位老朋友，`JSON.parse`：
 - en: '[PRE54]'
   id: totrans-254
   prefs:
@@ -1593,12 +1674,14 @@
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: 现在我们有了一种请求体格式，我们可以对其采取行动，这基本上是我们创建新数据库记录所需要的一切。让我们按照以下步骤创建一个：
 - en: 'Use the `uuid` module ([https://deno.land/std@0.83.0/uuid](mailto:https://deno.land/std@0.67.0/uuid))
     from the standard library to generate a random UUID for our records:'
   id: totrans-256
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 使用标准库中的`uuid`模块（[https://deno.land/std@0.83.0/uuid](https://deno.land/std@0.67.0/uuid)）为我们的记录生成一个随机的UUID：
 - en: '[PRE55]'
   id: totrans-257
   prefs:
@@ -1613,6 +1696,7 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 在我们的路由的switch case中，我们将使用`generate`方法创建一个`id`并将其插入到*数据库*中，在用户在请求负载中发送的内容顶部添加`createdAt`日期。为了这个例子，我们省略了验证：
 - en: '[PRE56]'
   id: totrans-259
   prefs:
@@ -1625,17 +1709,20 @@
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: '注意，我们使用了之前在`GET`路由来定义的相同的`headers`对象，以便我们的API返回`Content-Type: application/json`。'
 - en: Then again, as we follow the *REST* guidelines, we return the `201` `Created`
     code and the created record.
   id: totrans-261
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: 再次，遵循*REST*指南，我们返回`201` `Created`代码和创建的记录。
 - en: 'Save the code, restart the server, and run it again:'
   id: totrans-262
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 保存代码，重启服务器，再次运行它：
 - en: '[PRE57]'
   id: totrans-263
   prefs:
@@ -1647,6 +1734,7 @@
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: '`curl http://localhost:8080/api/post-its`'
 - en: '{"postIts":[{"title":"Read more","body":"PacktPub books","id":"3209ebc7-b3b4-4555-88b1-b64b33d507ab","createdAt":"2021-01-10T16:28:52.210Z"},{"title":"Finish
     book","body":"Deno Web Development","id":"a1afee4a-b078-4eff-8ca6-06b3722eee2c","createdAt":"2021-01-10T16:28:52.210Z"},{"title":"Buy
     groceries","body":"1 x Milk","id":"b35b0a62-4519-4491-9ba9-b5809b4810d5","createdAt":"2021-01-10T16:29:05.519Z"}]}'
@@ -1654,6 +1742,9 @@
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: '{"postIts":[{"title":"Read more","body":"PacktPub books","id":"3209ebc7-b3b4-4555-88b1-b64b33d507ab","createdAt":"2021-01-10T16:28:52.210Z"},{"title":"Finish
+    book","body":"Deno Web Development","id":"a1afee4a-b078-4eff-8ca6-06b3722eee2c","createdAt":"2021-01-10T16:28:52.210Z"},{"title":"Buy
+    groceries","body":"1 x Milk","id":"b35b0a62-4519-4491-9ba9-b5809b4810d5","createdAt":"2021-01-10T16:29:05.519Z"}]}'
 - en: '[PRE58]'
   id: totrans-266
   prefs:
@@ -1664,17 +1755,20 @@
   id: totrans-267
   prefs: []
   type: TYPE_NORMAL
+  zh: 而且它奏效了！现在我们有一个API，它可以返回便签列表并添加便签。
 - en: This pretty much wraps up what we'll do in terms of APIs with the HTTP module
     for this chapter. As most of the APIs, like the one we wrote, are made to be consumed
     by a frontend application, we'll do that to wrap up this chapter.
   id: totrans-268
   prefs: []
   type: TYPE_NORMAL
+  zh: 这基本上结束了我们在这个章节中使用HTTP模块关于API的一切。像我们写的这个API一样，大多数API都是为了被前端应用程序消费，我们接下来会做的那样来结束这个章节。
 - en: Serving a frontend
   id: totrans-269
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 提供前端服务
 - en: Since it is out of the scope of this book, we will not write the frontend code
     that interacts with this API. However, if you want to use it with a single-page
     application that fetches the post-its and displays them, I've included one in
