@@ -2338,16 +2338,19 @@
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 关于 / [函数参数](https://example.org/function_arguments)
 - en: G
   id: totrans-352
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: G
 - en: get functions
   id: totrans-353
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 获取函数
 - en: used, for data loading / [Loading data through the get functions in jQuery](part0025_split_000.html#NQU22-40dd2de0d2d94f79a49cd7a43c4b76e6
     "Loading data through the get functions in jQuery")
   id: totrans-354
@@ -2355,6 +2358,7 @@
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 使用，数据加载 / [通过jQuery的get函数加载数据](https://example.org/loading_data_with_jQuery_get)
 - en: jQuery.get(), using / [Using jQuery.get()](part0025_split_000.html#NQU22-40dd2de0d2d94f79a49cd7a43c4b76e6
     "Using jQuery.get()")
   id: totrans-355
@@ -2362,6 +2366,7 @@
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: jQuery.get()，使用 / [使用jQuery.get()](https://example.org/using_jQuery_get)
 - en: jQuery.getJSON(), using / [Using jQuery.getJSON()](part0025_split_000.html#NQU22-40dd2de0d2d94f79a49cd7a43c4b76e6
     "Using jQuery.getJSON()")
   id: totrans-356
@@ -2369,6 +2374,7 @@
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: jQuery.getJSON()，使用 / [使用jQuery.getJSON()](https://example.org/using_jQuery_getJSON)
 - en: jQuery.getScript(), using / [Using jQuery.getScript()](part0025_split_000.html#NQU22-40dd2de0d2d94f79a49cd7a43c4b76e6
     "Using jQuery.getScript()")
   id: totrans-357
@@ -2376,11 +2382,13 @@
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: jQuery.getScript()，使用 / [使用jQuery.getScript()](https://example.org/using_jQuery_getScript)
 - en: global events, AJAX
   id: totrans-358
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: AJAX全局事件
 - en: ajaxStart / [Global events](part0025_split_000.html#NQU22-40dd2de0d2d94f79a49cd7a43c4b76e6
     "Global events")
   id: totrans-359
@@ -2388,6 +2396,7 @@
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: ajaxStart / [全局事件](https://example.org/global_events)
 - en: ajaxSend / [Global events](part0025_split_000.html#NQU22-40dd2de0d2d94f79a49cd7a43c4b76e6
     "Global events")
   id: totrans-360
@@ -2395,6 +2404,7 @@
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: ajaxSend / [全局事件](https://example.org/global_events)
 - en: ajaxSuccess / [Global events](part0025_split_000.html#NQU22-40dd2de0d2d94f79a49cd7a43c4b76e6
     "Global events")
   id: totrans-361
@@ -2402,6 +2412,7 @@
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: ajaxSuccess / [全局事件](https://example.org/global_events)
 - en: ajaxError / [Global events](part0025_split_000.html#NQU22-40dd2de0d2d94f79a49cd7a43c4b76e6
     "Global events")
   id: totrans-362
@@ -2409,6 +2420,7 @@
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: ajaxError / [全局事件](https://example.org/global_events)
 - en: ajaxComplete / [Global events](part0025_split_000.html#NQU22-40dd2de0d2d94f79a49cd7a43c4b76e6
     "Global events")
   id: totrans-363
@@ -2416,11 +2428,13 @@
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: ajaxComplete / [全局事件](https://example.org/global_events)
 - en: Google Chrome
   id: totrans-364
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 谷歌浏览器
 - en: used, for debugging from Visual Studio / [Debugging from Visual Studio with
     Google Chrome](part0054_split_000.html#1JFUC2-40dd2de0d2d94f79a49cd7a43c4b76e6
     "Debugging from Visual Studio with Google Chrome")
@@ -2429,11 +2443,13 @@
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 使用，从Visual Studio调试 / [使用谷歌浏览器从Visual Studio调试](https://example.org/debugging_from_Visual_Studio_with_Google_Chrome)
 - en: Grunt
   id: totrans-366
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[Grunt](https://example.org/grunt)'
 - en: used, for writing unit tests / [Grunt](part0053_split_000.html#1IHDQ2-40dd2de0d2d94f79a49cd7a43c4b76e6
     "Grunt")
   id: totrans-367
@@ -2441,11 +2457,13 @@
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 使用，编写单元测试 / [Grunt](https://example.org/grunt)
 - en: Grunt file
   id: totrans-368
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: Grunt文件
 - en: adding / [Adding the Grunt file](part0053_split_000.html#1IHDQ2-40dd2de0d2d94f79a49cd7a43c4b76e6
     "Adding the Grunt file")
   id: totrans-369
@@ -2453,6 +2471,7 @@
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 添加 / [添加Grunt文件](https://example.org/adding_the_Grunt_file)
 - en: Karma specifications, adding / [Adding Karma specifications](part0053_split_000.html#1IHDQ2-40dd2de0d2d94f79a49cd7a43c4b76e6
     "Adding Karma specifications")
   id: totrans-370
@@ -2460,6 +2479,7 @@
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: Karma规范，添加 / [添加Karma规范](https://example.org/adding_karma_specifications)
 - en: npm task, loading / [Load npm task](part0053_split_000.html#1IHDQ2-40dd2de0d2d94f79a49cd7a43c4b76e6
     "Load npm task")
   id: totrans-371
@@ -2467,6 +2487,7 @@
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: npm任务，加载 / [加载npm任务](https://example.org/load_npm_task)
 - en: task, registering / [Register task](part0053_split_000.html#1IHDQ2-40dd2de0d2d94f79a49cd7a43c4b76e6
     "Register task")
   id: totrans-372
@@ -2474,11 +2495,13 @@
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 任务注册 / [注册任务](https://example.org/register_task)
 - en: Gulp module
   id: totrans-373
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: Gulp模块
 - en: Gulp / [Deployment optimization](part0051_split_000.html#1GKCM2-40dd2de0d2d94f79a49cd7a43c4b76e6
     "Deployment optimization")
   id: totrans-374
@@ -2486,6 +2509,7 @@
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: Gulp / [部署优化](https://example.org/deployment_optimization)
 - en: gulp-concat / [Deployment optimization](part0051_split_000.html#1GKCM2-40dd2de0d2d94f79a49cd7a43c4b76e6
     "Deployment optimization")
   id: totrans-375
@@ -2493,6 +2517,7 @@
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: gulp-concat / [部署优化](https://example.org/deployment_optimization)
 - en: gulp-cssmin / [Deployment optimization](part0051_split_000.html#1GKCM2-40dd2de0d2d94f79a49cd7a43c4b76e6
     "Deployment optimization")
   id: totrans-376
@@ -2500,6 +2525,7 @@
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: gulp-cssmin / [部署优化](https://example.org/deployment_optimization)
 - en: gulp-uglify / [Deployment optimization](part0051_split_000.html#1GKCM2-40dd2de0d2d94f79a49cd7a43c4b76e6
     "Deployment optimization")
   id: totrans-377
@@ -2507,16 +2533,19 @@
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: gulp-uglify / [部署优化](https://example.org/deployment_optimization)
 - en: H
   id: totrans-378
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: H
 - en: history object
   id: totrans-379
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 历史对象
 - en: about / [History](part0016_split_000.html#F8902-40dd2de0d2d94f79a49cd7a43c4b76e6
     "History")
   id: totrans-380
@@ -2524,6 +2553,7 @@
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 关于 / [历史](https://example.org/history)
 - en: methods / [Methods](part0016_split_000.html#F8902-40dd2de0d2d94f79a49cd7a43c4b76e6
     "Methods")
   id: totrans-381
@@ -2531,11 +2561,13 @@
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 方法 / [方法](https://example.org/methods)
 - en: hover events
   id: totrans-382
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 悬停事件
 - en: using / [Using the hover events](part0023_split_000.html#LTSU2-40dd2de0d2d94f79a49cd7a43c4b76e6
     "Using the hover events")
   id: totrans-383
