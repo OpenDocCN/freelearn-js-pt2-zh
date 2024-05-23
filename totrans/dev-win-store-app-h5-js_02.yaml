@@ -355,38 +355,46 @@
   id: totrans-49
   prefs: []
   type: TYPE_NORMAL
+  zh: 一个CSS选择器可以包含多个选择器，即简单选择器的组合。组合选择器包含多个简单选择器，由一个组合符连接。组合符是一个表示选择器之间关系的符号。CSS2中已经有三个不同的组合符，CSS3增加了一个额外的。以下列出四个选择器，所使用的组合符以及每个选择器匹配的内容：
 - en: '| Selector | Combinator | Target |'
   id: totrans-50
   prefs: []
   type: TYPE_TB
+  zh: '| 选择器 | 组合符 | 目标 |'
 - en: '| --- | --- | --- |'
   id: totrans-51
   prefs: []
   type: TYPE_TB
+  zh: '| --- | --- | --- |'
 - en: '| Descendant | Space Character | Matches the elements that are descendants
     of the specified element. |'
   id: totrans-52
   prefs: []
   type: TYPE_TB
+  zh: '| 后代 | 空格字符 | 匹配那些是指定元素后代的元素。 |'
 - en: '| Direct Descendant (Child Selector) | > | Matches the elements that are a
     direct descendant of the specified element. |'
   id: totrans-53
   prefs: []
   type: TYPE_TB
+  zh: '| 直接后代（子选择器） | > | 匹配那些是指定元素直接后代的元素。 |'
 - en: '| Adjacent Sibling | + | Matches the elements that are an adjacent sibling
     (immediately following) to the specified element. |'
   id: totrans-54
   prefs: []
   type: TYPE_TB
+  zh: '| 相邻兄弟 | + | 匹配那些是指定元素相邻兄弟（紧随其后的）的元素。 |'
 - en: '| General Sibling | ~ | Matches the elements that are an adjacent sibling to
     the specified element. |'
   id: totrans-55
   prefs: []
   type: TYPE_TB
+  zh: '| 一般兄弟 | ~ | 匹配那些是指定元素相邻兄弟的元素。 |'
 - en: 'The preceding selectors are described as follows:'
   id: totrans-56
   prefs: []
   type: TYPE_NORMAL
+  zh: 以下选择器描述如下：
 - en: '**The Descendant selector**: It is marked by a space character as a combinator
     and it will select all elements that are descendants of a specified element. It
     is as if we are applying an additional filter on the first simple selector. The
@@ -397,11 +405,13 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**后代选择器**：由空格字符作为组合符，它将选择所有指定元素的后代元素。仿佛我们在第一个简单选择器上应用了一个额外的过滤器。第一个选择器代表父元素，第二个是要匹配的子（后代）元素。例如，以下代码片段会匹配所有`<li>`元素作为其父元素的锚点元素：'
 - en: 'The HTML code is as follows:'
   id: totrans-58
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: HTML代码如下：
 - en: '[PRE17]'
   id: totrans-59
   prefs:
@@ -413,6 +423,7 @@
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: CSS选择器如下：
 - en: '[PRE18]'
   id: totrans-61
   prefs:
@@ -428,11 +439,13 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**直接后代选择器**：由大于号（`>`）作为组合符标记，基本形式为E>F，匹配E元素的每个直接后代（子）F元素。在以下代码片段中，只有`<div>`元素的直接子`<p>`元素会被染成蓝色，其余的则不会。'
 - en: 'The HTML code is as follows:'
   id: totrans-63
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: HTML代码如下：
 - en: '[PRE19]'
   id: totrans-64
   prefs:
@@ -444,6 +457,7 @@
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: CSS代码如下：
 - en: '[PRE20]'
   id: totrans-66
   prefs:
@@ -459,11 +473,13 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**相邻兄弟选择器**：由加号（`+`）作为组合符标记，匹配所有紧随父元素之后的兄弟元素。所以，兄弟元素之间不能有其他元素。如果这有点复杂，下面的例子会解释清楚。选择器只会把一个`<p>`元素染成红色。'
 - en: 'The HTML code is as follows:'
   id: totrans-68
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: HTML代码如下：
 - en: '[PRE21]'
   id: totrans-69
   prefs:
@@ -475,6 +491,7 @@
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: CSS代码如下：
 - en: '[PRE22]'
   id: totrans-71
   prefs:
@@ -490,6 +507,7 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**一般兄弟选择器**：由波浪号（`~`）作为组合符标记，是CSS3的新增功能。它用于选择所有给定元素的兄弟元素。所以，如果我们把选择器应用到前面的例子中的HTML代码上，两个`<p>`元素都会匹配并染成红色，因为它们都是`h1`的兄弟元素。'
 - en: '[PRE23]'
   id: totrans-73
   prefs:
@@ -501,6 +519,7 @@
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 伪类选择器
 - en: 'A pseudo-class is similar to a class but, since it is in-built, you do not
     have to explicitly add it in the HTML code. Also, it differs in syntax; a class
     selector is preceded by a period (`.`), whereas a pseudo-class is preceded by
