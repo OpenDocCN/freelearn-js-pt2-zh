@@ -1466,12 +1466,14 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如果值属于不同的类型，它们是不相等的。
 - en: For non-numerical values of the same type, they are equal if their values are
     the same.
   id: totrans-224
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 对于相同类型的非数字值，如果它们的值相同，它们是相等的。
 - en: For primitive numbers, strict equality works for values. If the values are the
     same, === results in `true`. However, a NaN doesn't equal to any number and `NaN===<a
     number>` would be a `false`.
@@ -1479,84 +1481,104 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 对于原始数字，严格等价对于值来说是有效的。如果值相同，===结果为`true`。然而，NaN不等于任何数字，所以`NaN===<一个数字>`将会是`false`。
 - en: 'Strict equality is always the correct equality check to use. Make it a rule
     to always use === instead of ==:'
   id: totrans-226
   prefs: []
   type: TYPE_NORMAL
+  zh: 严格等价始终是正确的等价检查。始终使用===而不是==作为等价检查的规则：
 - en: '| Condition | Output |'
   id: totrans-227
   prefs: []
   type: TYPE_TB
+  zh: '| 条件 | 输出 |'
 - en: '| --- | --- |'
   id: totrans-228
   prefs: []
   type: TYPE_TB
+  zh: '| --- | --- |'
 - en: '| `"" === "0"` | false |'
   id: totrans-229
   prefs: []
   type: TYPE_TB
+  zh: '| `"" === "0";` | 错误 |'
 - en: '| `0 === ""` | false |'
   id: totrans-230
   prefs: []
   type: TYPE_TB
+  zh: '| `0 === "";` | 错误 |'
 - en: '| `0 === "0"` | false |'
   id: totrans-231
   prefs: []
   type: TYPE_TB
+  zh: '| `0 === "0";` | 错误 |'
 - en: '| `false === "false"` | false |'
   id: totrans-232
   prefs: []
   type: TYPE_TB
+  zh: '| `false === "false";` | 错误 |'
 - en: '| `false === "0"` | false |'
   id: totrans-233
   prefs: []
   type: TYPE_TB
+  zh: '| `false === "0";` | 错误 |'
 - en: '| `false === undefined` | false |'
   id: totrans-234
   prefs: []
   type: TYPE_TB
+  zh: '| `false === undefined;` | 错误 |'
 - en: '| `false === null` | false |'
   id: totrans-235
   prefs: []
   type: TYPE_TB
+  zh: '| `false === null;` | 错误 |'
 - en: '| `null === undefined` | false |'
   id: totrans-236
   prefs: []
   type: TYPE_TB
+  zh: '| `null === undefined;` | 错误 |'
 - en: 'In case of comparing objects, we get results as follows:'
   id: totrans-237
   prefs: []
   type: TYPE_NORMAL
+  zh: 在比较对象时，结果如下：
 - en: '| Condition | Output |'
   id: totrans-238
   prefs: []
   type: TYPE_TB
+  zh: '| 条件 | 输出 |'
 - en: '| --- | --- |'
   id: totrans-239
   prefs: []
   type: TYPE_TB
+  zh: '| --- | --- |'
 - en: '| `{} === {};` | false |'
   id: totrans-240
   prefs: []
   type: TYPE_TB
+  zh: '| `{} === {};` | 错误 |'
 - en: '| `new String(''bah'') === ''bah'';` | false |'
   id: totrans-241
   prefs: []
   type: TYPE_TB
+  zh: '| `new String(''bah'') === ''bah'';` | 错误 |'
 - en: '| `new Number(1) === 1;` | false |'
   id: totrans-242
   prefs: []
   type: TYPE_TB
+  zh: '| `new Number(1) === 1;` | 错误 |'
 - en: '| `var bar = {};``bar === bar;` | true |'
   id: totrans-243
   prefs: []
   type: TYPE_TB
+  zh: '| `var bar = {};``bar === bar;` | 正确 |'
 - en: 'The following are further examples that you should try on either JS Bin or
     Node REPL:'
   id: totrans-244
   prefs: []
   type: TYPE_NORMAL
+  zh: 以下是在JS Bin或Node REPL上尝试的进一步示例：
 - en: '[PRE54]'
   id: totrans-245
   prefs: []
@@ -1567,11 +1589,13 @@
   id: totrans-246
   prefs: []
   type: TYPE_NORMAL
+  zh: 当进行严格等价检查时，你可以使用`!==`来处理**不等于**的情况。
 - en: Weak equality using ==
   id: totrans-247
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: 使用==的弱等价
 - en: 'Nothing should tempt you to use this form of equality. Seriously, stay away
     from this form. There are many bad things with this form of equality primarily
     due to the weak typing in JavaScript. The equality operator, ==, first tries to
@@ -1580,57 +1604,70 @@
   id: totrans-248
   prefs: []
   type: TYPE_NORMAL
+  zh: 绝对不要诱惑你使用这种等价形式。严肃地说，离这种形式远一点。这种等价形式主要是由于JavaScript的弱类型而有很多问题。等价操作符==，首先尝试强制类型然后再进行比较。以下示例展示了它是如何工作的：
 - en: '| Condition | Output |'
   id: totrans-249
   prefs: []
   type: TYPE_TB
+  zh: '| 条件 | 输出 |'
 - en: '| --- | --- |'
   id: totrans-250
   prefs: []
   type: TYPE_TB
+  zh: '| --- | --- |'
 - en: '| `"" == "0"` | false |'
   id: totrans-251
   prefs: []
   type: TYPE_TB
+  zh: '| `"" == "0";` | 错误 |'
 - en: '| `0 == ""` | true |'
   id: totrans-252
   prefs: []
   type: TYPE_TB
+  zh: '| `0 == "";` | 正确 |'
 - en: '| `0 == "0"` | true |'
   id: totrans-253
   prefs: []
   type: TYPE_TB
+  zh: '| `0 == "0";` | 正确 |'
 - en: '| `false == "false"` | false |'
   id: totrans-254
   prefs: []
   type: TYPE_TB
+  zh: '| `false == "false";` | 错误 |'
 - en: '| `false == "0"` | true |'
   id: totrans-255
   prefs: []
   type: TYPE_TB
+  zh: '| `false == "0";` | 正确 |'
 - en: '| `false == undefined` | false |'
   id: totrans-256
   prefs: []
   type: TYPE_TB
+  zh: '| `false == undefined;` | 错误 |'
 - en: '| `false == null` | false |'
   id: totrans-257
   prefs: []
   type: TYPE_TB
+  zh: '| `false == null;` | 错误 |'
 - en: '| `null == undefined` | true |'
   id: totrans-258
   prefs: []
   type: TYPE_TB
+  zh: '| `null == undefined;` | 正确 |'
 - en: From these examples, it's evident that weak equality can result in unexpected
     outcomes. Also, implicit type coercion is costly in terms of performance. So,
     in general, stay away from weak equality in JavaScript.
   id: totrans-259
   prefs: []
   type: TYPE_NORMAL
+  zh: 从这些示例中，可以看出弱等价可能会导致意外的结果。此外，隐式强制类型转换在性能上是有代价的。所以，一般来说，在JavaScript中应避免使用弱等价。
 - en: JavaScript types
   id: totrans-260
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: javascript类型
 - en: We briefly discussed that JavaScript is a dynamic language. If you have a previous
     experience of strongly typed languages such as Java, you may feel a bit uncomfortable
     about the complete lack of type checks that you are used to. Purists argue that
@@ -1642,12 +1679,14 @@
   id: totrans-261
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们简要讨论了JavaScript是一种动态语言。如果你有使用强类型语言如Java的先前经验，你可能会对完全缺乏你所熟悉的类型检查感到有些不舒服。纯粹主义者认为JavaScript应该声称有**标签**或者也许是**子类型**，但不是类型。尽管JavaScript没有传统意义上的**类型**定义，但深入理解JavaScript如何处理数据类型和强制类型转换内部是绝对必要的。每个非平凡的JavaScript程序都需要以某种形式处理值强制类型转换，所以理解这个概念很重要。
 - en: 'Explicit coercion happens when you modify the type yourself. In the following
     example, you will convert a number to a String using the `toString()` method and
     extract the second character out of it:'
   id: totrans-262
   prefs: []
   type: TYPE_NORMAL
+  zh: 显式强制类型转换发生在当你自己修改类型时。在以下示例中，你将使用`toString()`方法将一个数字转换为字符串并从中提取第二个字符：
 - en: '[PRE55]'
   id: totrans-263
   prefs: []
@@ -1659,6 +1698,7 @@
   id: totrans-264
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是一个显式类型转换的例子。再次强调，我们在这里使用“类型”这个词是比较宽泛的，因为在声明`fortyTwo`变量时，并没有任何地方强制类型。
 - en: However, there are many different ways in which such coercion can happen. Coercion
     happening explicitly can be easy to understand and mostly reliable; but if you're
     not careful, coercion can happen in very strange and surprising ways.
